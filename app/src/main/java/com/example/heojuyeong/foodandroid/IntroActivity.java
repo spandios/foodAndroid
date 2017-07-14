@@ -1,6 +1,5 @@
 package com.example.heojuyeong.foodandroid;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Bundle;
 import android.content.Intent;
@@ -24,6 +23,7 @@ public class IntroActivity extends AppCompatActivity{
     };
 
     public void init() {
+
         handler = new Handler();
     }
 

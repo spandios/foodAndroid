@@ -9,15 +9,25 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
+import com.example.heojuyeong.foodandroid.common.CommonLocationApplication2;
 import com.example.heojuyeong.foodandroid.fragment.CurrentOrderFragment;
 import com.example.heojuyeong.foodandroid.fragment.HomeFragment;
 import com.example.heojuyeong.foodandroid.fragment.MapFragment;
 import com.example.heojuyeong.foodandroid.fragment.MenuFragment;
 import com.example.heojuyeong.foodandroid.fragment.SearchFragment;
+import com.example.heojuyeong.foodandroid.util.TedPermissionUtil;
+import com.example.heojuyeong.foodandroid.http.GeocodingThread;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 public class MainActivity extends AppCompatActivity {
-    private boolean homeFragmentFlag=true;
+    public String locationName;
+    public double lat;
+    public double lng;
 
+
+    private boolean homeFragmentFlag=true;
     FragmentManager fragmentManager=getFragmentManager();
     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
 
@@ -42,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.replace(R.id.homeContent, new MapFragment());
                     fragmentTransaction.commit();
                     break;
-                case R.id.searchButton:
+                case R.id.mainSearchButton:
                     homeFragmentFlag=false;
                     fragmentTransaction.replace(R.id.homeContent, new SearchFragment());
                     fragmentTransaction.commit();
@@ -61,10 +71,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Logger.addLogAdapter(new AndroidLogAdapter());
+
         // 만약, 개발자가 action bar없이 full screen을 원하는 경우에는 다음을 추가한다
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        //permission setting
+        TedPermissionUtil tedPermissionHandler=new TedPermissionUtil(this);
+
+
+        GeocodingThread geocodingThread=new GeocodingThread(this,"37.519211,127.029024");
+
+        //location setting
+        CommonLocationApplication2 commonLocationApplication=(CommonLocationApplication2)getApplication();
+        commonLocationApplication.settingLocation(getBaseContext());
 
 
         fragmentTransaction.add(R.id.homeContent,new HomeFragment());
@@ -72,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button homeButton=(Button)findViewById(R.id.homeButton);
         Button currentOrderButton=(Button)findViewById(R.id.currentOrderButton);
-        Button searchButton=(Button)findViewById(R.id.searchButton);
+        Button searchButton=(Button)findViewById(R.id.mainSearchButton);
         Button mapButton=(Button)findViewById(R.id.mapButton);
         Button menuButton=(Button)findViewById(R.id.menuButton);
 
@@ -81,6 +103,13 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(onClickListener);
         mapButton.setOnClickListener(onClickListener);
         menuButton.setOnClickListener(onClickListener);
+
+
+
+
+
+
+
     }
 
     @Override
