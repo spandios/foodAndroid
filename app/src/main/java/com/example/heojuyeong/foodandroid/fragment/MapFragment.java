@@ -1,6 +1,8 @@
 package com.example.heojuyeong.foodandroid.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,23 +14,19 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
-import com.example.heojuyeong.foodandroid.common.CommonLocationApplication2;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
+import com.example.heojuyeong.foodandroid.settingLocationMapActivity;
 
 public class MapFragment extends Fragment {
-
+    private TextView currentLocationTextview;
+    private MaterialDialog materialDialog;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.activity_map_fragment,container,false);
-        final TextView currentLocationTextview=(TextView)view.findViewById(R.id.currentLocationTextView);
-        //getLocationName
-        final CommonLocationApplication2 commonLocationApplication=(CommonLocationApplication2)getActivity().getApplication();
-        currentLocationTextview.setText(commonLocationApplication.getLocationName());
+        currentLocationTextview=(TextView)view.findViewById(R.id.currentLocationTextView);
 
         //MaterialDialog  and button setting
-        final MaterialDialog materialDialog=new MaterialDialog.Builder(getActivity()).customView(R.layout.dialog_current_location,true).build();
+        materialDialog=new MaterialDialog.Builder(getActivity()).customView(R.layout.dialog_current_location,true).build();
         View dialogView=materialDialog.getView();
 
         final Button dialog_current_location_reload_button=(Button)dialogView.findViewById(R.id.dialog_current_location_reload_button);
@@ -43,12 +41,13 @@ public class MapFragment extends Fragment {
                         materialDialog.show();
                         break;
                     case R.id.dialog_current_location_reload_button:
-                        commonLocationApplication.settingLocation(getActivity());
-                        currentLocationTextview.setText(commonLocationApplication.getLocationName());
+                        LocationReloadAsyncTask locationReloadAsyncTask=new LocationReloadAsyncTask();
+                        locationReloadAsyncTask.execute();
                         materialDialog.dismiss();
                         break;
                     case R.id.dialog_current_location_map_button:
-                        break;
+                        Intent intent=new Intent(getActivity(),settingLocationMapActivity.class);
+                        startActivity(intent);
                     case R.id.dialog_current_location_cancle_textview:
                         materialDialog.dismiss();
                         break;
@@ -64,4 +63,24 @@ public class MapFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        LocationReloadAsyncTask locationReloadAsyncTask=new LocationReloadAsyncTask();
+        locationReloadAsyncTask.execute();
+        super.onResume();
+    }
+
+    private class LocationReloadAsyncTask extends AsyncTask<Void,Void,String>{
+        @Override
+        protected void onPostExecute(String locationName) {
+            currentLocationTextview.setText(locationName);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            CommonLocationApplication commonLocationApplication=(CommonLocationApplication)getActivity().getApplication();
+            commonLocationApplication.settingLocation(getActivity().getBaseContext());
+            return commonLocationApplication.getLocationName();
+        }
+    }
 }

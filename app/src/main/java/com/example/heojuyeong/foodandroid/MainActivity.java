@@ -2,30 +2,28 @@ package com.example.heojuyeong.foodandroid;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
-import com.example.heojuyeong.foodandroid.common.CommonLocationApplication2;
 import com.example.heojuyeong.foodandroid.fragment.CurrentOrderFragment;
 import com.example.heojuyeong.foodandroid.fragment.HomeFragment;
 import com.example.heojuyeong.foodandroid.fragment.MapFragment;
 import com.example.heojuyeong.foodandroid.fragment.MenuFragment;
 import com.example.heojuyeong.foodandroid.fragment.SearchFragment;
 import com.example.heojuyeong.foodandroid.util.TedPermissionUtil;
-import com.example.heojuyeong.foodandroid.http.GeocodingThread;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
 public class MainActivity extends AppCompatActivity {
-    public String locationName;
-    public double lat;
-    public double lng;
-
 
     private boolean homeFragmentFlag=true;
     FragmentManager fragmentManager=getFragmentManager();
@@ -72,22 +70,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         Logger.addLogAdapter(new AndroidLogAdapter());
+        ConnectivityManager manager =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        // 만약, 개발자가 action bar없이 full screen을 원하는 경우에는 다음을 추가한다
+        if (mobile.isConnected() || wifi.isConnected()){
+
+        }else{
+            Logger.d("networkError", "Network connect fail");
+        }
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         //permission setting
-        TedPermissionUtil tedPermissionHandler=new TedPermissionUtil(this);
-
-
-        GeocodingThread geocodingThread=new GeocodingThread(this,"37.519211,127.029024");
-
-        //location setting
-        CommonLocationApplication2 commonLocationApplication=(CommonLocationApplication2)getApplication();
-        commonLocationApplication.settingLocation(getBaseContext());
-
+        TedPermissionUtil tedPermissionUtil=new TedPermissionUtil(getBaseContext());
+//
+//        CommonLocationApplication commonLocationApplication=(CommonLocationApplication)getApplicationContext();
+//        commonLocationApplication.settingLocation(getBaseContext());
 
         fragmentTransaction.add(R.id.homeContent,new HomeFragment());
         fragmentTransaction.commit();

@@ -37,6 +37,7 @@ public class IntroActivity extends AppCompatActivity{
                 .into(introImageView);
         init();
         handler.postDelayed(runnable, 2500);
+
     }
 
 
