@@ -14,7 +14,7 @@ public class CurrentOrderFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_current_order_fragment, container,false);
+        return inflater.inflate(R.layout.fragment_current_order, container,false);
     }
 
 

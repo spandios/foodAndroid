@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
@@ -28,8 +29,8 @@ public class GPS_Util extends Service implements LocationListener {
 
     //최소 GPS정보 업데이트 거리 10미터
     private static final long MIN_DISTNACE_CHANGE_FOR_UPDATES=10;
-    //GPS update 간격 2분
-    private static final long MIN_TIME_BW_UPDATES=1000*60*2;
+    //GPS update 간격 5분
+    private static final long MIN_TIME_BW_UPDATES=1000*60*5;
 
     protected LocationManager locationManager;
 
@@ -79,6 +80,7 @@ public class GPS_Util extends Service implements LocationListener {
                 }
 
                 return location;
+
             }
 
 
@@ -104,6 +106,10 @@ public class GPS_Util extends Service implements LocationListener {
             lng=location.getLongitude();
         }
         return lng;
+    }
+
+    public String getLatLng(){
+        return String.valueOf(lat) + "," + String.valueOf(lng);
     }
 
     public boolean isGetLocation() {

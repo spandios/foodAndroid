@@ -5,23 +5,30 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
+import com.amazonaws.HttpMethod;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.example.heojuyeong.foodandroid.fragment.CurrentOrderFragment;
 import com.example.heojuyeong.foodandroid.fragment.HomeFragment;
-import com.example.heojuyeong.foodandroid.fragment.MapFragment;
+import com.example.heojuyeong.foodandroid.fragment.CurLocationFragment;
 import com.example.heojuyeong.foodandroid.fragment.MenuFragment;
 import com.example.heojuyeong.foodandroid.fragment.SearchFragment;
 import com.example.heojuyeong.foodandroid.util.TedPermissionUtil;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.mapButton:
                     homeFragmentFlag=false;
-                    fragmentTransaction.replace(R.id.homeContent, new MapFragment());
+                    fragmentTransaction.replace(R.id.homeContent, new CurLocationFragment());
                     fragmentTransaction.commit();
                     break;
                 case R.id.mainSearchButton:
@@ -106,10 +113,6 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(onClickListener);
         mapButton.setOnClickListener(onClickListener);
         menuButton.setOnClickListener(onClickListener);
-
-
-
-
 
 
 

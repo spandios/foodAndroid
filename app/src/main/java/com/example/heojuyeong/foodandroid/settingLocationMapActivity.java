@@ -12,19 +12,21 @@ import android.widget.TextView;
 
 import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
 
+import com.example.heojuyeong.foodandroid.http.GeocodingService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.orhanobut.logger.Logger;
+
+import retrofit2.Call;
 
 
 public class settingLocationMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private CommonLocationApplication commonLocationApplication;
     private TextView titleLocation;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,8 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
                         finish();
                         break;
                     case R.id.currentLocationSettingByMapConfirmButton:
-                        commonLocationApplication.settingTemptoValue();
+                        commonLocationApplication.setLocationName(titleLocation.getText().toString());
+                        commonLocationApplication.setLatLng(latLng.latitude,latLng.longitude);
                         finish();
                         break;
                 }
@@ -77,7 +80,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
-                LatLng latLng = googleMap.getCameraPosition().target;
+                latLng=googleMap.getCameraPosition().target;
                 LocationAsyncTask asyncTask = new LocationAsyncTask();
                 asyncTask.execute(latLng);
             }
@@ -93,16 +96,18 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
     private class LocationAsyncTask extends AsyncTask<LatLng, Void, String> {
         @Override
         protected String doInBackground(LatLng... params) {
-            commonLocationApplication.settingLocation(params[0]);
-
-            return commonLocationApplication.getTempLocationName();
+            Call<GeocodingService> call=GeocodingService.Geolcation.getCall(params[0]);
+            return GeocodingService.Geolcation.getLocationName(call);
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            titleLocation.setText(s);
+        protected void onPostExecute(String locationName) {
+            super.onPostExecute(locationName);
+            titleLocation.setText(locationName);
         }
     }
+
+
 
 
 }

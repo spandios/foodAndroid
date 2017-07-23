@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.heojuyeong.foodandroid.fragment.MapFragment">
+    tools:context="com.example.heojuyeong.foodandroid.fragment.CurLocationFragment">
     <!--top map banner-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,36 +39,38 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="70dp"
-            android:layout_toRightOf="@+id/currentLocationTextView" />
+            android:layout_toLeftOf="@+id/searchButton"
+             />
 
         <Button
             android:id="@+id/searchButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/viewMapButton" />
+            android:layout_toLeftOf="@+id/filterButton" />
 
         <Button
             android:id="@+id/filterButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/searchButton" />
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+             />
     </RelativeLayout>
 <!--카테고리 선택-->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.7"
         android:fillViewport="true"
         android:scrollbars="none">
 
         <LinearLayout
+
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-
             >
 
             <TextView
@@ -77,14 +79,14 @@
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:text="testCategory" />
+                android:text="일식" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:text="testCategory" />
+                android:text="치킨" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -113,11 +115,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8.7">
+        android:layout_weight="8.5">
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/currentLocationListView"
+            android:scrollbars="none"
+            >
 
         </ListView>
     </RelativeLayout>
