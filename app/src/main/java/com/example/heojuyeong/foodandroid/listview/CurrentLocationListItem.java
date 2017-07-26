@@ -2,21 +2,36 @@ package com.example.heojuyeong.foodandroid.listview;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by heojuyeong on 2017. 7. 18..
- */
 
-public class CurrentLocationListItem {
+public class CurrentLocationListItem  {
     @SerializedName("restaurants")
     private ArrayList<Restaurant> restaurants;
-
+    @SerializedName("status")
+    private int status;
+    @SerializedName("message")
+    private String errorMessage;
+    public int getStatus(){return status;}
+    public String getErrorMessage(){return errorMessage;}
     public ArrayList<Restaurant> getRestaurants() {
         return restaurants;
     }
+    public void setRestaurants(ArrayList<Restaurant> restaurants) {
+        this.restaurants = restaurants;
+    }
 
-    public class Restaurant {
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    public class Restaurant implements Serializable{
+
+
         @SerializedName("rest_id")
         int rest_id;
 
@@ -97,6 +112,56 @@ public class CurrentLocationListItem {
         public int getRest_admin_id() {
             return rest_admin_id;
         }
+
+
+        public void setRest_id(int rest_id) {
+            this.rest_id = rest_id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setTel(String tel) {
+            this.tel = tel;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public void setRest_picture(String rest_picture) {
+            this.rest_picture = rest_picture;
+        }
+
+        public void setOpenhour(String openhour) {
+            this.openhour = openhour;
+        }
+
+        public void setHoliday(String holiday) {
+            this.holiday = holiday;
+        }
+
+        public void setRating(int rating) {
+            this.rating = rating;
+        }
+
+        public void setLikes(int likes) {
+            this.likes = likes;
+        }
+
+        public void setReviewcount(int reviewcount) {
+            this.reviewcount = reviewcount;
+        }
+
+        public void setRest_admin_id(int rest_admin_id) {
+            this.rest_admin_id = rest_admin_id;
+        }
+
+        public void setDistance(double distance) {
+            this.distance = distance;
+        }
+
     }
 
 

@@ -68,7 +68,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
     public void onMapReady(final GoogleMap googleMap) {
         googleMap.setLatLngBoundsForCameraTarget(new LatLngBounds(new LatLng(35, 126), new LatLng(38, 128)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(getLatlng()));
-        googleMap.setMinZoomPreference(15.0f);
+        googleMap.setMinZoomPreference(12.0f);
         googleMap.setMaxZoomPreference(21.0f);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {

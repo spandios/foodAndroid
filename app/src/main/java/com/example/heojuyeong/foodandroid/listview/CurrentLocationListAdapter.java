@@ -26,7 +26,12 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationList
     private Context context;
     private int resource;
     private ArrayList<CurrentLocationListItem.Restaurant> items;
+    View.OnClickListener onClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
+        }
+    };
 
     public CurrentLocationListAdapter(Context context, int resource, ArrayList<CurrentLocationListItem.Restaurant> items){
         super(context,resource,items);
@@ -63,12 +68,14 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationList
         }
         CurrentLocationListItem.Restaurant item=items.get(position);
 
+
         Picasso.with(context).load(item.rest_picture).resize(150,150).into(viewHolder.cur_location_item_image);
 
         viewHolder.cur_location_item_rest_name.setText(item.getName());
         viewHolder.cur_location_item_rating.setText(Integer.toString(item.rating));
         viewHolder.cur_location_item_distance.setText(Double.toString(item.distance));
         viewHolder.cur_location_item_reviewcount.setText(Integer.toString(item.reviewcount));
+
         return row;
     }
 

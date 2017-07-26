@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.heojuyeong.foodandroid.DetailRestaurantActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.63"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/detailBackButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/backbutton"
+            android:layout_alignBottom="@+id/detailMapButton" />
+
+        <TextView
+            android:id="@+id/rest_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/detailBackButton"
+            android:layout_toRightOf="@id/detailBackButton"
+            android:layout_marginLeft="8dp"
+            android:text="TESTTESTTESTTEST"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/detailMapButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_explore_black_24dp"
+            android:layout_toLeftOf="@+id/detailCartButton" />
+
+        <Button
+            android:id="@+id/detailCartButton"
+            android:background="@drawable/cart"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/detailRestImage"
+            />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6">
+       <ListView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:scrollbars="none">
+       </ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </LinearLayout>
+
+</LinearLayout>
