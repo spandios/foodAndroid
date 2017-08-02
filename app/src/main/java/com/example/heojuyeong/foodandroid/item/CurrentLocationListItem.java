@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid.listview;
+package com.example.heojuyeong.foodandroid.item;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CurrentLocationListItem  {
     @SerializedName("restaurants")
-    private ArrayList<Restaurant> restaurants;
+    ArrayList<Restaurant> restaurants;
     @SerializedName("status")
     private int status;
     @SerializedName("message")
@@ -54,23 +54,33 @@ public class CurrentLocationListItem  {
         String holiday;
 
         @SerializedName("rating")
-        int rating;
+        double rating;
 
         @SerializedName("likes")
         int likes;
+
         @SerializedName("reviewcount")
         int reviewcount;
+
+        @SerializedName("avg_cooking_time")
+        String avg_cooking_time;
+
+        @SerializedName("discount")
+        String discount;
 
         @SerializedName("rest_admin_id")
         int rest_admin_id;
 
+
         @SerializedName("distance")
-        double distance;
+        String distance;
+
+
 
         public int getReviewcount(){
             return reviewcount;
         }
-        public double getDistance(){
+        public String getDistance(){
             return distance;
         }
         public int getRest_id() {
@@ -101,7 +111,7 @@ public class CurrentLocationListItem  {
             return holiday;
         }
 
-        public int getRating() {
+        public double getRating() {
             return rating;
         }
 
@@ -113,6 +123,14 @@ public class CurrentLocationListItem  {
             return rest_admin_id;
         }
 
+        public String getAvg_cooking_time() {
+            return avg_cooking_time;
+        }
+
+        public String getDiscount(){return discount;}
+        public void setAvg_cooking_time(String avg_cooking_time) {
+            this.avg_cooking_time = avg_cooking_time;
+        }
 
         public void setRest_id(int rest_id) {
             this.rest_id = rest_id;
@@ -158,7 +176,7 @@ public class CurrentLocationListItem  {
             this.rest_admin_id = rest_admin_id;
         }
 
-        public void setDistance(double distance) {
+        public void setDistance(String distance) {
             this.distance = distance;
         }
 

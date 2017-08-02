@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 
 import com.example.heojuyeong.foodandroid.R;
+import com.example.heojuyeong.foodandroid.item.CurrentLocationListItem;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -26,12 +26,6 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationList
     private Context context;
     private int resource;
     private ArrayList<CurrentLocationListItem.Restaurant> items;
-    View.OnClickListener onClickListener=new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
 
     public CurrentLocationListAdapter(Context context, int resource, ArrayList<CurrentLocationListItem.Restaurant> items){
         super(context,resource,items);
@@ -69,18 +63,19 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationList
         CurrentLocationListItem.Restaurant item=items.get(position);
 
 
-        Picasso.with(context).load(item.rest_picture).resize(150,150).into(viewHolder.cur_location_item_image);
+        Picasso.with(context).load(item.getRest_picture()).resize(150,150).into(viewHolder.cur_location_item_image);
 
         viewHolder.cur_location_item_rest_name.setText(item.getName());
-        viewHolder.cur_location_item_rating.setText(Integer.toString(item.rating));
-        viewHolder.cur_location_item_distance.setText(Double.toString(item.distance));
-        viewHolder.cur_location_item_reviewcount.setText(Integer.toString(item.reviewcount));
+        viewHolder.cur_location_item_rating.setText(Double.toString(item.getRating()));
+        viewHolder.cur_location_item_distance.setText(item.getDistance());
+        viewHolder.cur_location_item_reviewcount.setText(Integer.toString(item.getReviewcount()));
 
         return row;
     }
 
 
     static class CurrentListViewHolder{
+
         public ImageView cur_location_item_image;
         public TextView cur_location_item_rest_name;
         public TextView cur_location_item_rating;

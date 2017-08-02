@@ -1,6 +1,6 @@
 package com.example.heojuyeong.foodandroid.http;
 
-import com.example.heojuyeong.foodandroid.listview.CurrentLocationListItem;
+import com.example.heojuyeong.foodandroid.item.CurrentLocationListItem;
 
 import java.util.ArrayList;
 
@@ -15,19 +15,19 @@ import retrofit2.http.Query;
  */
 
 public class CurrentLocationListSerivce {
-
-        public interface CurrentLocationListInterface{
+    //                .baseUrl("http://13.124.115.29")
+        private interface CurrentLocationListInterface{
         @GET("api/restaurant/readCurrentLocation")
         Call<CurrentLocationListItem> getCurrentLocationListItem(@Query("curLat") double curLat, @Query("curLng") double curLng, @Query("maxDistance") int maxDistance, @Query("foodtype") String foodtype);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://13.124.115.29")
+                .baseUrl("http://10.0.2.2:3000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         }
 
 
     public Call<CurrentLocationListItem> getCall(double curLat, double curLng, int maxDistance, String foodtype){
-        CurrentLocationListSerivce.CurrentLocationListInterface currentLocationListInterface=CurrentLocationListSerivce.CurrentLocationListInterface.retrofit.create(CurrentLocationListSerivce.CurrentLocationListInterface.class);
+        CurrentLocationListInterface currentLocationListInterface= CurrentLocationListInterface.retrofit.create(CurrentLocationListInterface.class);
         Call<CurrentLocationListItem> call=currentLocationListInterface.getCurrentLocationListItem(curLat,curLng,maxDistance,foodtype);
         return call;
 

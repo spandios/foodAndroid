@@ -11,32 +11,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.63"
+        android:layout_weight="0.8"
+        android:padding="10dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/detailBackButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:background="@drawable/backbutton"
             android:layout_alignBottom="@+id/detailMapButton" />
 
-        <TextView
-            android:id="@+id/rest_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/detailBackButton"
-            android:layout_toRightOf="@id/detailBackButton"
-            android:layout_marginLeft="8dp"
-            android:text="TESTTESTTESTTEST"
-            android:textSize="20dp"/>
+
 
         <Button
             android:id="@+id/detailMapButton"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:background="@drawable/ic_explore_black_24dp"
-            android:layout_toLeftOf="@+id/detailCartButton" />
+            android:layout_toLeftOf="@+id/detailCartButton"
+            android:layout_marginRight="20dp"/>
 
         <Button
             android:id="@+id/detailCartButton"
@@ -52,34 +46,89 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
             android:id="@+id/detailRestImage"
-            />
+            android:layout_width="120dp"
+            android:layout_height="match_parent" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rest_name"
+                android:textSize="20dp"
+                android:text="가게명"
+                />
+            <TextView
+                android:id="@+id/detailRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rest_name"
+                android:text="평점 "
+                android:textSize="20dp"
+                />
 
+            <TextView
+                android:id="@+id/detailDiscountString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detailRating"
+                android:layout_marginTop="5dp"
+                android:text="포장 혜택 : " />
 
+            <TextView
+                android:id="@+id/detailDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/detailDiscountString"
+                android:layout_toRightOf="@id/detailDiscountString"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/detailCommentList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="허주영 : 넘나 맛있어요!"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/detailDiscountString" />
+        </RelativeLayout>
     </LinearLayout>
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:scrollbars="none"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/detailMenuCategoryParent"
+            >
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6">
-       <ListView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:scrollbars="none">
-       </ListView>
+        android:layout_weight="6.5">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detailMenuListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </LinearLayout>
 
 </LinearLayout>
