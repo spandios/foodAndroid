@@ -39,16 +39,17 @@ public class CurLocationFragment extends Fragment {
     private MaterialDialog materialDialog;
     private Activity mContext;
     CommonLocationApplication commonLocationApplication;
+    final CurrentLocationListSerivce curlocationService = new CurrentLocationListSerivce();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_cur_location, container, false);
+        commonLocationApplication = (CommonLocationApplication) getActivity().getApplication();
         gps_util = new GPS_Util(getActivity().getBaseContext());
         currentLocationTextview = (TextView) view.findViewById(R.id.currentLocationTextView);
         currentLocationListView = (ListView) view.findViewById(R.id.currentLocationListView);
-
-        commonLocationApplication = (CommonLocationApplication) getActivity().getApplication();
+        currentLocationTextview.setText(commonLocationApplication.getLocationName());
         //MaterialDialog  and button setting
         materialDialog = new MaterialDialog.Builder(getActivity()).customView(R.layout.dialog_current_location, true).build();
         View dialogView = materialDialog.getView();
@@ -66,13 +67,17 @@ public class CurLocationFragment extends Fragment {
                         break;
                     case R.id.dialog_current_location_reload_button:
                         gps_util = new GPS_Util(getActivity().getBaseContext());
-                        commonLocationApplication.setLatLng(gps_util.getLatitude(), gps_util.getLongitude());
 
+                        Logger.d(gps_util.getLatitude());
+                        Logger.d(gps_util.getLongitude());
+                        commonLocationApplication.setLatLng(gps_util.getLatitude(), gps_util.getLongitude());
                         LocationReloadAsyncTask locationReloadAsyncTask = new LocationReloadAsyncTask();
                         locationReloadAsyncTask.execute(gps_util.getLatLng());
+                        getCurLocationRestaurant();
                         materialDialog.dismiss();
                         break;
                     case R.id.dialog_current_location_map_button:
+                        materialDialog.dismiss();
                         Intent intent = new Intent(getActivity(), settingLocationMapActivity.class);
                         startActivity(intent);
                     case R.id.dialog_current_location_cancle_textview:
@@ -81,14 +86,23 @@ public class CurLocationFragment extends Fragment {
                 }
             }
         };
+
+
         currentLocationTextview.setOnClickListener(onClickListener);
         dialog_current_location_reload_button.setOnClickListener(onClickListener);
         dialog_current_location_map_button.setOnClickListener(onClickListener);
         dialog_current_location_cancle_textview.setOnClickListener(onClickListener);
 
+        getCurLocationRestaurant();
+        return view;
 
+    }
+
+    @Override
+    public void onResume() {
+        currentLocationTextview.setText(commonLocationApplication.getLocationName());
         final CurrentLocationListSerivce curlocationService = new CurrentLocationListSerivce();
-        Call<CurrentLocationListItem> call = curlocationService.getCall(commonLocationApplication.getLat(), commonLocationApplication.getLng(), 3000, "일식");
+        Call<CurrentLocationListItem> call = curlocationService.getCall(commonLocationApplication.getLat(), commonLocationApplication.getLng(), 10000000, "일식");
 
 
         call.enqueue(new Callback<CurrentLocationListItem>() {
@@ -127,13 +141,7 @@ public class CurLocationFragment extends Fragment {
                 Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
             }
         });
-        return view;
 
-    }
-
-    @Override
-    public void onResume() {
-        currentLocationTextview.setText(commonLocationApplication.getLocationName());
         super.onResume();
     }
 
@@ -153,7 +161,50 @@ public class CurLocationFragment extends Fragment {
         @Override
         protected void onPostExecute(String locationName) {
             currentLocationTextview.setText(locationName);
+            commonLocationApplication.setLocationName(locationName);
             super.onPostExecute(locationName);
         }
+    }
+
+
+
+    void getCurLocationRestaurant(){
+        Call<CurrentLocationListItem> call = curlocationService.getCall(commonLocationApplication.getLat(), commonLocationApplication.getLng(), 10000000, "일식");
+        call.enqueue(new Callback<CurrentLocationListItem>() {
+            @Override
+            public void onResponse(Call<CurrentLocationListItem> call, final Response<CurrentLocationListItem> response) {
+                if (response.isSuccessful()) {
+                    //주변에 데이터 없는경우 에러메세지 TOAST
+                    if (response.body().getStatus() == 0) {
+                        Toast.makeText(mContext, response.body().getErrorMessage(), Toast.LENGTH_LONG);
+                    }
+                    CurrentLocationListAdapter adapter = new CurrentLocationListAdapter(mContext, R.layout.fragment_cur_location_listview_item, response.body().getRestaurants());
+                    currentLocationListView.setAdapter(adapter);
+
+                    //클릭했을 경우 상세보기 activity 실행
+                    currentLocationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            CurrentLocationListItem.Restaurant restaurant = (CurrentLocationListItem.Restaurant) parent.getAdapter().getItem(position);
+                            Intent detailIntent = new Intent(getActivity().getApplicationContext(), DetailRestaurantActivity.class);
+                            Bundle extra = new Bundle();
+                            extra.putSerializable("serialData", restaurant);
+                            detailIntent.putExtras(extra);
+                            startActivity(detailIntent);
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CurrentLocationListItem> call, Throwable t) {
+                Logger.d(t);
+                Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
+            }
+        });
     }
 }
