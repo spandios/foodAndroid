@@ -47,7 +47,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
     }
 
     public interface OnSizeClickListener{
-        void onSizeClick(View view, int position);
+        void onSizeClick(View view,int position);
     }
 
 
@@ -90,18 +90,11 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             }
         });
         if (menuItem.getSize().size() == 0) {
-            holder.detailHotMenuSizeLayOut.setVisibility(View.GONE);
+            holder.detailHotMenuSizeArrow.setVisibility(View.INVISIBLE);
+            holder.detailHotMenuSizeText.setText("기본사이즈");
+
         } else {
             holder.detailHotMenuSizeText.setText(menuItem.getSize().get(0).getSize_name());
-
-
-
-//            for (MenuItem.Size menuSize : menuItem.getSize()) {
-//                Button button = new Button(context);
-//                button.setText(menuSize.getSize_name());
-//                dialog_menu_list_size_layout.addView(button);
-//            }
-
         }
 
         holder.detailHotMenuName.setText(menuItem.getName());
@@ -142,10 +135,9 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         TextView detailHotMenuSizeText;
         TextView detailHotMenuDesrciption;
         TextView detailHotMenuRating;
+        ImageView detailHotMenuSizeArrow;
 
         RelativeLayout detailHotMenuSizeLayOut;
-
-//        private TextView hotMenuAvgTime;
 
 
         public ViewHolder(View itemView) {
@@ -161,7 +153,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             detailHotMenuSizeText = (TextView) itemView.findViewById(R.id.detailHotMenuSizeText);
             detailHotMenuDesrciption = (TextView) itemView.findViewById(R.id.detailHotMenuDescritption);
             detailHotMenuRating = (TextView) itemView.findViewById(R.id.detailHotMenuRating);
-
+            detailHotMenuSizeArrow=(ImageView)itemView.findViewById(R.id.detailHotMenuSizeArrow);
             detailHotMenuSizeLayOut = (RelativeLayout) itemView.findViewById(R.id.detailHotMenuSizeLayOut);
 
         }

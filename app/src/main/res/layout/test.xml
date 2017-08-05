@@ -50,6 +50,14 @@
                 android:textSize="20dp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/detailHotMenuPrice"
+                android:layout_alignBaseline="@+id/detailHotMenuPrice"
+                android:text="원"
+                android:textSize="20dp"/>
+
+            <TextView
                 android:id="@+id/detailHotMenuDescritption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,7 +110,8 @@
                 android:layout_marginEnd="5dp"
                 android:layout_below="@id/detailHotMenuDivider"
                 android:text="사이즈"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:id="@+id/SizeTextview" />
 
             <ImageView
                 android:layout_width="25dp"
@@ -120,17 +129,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SMALL"
+                android:text="기본사이즈 "
                 android:layout_marginTop="10dp"
-                android:layout_centerVertical="true"
                 android:textSize="15sp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:id="@+id/detailHotMenuSizeText"
-                android:layout_toLeftOf="@id/detailHotMenuSizeArrow"
-                android:layout_below="@id/detailHotMenuDivider"
 
-                />
+                android:layout_toRightOf="@+id/SizeTextview"
+                android:layout_alignBaseline="@+id/SizeTextview"
+                android:layout_marginLeft="190dp"
+                android:id="@+id/detailHotMenuSizeText"
+              />
 
             <View
                 android:layout_width="match_parent"

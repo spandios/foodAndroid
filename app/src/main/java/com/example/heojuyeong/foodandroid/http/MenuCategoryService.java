@@ -22,7 +22,7 @@ public class MenuCategoryService {
         Call<MenuCategoryItem> getMenuCategory(@Query("rest_id") int rest_id);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000")
+                .baseUrl("http://13.124.97.184")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
