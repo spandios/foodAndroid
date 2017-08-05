@@ -54,7 +54,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_restaurant);
 
-
         CurrentLocationListItem.Restaurant restaurant = (CurrentLocationListItem.Restaurant) getIntent().getExtras().get("serialData");
         rest_name = (TextView) findViewById(R.id.rest_name);
         backButton = (Button) findViewById(R.id.detailBackButton);
@@ -92,81 +91,21 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                 }
             }
         };
-        final MenuService menuService=new MenuService();
-
-        final View.OnClickListener categoryListener= new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Call<ArrayList<MenuItem>> call=menuService.getCall(v.getId());
-                call.enqueue(new Callback<ArrayList<MenuItem>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
-
-                        final MenuListHotAdapter adapter=new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(), new MenuListHotAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-
-                                for(int childCount=recyclerView.getChildCount(), i=0; i<childCount; i++){
-                                    RecyclerView.ViewHolder viewHolder=recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
-                                    viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.VISIBLE);
-                                    viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
-                                }
-
-                                ((LinearLayoutManager)recyclerView.getLayoutManager()).scrollToPositionWithOffset(position,10);
-//                                recyclerView.scrollTo(0,view.getHeight());
-                                RecyclerView.ViewHolder viewHolder= recyclerView.findViewHolderForAdapterPosition(position);
-                                viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.GONE);
-                                viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
-
-
-
-                            }
-                        },new MenuListHotAdapter.OnSizeClickListener(){
-                            @Override
-                            public void onSizeClick(final View view,final int position) {
-                                final MaterialDialog materialDialog=new MaterialDialog.Builder(DetailRestaurantActivity.this).customView(R.layout.dialog_menu_list_size, true).build();
-                                View dialogView=materialDialog.getView();
-
-                                final LinearLayout dialog_menu_list_size_layout=(LinearLayout)dialogView.findViewById(R.id.dialog_menu_size_layout);
-
-                                if(response.body().get(position).getSize().size()>0){
-                                    for(final MenuItem.Size size:response.body().get(position).getSize()){
-                                        Button button=new Button(getApplicationContext());
-                                        button.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                RecyclerView.ViewHolder viewHolder= recyclerView.findViewHolderForAdapterPosition(position);
-                                                TextView textView=(TextView)viewHolder.itemView.findViewById(R.id.detailHotMenuSizeText);
-                                                TextView textView1=(TextView)viewHolder.itemView.findViewById(R.id.detailHotMenuPrice);
-                                                textView.setText(size.getSize_name());
-                                                textView1.setText(size.getSize_price());
-                                                materialDialog.dismiss();
-                                            }
-                                        });
-                                        button.setText(size.getSize_name()+"                   "+size.getSize_price()+"원");
-                                        dialog_menu_list_size_layout.addView(button);
-
-                                    }
-                                    materialDialog.show();
-                                }
-                            }
-                        });
-                        recyclerView.setAdapter(adapter);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<MenuItem>> call, Throwable t) {
-                        Logger.d(t);
-                    }
-                });
-            }
-        };
 
         backButton.setOnClickListener(onClickListener);
+        //menuCategory Function
+        menuCategoryShow(restaurant.getRest_id());
+
+
+    }
+
+
+
+
+    void menuCategoryShow(int rest_id){
         final LinearLayout layout=(LinearLayout)findViewById(R.id.detailMenuCategoryParent);
-        //CATEGORY HTTP
         MenuCategoryService menuCategoryService=new MenuCategoryService();
-        Call<MenuCategoryItem> call=menuCategoryService.getCall(restaurant.getRest_id());
+        Call<MenuCategoryItem> call=menuCategoryService.getCall(rest_id);
         call.enqueue(new Callback<MenuCategoryItem>() {
             @Override
             public void onResponse(Call<MenuCategoryItem> call, Response<MenuCategoryItem> response) {
@@ -178,13 +117,22 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                         textView.setText(items.get(i).getCateNAme());
                         textView.setTextSize(20);
                         textView.setId(items.get(i).getMenu_cate_gory_id());
-                        textView.setOnClickListener(categoryListener);
+                        textView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                menuShow(view.getId());
+                            }
+                        });
                         textView.setTextColor(Color.WHITE);
                         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                         params.setMargins(60,0,0,0);
                         textView.setLayoutParams(params);
                         layout.addView(textView);
                     }
+
+                    //default popular menu show
+                    menuShow(items.get(0).getMenu_cate_gory_id());
+
 
                 }else{
                     TextView textView=new TextView(getApplicationContext());
@@ -203,13 +151,72 @@ public class DetailRestaurantActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
 
 
 
+    void menuShow(int menu_category_id){
+
+        final MenuService menuService=new MenuService();
+        Call<ArrayList<MenuItem>> call=menuService.getCall(menu_category_id);
+        call.enqueue(new Callback<ArrayList<MenuItem>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
+
+                final MenuListHotAdapter adapter=new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(), new MenuListHotAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                        for(int childCount=recyclerView.getChildCount(), i=0; i<childCount; i++){
+                            RecyclerView.ViewHolder viewHolder=recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
+                            viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.VISIBLE);
+                            viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
+                        }
+
+                        ((LinearLayoutManager)recyclerView.getLayoutManager()).scrollToPositionWithOffset(position,10);
+//                                recyclerView.scrollTo(0,view.getHeight());
+                        RecyclerView.ViewHolder viewHolder= recyclerView.findViewHolderForAdapterPosition(position);
+                        viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.GONE);
+                        viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
+
+                    }
+                },new MenuListHotAdapter.OnSizeClickListener(){
+                    @Override
+                    public void onSizeClick(final View view,final int position) {
+                        final MaterialDialog materialDialog=new MaterialDialog.Builder(DetailRestaurantActivity.this).customView(R.layout.dialog_menu_list_size, true).build();
+                        View dialogView=materialDialog.getView();
+
+                        final LinearLayout dialog_menu_list_size_layout=(LinearLayout)dialogView.findViewById(R.id.dialog_menu_size_layout);
+
+                        if(response.body().get(position).getSize().size()>0){
+                            for(final MenuItem.Size size:response.body().get(position).getSize()){
+                                Button button=new Button(getApplicationContext());
+                                button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        RecyclerView.ViewHolder viewHolder= recyclerView.findViewHolderForAdapterPosition(position);
+                                        TextView textView=(TextView)viewHolder.itemView.findViewById(R.id.detailHotMenuSizeText);
+                                        TextView textView1=(TextView)viewHolder.itemView.findViewById(R.id.detailHotMenuPrice);
+                                        textView.setText(size.getSize_name());
+                                        textView1.setText(size.getSize_price());
+                                        materialDialog.dismiss();
+                                    }
+                                });
+                                button.setText(size.getSize_name()+"                   "+size.getSize_price()+"원");
+                                dialog_menu_list_size_layout.addView(button);
+
+                            }
+                            materialDialog.show();
+                        }
+                    }
+                });
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MenuItem>> call, Throwable t) {
+                Logger.d(t);
+            }
+        });
+    }
 }

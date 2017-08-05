@@ -39,9 +39,6 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
     private OnItemClickListener mOnItemClickListener;
     private OnSizeClickListener mOnSizeClickListener;
 
-
-
-
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
@@ -63,7 +60,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.menu_listview_hot_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        final ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v);
 
         return vh;
     }
@@ -136,13 +133,11 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         TextView detailHotMenuDesrciption;
         TextView detailHotMenuRating;
         ImageView detailHotMenuSizeArrow;
-
         RelativeLayout detailHotMenuSizeLayOut;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             hotMenuPicture = (ImageView) itemView.findViewById(R.id.hotMenuPicture);
             hotMenuName = (TextView) itemView.findViewById(R.id.hotMenuName);
             hotMenuRating = (TextView) itemView.findViewById(R.id.hotMenuRating);
@@ -155,7 +150,6 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             detailHotMenuRating = (TextView) itemView.findViewById(R.id.detailHotMenuRating);
             detailHotMenuSizeArrow=(ImageView)itemView.findViewById(R.id.detailHotMenuSizeArrow);
             detailHotMenuSizeLayOut = (RelativeLayout) itemView.findViewById(R.id.detailHotMenuSizeLayOut);
-
         }
 
 

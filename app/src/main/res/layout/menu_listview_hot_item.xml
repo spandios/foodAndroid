@@ -159,7 +159,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_below="@id/detailHotMenuDivider"
                     android:id="@+id/SizeTextview"
-                    android:text="사이즈"
+                    android:text="1. 사이즈"
                     android:textSize="20sp" />
 
                 <ImageView
@@ -218,7 +218,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_below="@id/detailHotMenuDivider3"
-                    android:text="옵션"
+                    android:text="2. 옵션"
                     android:layout_marginTop="10dp"
                     android:textSize="20sp"
                     />
