@@ -2,6 +2,8 @@ package com.example.heojuyeong.foodandroid.item;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by heojuyeong on 2017. 7. 31..
  */
@@ -28,6 +30,37 @@ public class MenuItem {
 
     @SerializedName("rating")
     String rating;
+
+    @SerializedName("size")
+    ArrayList<Size> size=new ArrayList<>();
+
+    public ArrayList<Size> getSize() {
+        return size;
+    }
+
+    public class Size{
+        @SerializedName("size_name")
+        String size_name;
+        @SerializedName("size_price")
+        String size_price;
+
+        public String getSize_name() {
+            return size_name;
+        }
+
+        public void setSize_name(String size_name) {
+            this.size_name = size_name;
+        }
+
+        public String getSize_price() {
+            return size_price;
+        }
+
+        public void setSize_price(String size_price) {
+            this.size_price = size_price;
+        }
+    }
+
 
     @SerializedName("viewcount")
     int viewcount;
@@ -70,4 +103,9 @@ public class MenuItem {
     public int getLikecount() {
         return likecount;
     }
+
+
+
+
+
 }

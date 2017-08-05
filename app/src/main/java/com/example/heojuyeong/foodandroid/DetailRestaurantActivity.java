@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.http.MenuCategoryService;
 import com.example.heojuyeong.foodandroid.http.MenuService;
 import com.example.heojuyeong.foodandroid.item.CurrentLocationListItem;
@@ -42,6 +43,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     private TextView detailRating;
     private TextView discount;
     private RecyclerView recyclerView;
+
 
 
     @Override
@@ -94,12 +96,14 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ArrayList<MenuItem>>() {
                     @Override
                     public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
-                        final MenuListHotAdapter adapter=new MenuListHotAdapter(getApplicationContext(), response.body(), new MenuListHotAdapter.OnItemClickListener() {
+
+                        final MenuListHotAdapter adapter=new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(), new MenuListHotAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
 
                                 for(int childCount=recyclerView.getChildCount(), i=0; i<childCount; i++){
                                     RecyclerView.ViewHolder viewHolder=recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
+
                                     viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.VISIBLE);
                                     viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
                                 }
@@ -110,6 +114,21 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                                 viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
 
 
+                            }
+                        },new MenuListHotAdapter.OnSizeClickListener(){
+                            @Override
+                            public void onSizeClick(View view, final int position) {
+                                final MaterialDialog materialDialog=new MaterialDialog.Builder(DetailRestaurantActivity.this).customView(R.layout.dialog_menu_list_size, true).build();
+                                View dialogView=materialDialog.getView();
+                                final LinearLayout dialog_menu_list_size_layout=(LinearLayout)dialogView.findViewById(R.id.dialog_menu_size_layout);
+                                if(response.body().get(position).getSize().size()>0){
+                                    for(MenuItem.Size size:response.body().get(position).getSize()){
+                                        Button button=new Button(getApplicationContext());
+                                        button.setText(size.getSize_name());
+                                        dialog_menu_list_size_layout.addView(button);
+                                    }
+                                    materialDialog.show();
+                                }
                             }
                         });
                         recyclerView.setAdapter(adapter);

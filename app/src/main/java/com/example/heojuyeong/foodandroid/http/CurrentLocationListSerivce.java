@@ -15,7 +15,7 @@ import retrofit2.http.Query;
  */
 
 public class CurrentLocationListSerivce {
-    //                .baseUrl("http://13.124.115.29")
+    //                .baseUrl("http://13.124.188.111")
         private interface CurrentLocationListInterface{
         @GET("api/restaurant/readCurrentLocation")
         Call<CurrentLocationListItem> getCurrentLocationListItem(@Query("curLat") double curLat, @Query("curLng") double curLng, @Query("maxDistance") int maxDistance, @Query("foodtype") String foodtype);
