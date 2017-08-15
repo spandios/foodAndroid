@@ -93,7 +93,7 @@ public class CurLocationFragment extends Fragment {
         dialog_current_location_map_button.setOnClickListener(onClickListener);
         dialog_current_location_cancle_textview.setOnClickListener(onClickListener);
 
-        getCurLocationRestaurant();
+
         return view;
 
     }
@@ -101,47 +101,7 @@ public class CurLocationFragment extends Fragment {
     @Override
     public void onResume() {
         currentLocationTextview.setText(commonLocationApplication.getLocationName());
-        final CurrentLocationListSerivce curlocationService = new CurrentLocationListSerivce();
-        Call<CurrentLocationListItem> call = curlocationService.getCall(commonLocationApplication.getLat(), commonLocationApplication.getLng(), 10000000, "일식");
-
-
-        call.enqueue(new Callback<CurrentLocationListItem>() {
-            @Override
-            public void onResponse(Call<CurrentLocationListItem> call, final Response<CurrentLocationListItem> response) {
-                if (response.isSuccessful()) {
-                    //주변에 데이터 없는경우 에러메세지 TOAST
-                    if (response.body().getStatus() == 0) {
-                        Toast.makeText(mContext, response.body().getErrorMessage(), Toast.LENGTH_LONG);
-                    }
-                    CurrentLocationListAdapter adapter = new CurrentLocationListAdapter(mContext, R.layout.fragment_cur_location_listview_item, response.body().getRestaurants());
-                    currentLocationListView.setAdapter(adapter);
-
-                    //클릭했을 경우 상세보기 activity 실행
-                    currentLocationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            CurrentLocationListItem.Restaurant restaurant = (CurrentLocationListItem.Restaurant) parent.getAdapter().getItem(position);
-                            Intent detailIntent = new Intent(getActivity().getApplicationContext(), DetailRestaurantActivity.class);
-                            Bundle extra = new Bundle();
-                            extra.putSerializable("serialData", restaurant);
-                            detailIntent.putExtras(extra);
-                            startActivity(detailIntent);
-                        }
-                    });
-
-                } else {
-                    Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CurrentLocationListItem> call, Throwable t) {
-                Logger.d(t);
-                Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
-            }
-        });
-
+        getCurLocationRestaurant();
         super.onResume();
     }
 

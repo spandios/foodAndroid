@@ -178,36 +178,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                         RecyclerView.ViewHolder viewHolder= recyclerView.findViewHolderForAdapterPosition(position);
                         viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.GONE);
                         viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
-
-                    }
-                },new MenuListHotAdapter.OnSizeClickListener(){
-                    @Override
-                    public void onSizeClick(final View view,final int position) {
-                        final MaterialDialog materialDialog=new MaterialDialog.Builder(DetailRestaurantActivity.this).customView(R.layout.dialog_menu_list_size, true).build();
-                        View dialogView=materialDialog.getView();
-
-                        final LinearLayout dialog_menu_list_size_layout=(LinearLayout)dialogView.findViewById(R.id.dialog_menu_size_layout);
-
-                        if(response.body().get(position).getSize().size()>0){
-                            for(final MenuItem.Size size:response.body().get(position).getSize()){
-                                Button button=new Button(getApplicationContext());
-                                button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        RecyclerView.ViewHolder viewHolder= recyclerView.findViewHolderForAdapterPosition(position);
-                                        TextView textView=(TextView)viewHolder.itemView.findViewById(R.id.detailHotMenuSizeText);
-                                        TextView textView1=(TextView)viewHolder.itemView.findViewById(R.id.detailHotMenuPrice);
-                                        textView.setText(size.getSize_name());
-                                        textView1.setText(size.getSize_price());
-                                        materialDialog.dismiss();
-                                    }
-                                });
-                                button.setText(size.getSize_name()+"                   "+size.getSize_price()+"원");
-                                dialog_menu_list_size_layout.addView(button);
-
-                            }
-                            materialDialog.show();
-                        }
                     }
                 });
                 recyclerView.setAdapter(adapter);

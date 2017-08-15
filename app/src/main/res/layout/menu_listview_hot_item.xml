@@ -60,14 +60,13 @@
     <LinearLayout
         android:id="@+id/detailHotMenu"
         android:layout_width="match_parent"
-        android:layout_height="385dp"
+        android:layout_height="350dp"
         android:orientation="vertical"
         android:visibility="gone">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_weight="7"
             android:orientation="horizontal">
 
             <ImageView
@@ -89,7 +88,7 @@
                     android:id="@+id/detailHotMenuName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
+
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:text="메뉴네임"
@@ -108,14 +107,23 @@
                     android:textSize="20dp" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/detailHotMenuPrice"
+                    android:layout_alignBaseline="@+id/detailHotMenuPrice"
+                    android:text="원"
+                    android:textSize="20dp"/>
+
+                <TextView
                     android:id="@+id/detailHotMenuDescritption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/detailHotMenuPrice"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
                     android:text="메뉴 설명"
-                    android:textSize="15dp" />
+                    android:textSize="20dp" />
 
                 <TextView
                     android:id="@+id/detailHotMenuRating"
@@ -125,160 +133,142 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="평점"/>
+                    android:text="efawefw"/>
             </RelativeLayout>
 
-
         </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffffff" />
+
+        <RelativeLayout
+            android:id="@+id/detailHotMenuOptionLayOut1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/detailHotMenuOptionCateName1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="사이즈"
+
+                android:textSize="20sp" />
+
+
+            <TextView
+                android:id="@+id/detailHotMenuOptionName1"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/detailHotMenuOption1Button"
+                android:layout_toStartOf="@+id/detailHotMenuOption1Button"
+                android:text="R"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/detailHotMenuOption1Button"
+
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/arrow_down_float"
+                android:text="클릭" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffffff" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:id="@+id/detailHotMenuOptionLayOut2"
+            android:layout_marginTop="5dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:text="옵션"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/detailHotMenuOptionName2"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/detailHotMenuOption2Button"
+                android:layout_toStartOf="@+id/detailHotMenuOption2Button"
+                android:text="R"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/detailHotMenuOption2Button"
+
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/arrow_down_float"
+                android:text="클릭" />
+
+
+
+        </RelativeLayout>
+        <View
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffffff" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:id="@+id/detailHotMenuSizeLayOut"
-                >
+                android:text="장바구니 담기"
+                />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/detailHotMenuDivider"
-                    android:background="#ffffff" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_below="@id/detailHotMenuDivider"
-                    android:id="@+id/SizeTextview"
-                    android:text="1. 사이즈"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:src="@android:drawable/arrow_down_float"
-                    android:layout_below="@id/detailHotMenuDivider"
-                    android:id="@+id/detailHotMenuSizeArrow"
-                    android:layout_alignParentRight="true"
-
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SMALL"
-                    android:layout_marginTop="10dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="15sp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:id="@+id/detailHotMenuSizeText"
-                    android:layout_toLeftOf="@id/detailHotMenuSizeArrow"
-                    android:layout_below="@id/detailHotMenuDivider"
-
-                    />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/detailHotMenuSizeText"
-                    android:id="@+id/detailHotMenuDivider2"
-                    android:background="#ffffff" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:id="@+id/detailHotMenuOptionLayOut"
-                android:layout_marginTop="10dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-
-                    android:id="@+id/detailHotMenuDivider3"
-                    android:background="#ffffff" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_below="@id/detailHotMenuDivider3"
-                    android:text="2. 옵션"
-                    android:layout_marginTop="10dp"
-                    android:textSize="20sp"
-                    />
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:src="@android:drawable/arrow_down_float"
-                    android:layout_below="@id/detailHotMenuDivider3"
-                    android:id="@+id/detailHotMenuOptionButton"
-                    android:layout_alignParentRight="true"
-                    android:text="클릭"
-
-                    />
-
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/detailHotMenuDivider4"
-                    android:layout_below="@+id/detailHotMenuOptionButton"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="#ffffff" />
-
-
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:orientation="horizontal"
-                >
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:text="장바구니 담기"
-                    />
-
-                <Button
-                    android:layout_weight="5"
-                    android:layout_width="0dp"
-                    android:text="주문하기"
-                    android:layout_height="match_parent"
-                    />
-
-            </LinearLayout>
-
-
-
+            <Button
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:text="주문하기"
+                android:layout_height="match_parent"
+                />
 
         </LinearLayout>
-
         <!--end-->
     </LinearLayout>
 </LinearLayout>

@@ -31,35 +31,9 @@ public class MenuItem {
     @SerializedName("rating")
     String rating;
 
-    @SerializedName("size")
-    ArrayList<Size> size=new ArrayList<>();
 
-    public ArrayList<Size> getSize() {
-        return size;
-    }
-
-    public class Size{
-        @SerializedName("size_name")
-        String size_name;
-        @SerializedName("size_price")
-        String size_price;
-
-        public String getSize_name() {
-            return size_name;
-        }
-
-        public void setSize_name(String size_name) {
-            this.size_name = size_name;
-        }
-
-        public String getSize_price() {
-            return size_price;
-        }
-
-        public void setSize_price(String size_price) {
-            this.size_price = size_price;
-        }
-    }
+    @SerializedName("options")
+    ArrayList<Options> options=new ArrayList<>();
 
 
     @SerializedName("viewcount")
@@ -67,6 +41,9 @@ public class MenuItem {
 
     @SerializedName("likecount")
     int likecount;
+
+
+
 
     public int getMenu_id() {
         return menu_id;
@@ -96,6 +73,14 @@ public class MenuItem {
         return rating;
     }
 
+
+
+    public ArrayList<Options> getOptions() {
+        return options;
+    }
+
+
+
     public int getViewcount() {
         return viewcount;
     }
@@ -105,6 +90,60 @@ public class MenuItem {
     }
 
 
+    public class Options{
+        @SerializedName("menu_option_category_id")
+        int menu_option_category_id;
+        @SerializedName("menu_category_name")
+        String menu_category_name;
+        @SerializedName("necessary")
+        int necessary;
+        @SerializedName("option")
+        ArrayList<Option> option;
+
+        public int getMenu_option_category_id() {
+            return menu_option_category_id;
+        }
+
+        public String getMenu_category_name() {
+            return menu_category_name;
+        }
+
+        public int getNecessary() {
+            return necessary;
+        }
+
+        public ArrayList<Option> getOption() {
+            return option;
+        }
+
+        public class Option{
+            @SerializedName("menu_option_id")
+            int menu_option_id;
+            @SerializedName("menu_name")
+            String menu_name;
+            @SerializedName("menu_price")
+            int menu_price;
+            @SerializedName("menu_description")
+            String menu_description;
+
+            public int getMenu_option_id() {
+                return menu_option_id;
+            }
+
+            public String getMenu_name() {
+                return menu_name;
+            }
+
+            public int getMenu_price() {
+                return menu_price;
+            }
+
+            public String getMenu_description() {
+                return menu_description;
+            }
+        }
+
+    }
 
 
 

@@ -6,27 +6,35 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.R;
+import com.example.heojuyeong.foodandroid.http.MenuService;
 import com.example.heojuyeong.foodandroid.item.MenuItem;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -37,22 +45,21 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
     private ArrayList<MenuItem> items;
     private Context context;
     private OnItemClickListener mOnItemClickListener;
-    private OnSizeClickListener mOnSizeClickListener;
+
+
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    public interface OnSizeClickListener{
-        void onSizeClick(View view,int position);
-    }
 
 
-    public MenuListHotAdapter(Context context, ArrayList<MenuItem> items, OnItemClickListener onItemClickListener, OnSizeClickListener onSizeClickListener) {
+
+    public MenuListHotAdapter(Context context, ArrayList<MenuItem> items, OnItemClickListener onItemClickListener) {
         this.items = items;
         this.context = context;
         this.mOnItemClickListener = onItemClickListener;
-        this.mOnSizeClickListener=onSizeClickListener;
+
     }
 
     @Override
@@ -73,31 +80,39 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        MenuItem menuItem = items.get(position);
+        final MenuItem menuItem = items.get(position);
+
 
         Picasso.with(context).load(menuItem.getMenupicture()).fit().into(holder.hotMenuPicture);
         Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
         holder.hotMenuName.setText(menuItem.getName());
         holder.hotMenuRating.setText(menuItem.getRating());
         holder.hotMenuPrice.setText(menuItem.getPrice());
-        holder.detailHotMenuSizeLayOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnSizeClickListener.onSizeClick(v,holder.getAdapterPosition());
-            }
-        });
-        if (menuItem.getSize().size() == 0) {
-            holder.detailHotMenuSizeArrow.setVisibility(View.INVISIBLE);
-            holder.detailHotMenuSizeText.setText("기본사이즈");
-
-        } else {
-            holder.detailHotMenuSizeText.setText(menuItem.getSize().get(0).getSize_name());
-        }
 
         holder.detailHotMenuName.setText(menuItem.getName());
         holder.detailHotMenuPrice.setText(menuItem.getPrice());
         holder.detailHotMenuRating.setText(menuItem.getRating());
         holder.detailHotMenuDesrciption.setText(menuItem.getDescription());
+
+
+        holder.detailHotMenuOptionCateName1.setText(menuItem.getOptions().get(0).getMenu_category_name());
+        holder.detailHotMenuOptionName1.setText(menuItem.getOptions().get(0).getOption().get(0).getMenu_name());
+
+        holder.detailHotMenuOptionLayOut1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        holder.detailHotMenuOptionLayOut2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
 
 //            holder.itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -110,6 +125,9 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
 //                }
 //            });
 //
+
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,11 +147,13 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         ImageView detailHotMenuPicture;
         TextView detailHotMenuName;
         TextView detailHotMenuPrice;
-        TextView detailHotMenuSizeText;
         TextView detailHotMenuDesrciption;
         TextView detailHotMenuRating;
-        ImageView detailHotMenuSizeArrow;
-        RelativeLayout detailHotMenuSizeLayOut;
+        TextView detailHotMenuOptionCateName1;
+        TextView detailHotMenuOptionName1;
+        LinearLayout detailHotMenu;
+        RelativeLayout detailHotMenuOptionLayOut1;
+        RelativeLayout detailHotMenuOptionLayOut2;
 
 
         public ViewHolder(View itemView) {
@@ -145,11 +165,18 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             detailHotMenuPicture = (ImageView) itemView.findViewById(R.id.detailHotMenuPicture);
             detailHotMenuName = (TextView) itemView.findViewById(R.id.detailHotMenuName);
             detailHotMenuPrice = (TextView) itemView.findViewById(R.id.detailHotMenuPrice);
-            detailHotMenuSizeText = (TextView) itemView.findViewById(R.id.detailHotMenuSizeText);
             detailHotMenuDesrciption = (TextView) itemView.findViewById(R.id.detailHotMenuDescritption);
             detailHotMenuRating = (TextView) itemView.findViewById(R.id.detailHotMenuRating);
-            detailHotMenuSizeArrow=(ImageView)itemView.findViewById(R.id.detailHotMenuSizeArrow);
-            detailHotMenuSizeLayOut = (RelativeLayout) itemView.findViewById(R.id.detailHotMenuSizeLayOut);
+
+            detailHotMenuOptionCateName1=(TextView)itemView.findViewById(R.id.detailHotMenuOptionCateName1);
+            detailHotMenuOptionName1=(TextView)itemView.findViewById(R.id.detailHotMenuOptionName1);
+
+
+            detailHotMenu=(LinearLayout)itemView.findViewById(R.id.detailHotMenu);
+
+            detailHotMenuOptionLayOut1=(RelativeLayout)itemView.findViewById(R.id.detailHotMenuOptionLayOut1);
+            detailHotMenuOptionLayOut2=(RelativeLayout)itemView.findViewById(R.id.detailHotMenuOptionLayOut2);
+
         }
 
 
