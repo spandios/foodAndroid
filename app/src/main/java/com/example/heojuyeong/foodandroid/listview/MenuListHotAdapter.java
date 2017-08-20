@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.heojuyeong.foodandroid.DetailRestaurantActivity;
 import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.http.MenuService;
 import com.example.heojuyeong.foodandroid.item.MenuItem;
@@ -46,11 +48,14 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
     private Context context;
     private OnItemClickListener mOnItemClickListener;
 
+    private MaterialDialog materialDialog;
+
 
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
+
 
 
 
@@ -94,37 +99,133 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         holder.detailHotMenuRating.setText(menuItem.getRating());
         holder.detailHotMenuDesrciption.setText(menuItem.getDescription());
 
+        //옵션이 없을 때
+        if(menuItem.getOptions().size()==0){
+            holder.detailHotMenuOptionLayOut1.setVisibility(View.GONE);
+            holder.detailHotMenuOptionLayOut2.setVisibility(View.GONE);
 
-        holder.detailHotMenuOptionCateName1.setText(menuItem.getOptions().get(0).getMenu_category_name());
-        holder.detailHotMenuOptionName1.setText(menuItem.getOptions().get(0).getOption().get(0).getMenu_name());
+        //옵션 2개 다 있을 경우
+        }else if(menuItem.getOptions().size()==2) {
+
+            //필수사항인 경우
+            if(menuItem.getOptions().get(0).getNecessary()==1&&menuItem.getOptions().get(1).getNecessary()==1){
+                holder.detailHotMenuOptionCateName1.setText(context.getString(R.string.necessary, menuItem.getOptions().get(0).getMenu_category_name()));
+                holder.detailHotMenuOptionName1.setText(menuItem.getOptions().get(0).getOption().get(0).getMenu_option_name());
+
+
+                holder.detailHotMenuOptionCateName2.setText(context.getString(R.string.necessary, menuItem.getOptions().get(1).getMenu_category_name()));
+                holder.detailHotMenuOptionName2.setText(menuItem.getOptions().get(1).getOption().get(0).getMenu_option_name());
+
+            }
+
+            //선택사항인 경우
+            else if (menuItem.getOptions().get(0).getNecessary() == 0 && menuItem.getOptions().get(1).getNecessary() == 0) {
+                holder.detailHotMenuOptionCateName1.setText(context.getString(R.string.notnecessary, menuItem.getOptions().get(1).getMenu_category_name()));
+                holder.detailHotMenuOptionCateName2.setText(context.getString(R.string.notnecessary, menuItem.getOptions().get(1).getMenu_category_name()));
+
+            }
+            //1. 필수 2. 선택일경우
+            else if (menuItem.getOptions().get(0).getNecessary() == 1 && menuItem.getOptions().get(1).getNecessary() == 0) {
+                holder.detailHotMenuOptionCateName1.setText(context.getString(R.string.necessary, menuItem.getOptions().get(0).getMenu_category_name()));
+                holder.detailHotMenuOptionName1.setText(menuItem.getOptions().get(0).getOption().get(0).getMenu_option_name());
+
+
+                holder.detailHotMenuOptionCateName2.setText(context.getString(R.string.notnecessary, menuItem.getOptions().get(1).getMenu_category_name()));
+
+            }
+
+
+
+        }
+        //옵션 한개인경우
+        else if(menuItem.getOptions().size()==1){
+                holder.secondOptionLine.setVisibility(View.GONE);
+                holder.detailHotMenuOptionLayOut2.setVisibility(View.GONE);
+
+            //필수
+            if(menuItem.getOptions().get(0).getNecessary()==1){
+                holder.detailHotMenuOptionCateName1.setText(context.getString(R.string.necessary, menuItem.getOptions().get(0).getMenu_category_name()));
+                holder.detailHotMenuOptionName1.setText(menuItem.getOptions().get(0).getOption().get(0).getMenu_option_name());
+            }
+            //선택
+
+            else{
+                holder.detailHotMenuOptionCateName1.setText(context.getString(R.string.notnecessary, menuItem.getOptions().get(0).getMenu_category_name()));
+
+            }
+        }
+
+
+
 
         holder.detailHotMenuOptionLayOut1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                materialDialog= new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option, true).build();
+                View getView=materialDialog.getView();
+                final LinearLayout menu_option_dialog_layout=(LinearLayout)getView.findViewById(R.id.dialog_menu_option_layout);
+                TextView textView=(TextView)getView.findViewById(R.id.modal_title);
+                textView.setText(menuItem.getOptions().get(0).getMenu_category_name());
+                if(menuItem.getOptions().get(0).getNecessary()==0){
 
+
+                }else{
+
+                    for(int i=0; i<menuItem.getOptions().get(0).getOption().size(); i++){
+                        final String menu_option_name=menuItem.getOptions().get(0).getOption().get(i).getMenu_option_name();
+                        final int menu_option_price=menuItem.getOptions().get(0).getOption().get(i).getMenu_price();
+                        Button button=new Button(context);
+                        button.setText(menu_option_name);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                holder.detailHotMenuOptionName1.setText(menu_option_name);
+                                holder.detailHotMenuPrice.setText(String.valueOf(menu_option_price));
+                                materialDialog.dismiss();
+                            }
+                        });
+                        menu_option_dialog_layout.addView(button);
+                    }
+                }
+                materialDialog.show();
             }
         });
 
         holder.detailHotMenuOptionLayOut2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                materialDialog= new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option, true).build();
+                View getView=materialDialog.getView();
+                final LinearLayout menu_option_dialog_layout=(LinearLayout)getView.findViewById(R.id.dialog_menu_option_layout);
+                TextView title=(TextView)getView.findViewById(R.id.modal_title);
+                title.setText(menuItem.getOptions().get(1).getMenu_category_name());
 
+                if(menuItem.getOptions().get(1).getNecessary()==0) {
+                    for(int i=0; i<menuItem.getOptions().get(1).getOption().size(); i++){
+
+                    }
+
+                }else{
+                    for(int i=0; i<menuItem.getOptions().get(1).getOption().size(); i++){
+                        final String menu_option_name=menuItem.getOptions().get(1).getOption().get(i).getMenu_option_name();
+                        Button button=new Button(context);
+                        button.setText(menu_option_name);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                holder.detailHotMenuOptionName2.setText(menu_option_name);
+                                materialDialog.dismiss();
+                            }
+                        });
+
+                        menu_option_dialog_layout.addView(button);
+                    }
+                }
+
+                materialDialog.show();
             }
         });
 
-
-
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                        holder.detailHotMenu.setVisibility(View.VISIBLE);
-//                        holder.masterHotMenu.setVisibility(View.GONE);
-//                        clickFlag=true;
-//
-//                }
-//            });
-//
 
 
 
@@ -134,8 +235,6 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
                 mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
             }
         });
-
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -151,9 +250,12 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         TextView detailHotMenuRating;
         TextView detailHotMenuOptionCateName1;
         TextView detailHotMenuOptionName1;
+        TextView detailHotMenuOptionCateName2;
+        TextView detailHotMenuOptionName2;
         LinearLayout detailHotMenu;
         RelativeLayout detailHotMenuOptionLayOut1;
         RelativeLayout detailHotMenuOptionLayOut2;
+        View secondOptionLine;
 
 
         public ViewHolder(View itemView) {
@@ -171,15 +273,22 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             detailHotMenuOptionCateName1=(TextView)itemView.findViewById(R.id.detailHotMenuOptionCateName1);
             detailHotMenuOptionName1=(TextView)itemView.findViewById(R.id.detailHotMenuOptionName1);
 
+            detailHotMenuOptionCateName2=(TextView)itemView.findViewById(R.id.detailHotMenuOptionCateName2);
+            detailHotMenuOptionName2=(TextView)itemView.findViewById(R.id.detailHotMenuOptionName2);
+
 
             detailHotMenu=(LinearLayout)itemView.findViewById(R.id.detailHotMenu);
 
             detailHotMenuOptionLayOut1=(RelativeLayout)itemView.findViewById(R.id.detailHotMenuOptionLayOut1);
             detailHotMenuOptionLayOut2=(RelativeLayout)itemView.findViewById(R.id.detailHotMenuOptionLayOut2);
 
+            secondOptionLine=itemView.findViewById(R.id.secondOptionLine);
+
         }
 
 
     }
+
+
 
 }

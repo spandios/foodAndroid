@@ -24,14 +24,10 @@ public class CurrentLocationListSerivce {
 
         Call<CurrentLocationListItem> getCurrentLocationListItem(@Query("curLat") double curLat, @Query("curLng") double curLng, @Query("maxDistance") int maxDistance, @Query("foodtype") String foodtype);
 
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .build();
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://13.124.97.184")
-                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         }

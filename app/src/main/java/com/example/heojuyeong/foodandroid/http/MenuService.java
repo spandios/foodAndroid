@@ -30,17 +30,13 @@ public class MenuService {
 //        @GET("api/menu/readMenuOption")
 //        Call<ArrayList<MenuItem.Option>> getOption(@Query("menu_option_category_id")int menu_option_category_id);
 
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .build();
+
 
 
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://13.124.97.184")
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
                 .build();
     }
 

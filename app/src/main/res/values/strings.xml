@@ -2,4 +2,7 @@
     <string name="app_name">foodAndroid</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_detail_restaurant2">DetailRestaurantActivity2</string>
+
+    <string name="necessary">%1$s(필수)</string>
+    <string name="notnecessary">%1$s(선택)</string>
 </resources>

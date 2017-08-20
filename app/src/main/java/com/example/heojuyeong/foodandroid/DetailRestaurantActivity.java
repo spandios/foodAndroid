@@ -46,6 +46,10 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     private TextView discount;
     private RecyclerView recyclerView;
     private int price;
+    private MaterialDialog materialDialog;
+
+
+
 
 
 
@@ -163,7 +167,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
 
-                final MenuListHotAdapter adapter=new MenuListHotAdapter(getApplicationContext(), response.body(), new MenuListHotAdapter.OnItemClickListener() {
+                final MenuListHotAdapter adapter=new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(), new MenuListHotAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
 

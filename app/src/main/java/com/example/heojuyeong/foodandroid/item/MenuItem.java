@@ -119,27 +119,27 @@ public class MenuItem {
         public class Option{
             @SerializedName("menu_option_id")
             int menu_option_id;
-            @SerializedName("menu_name")
-            String menu_name;
-            @SerializedName("menu_price")
-            int menu_price;
-            @SerializedName("menu_description")
-            String menu_description;
+            @SerializedName("menu_option_name")
+            String menu_option_name;
+            @SerializedName("menu_option_price")
+            int menu_option_price;
+            @SerializedName("menu_option_description")
+            String menu_option_description;
 
             public int getMenu_option_id() {
                 return menu_option_id;
             }
 
-            public String getMenu_name() {
-                return menu_name;
+            public String getMenu_option_name() {
+                return menu_option_name;
             }
 
             public int getMenu_price() {
-                return menu_price;
+                return menu_option_price;
             }
 
             public String getMenu_description() {
-                return menu_description;
+                return menu_option_description;
             }
         }
 
