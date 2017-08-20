@@ -7,7 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.*;
+import android.support.v7.widget.DividerItemDecoration;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -118,9 +120,10 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
 
             }
 
+
             //선택사항인 경우
             else if (menuItem.getOptions().get(0).getNecessary() == 0 && menuItem.getOptions().get(1).getNecessary() == 0) {
-                holder.detailHotMenuOptionCateName1.setText(context.getString(R.string.notnecessary, menuItem.getOptions().get(1).getMenu_category_name()));
+                holder.detailHotMenuOptionCateName1.setText(context.getString(R.string.notnecessary, menuItem.getOptions().get(0).getMenu_category_name()));
                 holder.detailHotMenuOptionCateName2.setText(context.getString(R.string.notnecessary, menuItem.getOptions().get(1).getMenu_category_name()));
 
             }
@@ -161,21 +164,44 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         holder.detailHotMenuOptionLayOut1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                materialDialog= new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option, true).build();
-                View getView=materialDialog.getView();
-                final LinearLayout menu_option_dialog_layout=(LinearLayout)getView.findViewById(R.id.dialog_menu_option_layout);
-                TextView textView=(TextView)getView.findViewById(R.id.modal_title);
-                textView.setText(menuItem.getOptions().get(0).getMenu_category_name());
+                // 여러개 선택 가능한 경우
                 if(menuItem.getOptions().get(0).getNecessary()==0){
+
+                    materialDialog=new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option_listview,true).build();
+                    View getView=materialDialog.getView();
+                    TextView categoryName=(TextView)getView.findViewById(R.id.dialog_option_category_name);
+                    categoryName.setText(menuItem.getOptions().get(0).getMenu_category_name());
+
+                    TextView optionCount=(TextView)getView.findViewById(R.id.dialog_option_category_count);
+                    optionCount.setText("총"+menuItem.getOptions().get(0).getOption().size()+"개 선택가능");
+
+
+
+
+                    RecyclerView recyclerView=(RecyclerView)getView.findViewById(R.id.dialog_option_listview);
+                    final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context.getApplicationContext());
+                    recyclerView.setLayoutManager(nmLayoutManager);
+                    android.support.v7.widget.DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(recyclerView.getContext(),nmLayoutManager.getOrientation());
+                    dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context,R.drawable.divider));
+                    recyclerView.addItemDecoration(dividerItemDecoration);
+
+                    OptionAdapter optionAdapter=new OptionAdapter(menuItem.getOptions().get(0).getOption(), context.getApplicationContext());
+                    recyclerView.setAdapter(optionAdapter);
+
 
 
                 }else{
+                    materialDialog= new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option, true).build();
+                    View getView=materialDialog.getView();
+                    final LinearLayout menu_option_dialog_layout=(LinearLayout)getView.findViewById(R.id.dialog_menu_option_layout);
+                    TextView textView=(TextView)getView.findViewById(R.id.modal_title);
+                    textView.setText(menuItem.getOptions().get(0).getMenu_category_name());
 
                     for(int i=0; i<menuItem.getOptions().get(0).getOption().size(); i++){
                         final String menu_option_name=menuItem.getOptions().get(0).getOption().get(i).getMenu_option_name();
                         final int menu_option_price=menuItem.getOptions().get(0).getOption().get(i).getMenu_price();
                         Button button=new Button(context);
-                        button.setText(menu_option_name);
+                        button.setText(menu_option_name+"                    "+menu_option_price+"원");
                         button.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -187,6 +213,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
                         menu_option_dialog_layout.addView(button);
                     }
                 }
+
                 materialDialog.show();
             }
         });
@@ -194,18 +221,36 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         holder.detailHotMenuOptionLayOut2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                materialDialog= new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option, true).build();
-                View getView=materialDialog.getView();
-                final LinearLayout menu_option_dialog_layout=(LinearLayout)getView.findViewById(R.id.dialog_menu_option_layout);
-                TextView title=(TextView)getView.findViewById(R.id.modal_title);
-                title.setText(menuItem.getOptions().get(1).getMenu_category_name());
+
 
                 if(menuItem.getOptions().get(1).getNecessary()==0) {
-                    for(int i=0; i<menuItem.getOptions().get(1).getOption().size(); i++){
+                    materialDialog=new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option_listview,true).build();
+                    View getView=materialDialog.getView();
+                    TextView categoryName=(TextView)getView.findViewById(R.id.dialog_option_category_name);
+                    categoryName.setText(menuItem.getOptions().get(1).getMenu_category_name());
 
-                    }
+                    TextView optionCount=(TextView)getView.findViewById(R.id.dialog_option_category_count);
+                    optionCount.setText("총"+menuItem.getOptions().get(1).getOption().size()+"개 선택가능");
+
+
+
+
+                    RecyclerView recyclerView=(RecyclerView)getView.findViewById(R.id.dialog_option_listview);
+                    final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context.getApplicationContext());
+                    recyclerView.setLayoutManager(nmLayoutManager);
+                    android.support.v7.widget.DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(recyclerView.getContext(),nmLayoutManager.getOrientation());
+                    dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context,R.drawable.divider));
+                    recyclerView.addItemDecoration(dividerItemDecoration);
+
+                    OptionAdapter optionAdapter=new OptionAdapter(menuItem.getOptions().get(1).getOption(), context.getApplicationContext());
+                    recyclerView.setAdapter(optionAdapter);
 
                 }else{
+                    materialDialog= new MaterialDialog.Builder(context).customView(R.layout.dialog_menu_list_option, true).build();
+                    View getView=materialDialog.getView();
+                    final LinearLayout menu_option_dialog_layout=(LinearLayout)getView.findViewById(R.id.dialog_menu_option_layout);
+                    TextView title=(TextView)getView.findViewById(R.id.modal_title);
+                    title.setText(menuItem.getOptions().get(1).getMenu_category_name());
                     for(int i=0; i<menuItem.getOptions().get(1).getOption().size(); i++){
                         final String menu_option_name=menuItem.getOptions().get(1).getOption().get(i).getMenu_option_name();
                         Button button=new Button(context);
