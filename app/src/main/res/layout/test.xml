@@ -2,41 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="365dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="8"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/detailHotMenuPicture"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             app:srcCompat="@drawable/intro" />
 
 
         <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:padding="10dp"
-            android:layout_weight="7">
+            android:padding="5dp"
+            >
 
             <TextView
                 android:id="@+id/detailHotMenuName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="메뉴네임"
                 android:textColor="@color/common_google_signin_btn_text_dark"
-                android:textSize="20dp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/detailHotMenuPrice"
@@ -57,161 +55,62 @@
                 android:text="원"
                 android:textSize="20dp"/>
 
+
+            <TextView
+                android:id="@+id/detailHotMenuRating"
+                android:layout_below="@id/detailHotMenuPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:text="평점"
+                />
+
+            <TextView
+                android:id="@+id/detailHotMenuReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:text="리뷰[갯수]"
+                android:textSize="20sp"
+                android:layout_toRightOf="@id/detailHotMenuRating"
+                android:layout_alignBaseline="@+id/detailHotMenuRating"
+                />
+
             <TextView
                 android:id="@+id/detailHotMenuDescritption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/detailHotMenuPrice"
+                android:layout_below="@+id/detailHotMenuRating"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
                 android:text="메뉴 설명"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/detailHotMenuRating"
-                android:layout_below="@id/detailHotMenuDescritption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
-                android:text="efawefw"/>
         </RelativeLayout>
-
     </LinearLayout>
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ffffff" />
-
-        <RelativeLayout
-            android:id="@+id/detailHotMenuOptionLayOut1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/detailHotMenuOptionCateName1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:text="사이즈"
-
-                android:textSize="20sp" />
-
-
-            <TextView
-                android:id="@+id/detailHotMenuOptionName1"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@+id/detailHotMenuOption1Button"
-                android:layout_toStartOf="@+id/detailHotMenuOption1Button"
-                android:text="R"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/detailHotMenuOption1Button"
-
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@android:drawable/arrow_down_float"
-                android:text="클릭" />
-
-        </RelativeLayout>
-
-    <View
-        android:layout_marginTop="5dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ffffff" />
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:id="@+id/detailHotMenuOptionLayOut2"
-            android:layout_marginTop="5dp">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:text="옵션"
-                android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                />
-
-            <TextView
-                android:id="@+id/detailHotMenuOptionName2"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@+id/detailHotMenuOption2Button"
-                android:layout_toStartOf="@+id/detailHotMenuOption2Button"
-                android:text="R"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/detailHotMenuOption2Button"
-
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@android:drawable/arrow_down_float"
-                android:text="클릭" />
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="80dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/menuSelectButton"
+            android:text="선택"
+            />
 
 
 
-        </RelativeLayout>
-        <View
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ffffff" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal"
-            >
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:text="장바구니 담기"
-                />
-
-            <Button
-                android:layout_weight="5"
-                android:layout_width="0dp"
-                android:text="주문하기"
-                android:layout_height="match_parent"
-                />
-
-        </LinearLayout>
+    </RelativeLayout>
 
 
 

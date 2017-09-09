@@ -91,7 +91,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 
                     case R.id.detailCartButton:
                         break;
-
                 }
             }
         };
@@ -99,7 +98,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         backButton.setOnClickListener(onClickListener);
         //menuCategory Function
         menuCategoryShow(restaurant.getRest_id());
-
 
     }
 
@@ -133,11 +131,8 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                         textView.setLayoutParams(params);
                         layout.addView(textView);
                     }
-
                     //default popular menu show
                     menuShow(items.get(0).getMenu_cate_gory_id());
-
-
                 }else{
                     TextView textView=new TextView(getApplicationContext());
                     textView.setText("메뉴 불러오기 실패했습니다.");
@@ -160,7 +155,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 
 
     void menuShow(int menu_category_id){
-
         final MenuService menuService=new MenuService();
         Call<ArrayList<MenuItem>> call=menuService.getCall(menu_category_id);
         call.enqueue(new Callback<ArrayList<MenuItem>>() {

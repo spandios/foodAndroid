@@ -36,7 +36,10 @@ public class TedPermissionUtil {
                        Call<GeocodingService> call=GeocodingService.Geolcation.getCall(params[0]);
 
                         try {
-                            return call.execute().body().getResults().get(3).formatted_address.substring(11);
+
+                                return call.execute().body().getResults().get(3).formatted_address.substring(11);
+
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

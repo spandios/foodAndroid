@@ -17,7 +17,7 @@ public class MenuItem {
     String name;
 
     @SerializedName("price")
-    String price;
+    int price;
 
     @SerializedName("description")
     String description;
@@ -32,8 +32,92 @@ public class MenuItem {
     String rating;
 
 
+    @SerializedName("reviews")
+    ArrayList<Review> reviews;
+
+
+
+    public class Review{
+        @SerializedName("menu_review_id")
+        int menu_review_id;
+
+        @SerializedName("created_at")
+        String created_at;
+        @SerializedName("rating")
+        double rating;
+        @SerializedName("image")
+        String image;
+
+        @SerializedName("content")
+        String content;
+
+
+        @SerializedName("reviewer")
+        Reviewer reviewer;
+
+
+        public double getRating() {
+            return rating;
+        }
+
+        public int getMenu_review_id() {
+            return menu_review_id;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public Reviewer getReviewer() {
+            return reviewer;
+        }
+
+        public class Reviewer{
+            @SerializedName("user_id")
+            int user_id;
+
+            @SerializedName("profile_image")
+            String profile_image;
+
+            @SerializedName("provider")
+            String provider;
+
+            @SerializedName("name")
+            String name;
+
+            public int getUser_id() {
+                return user_id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public String getProfile_image() {
+                return profile_image;
+            }
+
+            public String getProvider() {
+                return provider;
+            }
+        }
+
+
+
+    }
+
     @SerializedName("options")
     ArrayList<Options> options=new ArrayList<>();
+
+
 
 
     @SerializedName("viewcount")
@@ -53,7 +137,7 @@ public class MenuItem {
         return name;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
@@ -75,11 +159,15 @@ public class MenuItem {
 
 
 
+
+
     public ArrayList<Options> getOptions() {
         return options;
     }
 
-
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
 
     public int getViewcount() {
         return viewcount;
@@ -97,6 +185,10 @@ public class MenuItem {
         String menu_category_name;
         @SerializedName("necessary")
         int necessary;
+
+        @SerializedName("multiple")
+        int multiple;
+
         @SerializedName("option")
         ArrayList<Option> option;
 
@@ -112,9 +204,14 @@ public class MenuItem {
             return necessary;
         }
 
+        public int getMultiple(){
+            return multiple;
+        }
+
         public ArrayList<Option> getOption() {
             return option;
         }
+
 
         public class Option{
             @SerializedName("menu_option_id")

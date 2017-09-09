@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,18 +21,23 @@ import java.util.ArrayList;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-/**
- * Created by jinchengjun-- on 2017-08-20.
- */
 
 public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder>{
     private ArrayList<MenuItem.Options.Option> items;
     private Context context;
+    private RadioClickListener radioClickListener;
+    private int multiple;
 
-    public OptionAdapter(ArrayList<MenuItem.Options.Option> items, Context context){
+    public OptionAdapter(ArrayList<MenuItem.Options.Option> items, Context context, int multiple, RadioClickListener radioClickListener){
         this.items=items;
         this.context=context;
+        this.multiple=multiple;
+        this.radioClickListener=radioClickListener;
     }
+    public interface RadioClickListener{
+        void onClickRadio(boolean isChecked,int position);
+    }
+
 
     @Override
     public int getItemCount() {
@@ -48,27 +56,57 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         MenuItem.Options.Option option=items.get(position);
-        holder.optionCheckBox.setText(option.getMenu_option_name());
-
-        holder.optionPrice.setText("+"+option.getMenu_price()+"원");
-
-        //쳌크하기
-        holder.optionLayout.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener checkboxListener=new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(holder.optionCheckBox.isChecked()){
+            public void onClick(View v) {
+                if (holder.optionCheckBox.isChecked()) {
+                    Logger.d("isChecked");
                     holder.optionCheckBox.setChecked(FALSE);
-                }else{
+                } else {
+                    Logger.d("isNotChecked");
                     holder.optionCheckBox.setChecked(TRUE);
                 }
-
             }
-        });
+        };
+        final View.OnClickListener radioListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.optionRadio.isChecked()) {
+                    radioClickListener.onClickRadio(true, holder.getAdapterPosition());
+                }else{
+                    radioClickListener.onClickRadio(false, holder.getAdapterPosition());
+                }
+            }
+
+        };
+
+        if(multiple==1){
+            holder.optionCheckBox.setText(option.getMenu_option_name());
+            holder.optionLayout.setOnClickListener(checkboxListener);
+            holder.optionRadio.setVisibility(View.GONE);
+        }else{
+            holder.optionRadio.setText(option.getMenu_option_name());
+            holder.optionLayout.setOnClickListener(radioListener);
+            holder.optionRadio.setClickable(false);
+
+            holder.optionCheckBox.setVisibility(View.GONE);
+        }
+
+        holder.optionPrice.setText("+"+option.getMenu_price()+"원");
+        holder.optionCheckBox.setTag(option.getMenu_option_id());
+
+
+
+
+        //쳌크하기
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
        CheckBox optionCheckBox;
+        RadioButton optionRadio;
        TextView optionPrice;
        RelativeLayout optionLayout;
 
@@ -78,6 +116,8 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
             optionCheckBox=(CheckBox)itemView.findViewById(R.id.dialog_menu_option_checkbox);
             optionPrice=(TextView)itemView.findViewById(R.id.dialog_menu_option_price);
             optionLayout=(RelativeLayout)itemView.findViewById(R.id.dialog_menu_option_item_layout);
+            optionRadio=(RadioButton)itemView.findViewById(R.id.dialog_menu_option_radio);
+
 
 
         }

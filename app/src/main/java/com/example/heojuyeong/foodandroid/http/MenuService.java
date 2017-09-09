@@ -32,14 +32,11 @@ public class MenuService {
 
 
 
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://13.124.97.184")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
-
 
 
     public Call<ArrayList<MenuItem>> getCall(int menu_category_id){

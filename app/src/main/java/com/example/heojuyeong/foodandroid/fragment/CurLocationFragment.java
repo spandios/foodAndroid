@@ -99,6 +99,12 @@ public class CurLocationFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //여기서 kotlin
+    }
+
+    @Override
     public void onResume() {
         currentLocationTextview.setText(commonLocationApplication.getLocationName());
         getCurLocationRestaurant();
