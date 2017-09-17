@@ -26,16 +26,22 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
     private ArrayList<MenuItem.Options.Option> items;
     private Context context;
     private RadioClickListener radioClickListener;
+    private SelectCLickListener selectCLickListener;
     private int multiple;
 
-    public OptionAdapter(ArrayList<MenuItem.Options.Option> items, Context context, int multiple, RadioClickListener radioClickListener){
+    public OptionAdapter(ArrayList<MenuItem.Options.Option> items, Context context, int multiple, RadioClickListener radioClickListener, SelectCLickListener selectCLickListener){
         this.items=items;
         this.context=context;
         this.multiple=multiple;
         this.radioClickListener=radioClickListener;
+        this.selectCLickListener=selectCLickListener;
     }
     public interface RadioClickListener{
         void onClickRadio(boolean isChecked,int position);
+    }
+
+    public interface SelectCLickListener{
+        void onClickCheck(boolean isChecked,int position);
     }
 
 
@@ -50,6 +56,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
                 .inflate(R.layout.dialog_menu_list_option_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
         OptionAdapter.ViewHolder vh = new OptionAdapter.ViewHolder(v);
+
         return vh;
     }
 
@@ -60,14 +67,15 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 if (holder.optionCheckBox.isChecked()) {
-                    Logger.d("isChecked");
-                    holder.optionCheckBox.setChecked(FALSE);
+                    holder.optionCheckBox.setChecked(false);
+                    selectCLickListener.onClickCheck(false,holder.getAdapterPosition());
                 } else {
-                    Logger.d("isNotChecked");
-                    holder.optionCheckBox.setChecked(TRUE);
+                    selectCLickListener.onClickCheck(true ,holder.getAdapterPosition());
+                    holder.optionCheckBox.setChecked(true);
                 }
             }
         };
+
         final View.OnClickListener radioListener=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,11 +89,15 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
         };
 
         if(multiple==1){
+
             holder.optionCheckBox.setText(option.getMenu_option_name());
+            holder.optionCheckBox.setTag(option.getMenu_option_id());
             holder.optionLayout.setOnClickListener(checkboxListener);
+            holder.optionCheckBox.setClickable(false);
             holder.optionRadio.setVisibility(View.GONE);
         }else{
             holder.optionRadio.setText(option.getMenu_option_name());
+            holder.optionRadio.setTag(option.getMenu_option_id());
             holder.optionLayout.setOnClickListener(radioListener);
             holder.optionRadio.setClickable(false);
 
@@ -93,7 +105,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
         }
 
         holder.optionPrice.setText("+"+option.getMenu_price()+"원");
-        holder.optionCheckBox.setTag(option.getMenu_option_id());
+
 
 
 

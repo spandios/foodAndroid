@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ import com.example.heojuyeong.foodandroid.item.CurrentLocationListItem;
 import com.example.heojuyeong.foodandroid.settingLocationMapActivity;
 import com.example.heojuyeong.foodandroid.util.GPS_Util;
 import com.orhanobut.logger.Logger;
+
+import org.parceler.Parcels;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -151,12 +154,14 @@ public class CurLocationFragment extends Fragment {
                     currentLocationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            CurrentLocationListItem.Restaurant restaurant = (CurrentLocationListItem.Restaurant) parent.getAdapter().getItem(position);
-                            Intent detailIntent = new Intent(getActivity().getApplicationContext(), DetailRestaurantActivity.class);
+
+                            Parcelable restaurant = Parcels.wrap(parent.getAdapter().getItem(position));
+                            Intent detailRestaurantIntent = new Intent(getActivity().getApplicationContext(), DetailRestaurantActivity.class);
                             Bundle extra = new Bundle();
-                            extra.putSerializable("serialData", restaurant);
-                            detailIntent.putExtras(extra);
-                            startActivity(detailIntent);
+                            extra.putParcelable("restaurant", restaurant);
+                            detailRestaurantIntent.putExtras(extra);
+                            
+                            startActivity(detailRestaurantIntent);
                         }
                     });
 

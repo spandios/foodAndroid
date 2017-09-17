@@ -13,6 +13,9 @@ public class MenuItem {
     @SerializedName("menu_id")
     int menu_id;
 
+    @SerializedName("rest_id")
+    int rest_id;
+
     @SerializedName("name")
     String name;
 
@@ -131,6 +134,10 @@ public class MenuItem {
 
     public int getMenu_id() {
         return menu_id;
+    }
+
+    public int getRest_id(){
+        return rest_id;
     }
 
     public String getName() {

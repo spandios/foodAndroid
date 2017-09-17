@@ -2,6 +2,8 @@ package com.example.heojuyeong.foodandroid.item;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -29,7 +31,9 @@ public class CurrentLocationListItem  {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
-    public class Restaurant implements Serializable{
+
+    @Parcel
+    public static class Restaurant {
 
 
         @SerializedName("rest_id")

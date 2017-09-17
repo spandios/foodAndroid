@@ -39,7 +39,13 @@
 
         <activity android:name=".DetailRestaurantActivity" />
         <activity android:name=".DetailReviewImageActivity" />
-        <activity android:name=".fragment.Main2Activity"></activity>
+        <activity android:name=".fragment.Main2Activity" />
+        <activity
+            android:name=".ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".CartActivity" />
+        <activity android:name=".Main22Activity"></activity>
     </application>
 
 </manifest>

@@ -12,9 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ import com.example.heojuyeong.foodandroid.listview.MenuListHotAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -45,11 +50,13 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     private TextView detailRating;
     private TextView discount;
     private RecyclerView recyclerView;
-    private int price;
+    CurrentLocationListItem.Restaurant restaurant;
+    private ScrollView detailRestaurantScrollView;
     private MaterialDialog materialDialog;
-
-
-
+    private HorizontalScrollView detailMenuCategoryParentScrollView;
+    private HorizontalScrollView detailMenuCategoryParentScrollView2;
+    private RelativeLayout detailHotMenuHeader;
+    private boolean test=false;
 
 
 
@@ -57,8 +64,41 @@ public class DetailRestaurantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_restaurant);
+//        restaurant=(CurrentLocationListItem.Restaurant) getIntent().getExtras().get("restaurant");
+        restaurant= Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
+        detailRestaurantScrollView=(ScrollView)findViewById(R.id.detailRestaurantScrollView);
 
-        CurrentLocationListItem.Restaurant restaurant = (CurrentLocationListItem.Restaurant) getIntent().getExtras().get("serialData");
+        detailHotMenuHeader=(RelativeLayout)findViewById(R.id.detailHotMenuHeader);
+        detailMenuCategoryParentScrollView=(HorizontalScrollView)findViewById(R.id.detailMenuCategoryParentScrollView);
+        detailMenuCategoryParentScrollView2=(HorizontalScrollView)findViewById(R.id.detailMenuCategoryParentScrollView2);
+        recyclerView=(RecyclerView)findViewById(R.id.detailMenuListView);
+        //scroll
+        detailRestaurantScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+
+                if(detailRestaurantScrollView.getScrollY()>detailMenuCategoryParentScrollView.getY()){
+                    if(!test) {
+                        detailMenuCategoryParentScrollView.setVisibility(View.GONE);
+//                    RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    layoutParams.addRule(RelativeLayout.BELOW,R.id.detailHotMenuHeader);
+//                    detailMenuCategoryParentScrollView2.setLayoutParams(layoutParams);
+                        detailMenuCategoryParentScrollView2.setVisibility(View.VISIBLE);
+                        test = true;
+//                    layoutParams.addRule(RelativeLayout.BELOW,R.id.detailMenuCategoryParentScrollView2);
+                    }
+                }else{
+                    if(test){
+                        detailMenuCategoryParentScrollView2.setVisibility(View.GONE);
+                        detailMenuCategoryParentScrollView.setVisibility(View.VISIBLE);
+                        test=false;
+                    }
+
+                }
+            }
+        });
+
+
         rest_name = (TextView) findViewById(R.id.rest_name);
         backButton = (Button) findViewById(R.id.detailBackButton);
         mapButton = (Button) findViewById(R.id.detailMapButton);
@@ -66,14 +106,15 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         restImage = (ImageView) findViewById(R.id.detailRestImage);
         detailRating=(TextView)findViewById(R.id.detailRating);
         discount=(TextView)findViewById(R.id.detailDiscount);
-        recyclerView=(RecyclerView)findViewById(R.id.detailMenuListView);
+
+
+
         final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(nmLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(recyclerView.getContext(),nmLayoutManager.getOrientation());
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this,R.drawable.divider));
         recyclerView.addItemDecoration(dividerItemDecoration);
-
         rest_name.setText(restaurant.getName());
         Picasso.with(this).load(restaurant.getRest_picture()).resize(150, 150).into(restImage);
         detailRating.setText(Double.toString(restaurant.getRating()));
@@ -106,6 +147,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 
     void menuCategoryShow(int rest_id){
         final LinearLayout layout=(LinearLayout)findViewById(R.id.detailMenuCategoryParent);
+        final LinearLayout layout2=(LinearLayout)findViewById(R.id.detailMenuCategoryParent2);
         MenuCategoryService menuCategoryService=new MenuCategoryService();
         Call<MenuCategoryItem> call=menuCategoryService.getCall(rest_id);
         call.enqueue(new Callback<MenuCategoryItem>() {
@@ -115,33 +157,23 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                     ArrayList<MenuCategoryItem.MenuCategory> items=response.body().getResults();
 
                     for(int i=0; i< items.size();i++){
-                        TextView textView=new TextView(getApplicationContext());
-                        textView.setText(items.get(i).getCateNAme());
-                        textView.setTextSize(20);
-                        textView.setId(items.get(i).getMenu_cate_gory_id());
-                        textView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                menuShow(view.getId());
-                            }
-                        });
-                        textView.setTextColor(Color.WHITE);
-                        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                        params.setMargins(60,0,0,0);
-                        textView.setLayoutParams(params);
-                        layout.addView(textView);
+                        layout.addView(makeMenuCategory(items.get(i).getCateNAme(),items.get(i).getMenu_cate_gory_id()));
+
+                        layout2.addView(makeMenuCategory(items.get(i).getCateNAme(),items.get(i).getMenu_cate_gory_id()));
+
                     }
                     //default popular menu show
                     menuShow(items.get(0).getMenu_cate_gory_id());
                 }else{
                     TextView textView=new TextView(getApplicationContext());
                     textView.setText("메뉴 불러오기 실패했습니다.");
-                    layout.addView(textView);LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                    LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     params.setMargins(50,0,0,0);
                     textView.setLayoutParams(params);
                     layout.addView(textView);
-                }
 
+                }
             }
 
             @Override
@@ -161,7 +193,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
 
-                final MenuListHotAdapter adapter=new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(), new MenuListHotAdapter.OnItemClickListener() {
+                final MenuListHotAdapter adapter=new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(),restaurant, new MenuListHotAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
 
@@ -171,8 +203,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                             viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
                         }
 
-                        ((LinearLayoutManager)recyclerView.getLayoutManager()).scrollToPositionWithOffset(position,10);
-//                                recyclerView.scrollTo(0,view.getHeight());
+//                        ((LinearLayoutManager)recyclerView.getLayoutManager()).scrollToPositionWithOffset(position,5);
                         RecyclerView.ViewHolder viewHolder= recyclerView.findViewHolderForAdapterPosition(position);
                         viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.GONE);
                         viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
@@ -186,5 +217,24 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                 Logger.d(t);
             }
         });
+    }
+
+
+    TextView makeMenuCategory(String name, int id){
+        TextView textView=new TextView(getApplicationContext());
+        textView.setText(name);
+        textView.setTextSize(20);
+        textView.setId(id);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuShow(view.getId());
+            }
+        });
+        textView.setTextColor(Color.WHITE);
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.setMargins(60,0,0,0);
+        textView.setLayoutParams(params);
+        return textView;
     }
 }
