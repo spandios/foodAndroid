@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid.listview;
+package com.example.heojuyeong.foodandroid.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,10 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.item.CurrentLocationListItem;
-import com.orhanobut.logger.Logger;
+import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,19 +20,16 @@ import java.util.ArrayList;
  * Created by heojuyeong on 2017. 7. 20..
  */
 
-public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationListItem.Restaurant>{
+public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationRestaurantItem.Restaurant>{
     private Context context;
     private int resource;
-    private ArrayList<CurrentLocationListItem.Restaurant> items;
+    private ArrayList<CurrentLocationRestaurantItem.Restaurant> items;
 
-    public CurrentLocationListAdapter(Context context, int resource, ArrayList<CurrentLocationListItem.Restaurant> items){
+    public CurrentLocationListAdapter(Context context, int resource, ArrayList<CurrentLocationRestaurantItem.Restaurant> items){
         super(context,resource,items);
         this.context=context;
         this.resource=resource;
         this.items=items;
-        if(context==null){
-            Logger.d("context is null");
-        }
     }
 
 
@@ -60,7 +55,7 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationList
             //캐쉬된이후로는 viewholder를 가져와 findViewByID를 호출하지 않으므로 메모리 효율이 좋아진다 .
             viewHolder=(CurrentListViewHolder)row.getTag();
         }
-        CurrentLocationListItem.Restaurant item=items.get(position);
+        CurrentLocationRestaurantItem.Restaurant item=items.get(position);
 
 
         Picasso.with(context).load(item.getRest_picture()).resize(150,150).into(viewHolder.cur_location_item_image);
@@ -74,7 +69,7 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationList
     }
 
 
-    static class CurrentListViewHolder{
+    private static class CurrentListViewHolder{
 
         public ImageView cur_location_item_image;
         public TextView cur_location_item_rest_name;

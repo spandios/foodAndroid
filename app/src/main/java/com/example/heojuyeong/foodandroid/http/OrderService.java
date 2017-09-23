@@ -1,18 +1,11 @@
 package com.example.heojuyeong.foodandroid.http;
 
-import com.example.heojuyeong.foodandroid.item.MenuItem;
-import com.example.heojuyeong.foodandroid.item.OrderItem;
-
-import java.util.ArrayList;
+import com.example.heojuyeong.foodandroid.model.OrderItem;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * Created by heojuyeong on 2017. 9. 13..
@@ -44,12 +37,7 @@ public class OrderService {
 
 
 
-
-
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://13.124.97.184")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
     }
+
+
 }

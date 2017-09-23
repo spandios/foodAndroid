@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid.listview;
+package com.example.heojuyeong.foodandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.heojuyeong.foodandroid.DetailReviewImageActivity;
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.item.MenuItem;
+import com.example.heojuyeong.foodandroid.model.MenuItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

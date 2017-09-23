@@ -56,7 +56,7 @@
     <LinearLayout
         android:id="@+id/detailHotMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:orientation="vertical"
         android:visibility="gone">
 

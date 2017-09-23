@@ -1,12 +1,8 @@
 package com.example.heojuyeong.foodandroid.http;
 
-import com.example.heojuyeong.foodandroid.item.CurrentLocationListItem;
-import com.example.heojuyeong.foodandroid.item.MenuCategoryItem;
-import com.google.gson.annotations.SerializedName;
+import com.example.heojuyeong.foodandroid.model.MenuCategoryItem;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -21,14 +17,11 @@ public class MenuCategoryService {
         @GET("api/menu/readMenuCategory")
         Call<MenuCategoryItem> getMenuCategory(@Query("rest_id") int rest_id);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://13.124.97.184")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+
     }
 
-    public Call<MenuCategoryItem> getCall(int rest_id){
-        MenuCategoryInterFace menuCategoryInterFace=MenuCategoryInterFace.retrofit.create(MenuCategoryInterFace.class);
+    public static Call<MenuCategoryItem> getMenuCategory(int rest_id){
+        MenuCategoryInterFace menuCategoryInterFace=RetrofitBase.getInstance().getRetrofit().create(MenuCategoryInterFace.class);
         Call<MenuCategoryItem> call=menuCategoryInterFace.getMenuCategory(rest_id);
         return call;
     }

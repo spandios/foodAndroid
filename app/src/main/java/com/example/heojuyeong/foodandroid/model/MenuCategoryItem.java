@@ -1,13 +1,15 @@
-package com.example.heojuyeong.foodandroid.item;
+package com.example.heojuyeong.foodandroid.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
 /**
  * Created by heojuyeong on 2017. 7. 30..
  */
-
+@Parcel
 public class MenuCategoryItem {
     @SerializedName("results")
     ArrayList<MenuCategory> results;
@@ -23,8 +25,8 @@ public class MenuCategoryItem {
     public String getStatus() {
         return status;
     }
-
-    public class MenuCategory {
+    @Parcel
+    public static class MenuCategory {
         @SerializedName("menu_category_id")
         int menu_cate_gory_id;
 

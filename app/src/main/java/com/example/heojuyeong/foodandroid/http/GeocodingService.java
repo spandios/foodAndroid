@@ -80,6 +80,7 @@ public class GeocodingService {
             Retrofit client = new Retrofit.Builder().baseUrl("http://maps.googleapis.com/").addConverterFactory(GsonConverterFactory.create()).build();
             GeocodingService.GeocodingInterface service = client.create(GeocodingService.GeocodingInterface.class);
             Call<GeocodingService> call = service.get_location_name_retrofit(latlng);
+
             return call;
         }
 
@@ -91,7 +92,7 @@ public class GeocodingService {
         }
 
         public static String getLocationName(Call<GeocodingService> call) {
-            String locationName = null;
+            String locationName;
             try {
                 GeocodingService geocodingService = call.execute().body();
                 if (geocodingService.getStatus().equals("OK")) {
@@ -108,7 +109,7 @@ public class GeocodingService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return locationName;
+            return "";
         }
     }
 }

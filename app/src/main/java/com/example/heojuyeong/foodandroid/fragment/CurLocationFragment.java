@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +19,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.DetailRestaurantActivity;
 import com.example.heojuyeong.foodandroid.R;
+import com.example.heojuyeong.foodandroid.adapter.CurrentLocationListAdapter;
 import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
 import com.example.heojuyeong.foodandroid.http.CurrentLocationListSerivce;
 import com.example.heojuyeong.foodandroid.http.GeocodingService;
-import com.example.heojuyeong.foodandroid.listview.CurrentLocationListAdapter;
-import com.example.heojuyeong.foodandroid.item.CurrentLocationListItem;
+import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
 import com.example.heojuyeong.foodandroid.settingLocationMapActivity;
 import com.example.heojuyeong.foodandroid.util.GPS_Util;
 import com.orhanobut.logger.Logger;
@@ -52,6 +52,7 @@ public class CurLocationFragment extends Fragment {
         gps_util = new GPS_Util(getActivity().getBaseContext());
         currentLocationTextview = (TextView) view.findViewById(R.id.currentLocationTextView);
         currentLocationListView = (ListView) view.findViewById(R.id.currentLocationListView);
+        Logger.d(commonLocationApplication.getLocationName());
         currentLocationTextview.setText(commonLocationApplication.getLocationName());
         //MaterialDialog  and button setting
         materialDialog = new MaterialDialog.Builder(getActivity()).customView(R.layout.dialog_current_location, true).build();
@@ -138,10 +139,10 @@ public class CurLocationFragment extends Fragment {
 
 
     void getCurLocationRestaurant(){
-        Call<CurrentLocationListItem> call = curlocationService.getCall(commonLocationApplication.getLat(), commonLocationApplication.getLng(), 10000000, "일식");
-        call.enqueue(new Callback<CurrentLocationListItem>() {
+        Call<CurrentLocationRestaurantItem> call = curlocationService.getCall(commonLocationApplication.getLat(), commonLocationApplication.getLng(), 10000000, "일식");
+        call.enqueue(new Callback<CurrentLocationRestaurantItem>() {
             @Override
-            public void onResponse(Call<CurrentLocationListItem> call, final Response<CurrentLocationListItem> response) {
+            public void onResponse(Call<CurrentLocationRestaurantItem> call, final Response<CurrentLocationRestaurantItem> response) {
                 if (response.isSuccessful()) {
                     //주변에 데이터 없는경우 에러메세지 TOAST
                     if (response.body().getStatus() == 0) {
@@ -160,8 +161,9 @@ public class CurLocationFragment extends Fragment {
                             Bundle extra = new Bundle();
                             extra.putParcelable("restaurant", restaurant);
                             detailRestaurantIntent.putExtras(extra);
-                            
                             startActivity(detailRestaurantIntent);
+
+
                         }
                     });
 
@@ -172,7 +174,7 @@ public class CurLocationFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<CurrentLocationListItem> call, Throwable t) {
+            public void onFailure(Call<CurrentLocationRestaurantItem> call, Throwable t) {
                 Logger.d(t);
                 Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
             }

@@ -1,14 +1,13 @@
-package com.example.heojuyeong.foodandroid.item;
+package com.example.heojuyeong.foodandroid.model;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class CurrentLocationListItem  {
+public class CurrentLocationRestaurantItem {
     @SerializedName("restaurants")
     ArrayList<Restaurant> restaurants;
     @SerializedName("status")
@@ -20,20 +19,9 @@ public class CurrentLocationListItem  {
     public ArrayList<Restaurant> getRestaurants() {
         return restaurants;
     }
-    public void setRestaurants(ArrayList<Restaurant> restaurants) {
-        this.restaurants = restaurants;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 
     @Parcel
-    public static class Restaurant {
+    public static class Restaurant  {
 
 
         @SerializedName("rest_id")

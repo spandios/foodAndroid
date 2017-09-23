@@ -1,14 +1,16 @@
-package com.example.heojuyeong.foodandroid.item;
+package com.example.heojuyeong.foodandroid.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
 /**
  * Created by heojuyeong on 2017. 7. 31..
  */
-
-public class MenuItem {
+@Parcel
+public class MenuItem  {
 
     @SerializedName("menu_id")
     int menu_id;
@@ -39,8 +41,8 @@ public class MenuItem {
     ArrayList<Review> reviews;
 
 
-
-    public class Review{
+    @Parcel
+    public static class Review {
         @SerializedName("menu_review_id")
         int menu_review_id;
 
@@ -82,8 +84,8 @@ public class MenuItem {
         public Reviewer getReviewer() {
             return reviewer;
         }
-
-        public class Reviewer{
+        @Parcel
+        public static class Reviewer {
             @SerializedName("user_id")
             int user_id;
 
@@ -184,8 +186,8 @@ public class MenuItem {
         return likecount;
     }
 
-
-    public class Options{
+    @Parcel
+    public static class Options {
         @SerializedName("menu_option_category_id")
         int menu_option_category_id;
         @SerializedName("menu_category_name")
@@ -219,8 +221,8 @@ public class MenuItem {
             return option;
         }
 
-
-        public class Option{
+        @Parcel
+        public static class Option {
             @SerializedName("menu_option_id")
             int menu_option_id;
             @SerializedName("menu_option_name")

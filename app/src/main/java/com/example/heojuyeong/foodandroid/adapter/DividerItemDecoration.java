@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid.listview;
+package com.example.heojuyeong.foodandroid.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;

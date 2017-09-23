@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -27,11 +26,11 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/detailCartButton"
+            android:layout_toLeftOf="@+id/detailTopCartButton"
             android:background="@drawable/ic_explore_black_24dp" />
 
         <Button
-            android:id="@+id/detailCartButton"
+            android:id="@+id/detailTopCartButton"
             android:background="@drawable/cart"
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -45,140 +44,151 @@
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:visibility="gone"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/detailMenuCategoryParentScrollView2"
+        android:id="@+id/detailMenuCategoryParentLayoutInHeaderScrollView"
         >
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:id="@+id/detailMenuCategoryParent2"
+
+            android:id="@+id/detailMenuCategoryParentLayoutInHeader"
             >
         </LinearLayout>
     </HorizontalScrollView>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/detailRestaurantScrollView"
         >
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/detailRestaurantLayout"
+                >
+
+                <ImageView
+                    android:id="@+id/detailRestImage"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rest_name"
+                        android:textSize="20dp"
+                        android:text="가게명"
+                        />
+                    <TextView
+                        android:id="@+id/detailRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rest_name"
+                        android:text="평점 "
+                        android:textSize="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/detailDiscountString"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/detailRating"
+                        android:layout_marginTop="5dp"
+                        android:text="포장 혜택 : " />
+
+                    <TextView
+                        android:id="@+id/detailDiscount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/detailDiscountString"
+                        android:layout_toRightOf="@id/detailDiscountString"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/detailCommentList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="허주영 : 넘나 맛있어요!"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/detailDiscountString" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+
+                android:id="@+id/detailMenuCategoryParentLayoutInContentScrollView"
+                android:layout_below="@+id/detailRestaurantLayout"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/detailMenuCategoryParentLayoutInContent"
+                    >
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/detailMenuListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_below="@+id/detailMenuCategoryParentLayoutInContentScrollView"
+                android:scrollbars="none">
+            </android.support.v7.widget.RecyclerView>
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/detailRestaurantLayout"
-        >
-
-        <ImageView
-            android:id="@+id/detailRestImage"
-            android:layout_width="120dp"
-            android:layout_height="match_parent" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rest_name"
-                android:textSize="20dp"
-                android:text="가게명"
-                />
-            <TextView
-                android:id="@+id/detailRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rest_name"
-                android:text="평점 "
-                android:textSize="20dp"
-                />
-
-            <TextView
-                android:id="@+id/detailDiscountString"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/detailRating"
-                android:layout_marginTop="5dp"
-                android:text="포장 혜택 : " />
-
-            <TextView
-                android:id="@+id/detailDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/detailDiscountString"
-                android:layout_toRightOf="@id/detailDiscountString"
-                android:layout_marginTop="5dp"/>
-
-            <TextView
-                android:id="@+id/detailCommentList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="허주영 : 넘나 맛있어요!"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/detailDiscountString" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-
-        android:id="@+id/detailMenuCategoryParentScrollView"
-        android:layout_below="@+id/detailRestaurantLayout"
-        >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:id="@+id/detailMenuCategoryParent"
-            >
-        </LinearLayout>
-    </HorizontalScrollView>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/detailMenuListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="false"
-            android:layout_below="@+id/detailMenuCategoryParentScrollView"
-            android:scrollbars="none">
-        </android.support.v7.widget.RecyclerView>
-
-</RelativeLayout>
-</ScrollView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:gravity="center"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:textSize="25sp"
+            android:id="@+id/callOrderButton"
+            android:layout_margin="10dp"
             android:text="전화주문"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="6"
-            android:gravity="center"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/callOrderButton"
+            android:id="@+id/cartButton"
             android:textSize="25sp"
+
+            android:layout_alignBaseline="@id/callOrderButton"
             android:layout_height="wrap_content"
             android:text="장바구니"/>
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cartCount"
+            android:textSize="20sp"
+
+            android:layout_toRightOf="@id/cartButton"
+            android:layout_marginTop="10dp"
+            />
+
+    </RelativeLayout>
 </LinearLayout>
 

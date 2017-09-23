@@ -5,36 +5,32 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.amazonaws.HttpMethod;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.example.heojuyeong.foodandroid.fragment.CurLocationFragment;
 import com.example.heojuyeong.foodandroid.fragment.CurrentOrderFragment;
 import com.example.heojuyeong.foodandroid.fragment.HomeFragment;
-import com.example.heojuyeong.foodandroid.fragment.CurLocationFragment;
 import com.example.heojuyeong.foodandroid.fragment.MenuFragment;
 import com.example.heojuyeong.foodandroid.fragment.SearchFragment;
 import com.example.heojuyeong.foodandroid.util.TedPermissionUtil;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
-import java.net.URL;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 
     private boolean homeFragmentFlag=true;
     FragmentManager fragmentManager=getFragmentManager();
     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+    RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+
 
     Button.OnClickListener onClickListener = new Button.OnClickListener() {
         @Override
@@ -75,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        RealmConfiguration realmConfiguration=new RealmConfiguration.Builder().inMemory().build();
+        Realm.setDefaultConfiguration(realmConfiguration);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         Logger.addLogAdapter(new AndroidLogAdapter());
         ConnectivityManager manager =

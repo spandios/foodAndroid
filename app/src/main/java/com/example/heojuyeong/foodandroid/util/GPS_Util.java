@@ -10,7 +10,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.widget.Toast;

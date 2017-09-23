@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid.listview;
+package com.example.heojuyeong.foodandroid.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

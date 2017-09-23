@@ -1,7 +1,10 @@
 package com.example.heojuyeong.foodandroid.common;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
+import io.realm.Realm;
 
 
 public class CommonLocationApplication extends Application {
@@ -10,7 +13,15 @@ public class CommonLocationApplication extends Application {
     private double lng;
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+
+    @Override
     public void onCreate() {
+        Realm.init(getApplicationContext());
         locationName="";
         super.onCreate();
     }

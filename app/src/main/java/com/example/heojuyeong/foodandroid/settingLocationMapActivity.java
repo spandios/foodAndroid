@@ -4,14 +4,13 @@ package com.example.heojuyeong.foodandroid;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
-
 import com.example.heojuyeong.foodandroid.http.GeocodingService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,29 +19,37 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 
 
 public class settingLocationMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private CommonLocationApplication commonLocationApplication;
-    private TextView titleLocation;
+    @BindView(R.id.currentLocationSettingByMapTitleLocation)
+    TextView titleLocation;
+    @BindView(R.id.currentLocationSettingByMapCancel)
+    TextView cancelTextView;
+    @BindView(R.id.currentLocationSettingByMapConfirmButton)
+    TextView confirmTextView;
     private LatLng latLng;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapfragment);
+        ButterKnife.bind(this);
 
-        TextView cancleTextView = (TextView) findViewById(R.id.currentLocationSettingByMapCancle);
-        titleLocation = (TextView) findViewById(R.id.currentLocationSettingByMapTitleLocation);
-        TextView confirmTextview = (TextView) findViewById(R.id.currentLocationSettingByMapConfirmButton);
+
+
         commonLocationApplication = (CommonLocationApplication) getApplication();
         titleLocation.setText(commonLocationApplication.getLocationName());
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.currentLocationSettingByMapCancle:
+                    case R.id.currentLocationSettingByMapCancel:
                         finish();
                         break;
                     case R.id.currentLocationSettingByMapConfirmButton:
@@ -54,8 +61,8 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
             }
         };
 
-        cancleTextView.setOnClickListener(onClickListener);
-        confirmTextview.setOnClickListener(onClickListener);
+        cancelTextView.setOnClickListener(onClickListener);
+        confirmTextView.setOnClickListener(onClickListener);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.currentLocationSettingByMap);
@@ -77,13 +84,11 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
         googleMap.getUiSettings().isMyLocationButtonEnabled();
         googleMap.getUiSettings().isZoomControlsEnabled();
 
-        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-            @Override
-            public void onCameraIdle() {
-                latLng=googleMap.getCameraPosition().target;
-                LocationAsyncTask asyncTask = new LocationAsyncTask();
-                asyncTask.execute(latLng);
-            }
+
+        googleMap.setOnCameraIdleListener(() -> {
+            latLng=googleMap.getCameraPosition().target;
+            LocationAsyncTask asyncTask = new LocationAsyncTask();
+            asyncTask.execute(latLng);
         });
 
 
@@ -103,6 +108,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
         @Override
         protected void onPostExecute(String locationName) {
             super.onPostExecute(locationName);
+
             titleLocation.setText(locationName);
         }
     }
