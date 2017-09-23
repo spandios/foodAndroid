@@ -19,7 +19,6 @@ import com.example.heojuyeong.foodandroid.http.MenuService;
 import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
 import com.example.heojuyeong.foodandroid.model.MenuCategoryItem;
 import com.example.heojuyeong.foodandroid.model.MenuItem;
-import com.example.heojuyeong.foodandroid.util.GeoCoding;
 import com.example.heojuyeong.foodandroid.util.IntentUtil;
 import com.example.heojuyeong.foodandroid.util.LayoutUtil;
 import com.orhanobut.logger.Logger;
@@ -78,8 +77,8 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         setScrollEvent();
         menuCategoryShow(restaurant.getRest_id());
         menuShow(40);
-        GeoCoding geoCoding=GeoCoding.getInstance(this);
-        Logger.d(geoCoding.getLocationName(33,127));
+
+
 
     }
 

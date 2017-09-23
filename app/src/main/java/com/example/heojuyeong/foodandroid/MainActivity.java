@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //permission setting
-        TedPermissionUtil tedPermissionUtil=new TedPermissionUtil(getBaseContext());
+        TedPermissionUtil tedPermissionUtil=new TedPermissionUtil(getApplicationContext());
 //
 //        CommonLocationApplication commonLocationApplication=(CommonLocationApplication)getApplicationContext();
 //        commonLocationApplication.settingLocation(getBaseContext());

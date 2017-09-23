@@ -10,7 +10,7 @@ import retrofit2.http.Query;
  * Created by heojuyeong on 2017. 7. 19..
  */
 
-public class CurrentLocationListSerivce {
+public class CurrentLocationListService {
     //                .baseUrl("http://10.0.2.2:3000")
         private interface CurrentLocationListInterface {
         @GET("api/restaurant/readCurrentLocation")

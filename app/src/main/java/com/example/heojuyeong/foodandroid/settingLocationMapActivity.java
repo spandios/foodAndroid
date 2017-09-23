@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
 import com.example.heojuyeong.foodandroid.http.GeocodingService;
+import com.example.heojuyeong.foodandroid.model.LocationItem;
+import com.example.heojuyeong.foodandroid.rx.RxBus;
+import com.example.heojuyeong.foodandroid.util.GeoCoding;
+import com.example.heojuyeong.foodandroid.util.RealmUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,7 +36,8 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
     TextView cancelTextView;
     @BindView(R.id.currentLocationSettingByMapConfirmButton)
     TextView confirmTextView;
-    private LatLng latLng;
+    private LocationItem locationItems;
+    LatLng latLng;
 
 
     @Override
@@ -40,24 +45,20 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapfragment);
         ButterKnife.bind(this);
-
-
-
+        locationItems= RealmUtil.findDataAll(LocationItem.class).get(0);
         commonLocationApplication = (CommonLocationApplication) getApplication();
-        titleLocation.setText(commonLocationApplication.getLocationName());
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.currentLocationSettingByMapCancel:
-                        finish();
-                        break;
-                    case R.id.currentLocationSettingByMapConfirmButton:
-                        commonLocationApplication.setLocationName(titleLocation.getText().toString());
-                        commonLocationApplication.setLatLng(latLng.latitude,latLng.longitude);
-                        finish();
-                        break;
-                }
+        titleLocation.setText(locationItems.getLocationName());
+        View.OnClickListener onClickListener = v -> {
+            switch (v.getId()) {
+                case R.id.currentLocationSettingByMapCancel:
+                    finish();
+                    break;
+                case R.id.currentLocationSettingByMapConfirmButton:
+                    LocationItem locationItem=new LocationItem(titleLocation.getText().toString(),latLng.latitude,latLng.longitude);
+                    RealmUtil.insertData(locationItem);
+                    RxBus.publish(1);
+                    finish();
+                    break;
             }
         };
 
@@ -74,7 +75,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         googleMap.setLatLngBoundsForCameraTarget(new LatLngBounds(new LatLng(35, 126), new LatLng(38, 128)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(getLatlng()));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(getLatLng()));
         googleMap.setMinZoomPreference(12.0f);
         googleMap.setMaxZoomPreference(21.0f);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -87,15 +88,15 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
 
         googleMap.setOnCameraIdleListener(() -> {
             latLng=googleMap.getCameraPosition().target;
-            LocationAsyncTask asyncTask = new LocationAsyncTask();
-            asyncTask.execute(latLng);
+            GeoCoding geoCoding=GeoCoding.getInstance(this);
+            titleLocation.setText(geoCoding.getLocationName(latLng.latitude,latLng.longitude));
         });
 
 
     }
 
-    public LatLng getLatlng() {
-        return new LatLng(commonLocationApplication.getLat(), commonLocationApplication.getLng());
+    public LatLng getLatLng() {
+        return new LatLng(locationItems.getLat(), locationItems.getLng());
     }
 
     private class LocationAsyncTask extends AsyncTask<LatLng, Void, String> {

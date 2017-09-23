@@ -14,6 +14,8 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.example.heojuyeong.foodandroid.model.LocationItem;
+
 
 public class GPS_Util extends Service implements LocationListener {
     private final Context mContext;
@@ -25,6 +27,8 @@ public class GPS_Util extends Service implements LocationListener {
     Location location;
     public double lat;
     public double lng;
+    public String locationName;
+
 
     //최소 GPS정보 업데이트 거리 10미터
     private static final long MIN_DISTNACE_CHANGE_FOR_UPDATES=10;
@@ -35,10 +39,24 @@ public class GPS_Util extends Service implements LocationListener {
 
     public GPS_Util(Context context){
         this.mContext=context;
+
         getLocation();
     }
 
-    public Location getLocation(){
+    public String getLocationName(){
+
+        GeoCoding geoCoding=GeoCoding.getInstance(mContext);
+        return geoCoding.getLocationName(lat,lng);
+
+
+    }
+    public void insertDB(){
+        LocationItem locationItem=new LocationItem(locationName,lat,lng);
+        RealmUtil.insertData(locationItem);
+
+    }
+
+    public void getLocation(){
         try{
             //locationManger객체설정
             locationManager=(LocationManager)mContext.getSystemService(LOCATION_SERVICE);
@@ -58,8 +76,10 @@ public class GPS_Util extends Service implements LocationListener {
                     if(locationManager!=null){
                         location=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if(location!=null){
+
                             lat=location.getLatitude();
                             lng=location.getLongitude();
+                            locationName=getLocationName();
                         }
                     }
                 }
@@ -72,13 +92,14 @@ public class GPS_Util extends Service implements LocationListener {
                             if(location!=null){
                                 lat=location.getLatitude();
                                 lng=location.getLongitude();
+                                locationName=getLocationName();
                             }
                         }
                     }
 
                 }
 
-                return location;
+
 
             }
 
@@ -86,8 +107,10 @@ public class GPS_Util extends Service implements LocationListener {
         }catch (SecurityException e){
             e.printStackTrace();
         }
-    return location;
+
     }
+
+
     public void stopUsingGPS(){
         if(locationManager!=null){
             locationManager.removeUpdates(GPS_Util.this);
@@ -137,6 +160,8 @@ public class GPS_Util extends Service implements LocationListener {
         alertDialog.show();
     }
 
+
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -162,5 +187,7 @@ public class GPS_Util extends Service implements LocationListener {
     public void onProviderDisabled(String s) {
 
     }
+
+
 }
 

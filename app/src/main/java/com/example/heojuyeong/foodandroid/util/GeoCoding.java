@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by heojuyeong on 2017. 9. 23..
@@ -17,7 +18,7 @@ public class GeoCoding {
     private static Geocoder geocoder;
 
     private GeoCoding(Context context){
-        geocoder=new Geocoder(context);
+        geocoder=new Geocoder(context, Locale.KOREA);
     }
 
     public static GeoCoding getInstance(Context context){
@@ -42,7 +43,7 @@ public class GeoCoding {
 
          }catch (Exception e){
             Logger.d(e);
-            return null;
+            return "지역을 읽을수 없습니다.";
          }
 
     }

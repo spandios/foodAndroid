@@ -2,18 +2,12 @@ package com.example.heojuyeong.foodandroid.util;
 
 import android.Manifest;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
-import com.example.heojuyeong.foodandroid.http.GeocodingService;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import retrofit2.Call;
 
 /**
  * Created by heojuyeong on 2017. 7. 11..
@@ -27,34 +21,31 @@ public class TedPermissionUtil {
             public void onPermissionGranted() {
                 //권한체크 된 후 위치 가져오기
                 GPS_Util gps_util=new GPS_Util(context);
-                final CommonLocationApplication commonLocationApplication=(CommonLocationApplication)context.getApplicationContext();
-                commonLocationApplication.setLatLng(gps_util.getLatitude(),gps_util.getLongitude());
-                new AsyncTask<String, Void, String>() {
-
-                    @Override
-                    protected String doInBackground(String... params) {
-                       Call<GeocodingService> call=GeocodingService.Geolcation.getCall(params[0]);
-
-                        try {
-
-                                return call.execute().body().getResults().get(3).formatted_address.substring(11);
-
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        commonLocationApplication.setLocationName(s);
-                        super.onPostExecute(s);
-
-
-                    }
-                }.execute(gps_util.getLatLng());
+                gps_util.insertDB();
+//                final CommonLocationApplication commonLocationApplication=(CommonLocationApplication)context.getApplicationContext();
+//                commonLocationApplication.setLatLng(gps_util.getLatitude(),gps_util.getLongitude());
+//                new AsyncTask<String, Void, String>() {
+//
+//                    @Override
+//                    protected String doInBackground(String... params) {
+//                       Call<GeocodingService> call=GeocodingService.Geolcation.getCall(params[0]);
+//                        try {
+//                                return call.execute().body().getResults().get(3).formatted_address.substring(11);
+//
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        return null;
+//                    }
+//
+//                    @Override
+//                    protected void onPostExecute(String s) {
+//                        commonLocationApplication.setLocationName(s);
+//                        super.onPostExecute(s);
+//
+//
+//                    }
+//                }.execute(gps_util.getLatLng());
             }
 
 
