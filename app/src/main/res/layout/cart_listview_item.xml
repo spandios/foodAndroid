@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/cart_delete_button"
         android:text="X"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
 

@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         //permission setting
         TedPermissionUtil tedPermissionUtil=new TedPermissionUtil(getApplicationContext());
 //
-//        CommonLocationApplication commonLocationApplication=(CommonLocationApplication)getApplicationContext();
+//        CommonValueApplication commonLocationApplication=(CommonValueApplication)getApplicationContext();
 //        commonLocationApplication.settingLocation(getBaseContext());
 
         fragmentTransaction.add(R.id.homeContent,new HomeFragment());

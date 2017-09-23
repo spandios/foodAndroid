@@ -3,14 +3,12 @@ package com.example.heojuyeong.foodandroid.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,14 +18,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.DetailRestaurantActivity;
 import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.adapter.CurrentLocationListAdapter;
-import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
-import com.example.heojuyeong.foodandroid.http.CurrentLocationListService;
-import com.example.heojuyeong.foodandroid.http.GeocodingService;
+import com.example.heojuyeong.foodandroid.http.RestaurantService;
 import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
 import com.example.heojuyeong.foodandroid.model.LocationItem;
 import com.example.heojuyeong.foodandroid.rx.RxBus;
 import com.example.heojuyeong.foodandroid.settingLocationMapActivity;
-import com.example.heojuyeong.foodandroid.staticval.StaticVal;
 import com.example.heojuyeong.foodandroid.util.GPS_Util;
 import com.example.heojuyeong.foodandroid.util.RealmUtil;
 import com.orhanobut.logger.Logger;
@@ -36,9 +31,14 @@ import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+
+import static com.example.heojuyeong.foodandroid.staticval.StaticVal.defaultCurrentLocationMenuMaxDistance;
+
 
 public class CurLocationFragment extends Fragment {
     @BindView(R.id.currentLocationTextView)
@@ -46,16 +46,28 @@ public class CurLocationFragment extends Fragment {
     @BindView(R.id.currentLocationListView)
     ListView currentLocationListView;
 
+    @OnClick({R.id.menu_type_japan, R.id.menu_type_chiken})
+    public void selectFoodType(TextView textView){
+
+            getCurLocationRestaurant(maxDistance, textView.getText().toString().substring(1,textView.getText().toString().length()));
+    }
+
     GPS_Util gps_util;
     MaterialDialog materialDialog;
     Activity mContext;
     LocationItem locationItems;
-    CommonLocationApplication commonLocationApplication;
+    int maxDistance= defaultCurrentLocationMenuMaxDistance;
+    String restaurantMenuType ;
+
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        //현재 위치 정보 db에서 가져옴
         locationItems=RealmUtil.findDataAll(LocationItem.class).get(0);
+        String menuType=mContext.getResources().getString(R.string.restaurant_menu_type1);
+        restaurantMenuType=menuType.substring(1,menuType.length());
+        Logger.d(restaurantMenuType);
         super.onCreate(savedInstanceState);
     }
 
@@ -66,7 +78,6 @@ public class CurLocationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_cur_location, container, false);
         ButterKnife.bind(this,view);
-        commonLocationApplication = (CommonLocationApplication) getActivity().getApplication();
         setDialog();
 
         return view;
@@ -76,15 +87,9 @@ public class CurLocationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getCurLocationRestaurant();
-        if(locationItems.getLocationName()!=null){
-            currentLocationTextView.setText(locationItems.getLocationName());
-        }else{
-            currentLocationTextView.setText("오류");
-        }
-
-
-        //ui변경가능
+        getCurLocationRestaurant(maxDistance, restaurantMenuType);
+        //현재위치명
+        currentLocationTextView.setText(locationItems.getLocationName());
 
     }
 
@@ -93,10 +98,11 @@ public class CurLocationFragment extends Fragment {
 
     @Override
     public void onResume() {
-        RxBus.subscribe(o -> {if((int)o==1){
+        //지도로 수동 위치를 지정하면 그 위치를 현재위치로 설정한뒤 근처 식당 재검색
+        RxBus.subscribe(o -> {if((boolean)o){
             locationItems=RealmUtil.findDataAll(LocationItem.class).get(0);
             currentLocationTextView.setText(locationItems.getLocationName());
-            getCurLocationRestaurant();
+            getCurLocationRestaurant(maxDistance, restaurantMenuType);
         }
         });
 
@@ -105,25 +111,8 @@ public class CurLocationFragment extends Fragment {
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mContext = (Activity) activity;
+        mContext =activity;
     }
-
-
-    private class LocationReloadAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            Call<GeocodingService> call = GeocodingService.Geolcation.getCall(params[0]);
-            return GeocodingService.Geolcation.getLocationName(call);
-        }
-
-        @Override
-        protected void onPostExecute(String locationName) {
-            currentLocationTextView.setText(locationName);
-            commonLocationApplication.setLocationName(locationName);
-            super.onPostExecute(locationName);
-        }
-    }
-
 
     public void setDialog(){
         materialDialog = new MaterialDialog.Builder(getActivity()).customView(R.layout.dialog_current_location, true).build();
@@ -133,25 +122,25 @@ public class CurLocationFragment extends Fragment {
         final TextView dialog_current_location_cancel_textview = (TextView) dialogView.findViewById(R.id.dialog_current_location_cancel_textview);
         Button.OnClickListener onClickListener = v -> {
             switch (v.getId()) {
+
                 case R.id.currentLocationTextView:
                     materialDialog.show();
                     break;
+                //현재위치에서 재 검색
                 case R.id.dialog_current_location_reload_button:
                     gps_util = new GPS_Util(getActivity().getBaseContext());
                     gps_util.insertDB();
                     locationItems=RealmUtil.findDataAll(LocationItem.class).get(0);
-                    Logger.d(locationItems.getLocationName());
                     currentLocationTextView.setText(locationItems.getLocationName());
-//                    commonLocationApplication.setLatLng(gps_util.getLatitude(), gps_util.getLongitude());
-//                    LocationReloadAsyncTask locationReloadAsyncTask = new LocationReloadAsyncTask();
-//                    locationReloadAsyncTask.execute(gps_util.getLatLng());
-                    getCurLocationRestaurant();
+                    getCurLocationRestaurant(maxDistance, restaurantMenuType);
                     materialDialog.dismiss();
                     break;
+                //지도에서 직접 위치 지정
                 case R.id.dialog_current_location_map_button:
                     materialDialog.dismiss();
                     Intent intent = new Intent(getActivity(), settingLocationMapActivity.class);
-                    startActivityForResult(intent, StaticVal.LocationSelectByMapRequest);
+                    startActivity(intent);
+
                 case R.id.dialog_current_location_cancel_textview:
                     materialDialog.dismiss();
                     break;
@@ -162,9 +151,11 @@ public class CurLocationFragment extends Fragment {
         dialog_current_location_map_button.setOnClickListener(onClickListener);
         dialog_current_location_cancel_textview.setOnClickListener(onClickListener);
     }
-
-    void getCurLocationRestaurant(){
-        Call<CurrentLocationRestaurantItem> call = CurrentLocationListService.getCall(locationItems.getLat(), locationItems.getLng(), 10000000, "일식");
+    /** Param 위치 거리 음식종류 **/
+    void getCurLocationRestaurant(int maxDistance,String menuType){
+        //기본 메뉴조건
+        Call<CurrentLocationRestaurantItem> call =
+        RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, menuType);
         call.enqueue(new Callback<CurrentLocationRestaurantItem>() {
             @Override
             public void onResponse(Call<CurrentLocationRestaurantItem> call, final Response<CurrentLocationRestaurantItem> response) {
@@ -173,27 +164,22 @@ public class CurLocationFragment extends Fragment {
                     if (response.body().getStatus() == 0) {
                         Toast.makeText(mContext, response.body().getErrorMessage(), Toast.LENGTH_LONG);
                     }
+
                     if(response.body().getRestaurants()!=null){
                         CurrentLocationListAdapter adapter = new CurrentLocationListAdapter(mContext, R.layout.fragment_cur_location_listview_item, response.body().getRestaurants());
                         currentLocationListView.setAdapter(adapter);
-                        currentLocationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                Parcelable restaurant = Parcels.wrap(parent.getAdapter().getItem(position));
-                                Intent detailRestaurantIntent = new Intent(getActivity().getApplicationContext(), DetailRestaurantActivity.class);
-                                Bundle extra = new Bundle();
-                                extra.putParcelable("restaurant", restaurant);
-                                detailRestaurantIntent.putExtras(extra);
-                                startActivity(detailRestaurantIntent);
+                        /**Go to DetailRestaurant**/
+                        currentLocationListView.setOnItemClickListener((parent, view, position, id) -> {
 
-
-                            }
+                            Parcelable restaurant = Parcels.wrap(parent.getAdapter().getItem(position));
+                            Intent detailRestaurantIntent = new Intent(getActivity().getApplicationContext(), DetailRestaurantActivity.class);
+                            Bundle extra = new Bundle();
+                            extra.putParcelable("restaurant", restaurant);
+                            detailRestaurantIntent.putExtras(extra);
+                            startActivity(detailRestaurantIntent);
                         });
                     }
-
-
-                    //클릭했을 경우 상세보기 activity 실행
 
 
                 } else {

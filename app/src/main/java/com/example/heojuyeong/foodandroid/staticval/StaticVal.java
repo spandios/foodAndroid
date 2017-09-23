@@ -5,6 +5,13 @@ package com.example.heojuyeong.foodandroid.staticval;
  */
 
 public class StaticVal {
-    public final static int LocationSelectByMapRequest=1;
+
+    //menu
+
+    public final static int defaultCurrentLocationMenuMaxDistance =100000; //km
+
+    //location
+    public final static boolean LocationSelectByMapRequest=true;
+
 
 }

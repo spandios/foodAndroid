@@ -78,21 +78,37 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
+                android:textSize="20sp"
                 android:layout_weight="1"
-                android:text="일식" />
+                android:id="@+id/menu_type_japan"
+                android:tag="@string/restaurant_menu_type1"
+                android:text="@string/restaurant_menu_type1" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:id="@+id/menu_type_chiken"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:tag="#치킨"
+                android:text="#치킨" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:tag="중식"
+                android:text="중식" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:text="치킨" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
+                android:textSize="20sp"
                 android:text="testCategory" />
             <TextView
                 android:layout_width="wrap_content"
@@ -100,13 +116,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:text="testCategory" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
+                android:textSize="20sp"
                 android:text="testCategory" />
         </LinearLayout>
     </HorizontalScrollView>

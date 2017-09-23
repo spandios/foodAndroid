@@ -10,7 +10,7 @@ import retrofit2.http.Query;
  * Created by heojuyeong on 2017. 7. 19..
  */
 
-public class CurrentLocationListService {
+public class RestaurantService {
     //                .baseUrl("http://10.0.2.2:3000")
         private interface CurrentLocationListInterface {
         @GET("api/restaurant/readCurrentLocation")
@@ -18,7 +18,7 @@ public class CurrentLocationListService {
 
     }
 
-    public static Call<CurrentLocationRestaurantItem> getCall(double curLat, double curLng, int maxDistance, String foodtype){
+    public static Call<CurrentLocationRestaurantItem> getCurrentLocationRestaurant(double curLat, double curLng, int maxDistance, String foodtype){
 
         CurrentLocationListInterface currentLocationListInterface= RetrofitBase.getInstance().getRetrofit().create(CurrentLocationListInterface.class);
         Call<CurrentLocationRestaurantItem> call=currentLocationListInterface.getCurrentLocationListItem(curLat,curLng,maxDistance,foodtype);

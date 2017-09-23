@@ -6,7 +6,6 @@ import android.location.Geocoder;
 
 import com.orhanobut.logger.Logger;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -35,14 +34,30 @@ public class GeoCoding {
     }
 
     public String getLocationName(double lat,double lng){
-
-        List<Address> addresses;
          try{
-             addresses=geocoder.getFromLocation(lat,lng,1);
-             return addresses.get(0).getAddressLine(0);
+             //좌표->주소
+             Address addresses;
+             addresses=geocoder.getFromLocation(lat,lng,1).get(0);
+             //구 없으면 시
+             String subLocality=(addresses.getSubLocality()!=null)? addresses.getSubLocality():addresses.getLocality();
+             //동 없으면 리?
+             String thoroughFare=(addresses.getThoroughfare()!=null)? addresses.getThoroughfare():addresses.getSubThoroughfare();
+
+
+             if(subLocality!=null&thoroughFare!=null){
+                 return subLocality+" "+thoroughFare;
+             }else{
+
+                 return addresses.getAddressLine(0).substring(12);
+             }
+
+
+
+
 
          }catch (Exception e){
             Logger.d(e);
+
             return "지역을 읽을수 없습니다.";
          }
 

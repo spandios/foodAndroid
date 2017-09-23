@@ -20,6 +20,7 @@ import java.util.ArrayList;
  * Created by heojuyeong on 2017. 7. 20..
  */
 
+
 public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationRestaurantItem.Restaurant>{
     private Context context;
     private int resource;
@@ -39,9 +40,8 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationRest
         View row=convertView;
         CurrentListViewHolder viewHolder;
 
-        //리스트 뷰  처음 호출 시 converview는 null이므로 첫 1회 viewholder를 생성한다.
-        if(row==null){
 
+        if(row==null){
             LayoutInflater inflater=LayoutInflater.from(context);
             row=inflater.inflate(resource,parent,false);
             viewHolder=new CurrentListViewHolder();
@@ -52,19 +52,15 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationRest
             viewHolder.cur_location_item_distance=(TextView)row.findViewById(R.id.cur_location_item_distance);
             row.setTag(viewHolder);
         }else{
-            //캐쉬된이후로는 viewholder를 가져와 findViewByID를 호출하지 않으므로 메모리 효율이 좋아진다 .
             viewHolder=(CurrentListViewHolder)row.getTag();
         }
+
         CurrentLocationRestaurantItem.Restaurant item=items.get(position);
-
-
         Picasso.with(context).load(item.getRest_picture()).resize(150,150).into(viewHolder.cur_location_item_image);
-
         viewHolder.cur_location_item_rest_name.setText(item.getName());
         viewHolder.cur_location_item_rating.setText(Double.toString(item.getRating()));
         viewHolder.cur_location_item_distance.setText(item.getDistance());
         viewHolder.cur_location_item_reviewcount.setText(Integer.toString(item.getReviewcount()));
-
         return row;
     }
 

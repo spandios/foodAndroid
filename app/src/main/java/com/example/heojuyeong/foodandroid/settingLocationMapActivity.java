@@ -10,10 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.heojuyeong.foodandroid.common.CommonLocationApplication;
 import com.example.heojuyeong.foodandroid.http.GeocodingService;
 import com.example.heojuyeong.foodandroid.model.LocationItem;
 import com.example.heojuyeong.foodandroid.rx.RxBus;
+import com.example.heojuyeong.foodandroid.staticval.StaticVal;
 import com.example.heojuyeong.foodandroid.util.GeoCoding;
 import com.example.heojuyeong.foodandroid.util.RealmUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,7 +29,7 @@ import retrofit2.Call;
 
 
 public class settingLocationMapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private CommonLocationApplication commonLocationApplication;
+
     @BindView(R.id.currentLocationSettingByMapTitleLocation)
     TextView titleLocation;
     @BindView(R.id.currentLocationSettingByMapCancel)
@@ -46,7 +46,6 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
         setContentView(R.layout.activity_mapfragment);
         ButterKnife.bind(this);
         locationItems= RealmUtil.findDataAll(LocationItem.class).get(0);
-        commonLocationApplication = (CommonLocationApplication) getApplication();
         titleLocation.setText(locationItems.getLocationName());
         View.OnClickListener onClickListener = v -> {
             switch (v.getId()) {
@@ -56,7 +55,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
                 case R.id.currentLocationSettingByMapConfirmButton:
                     LocationItem locationItem=new LocationItem(titleLocation.getText().toString(),latLng.latitude,latLng.longitude);
                     RealmUtil.insertData(locationItem);
-                    RxBus.publish(1);
+                    RxBus.publish(StaticVal.LocationSelectByMapRequest);
                     finish();
                     break;
             }
@@ -89,6 +88,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
         googleMap.setOnCameraIdleListener(() -> {
             latLng=googleMap.getCameraPosition().target;
             GeoCoding geoCoding=GeoCoding.getInstance(this);
+
             titleLocation.setText(geoCoding.getLocationName(latLng.latitude,latLng.longitude));
         });
 

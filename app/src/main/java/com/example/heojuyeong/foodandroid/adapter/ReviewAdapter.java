@@ -37,7 +37,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-            final MenuItem.Review reviewItem=items.get(position);
+        final MenuItem.Review reviewItem=items.get(position);
         Picasso.with(context).load(reviewItem.getReviewer().getProfile_image()).fit().into(holder.detailHotMenuReviewerImage);
         holder.detailHotMenuReviewerId.setText(reviewItem.getReviewer().getName());
         holder.detailHotMenuReviewContent.setText(reviewItem.getContent());

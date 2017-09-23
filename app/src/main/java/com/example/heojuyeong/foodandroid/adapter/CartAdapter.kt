@@ -21,22 +21,16 @@ import java.util.*
 class CartAdapter(private val mContext: Context, private var modelList: ArrayList<CartItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var cart_menu_quantity=1
     private var mItemClickListener: OnItemClickListener? = null
+//    fun updateList(modelList: ArrayList<CartItem>) {
+//        this.modelList = modelList
+//        notifyDataSetChanged()
+//    }
 
-
-    fun updateList(modelList: ArrayList<CartItem>) {
-        this.modelList = modelList
-        notifyDataSetChanged()
-
-    }
-
-
-    fun removeList(position:Int){
-
+    private fun removeList(position:Int){
         RealmUtil.removeDataById(CartItem::class.java, modelList[position].id)
         modelList.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, modelList.size)
-
     }
 
 
@@ -48,31 +42,26 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var optionPrice=0
-        //Here you can fill your row view
-
         if (holder is ViewHolder) {
-
             val model = getItem(position)
             holder.cart_menu_name.text=model.menu.menu_name
             holder.cart_menu_price.text=PriceUtil.comma_won(model.menu.menu_price)
 
+            //옵션 textView , 옵션 총 가격 계산
             for(i in model.option.indices){
                 optionPrice+=model.option[i].menu_option_price
                 val textView=TextView(mContext)
                 textView.text = model.option[i].menu_option_cateogory_name+" : "+model.option[i].menu_option_name
-//                if(i==model.option.size-1){
-//                    textView.text = model.option[i].menu_option_name
-//                }
                 holder.cart_menu_option_layout.addView(textView)
             }
 
             //수량
             holder.cart_menu_quantity.text=cart_menu_quantity.toString()
 
-            //optionTotalPrice
+            //총 옵션 가격
             holder.cart_menu_option_price.text= PriceUtil.comma_won(optionPrice)
 
-            //menuPrice +optionTotalPrice
+            //메뉴가격 + 옵션가격 = 총 가격
             holder.cart_menu_result_price.text= PriceUtil.plusPrice(PriceUtil.getString(holder.cart_menu_price),optionPrice)
 
             //목록삭제
@@ -83,7 +72,6 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
                     .map{Integer.parseInt(holder.cart_menu_quantity.text.toString())}
                     .filter { value->value>1}
                     .map{value->value-1}
-
                     .subscribe { value->
                         holder.cart_menu_quantity.text=value.toString()
 //                        holder.cart_menu_price.text = PriceUtil.minusPrice(PriceUtil.getString(holder.cart_menu_price),model.menu.menu_price)

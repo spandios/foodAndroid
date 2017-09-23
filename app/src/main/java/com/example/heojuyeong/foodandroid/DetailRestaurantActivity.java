@@ -19,8 +19,10 @@ import com.example.heojuyeong.foodandroid.http.MenuService;
 import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
 import com.example.heojuyeong.foodandroid.model.MenuCategoryItem;
 import com.example.heojuyeong.foodandroid.model.MenuItem;
+import com.example.heojuyeong.foodandroid.model.cart.CartItem;
 import com.example.heojuyeong.foodandroid.util.IntentUtil;
 import com.example.heojuyeong.foodandroid.util.LayoutUtil;
+import com.example.heojuyeong.foodandroid.util.RealmUtil;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailRestaurantActivity extends AppCompatActivity implements MenuListHotAdapter.OnItemClickListener, MenuListHotAdapter.OnCartAddClickListener, View.OnClickListener {
+public class DetailRestaurantActivity extends AppCompatActivity implements MenuListHotAdapter.OnItemClickListener, MenuListHotAdapter.OnCartCountClickListener, View.OnClickListener {
     @BindView(R.id.rest_name)
     TextView rest_name;
     @BindView(R.id.detailBackButton)
@@ -69,9 +71,10 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Parcel로 선택된 식당 정보 가져옴
+        /**from CurLocationFragment**/
         restaurant=Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
         setContentView(R.layout.activity_detail_restaurant);
-
         ButterKnife.bind(this);
         viewSetting();
         setScrollEvent();
@@ -84,11 +87,11 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 
     //Implement CartAddClick -> 장바구니 개수 가져옴
     @Override
-    public void onCartAddClick(int cartSize) {
+    public void onCartCount(int cartSize) {
         cartCount.setText(String.valueOf(cartSize));
     }
 
-    //Implement ItemClick -> 메뉴 클릭 시 상세 레이아웃 펼쳐짐
+    //Implement ItemClick -> 메뉴 클릭 시 우선 모든 레이아웃 상세 레이아웃 접은 뒤 해당 position의 상세 레이아웃 펼쳐짐
     @Override
     public void onItemClick(View view, int position) {
         for (int childCount = recyclerView.getChildCount(), i = 0; i < childCount; i++) {
@@ -113,11 +116,9 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
                 break;
 
             case R.id.detailTopCartButton:
-                Logger.d("rr");
                 IntentUtil.startActivity(this, CartActivity.class);
                 break;
             case R.id.cartButton:
-                Logger.d("rr");
                 IntentUtil.startActivity(this, CartActivity.class);
                 break;
         }
@@ -126,6 +127,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     @Override
     protected void onResume() {
         super.onResume();
+        cartCount.setText(String.valueOf(RealmUtil.getDataSize(CartItem.class)));
         headerScroll = false;
     }
 
@@ -191,13 +193,13 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 
 
     void menuShow(int menu_category_id) {
-        Call<ArrayList<MenuItem>> call = MenuService.getCall(menu_category_id);
+        Call<ArrayList<MenuItem>> call = MenuService.getMenu(menu_category_id);
         call.enqueue(new Callback<ArrayList<MenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
                 final MenuListHotAdapter adapter = new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(), restaurant);
-                adapter.setOnCartAddClickListener(DetailRestaurantActivity.this);
-                adapter.setmOnItemClickListener(DetailRestaurantActivity.this);
+                adapter.setOnCartCountClickListener(DetailRestaurantActivity.this);
+                adapter.setOnItemClickListener(DetailRestaurantActivity.this);
                 recyclerView.setFocusable(false);
                 recyclerView.setFocusableInTouchMode(false);
                 LayoutUtil.RecyclerViewSetting(DetailRestaurantActivity.this.getApplicationContext(),recyclerView);
@@ -225,5 +227,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         textView.setLayoutParams(params);
         return textView;
     }
+
+
 
 }
