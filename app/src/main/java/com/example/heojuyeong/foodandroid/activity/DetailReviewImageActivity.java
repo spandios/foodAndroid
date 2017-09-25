@@ -1,9 +1,10 @@
-package com.example.heojuyeong.foodandroid;
+package com.example.heojuyeong.foodandroid.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.example.heojuyeong.foodandroid.R;
 import com.squareup.picasso.Picasso;
 
 public class DetailReviewImageActivity extends AppCompatActivity {

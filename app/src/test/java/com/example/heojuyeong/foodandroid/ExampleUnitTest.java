@@ -53,7 +53,7 @@ public class ExampleUnitTest {
         publishSubject.onNext("1");
         publishSubject.onNext("1");
         publishSubject.onNext("1");
-        publishSubject.onComplete();
+
 
     }
 

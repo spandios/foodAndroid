@@ -1,16 +1,15 @@
-package com.example.heojuyeong.foodandroid;
+package com.example.heojuyeong.foodandroid.activity;
 
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.heojuyeong.foodandroid.http.GeocodingService;
+import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.model.LocationItem;
 import com.example.heojuyeong.foodandroid.rx.RxBus;
 import com.example.heojuyeong.foodandroid.staticval.StaticVal;
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
 
 
 public class settingLocationMapActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -99,20 +97,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
         return new LatLng(locationItems.getLat(), locationItems.getLng());
     }
 
-    private class LocationAsyncTask extends AsyncTask<LatLng, Void, String> {
-        @Override
-        protected String doInBackground(LatLng... params) {
-            Call<GeocodingService> call=GeocodingService.Geolcation.getCall(params[0]);
-            return GeocodingService.Geolcation.getLocationName(call);
-        }
 
-        @Override
-        protected void onPostExecute(String locationName) {
-            super.onPostExecute(locationName);
-
-            titleLocation.setText(locationName);
-        }
-    }
 
 
 

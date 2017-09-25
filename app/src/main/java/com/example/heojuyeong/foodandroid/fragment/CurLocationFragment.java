@@ -15,14 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.heojuyeong.foodandroid.DetailRestaurantActivity;
+import com.example.heojuyeong.foodandroid.activity.DetailRestaurantActivity;
 import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.adapter.CurrentLocationListAdapter;
 import com.example.heojuyeong.foodandroid.http.RestaurantService;
 import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
 import com.example.heojuyeong.foodandroid.model.LocationItem;
 import com.example.heojuyeong.foodandroid.rx.RxBus;
-import com.example.heojuyeong.foodandroid.settingLocationMapActivity;
+import com.example.heojuyeong.foodandroid.activity.settingLocationMapActivity;
 import com.example.heojuyeong.foodandroid.util.GPS_Util;
 import com.example.heojuyeong.foodandroid.util.RealmUtil;
 import com.orhanobut.logger.Logger;
@@ -41,17 +41,6 @@ import static com.example.heojuyeong.foodandroid.staticval.StaticVal.defaultCurr
 
 
 public class CurLocationFragment extends Fragment {
-    @BindView(R.id.currentLocationTextView)
-    TextView currentLocationTextView;
-    @BindView(R.id.currentLocationListView)
-    ListView currentLocationListView;
-
-    @OnClick({R.id.menu_type_japan, R.id.menu_type_chiken})
-    public void selectFoodType(TextView textView){
-
-            getCurLocationRestaurant(maxDistance, textView.getText().toString().substring(1,textView.getText().toString().length()));
-    }
-
     GPS_Util gps_util;
     MaterialDialog materialDialog;
     Activity mContext;
@@ -60,26 +49,34 @@ public class CurLocationFragment extends Fragment {
     String restaurantMenuType ;
 
 
+    @BindView(R.id.currentLocationTextView)
+    TextView currentLocationTextView;
+    @BindView(R.id.currentLocationListView)
+    ListView currentLocationListView;
+
+    /**음식 종류에 따른 식당목록 가져오기**/
+    @OnClick({R.id.menu_type_japan, R.id.menu_type_chiken})
+    public void selectFoodType(TextView textView){
+            getCurLocationRestaurant(maxDistance, textView.getText().toString().substring(1,textView.getText().toString().length()));
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         //현재 위치 정보 db에서 가져옴
         locationItems=RealmUtil.findDataAll(LocationItem.class).get(0);
+        Logger.d(locationItems);
         String menuType=mContext.getResources().getString(R.string.restaurant_menu_type1);
         restaurantMenuType=menuType.substring(1,menuType.length());
-        Logger.d(restaurantMenuType);
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_cur_location, container, false);
         ButterKnife.bind(this,view);
         setDialog();
-
         return view;
 
     }
@@ -92,9 +89,6 @@ public class CurLocationFragment extends Fragment {
         currentLocationTextView.setText(locationItems.getLocationName());
 
     }
-
-
-
 
     @Override
     public void onResume() {
@@ -160,13 +154,16 @@ public class CurLocationFragment extends Fragment {
             @Override
             public void onResponse(Call<CurrentLocationRestaurantItem> call, final Response<CurrentLocationRestaurantItem> response) {
                 if (response.isSuccessful()) {
+
                     //주변에 데이터 없는경우 에러메세지 TOAST
                     if (response.body().getStatus() == 0) {
                         Toast.makeText(mContext, response.body().getErrorMessage(), Toast.LENGTH_LONG);
                     }
 
                     if(response.body().getRestaurants()!=null){
+
                         CurrentLocationListAdapter adapter = new CurrentLocationListAdapter(mContext, R.layout.fragment_cur_location_listview_item, response.body().getRestaurants());
+
                         currentLocationListView.setAdapter(adapter);
 
                         /**Go to DetailRestaurant**/

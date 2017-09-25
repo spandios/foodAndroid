@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid;
+package com.example.heojuyeong.foodandroid.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.example.heojuyeong.foodandroid.R;
 import com.squareup.picasso.Picasso;
 
 public class IntroActivity extends AppCompatActivity{

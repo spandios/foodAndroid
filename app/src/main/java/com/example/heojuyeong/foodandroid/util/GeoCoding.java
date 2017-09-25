@@ -12,6 +12,7 @@ import java.util.Locale;
  * Created by heojuyeong on 2017. 9. 23..
  */
 
+//위치->주소명
 public class GeoCoding {
     private static GeoCoding geoCoding;
     private static Geocoder geocoder;
@@ -45,9 +46,11 @@ public class GeoCoding {
 
 
              if(subLocality!=null&thoroughFare!=null){
-                 return subLocality+" "+thoroughFare;
-             }else{
 
+                 return subLocality+" "+thoroughFare;
+
+             }else{
+                    Logger.d(addresses.getAddressLine(0));
                  return addresses.getAddressLine(0).substring(12);
              }
 

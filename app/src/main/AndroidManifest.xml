@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,15 +31,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAfKEtC2fKJgyDkMpW3Ha9AoH7i7QKnS5k" />
 
-        <activity android:name=".settingLocationMapActivity" />
+        <activity android:name=".activity.settingLocationMapActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".DetailRestaurantActivity" />
-        <activity android:name=".DetailReviewImageActivity" />
-        <activity android:name=".CartActivity" />
+        <activity android:name=".activity.DetailRestaurantActivity" />
+        <activity android:name=".activity.DetailReviewImageActivity" />
+        <activity android:name=".activity.CartActivity" />
 
     </application>
 

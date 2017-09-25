@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public class MenuCategoryItem {
     @SerializedName("results")
     ArrayList<MenuCategory> results;
-
-    @SerializedName("status")
     String status;
 
     public ArrayList<MenuCategory> getResults() {
@@ -27,16 +25,9 @@ public class MenuCategoryItem {
     }
     @Parcel
     public static class MenuCategory {
-        @SerializedName("menu_category_id")
         int menu_cate_gory_id;
-
-        @SerializedName("rest_id")
         int rest_id;
-
-        @SerializedName("cateName")
-        String cateNAme;
-
-        @SerializedName("cateDescription")
+        String cateName;
         String cateDescription;
 
         public int getMenu_cate_gory_id() {
@@ -47,8 +38,8 @@ public class MenuCategoryItem {
             return rest_id;
         }
 
-        public String getCateNAme() {
-            return cateNAme;
+        public String getCateName() {
+            return cateName;
         }
 
         public String getCateDescription() {

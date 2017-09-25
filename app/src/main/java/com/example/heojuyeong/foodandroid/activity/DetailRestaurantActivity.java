@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid;
+package com.example.heojuyeong.foodandroid.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.adapter.MenuListHotAdapter;
 import com.example.heojuyeong.foodandroid.http.MenuCategoryService;
 import com.example.heojuyeong.foodandroid.http.MenuService;
@@ -177,8 +178,8 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
                     ArrayList<MenuCategoryItem.MenuCategory> items = response.body().getResults();
 
                     for (int i = 0; i < items.size(); i++) {
-                        detailMenuCategoryParentLayoutInContent.addView(makeMenuCategory(items.get(i).getCateNAme(), items.get(i).getMenu_cate_gory_id()));
-                        detailMenuCategoryParentLayoutInHeader.addView(makeMenuCategory(items.get(i).getCateNAme(), items.get(i).getMenu_cate_gory_id()));
+                        detailMenuCategoryParentLayoutInContent.addView(makeMenuCategory(items.get(i).getCateName(), items.get(i).getMenu_cate_gory_id()));
+                        detailMenuCategoryParentLayoutInHeader.addView(makeMenuCategory(items.get(i).getCateName(), items.get(i).getMenu_cate_gory_id()));
                     }
                     //default popular menu show
 

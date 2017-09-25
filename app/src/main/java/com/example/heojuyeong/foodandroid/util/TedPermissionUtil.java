@@ -20,8 +20,7 @@ public class TedPermissionUtil {
             @Override
             public void onPermissionGranted() {
                 //권한체크 된 후 위치 가져오기
-                GPS_Util gps_util=new GPS_Util(context);
-                gps_util.insertDB();
+
             }
 
 

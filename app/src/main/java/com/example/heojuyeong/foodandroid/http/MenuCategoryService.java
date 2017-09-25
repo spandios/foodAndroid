@@ -11,13 +11,9 @@ import retrofit2.http.Query;
  */
 
 public class MenuCategoryService {
-
-
     interface MenuCategoryInterFace{
         @GET("api/menu/readMenuCategory")
         Call<MenuCategoryItem> getMenuCategory(@Query("rest_id") int rest_id);
-
-
     }
 
     public static Call<MenuCategoryItem> getMenuCategory(int rest_id){

@@ -10,11 +10,11 @@ import java.text.DecimalFormat;
 
 public class PriceUtil {
 
-    public static String getString(TextView textView) {
+    public static String TextViewToString(TextView textView) {
         return textView.getText().toString();
     }
 
-    public static String getString(CharSequence charSequence) {
+    public static String TextViewToString(CharSequence charSequence) {
         return charSequence.toString();
     }
 

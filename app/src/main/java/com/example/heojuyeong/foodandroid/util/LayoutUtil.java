@@ -15,14 +15,20 @@ import com.example.heojuyeong.foodandroid.R;
 
 public class LayoutUtil {
 
+
+
     public static void RecyclerViewSetting(Context context, RecyclerView recyclerView){
         final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context);
         nmLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(nmLayoutManager);
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), nmLayoutManager.getOrientation());
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider));
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_white));
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+
         recyclerView.setHasFixedSize(true);
 
     }

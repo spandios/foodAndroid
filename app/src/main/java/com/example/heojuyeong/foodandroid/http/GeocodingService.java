@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-
+//안씀
 public class GeocodingService {
 
     @SerializedName("status")

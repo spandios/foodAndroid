@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid;
+package com.example.heojuyeong.foodandroid.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -12,11 +12,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.fragment.CurLocationFragment;
 import com.example.heojuyeong.foodandroid.fragment.CurrentOrderFragment;
 import com.example.heojuyeong.foodandroid.fragment.HomeFragment;
 import com.example.heojuyeong.foodandroid.fragment.MenuFragment;
 import com.example.heojuyeong.foodandroid.fragment.SearchFragment;
+import com.example.heojuyeong.foodandroid.util.GPS_Util;
 import com.example.heojuyeong.foodandroid.util.TedPermissionUtil;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean homeFragmentFlag=true;
     FragmentManager fragmentManager=getFragmentManager();
     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-    RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+
 
 
     Button.OnClickListener onClickListener = new Button.OnClickListener() {
@@ -95,10 +97,12 @@ public class MainActivity extends AppCompatActivity {
 
         //permission setting
         TedPermissionUtil tedPermissionUtil=new TedPermissionUtil(getApplicationContext());
+
 //
 //        CommonValueApplication commonLocationApplication=(CommonValueApplication)getApplicationContext();
 //        commonLocationApplication.settingLocation(getBaseContext());
-
+        GPS_Util gps_util=new GPS_Util(this);
+        gps_util.insertDB();
         fragmentTransaction.add(R.id.homeContent,new HomeFragment());
         fragmentTransaction.commit();
 
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(onClickListener);
         mapButton.setOnClickListener(onClickListener);
         menuButton.setOnClickListener(onClickListener);
+
 
 
 

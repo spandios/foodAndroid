@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.heojuyeong.foodandroid.DetailReviewImageActivity;
+import com.example.heojuyeong.foodandroid.activity.DetailReviewImageActivity;
 import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.model.MenuItem;
 import com.squareup.picasso.Picasso;

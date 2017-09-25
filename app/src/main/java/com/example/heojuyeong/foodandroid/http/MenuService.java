@@ -17,9 +17,7 @@ public class MenuService {
     interface MenuInterFace{
         @GET("api/menu/readMenu")
         Call<ArrayList<MenuItem>> getMenu(@Query("menu_category_id") int menu_category_id);
-
     }
-
 
     public static Call<ArrayList<MenuItem>> getMenu(int menu_category_id){
         MenuService.MenuInterFace menuInterFace= RetrofitBase.getInstance().getRetrofit().create(MenuService.MenuInterFace.class);

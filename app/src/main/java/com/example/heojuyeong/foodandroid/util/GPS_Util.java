@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.heojuyeong.foodandroid.model.LocationItem;
 
-
+//위치정보얻기 Latitude longitude
 public class GPS_Util extends Service implements LocationListener {
     private final Context mContext;
 

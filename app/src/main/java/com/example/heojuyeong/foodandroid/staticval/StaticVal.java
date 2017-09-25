@@ -8,7 +8,7 @@ public class StaticVal {
 
     //menu
 
-    public final static int defaultCurrentLocationMenuMaxDistance =100000; //km
+    public final static int defaultCurrentLocationMenuMaxDistance =100000; //m
 
     //location
     public final static boolean LocationSelectByMapRequest=true;

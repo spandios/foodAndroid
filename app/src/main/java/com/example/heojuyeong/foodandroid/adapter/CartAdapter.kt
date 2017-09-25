@@ -62,7 +62,7 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
             holder.cart_menu_option_price.text= PriceUtil.comma_won(optionPrice)
 
             //메뉴가격 + 옵션가격 = 총 가격
-            holder.cart_menu_result_price.text= PriceUtil.plusPrice(PriceUtil.getString(holder.cart_menu_price),optionPrice)
+            holder.cart_menu_result_price.text= PriceUtil.plusPrice(PriceUtil.TextViewToString(holder.cart_menu_price),optionPrice)
 
             //목록삭제
             holder.cart_delete_button.setOnClickListener{removeList(position)}
@@ -74,8 +74,8 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
                     .map{value->value-1}
                     .subscribe { value->
                         holder.cart_menu_quantity.text=value.toString()
-//                        holder.cart_menu_price.text = PriceUtil.minusPrice(PriceUtil.getString(holder.cart_menu_price),model.menu.menu_price)
-                        holder.cart_menu_result_price.text = PriceUtil.minusPrice(PriceUtil.getString(holder.cart_menu_result_price),model.menu.menu_price)
+//                        holder.cart_menu_price.text = PriceUtil.minusPrice(PriceUtil.TextViewToString(holder.cart_menu_price),model.menu.menu_price)
+                        holder.cart_menu_result_price.text = PriceUtil.minusPrice(PriceUtil.TextViewToString(holder.cart_menu_result_price),model.menu.menu_price)
 
                     }
 
@@ -86,8 +86,8 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
                     .map{value->value+1}
                     .subscribe { value->
                         holder.cart_menu_quantity.text=value.toString()
-//                        holder.cart_menu_price.text = PriceUtil.plusPrice(PriceUtil.getString(holder.cart_menu_price),model.menu.menu_price)
-                        holder.cart_menu_result_price.text = PriceUtil.plusPrice(PriceUtil.getString(holder.cart_menu_result_price),model.menu.menu_price)
+//                        holder.cart_menu_price.text = PriceUtil.plusPrice(PriceUtil.TextViewToString(holder.cart_menu_price),model.menu.menu_price)
+                        holder.cart_menu_result_price.text = PriceUtil.plusPrice(PriceUtil.TextViewToString(holder.cart_menu_result_price),model.menu.menu_price)
                     }
         }
 

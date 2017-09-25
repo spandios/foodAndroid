@@ -8,11 +8,8 @@ import java.util.ArrayList;
 
 
 public class CurrentLocationRestaurantItem {
-    @SerializedName("restaurants")
     ArrayList<Restaurant> restaurants;
-    @SerializedName("status")
     private int status;
-    @SerializedName("message")
     private String errorMessage;
     public int getStatus(){return status;}
     public String getErrorMessage(){return errorMessage;}
@@ -22,52 +19,21 @@ public class CurrentLocationRestaurantItem {
 
     @Parcel
     public static class Restaurant  {
-
-
-        @SerializedName("rest_id")
         int rest_id;
-
-        @SerializedName("name")
         String name;
-
-        @SerializedName("tel")
         String tel;
-
-        @SerializedName("address")
         String address;
-
         @SerializedName("restpicture")
         String rest_picture;
-
-        @SerializedName("openhour")
         String openhour;
-
-        @SerializedName("holiday")
         String holiday;
-
-        @SerializedName("rating")
         double rating;
-
-        @SerializedName("likes")
         int likes;
-
-        @SerializedName("reviewcount")
         int reviewcount;
-
-        @SerializedName("avg_cooking_time")
         String avg_cooking_time;
-
-        @SerializedName("discount")
         String discount;
-
-        @SerializedName("rest_admin_id")
         int rest_admin_id;
-
-
-        @SerializedName("distance")
         String distance;
-
-
 
         public int getReviewcount(){
             return reviewcount;
@@ -124,53 +90,7 @@ public class CurrentLocationRestaurantItem {
             this.avg_cooking_time = avg_cooking_time;
         }
 
-        public void setRest_id(int rest_id) {
-            this.rest_id = rest_id;
-        }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setTel(String tel) {
-            this.tel = tel;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public void setRest_picture(String rest_picture) {
-            this.rest_picture = rest_picture;
-        }
-
-        public void setOpenhour(String openhour) {
-            this.openhour = openhour;
-        }
-
-        public void setHoliday(String holiday) {
-            this.holiday = holiday;
-        }
-
-        public void setRating(int rating) {
-            this.rating = rating;
-        }
-
-        public void setLikes(int likes) {
-            this.likes = likes;
-        }
-
-        public void setReviewcount(int reviewcount) {
-            this.reviewcount = reviewcount;
-        }
-
-        public void setRest_admin_id(int rest_admin_id) {
-            this.rest_admin_id = rest_admin_id;
-        }
-
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
 
     }
 

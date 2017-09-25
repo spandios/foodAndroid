@@ -141,18 +141,13 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         for (int i = 0; i < options.size(); i++) {
             final int index = i;
             final ArrayList<MenuItem.Options.Option> optionItem = options.get(i).getOption();
-
             final MaterialDialog optionDialog = new MaterialDialog.Builder(context).customView(R.layout.dailog_menu_option, true).build();
-
             final View optionDialogView = optionDialog.getView();
-
             TextView category_name = (TextView) optionDialogView.findViewById(R.id.dialog_option_category_name);
             TextView category_leftCount = (TextView) optionDialogView.findViewById(R.id.dialog_option_category_count);
             TextView category_necessary = (TextView) optionDialogView.findViewById(R.id.dialog_option_category_necessary);
             final TextView dialog_totalPrice = (TextView) optionDialogView.findViewById(R.id.dialog_totalPrice);
-
             final RecyclerView optionListView = (RecyclerView) optionDialogView.findViewById(R.id.dialog_menu_option_listview);
-
             LinearLayout dialog_menu_option_confirm_layout = (LinearLayout) optionDialogView.findViewById(R.id.dialog_menu_option_confirm_layout);
 
 
@@ -163,22 +158,18 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             category_leftCount.setText("(" + (i + 1) + "/" + options.size() + ")");
             category_necessary.setText((options.get(i).getNecessary() == 1) ? "필수" : "필수아님");
             dialog_totalPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
-
-
             OptionAdapter.SelectCLickListener selectCLickListener = (isPlus, position) -> {
                 RecyclerView.ViewHolder viewHolder = optionListView.getChildViewHolder(optionListView.getChildAt(position));
                 TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
-
                 dialog_totalPrice.setText((isPlus.equals("plus")) ?
-                        PriceUtil.plusPrice(PriceUtil.getString(optionPrice), PriceUtil.getString(dialog_totalPrice)) :
-                        PriceUtil.minusPrice(PriceUtil.getString(optionPrice), PriceUtil.getString(dialog_totalPrice)));
+                        PriceUtil.plusPrice(PriceUtil.TextViewToString(optionPrice), PriceUtil.TextViewToString(dialog_totalPrice)) :
+                        PriceUtil.minusPrice(PriceUtil.TextViewToString(optionPrice), PriceUtil.TextViewToString(dialog_totalPrice)));
             };
+
 
             /**option content**/
             //클릭 안 되어있는 라디오를 클릭했을 때만 이벤트일어남
             OptionAdapter.RadioClickListener radioClickListener = (position) -> {
-
-
                 //클릭 되어있는 라디오만 해제한뒤
                 for (int childCount = optionListView.getChildCount(), j = 0; j < childCount; j++) {
                     RecyclerView.ViewHolder viewHolder = optionListView.getChildViewHolder(optionListView.getChildAt(j));
@@ -186,7 +177,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
                     if (radioButton.isChecked()) {
                         radioButton.setChecked(false);
                         TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
-                        dialog_totalPrice.setText(PriceUtil.minusPrice(PriceUtil.getString(dialog_totalPrice), PriceUtil.getString(optionPrice)));
+                        dialog_totalPrice.setText(PriceUtil.minusPrice(PriceUtil.TextViewToString(dialog_totalPrice), PriceUtil.TextViewToString(optionPrice)));
                     }
                 }
 
@@ -195,8 +186,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
                 RadioButton radioButton = (RadioButton) viewHolder.itemView.findViewById(R.id.dialog_menu_option_radio);
                 TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
                 radioButton.setChecked(true);
-                dialog_totalPrice.setText(PriceUtil.plusPrice(PriceUtil.getString(dialog_totalPrice), PriceUtil.getString(optionPrice)));
-
+                dialog_totalPrice.setText(PriceUtil.plusPrice(PriceUtil.TextViewToString(dialog_totalPrice), PriceUtil.TextViewToString(optionPrice)));
 
             };
 
