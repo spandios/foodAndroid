@@ -129,7 +129,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="리뷰[갯수]"
                     android:textSize="20sp"
                     android:layout_toRightOf="@id/detailHotMenuRating"
                     android:layout_alignBaseline="@+id/detailHotMenuRating"

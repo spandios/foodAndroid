@@ -23,7 +23,10 @@ public class CartMenu extends RealmObject {
         this.menu_price = menu_price;
         this.menu_description = menu_description;
         this.menu_avgtime = menu_avgtime;
+
     }
+
+
 
     public int getMenu_id() {
         return menu_id;

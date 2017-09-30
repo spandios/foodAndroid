@@ -22,7 +22,7 @@
             <!--android:layout_height="match_parent"-->
             <!--android:id="@+id/HomeFragment"-->
             <!--android:name="com.example.heojuyeong.foodandroid.fragment.HomeFragment"-->
-            <!--tools:layout="@layout/activity_home_fragment" />-->
+            <!--tools:layout="@layout/fragment_home" />-->
 
 
     </LinearLayout>

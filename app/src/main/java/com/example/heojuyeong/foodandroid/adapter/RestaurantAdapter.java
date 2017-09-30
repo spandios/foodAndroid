@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,12 +21,12 @@ import java.util.ArrayList;
  */
 
 
-public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationRestaurantItem.Restaurant>{
+public class RestaurantAdapter extends ArrayAdapter<RestaurantItem.Restaurant>{
     private Context context;
     private int resource;
-    private ArrayList<CurrentLocationRestaurantItem.Restaurant> items;
+    private ArrayList<RestaurantItem.Restaurant> items;
 
-    public CurrentLocationListAdapter(Context context, int resource, ArrayList<CurrentLocationRestaurantItem.Restaurant> items){
+    public RestaurantAdapter(Context context, int resource, ArrayList<RestaurantItem.Restaurant> items){
         super(context,resource,items);
         this.context=context;
         this.resource=resource;
@@ -55,7 +55,7 @@ public class CurrentLocationListAdapter extends ArrayAdapter<CurrentLocationRest
             viewHolder=(CurrentListViewHolder)row.getTag();
         }
 
-        CurrentLocationRestaurantItem.Restaurant item=items.get(position);
+        RestaurantItem.Restaurant item=items.get(position);
         Picasso.with(context).load(item.getRest_picture()).resize(150,150).into(viewHolder.cur_location_item_image);
         viewHolder.cur_location_item_rest_name.setText(item.getName());
         viewHolder.cur_location_item_rating.setText(Double.toString(item.getRating()));

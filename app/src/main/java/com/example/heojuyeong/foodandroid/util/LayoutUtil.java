@@ -30,8 +30,9 @@ public class LayoutUtil {
 
 
         recyclerView.setHasFixedSize(true);
-
     }
+
+
 
 
 

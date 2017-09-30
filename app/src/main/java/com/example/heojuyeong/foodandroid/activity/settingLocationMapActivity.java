@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.model.LocationItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.LocationItem;
 import com.example.heojuyeong.foodandroid.rx.RxBus;
 import com.example.heojuyeong.foodandroid.staticval.StaticVal;
 import com.example.heojuyeong.foodandroid.util.GeoCoding;
@@ -41,7 +41,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mapfragment);
+        setContentView(R.layout.activity_setting_location_map);
         ButterKnife.bind(this);
         locationItems= RealmUtil.findDataAll(LocationItem.class).get(0);
         titleLocation.setText(locationItems.getLocationName());

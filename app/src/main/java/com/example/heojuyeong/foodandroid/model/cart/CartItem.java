@@ -16,9 +16,13 @@ public class CartItem extends RealmObject {
     RealmList<CartOption> option;
     CartRestaurant restaurant;
 
+    String menu_count;
+    String totalPrice;
+
     public CartItem(){
 
     }
+
     public CartItem(int id, CartMenu menu,CartRestaurant cartRestaurant,RealmList<CartOption> option) {
         this.id = id;
         this.menu = menu;
@@ -30,6 +34,22 @@ public class CartItem extends RealmObject {
         this.id = id;
         this.menu = menu;
         this.restaurant = restaurant;
+    }
+
+    public String getMenu_count() {
+        return menu_count;
+    }
+
+    public void setMenu_count(String menu_count) {
+        this.menu_count = menu_count;
+    }
+
+    public String getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public RealmList<CartOption> getOption() {

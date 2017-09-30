@@ -1,9 +1,10 @@
 package com.example.heojuyeong.foodandroid.activity;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.adapter.MenuListHotAdapter;
+import com.example.heojuyeong.foodandroid.adapter.MenuListAdapter;
+import com.example.heojuyeong.foodandroid.adapter.ReviewAdapter;
 import com.example.heojuyeong.foodandroid.http.MenuCategoryService;
+import com.example.heojuyeong.foodandroid.http.MenuReviewService;
 import com.example.heojuyeong.foodandroid.http.MenuService;
-import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
-import com.example.heojuyeong.foodandroid.model.MenuCategoryItem;
-import com.example.heojuyeong.foodandroid.model.MenuItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItem;
+import com.example.heojuyeong.foodandroid.model.menu.MenuCategoryItem;
+import com.example.heojuyeong.foodandroid.model.menu.MenuItem;
+import com.example.heojuyeong.foodandroid.model.menu.ReviewItem;
 import com.example.heojuyeong.foodandroid.model.cart.CartItem;
 import com.example.heojuyeong.foodandroid.util.IntentUtil;
 import com.example.heojuyeong.foodandroid.util.LayoutUtil;
@@ -37,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailRestaurantActivity extends AppCompatActivity implements MenuListHotAdapter.OnItemClickListener, MenuListHotAdapter.OnCartCountClickListener, View.OnClickListener {
+public class DetailRestaurantActivity extends AppCompatActivity implements MenuListAdapter.OnItemClickListener, MenuListAdapter.OnCartCountClickListener, View.OnClickListener {
     @BindView(R.id.rest_name)
     TextView rest_name;
     @BindView(R.id.detailBackButton)
@@ -56,35 +61,30 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     TextView discount;
     @BindView(R.id.detailMenuListView)
     RecyclerView recyclerView;
-    @BindView(R.id.detailRestaurantScrollView)
-    NestedScrollView detailRestaurantScrollView;
     @BindView(R.id.cartCount)
     TextView cartCount;
     @BindView(R.id.detailMenuCategoryParentLayoutInContentScrollView)
     HorizontalScrollView detailMenuCategoryParentLayoutInContentScrollView;
-    @BindView(R.id.detailMenuCategoryParentLayoutInHeaderScrollView)
-    HorizontalScrollView detailMenuCategoryParentLayoutInHeaderScrollView;
+    @BindView(R.id.detailMenuCategoryParentLayoutInContent)
+    LinearLayout detailMenuCategoryParentLayoutInContent;
 
 
-    CurrentLocationRestaurantItem.Restaurant restaurant;
-    boolean headerScroll = false;
+    RestaurantItem.Restaurant restaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Parcel로 선택된 식당 정보 가져옴
         /**from CurLocationFragment**/
-        restaurant=Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
+        restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
         setContentView(R.layout.activity_detail_restaurant);
         ButterKnife.bind(this);
         viewSetting();
-        setScrollEvent();
         menuCategoryShow(restaurant.getRest_id());
-        menuShow(40);
-
 
 
     }
+
 
     //Implement CartAddClick -> 장바구니 개수 가져옴
     @Override
@@ -92,18 +92,53 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         cartCount.setText(String.valueOf(cartSize));
     }
 
-    //Implement ItemClick -> 메뉴 클릭 시 우선 모든 레이아웃 상세 레이아웃 접은 뒤 해당 position의 상세 레이아웃 펼쳐짐
+
+    //Implement ItemClick -> 해당 position의 상세 레이아웃 펼쳐짐
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick(View view, int position, int menu_id) {
+        //메뉴 클릭 시 우선 모든 레이아웃 상세 레이아웃 접은 뒤
+        TextView reviewText=(TextView)view.findViewById(R.id.detailHotMenuReview);
+
         for (int childCount = recyclerView.getChildCount(), i = 0; i < childCount; i++) {
-            RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
-            viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.VISIBLE);
-            viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
+            RecyclerView.ViewHolder allViewHolder = recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
+            allViewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.VISIBLE);
+            allViewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
         }
-//                        ((LinearLayoutManager)recyclerView.getLayoutManager()).scrollToPositionWithOffset(position,5);
-        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
-        viewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.GONE);
-        viewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
+
+
+
+        MenuReviewService.getReview(menu_id).enqueue(new Callback<ArrayList<ReviewItem>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ReviewItem>> call, Response<ArrayList<ReviewItem>> response) {
+                if(response.isSuccessful()){
+                    if(response.body().size()>0){
+                        view.findViewById(R.id.detailHotMenuRating).setOnClickListener(v -> {
+                            reviewDialogShow(DetailRestaurantActivity.this,response.body());
+                        });
+                        reviewText.setOnClickListener(v -> {
+                            reviewDialogShow(DetailRestaurantActivity.this,response.body());
+                        });
+                        reviewText.setText("리뷰[" + response.body().size() + "]");
+
+                    }else{
+                        reviewText.setText("리뷰[0]");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ReviewItem>> call, Throwable t) {
+                Logger.d(t);
+            }
+        });
+
+        //클릭한 해당 포지션 상세 레이아웃 펼쳐짐
+
+        ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(position, 5);
+        view.findViewById(R.id.masterHotMenu).setVisibility(View.GONE);
+        view.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
@@ -129,11 +164,14 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     protected void onResume() {
         super.onResume();
         cartCount.setText(String.valueOf(RealmUtil.getDataSize(CartItem.class)));
-        headerScroll = false;
+
     }
 
 
-    void viewSetting(){
+    void viewSetting() {
+        recyclerView.setFocusable(false);
+        recyclerView.setFocusableInTouchMode(false);
+        LayoutUtil.RecyclerViewSetting(DetailRestaurantActivity.this.getApplicationContext(), recyclerView);
         rest_name.setText(restaurant.getName());
         Picasso.with(this).load(restaurant.getRest_picture()).resize(150, 150).into(restImage);
         detailRating.setText(Double.toString(restaurant.getRating()));
@@ -144,47 +182,26 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     }
 
 
-
-
-    void setScrollEvent() {
-        final View rootView = getWindow().getDecorView().getRootView();
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(
-                () -> detailRestaurantScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-
-                    if (detailRestaurantScrollView.getScrollY() > detailMenuCategoryParentLayoutInContentScrollView.getY()) {
-                        if (!headerScroll) {
-                            detailMenuCategoryParentLayoutInContentScrollView.setVisibility(View.GONE);
-                            detailMenuCategoryParentLayoutInHeaderScrollView.setVisibility(View.VISIBLE);
-                            headerScroll = true;
-                        }
-                    } else {
-                        if (headerScroll) {
-                            detailMenuCategoryParentLayoutInHeaderScrollView.setVisibility(View.GONE);
-                            detailMenuCategoryParentLayoutInContentScrollView.setVisibility(View.VISIBLE);
-                            headerScroll = false;
-                        }
-                    }
-                }));
-    }
-
     void menuCategoryShow(int rest_id) {
-        LinearLayout detailMenuCategoryParentLayoutInContent=(LinearLayout)findViewById(R.id.detailMenuCategoryParentLayoutInContent);
-        LinearLayout detailMenuCategoryParentLayoutInHeader=(LinearLayout)findViewById(R.id.detailMenuCategoryParentLayoutInHeader);
-        Call<MenuCategoryItem> call = MenuCategoryService.getMenuCategory(rest_id);
-        call.enqueue(new Callback<MenuCategoryItem>() {
+
+        MenuCategoryService.getMenuCategory(rest_id).enqueue(new Callback<MenuCategoryItem>() {
             @Override
             public void onResponse(Call<MenuCategoryItem> call, Response<MenuCategoryItem> response) {
                 if (response.body().getStatus().equals("SUCCESS")) {
                     ArrayList<MenuCategoryItem.MenuCategory> items = response.body().getResults();
 
                     for (int i = 0; i < items.size(); i++) {
-                        detailMenuCategoryParentLayoutInContent.addView(makeMenuCategory(items.get(i).getCateName(), items.get(i).getMenu_cate_gory_id()));
-                        detailMenuCategoryParentLayoutInHeader.addView(makeMenuCategory(items.get(i).getCateName(), items.get(i).getMenu_cate_gory_id()));
-                    }
-                    //default popular menu show
 
+                        detailMenuCategoryParentLayoutInContent.addView(makeMenuCategory(items.get(i).getCateName(), items.get(i).getMenu_cate_gory_id()));
+                    }
+                    //default first  menu show
+                    menuShow(items.get(0).getMenu_cate_gory_id());
+
+                } else {
+                    Logger.d("not result menuCategory");
                 }
             }
+
             @Override
             public void onFailure(Call<MenuCategoryItem> call, Throwable t) {
                 Logger.d(t);
@@ -194,18 +211,15 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 
 
     void menuShow(int menu_category_id) {
-        Call<ArrayList<MenuItem>> call = MenuService.getMenu(menu_category_id);
-        call.enqueue(new Callback<ArrayList<MenuItem>>() {
+        MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<MenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
-                final MenuListHotAdapter adapter = new MenuListHotAdapter(DetailRestaurantActivity.this, response.body(), restaurant);
+                final MenuListAdapter adapter = new MenuListAdapter(DetailRestaurantActivity.this, response.body(), restaurant);
                 adapter.setOnCartCountClickListener(DetailRestaurantActivity.this);
                 adapter.setOnItemClickListener(DetailRestaurantActivity.this);
-                recyclerView.setFocusable(false);
-                recyclerView.setFocusableInTouchMode(false);
-                LayoutUtil.RecyclerViewSetting(DetailRestaurantActivity.this.getApplicationContext(),recyclerView);
                 recyclerView.setAdapter(adapter);
             }
+
             @Override
             public void onFailure(Call<ArrayList<MenuItem>> call, Throwable t) {
                 Logger.d(t);
@@ -214,21 +228,35 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     }
 
 
+    private void reviewDialogShow(Activity activity, ArrayList<ReviewItem> reviewItem) {
+        MaterialDialog reviewDialog = new MaterialDialog.Builder(activity).customView(R.layout.dialog_review_listview, true).build();
+        View reviewDialogView = reviewDialog.getView();
+        RecyclerView reviewListView = (RecyclerView) reviewDialogView.findViewById(R.id.reviewListView);
+        ReviewAdapter reviewAdapter = new ReviewAdapter(activity.getApplicationContext(), reviewItem);
+        LayoutUtil.RecyclerViewSetting(activity.getApplicationContext(), reviewListView);
+        reviewListView.setAdapter(reviewAdapter);
+        reviewDialog.show();
+    }
+
     //메뉴카테고리 텍스트뷰 생성
     TextView makeMenuCategory(String name, int id) {
         TextView textView = new TextView(getApplicationContext());
         textView.setText(name);
         textView.setTextSize(20);
-        textView.setId(id);
         //menuShow
         textView.setOnClickListener(view -> menuShow(view.getId()));
-        textView.setTextColor(Color.WHITE);
+        textView.setTextColor(Color.BLACK);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.setMargins(60, 0, 0, 0);
         textView.setLayoutParams(params);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuShow(id);
+            }
+        });
         return textView;
     }
-
 
 
 }

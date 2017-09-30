@@ -18,13 +18,8 @@ import com.example.heojuyeong.foodandroid.fragment.CurrentOrderFragment;
 import com.example.heojuyeong.foodandroid.fragment.HomeFragment;
 import com.example.heojuyeong.foodandroid.fragment.MenuFragment;
 import com.example.heojuyeong.foodandroid.fragment.SearchFragment;
-import com.example.heojuyeong.foodandroid.util.GPS_Util;
 import com.example.heojuyeong.foodandroid.util.TedPermissionUtil;
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,11 +69,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RealmConfiguration realmConfiguration=new RealmConfiguration.Builder().inMemory().build();
-        Realm.setDefaultConfiguration(realmConfiguration);
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Logger.addLogAdapter(new AndroidLogAdapter());
+
         ConnectivityManager manager =
                 (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -101,8 +93,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        CommonValueApplication commonLocationApplication=(CommonValueApplication)getApplicationContext();
 //        commonLocationApplication.settingLocation(getBaseContext());
-        GPS_Util gps_util=new GPS_Util(this);
-        gps_util.insertDB();
+
         fragmentTransaction.add(R.id.homeContent,new HomeFragment());
         fragmentTransaction.commit();
 

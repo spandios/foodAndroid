@@ -4,8 +4,23 @@ apply plugin: 'kotlin-android'
 apply plugin: "kotlin-android-extensions"
 apply plugin: 'me.tatarka.retrolambda' // ----- add
 android {
+
+    //개발일때만 minsdk version21 multiDex 속도 증가
+    productFlavors {
+        dev {
+            dimension "stage"
+            minSdkVersion 21
+            versionCode 100
+        }
+        prd {
+            dimension "stage"
+            versionCode new Date().format('yyMMddHHmm').toInteger()
+        }
+
+    }
     compileSdkVersion 24
     buildToolsVersion "25.0.3"
+
     defaultConfig {
         applicationId "com.example.heojuyeong.foodandroid"
         minSdkVersion 16
@@ -23,6 +38,7 @@ android {
         exclude 'META-INF/rxjava.properties'
     }
     buildTypes {
+        ext.enableCrashlytics = false
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -38,10 +54,14 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    annotationProcessor 'org.parceler:parceler:1.1.9'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1"
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.1"
+    // Test dependency
+//    androidTestCompile 'com.android.support.test:rules:0.5'
+//    androidTestCompile 'com.android.support.test:runner:0.5'
+    
+
+
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.google.code.gson:gson:2.7'
@@ -53,10 +73,10 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.google.android.gms:play-services-location:10.0.1'
-    compile 'com.amazonaws:aws-android-sdk-core:2.2.+'
-    compile 'com.amazonaws:aws-android-sdk-s3:2.2.+'
-    compile 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
-    compile 'com.amazonaws:aws-android-sdk-cognito:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-core:2.2.0'
+    compile 'com.amazonaws:aws-android-sdk-s3:2.2.0'
+    compile 'com.amazonaws:aws-android-sdk-ddb:2.2.0'
+    compile 'com.amazonaws:aws-android-sdk-cognito:2.2.0'
     compile 'com.android.support:design:24.2.1'
     compile 'jp.wasabeef:picasso-transformations:2.1.2'
     compile 'com.android.support:recyclerview-v7:24.2.0'
@@ -66,13 +86,16 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.android.support:multidex:1.0.1'
-    androidTestCompile 'com.android.support:support-annotations:25.3.1'
-    // Test dependency
-//    androidTestCompile 'com.android.support.test:rules:0.5'
-//    androidTestCompile 'com.android.support.test:runner:0.5'
+    compile 'com.github.amarjain07:StickyScrollView:1.0.2'
+    compile ('com.wdullaer:materialdatetimepicker:3.3.0') {
+        exclude group: 'com.android.support'
+    }
+
+
     testCompile 'junit:junit:4.12'
-
-
+    androidTestCompile 'com.android.support:support-annotations:25.3.1'
+    annotationProcessor 'org.parceler:parceler:1.1.9'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 repositories {
     mavenCentral()

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.example.heojuyeong.foodandroid.activity.DetailRestaurantActivity">
@@ -39,27 +40,29 @@
 
     </RelativeLayout>
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:visibility="gone"
-        android:id="@+id/detailMenuCategoryParentLayoutInHeaderScrollView"
-        >
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+    <!--<HorizontalScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scrollbars="none"-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/detailMenuCategoryParentLayoutInHeaderScrollView"-->
+        <!--&gt;-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal"-->
 
-            android:id="@+id/detailMenuCategoryParentLayoutInHeader"
-            >
-        </LinearLayout>
-    </HorizontalScrollView>
+            <!--android:id="@+id/detailMenuCategoryParentLayoutInHeader"-->
+            <!--&gt;-->
+        <!--</LinearLayout>-->
+    <!--</HorizontalScrollView>-->
 
-    <android.support.v4.widget.NestedScrollView
+    <com.amar.library.ui.StickyScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+
+        app:stickyHeader="@+id/detailMenuCategoryParentLayoutInContentScrollView"
         android:id="@+id/detailRestaurantScrollView"
         >
 
@@ -131,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-
+                android:background="@android:color/background_light"
                 android:id="@+id/detailMenuCategoryParentLayoutInContentScrollView"
                 android:layout_below="@+id/detailRestaurantLayout"
                 >
@@ -155,7 +158,7 @@
             </android.support.v7.widget.RecyclerView>
 
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </com.amar.library.ui.StickyScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid.model;
+package com.example.heojuyeong.foodandroid.model.user;
 
 /**
  * Created by heojuyeong on 2017. 9. 18..

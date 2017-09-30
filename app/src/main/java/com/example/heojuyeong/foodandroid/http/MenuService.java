@@ -1,6 +1,6 @@
 package com.example.heojuyeong.foodandroid.http;
 
-import com.example.heojuyeong.foodandroid.model.MenuItem;
+import com.example.heojuyeong.foodandroid.model.menu.MenuItem;
 
 import java.util.ArrayList;
 

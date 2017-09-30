@@ -14,15 +14,19 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
-import com.example.heojuyeong.foodandroid.model.MenuItem;
+import com.example.heojuyeong.foodandroid.http.OptionService;
 import com.example.heojuyeong.foodandroid.model.cart.CartItem;
 import com.example.heojuyeong.foodandroid.model.cart.CartMenu;
 import com.example.heojuyeong.foodandroid.model.cart.CartOption;
 import com.example.heojuyeong.foodandroid.model.cart.CartRestaurant;
+import com.example.heojuyeong.foodandroid.model.menu.MenuItem;
+import com.example.heojuyeong.foodandroid.model.menu.OptionItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItemRealm;
 import com.example.heojuyeong.foodandroid.util.LayoutUtil;
 import com.example.heojuyeong.foodandroid.util.PriceUtil;
 import com.example.heojuyeong.foodandroid.util.RealmUtil;
+import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,7 +35,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -40,14 +48,12 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
  */
 
 
-public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.ViewHolder> {
+public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHolder> {
     private ArrayList<MenuItem> items;
     private Context context;
     private OnItemClickListener onItemClickListener;
     private OnCartCountClickListener onCartCountClickListener;
-    private MaterialDialog reviewDialog;
-    final private CurrentLocationRestaurantItem.Restaurant restaurant;
-    private Realm realm;
+    final private RestaurantItem.Restaurant restaurant;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -59,7 +65,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, int menu_id);
     }
 
     public interface OnCartCountClickListener {
@@ -67,17 +73,16 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
     }
 
 
-    public MenuListHotAdapter(Context context, ArrayList<MenuItem> items, CurrentLocationRestaurantItem.Restaurant restaurant) {
+    public MenuListAdapter(Context context, ArrayList<MenuItem> items, RestaurantItem.Restaurant restaurant) {
         this.items = items;
         this.context = context;
         this.restaurant = restaurant;
-        realm = Realm.getDefaultInstance();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.menu_listview_hot_item, parent, false);
+                .inflate(R.layout.item_menu, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -93,6 +98,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MenuItem menuItem = items.get(position);
 
+
         Picasso.with(context).load(menuItem.getMenupicture()).fit().into(holder.hotMenuPicture);
         Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
         holder.hotMenuName.setText(menuItem.getName());
@@ -100,47 +106,55 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
         holder.detailHotMenuName.setText(menuItem.getName());
         holder.detailHotMenuPrice.setText(String.valueOf(menuItem.getPrice()));
         holder.detailHotMenuRating.setText(menuItem.getRating());
-        holder.detailHotMenuRating.setOnClickListener(v -> {
-            if (menuItem.getReviews().size() >= 1)
-                reviewDialogShow(menuItem);
-        });
-        holder.detailHotMenuReview.setText("리뷰[" + menuItem.getReviews().size() + "]");
-        holder.detailHotMenuReview.setOnClickListener(v -> {
-            if (menuItem.getReviews().size() >= 1)
-                reviewDialogShow(menuItem);
-        });
+
+
         holder.detailHotMenuDescription.setText(menuItem.getDescription());
         //주문하기
         holder.detailHotMenuOrder.setOnClickListener(v -> {
             //옵션 선택사항이 있을 경우
-            if (menuItem.getOptions().size() > 1) {
-                optionDialogShow(menuItem);
-            } else {
-                /**
-                 *
-                 * TODO 바로 주문
-                 *
-                 * **/
+            OptionService.getOption(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<OptionItem>>() {
+                @Override
+                public void onResponse(Call<ArrayList<OptionItem>> call, Response<ArrayList<OptionItem>> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body().size() > 0) {
+                            optionDialogShow(menuItem, response.body());
+                        } else {
+                            /**
+                             *
+                             * TODO 바로 주문
+                             *
+                             * **/
+                        }
+                    }
+                }
 
-            }
+                @Override
+                public void onFailure(Call<ArrayList<OptionItem>> call, Throwable t) {
+                    Logger.d(t);
+
+                }
+            });
+
         });
 
 
         //각 아이템 클릭 리스너
-        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition()));
+        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem.getMenu_id()));
 
     }
 
-    //메뉴옵션 dialog
-    private void optionDialogShow(final MenuItem menuItem) {
 
-        ArrayList<MenuItem.Options> options = menuItem.getOptions();
+    //메뉴옵션 dialog
+    private void optionDialogShow(MenuItem menuItem, final ArrayList<OptionItem> options) {
+
 
         //dialog를 ArrayList에 추가
         final ArrayList<MaterialDialog> optionDialogArray = new ArrayList<>();
+
         for (int i = 0; i < options.size(); i++) {
             final int index = i;
-            final ArrayList<MenuItem.Options.Option> optionItem = options.get(i).getOption();
+            final ArrayList<OptionItem.Option> optionItem = options.get(i).getOption();
+
             final MaterialDialog optionDialog = new MaterialDialog.Builder(context).customView(R.layout.dailog_menu_option, true).build();
             final View optionDialogView = optionDialog.getView();
             TextView category_name = (TextView) optionDialogView.findViewById(R.id.dialog_option_category_name);
@@ -154,7 +168,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             /**
              * option header
              * **/
-            category_name.setText(options.get(i).getMenu_category_name());
+            category_name.setText(options.get(i).getMenu_option_category_name());
             category_leftCount.setText("(" + (i + 1) + "/" + options.size() + ")");
             category_necessary.setText((options.get(i).getNecessary() == 1) ? "필수" : "필수아님");
             dialog_totalPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
@@ -196,10 +210,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
             optionListView.setAdapter(optionAdapter);
 
 
-
-
-
-            //맨 처음인덱스가 아니고 옵션2개이상 일때
+//            //맨 처음인덱스가 아니고 옵션2개이상 일때
 //            if (options.size()>1) {
 //                Button prevOptionButton = new Button(context);
 //                prevOptionButton.setText("이전으로");
@@ -211,14 +222,14 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
 //                });
 //
 //                dialog_menu_option_confirm_layout.addView(prevOptionButton);
-////            }
+//            }
 
             /**option footer**/
             //옵션 선택 카테고리의 인덱스가 마지막이면
             if (options.size() == i + 1) {
 
                 //옵션 2개 이상일 때만
-                if(options.size()!=1){
+                if (options.size() != 1) {
                     Button prevOptionButton = new Button(context);
                     prevOptionButton.setText("이전으로");
                     prevOptionButton.setOnClickListener(v -> {
@@ -236,7 +247,50 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
                 addCartButton.setText("장바구니 담기");
                 addCartButton.setOnClickListener(v -> {
                     // 선택한 메뉴 정보를 로컬db에저장
-                    RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
+                    RealmResults<CartItem> cartItem = RealmUtil.findDataAll(CartItem.class);
+                    //기존 장바구니가 없으면 바로 추가
+                    if (cartItem.size()==0) {
+                        RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.openhour, restaurant.avg_cooking_time);
+                        RealmUtil.insertData(newRestaurant);
+                        RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
+                    } else if(cartItem.size()>0){
+                        //장바구니에 이미 메뉴가 존재하는 경우
+
+                        RealmResults<RestaurantItemRealm> defaultRestaurant = RealmUtil.findDataAll(RestaurantItemRealm.class);
+                        //기존 장바구니에 있는 식당과 현재 주문할려는 식당이 일치할 경우 장바구니에 메뉴를 추가한다
+                        if (defaultRestaurant.get(0).rest_id == restaurant.rest_id) {
+                            RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
+                            optionDialog.dismiss();
+                        }
+                        //일치하지 않을 경우 기존 장바구니를 삭제하고 새로운 식당의 메뉴를 추가할것인지 묻는다
+                        else {
+                            new MaterialDialog.Builder(context)
+                                    .content("기존 장바구니를 취소하고 새로운 음식점에서 주문하시겠어요?")
+                                    .positiveText("예")
+                                    .negativeText("아니요")
+                                    .onPositive((dialog, which) -> {
+                                        RealmUtil.removeDataAll(CartItem.class);
+                                        RealmUtil.removeDataAll(RestaurantItemRealm.class);
+                                        RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.openhour, restaurant.avg_cooking_time);
+                                        RealmUtil.insertData(newRestaurant);
+                                        RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
+                                        onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+
+                                    })
+                                    .onNegative((dialog, which) -> {
+                                        dialog.dismiss();
+                                    })
+                                    .show();
+
+
+                        }
+
+                    }
+                    //기존장바구니 아이템과
+
+
+//                    RealmUtil.insertData(newRestaurant);
+//                    RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
                     //장바구니 총 갯수 전달
                     onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
                     optionDialog.dismiss();
@@ -256,7 +310,6 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
                 dialog_menu_option_confirm_layout.addView(directOrderButton);
 
                 //선택항목이 2개이상 일 때만 이전으로 버튼 생성
-
 
 
             }
@@ -301,29 +354,26 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
 
 
     //리뷰dialogshow 함수
-    private void reviewDialogShow(MenuItem menuItem) {
+//    private void reviewDialogShow(ArrayList<ReviewItem> reviewItem) {
+//        reviewDialog = new MaterialDialog.Builder(context).customView(R.layout.dialog_review_listview, true).build();
+//        View reviewDialogView = reviewDialog.getView();
+//        RecyclerView reviewListView = (RecyclerView) reviewDialogView.findViewById(R.id.reviewListView);
+//        ReviewAdapter reviewAdapter = new ReviewAdapter(context, reviewItem);
+//        LayoutUtil.RecyclerViewSetting(context, reviewListView);
+//        reviewListView.setAdapter(reviewAdapter);
+//        reviewDialog.show();
+//    }
 
-        reviewDialog = new MaterialDialog.Builder(context).customView(R.layout.dialog_review_listview, true).build();
-        View reviewDialogView = reviewDialog.getView();
-        RecyclerView reviewListView = (RecyclerView) reviewDialogView.findViewById(R.id.reviewListView);
-        ReviewAdapter reviewAdapter = new ReviewAdapter(context, menuItem.getReviews());
-        LayoutUtil.RecyclerViewSetting(context,reviewListView);
-        reviewListView.setAdapter(reviewAdapter);
-        reviewDialog.show();
-    }
-
-    //선탠된 메뉴 RealmObject 생성
+    //선탠된 메뉴 CartItem RealmObject 생성
     private CartItem createCartMenuItem(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray) {
         CartMenu menu = new CartMenu(menuItem.getMenu_id(), menuItem.getName(), menuItem.getPrice(), menuItem.getDescription(), menuItem.getAvgtime());
-        CartRestaurant cartRestaurant = new CartRestaurant(restaurant.getRest_id(), restaurant.getName());
+        CartRestaurant cartRestaurant = new CartRestaurant(restaurant.rest_id, restaurant.name, restaurant.address, restaurant.rest_admin_id, restaurant.distance, restaurant.latlng[1], restaurant.latlng[0]);
         CartItem cartItem;
         if (optionDialogArray.size() >= 1) {
             RealmList<CartOption> menuOption = getMenuOption(optionDialogArray);
             cartItem = new CartItem(getNextKey(), menu, cartRestaurant, menuOption);
-
         } else {
             cartItem = new CartItem(getNextKey(), menu, cartRestaurant);
-
         }
         return cartItem;
     }
@@ -348,13 +398,13 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
                 if (optionRadio.getVisibility() == View.VISIBLE) {
 
                     if (optionRadio.isChecked()) {
-                        MenuItem.Options.Option optionTempRadio = (MenuItem.Options.Option) optionRadio.getTag();
+                        OptionItem.Option optionTempRadio = (OptionItem.Option) optionRadio.getTag();
                         menuOptionNecessary.add(new CartOption(optionTempRadio.getMenu_option_id(), optionTempRadio.getMenu_option_name(), optionTempRadio.getMenu_price(), menuCategoryName));
                     }
 
                 } else {
                     if (optionCheckBox.isChecked()) {
-                        MenuItem.Options.Option optionTempCheckbox = (MenuItem.Options.Option) optionCheckBox.getTag();
+                        OptionItem.Option optionTempCheckbox = (OptionItem.Option) optionCheckBox.getTag();
                         menuOptionUnNecessary.add(new CartOption(optionTempCheckbox.getMenu_option_id(), optionTempCheckbox.getMenu_option_name(), optionTempCheckbox.getMenu_price(), menuCategoryName));
                     }
                 }
@@ -374,6 +424,7 @@ public class MenuListHotAdapter extends RecyclerView.Adapter<MenuListHotAdapter.
     //Auto Increment id
     private int getNextKey() {
         try {
+            Realm realm = Realm.getDefaultInstance();
             Number id = realm.where(CartItem.class).max("id");
             if (id != null) {
                 return id.intValue() + 1;

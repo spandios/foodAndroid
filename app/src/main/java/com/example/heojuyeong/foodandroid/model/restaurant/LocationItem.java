@@ -1,4 +1,4 @@
-package com.example.heojuyeong.foodandroid.model;
+package com.example.heojuyeong.foodandroid.model.restaurant;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

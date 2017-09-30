@@ -11,8 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.model.MenuItem;
-import com.example.heojuyeong.foodandroid.util.PriceUtil;
+import com.example.heojuyeong.foodandroid.model.menu.OptionItem;
 
 import java.util.ArrayList;
 
@@ -21,13 +20,13 @@ import butterknife.ButterKnife;
 
 
 public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder> {
-    private ArrayList<MenuItem.Options.Option> items;
+    private ArrayList<OptionItem.Option> items;
     private Context context;
     private RadioClickListener radioClickListener;
     private SelectCLickListener selectCLickListener;
     private int multiple;
 
-    public OptionAdapter(ArrayList<MenuItem.Options.Option> items, Context context, int multiple, RadioClickListener radioClickListener, SelectCLickListener selectCLickListener) {
+    public OptionAdapter(ArrayList<OptionItem.Option> items, Context context, int multiple, RadioClickListener radioClickListener, SelectCLickListener selectCLickListener) {
         this.items = items;
         this.context = context;
         this.multiple = multiple;
@@ -52,7 +51,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dialog_menu_list_option_item, parent, false);
+                .inflate(R.layout.dialog_menu_option_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
         OptionAdapter.ViewHolder vh = new OptionAdapter.ViewHolder(v);
         return vh;
@@ -61,7 +60,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        MenuItem.Options.Option option = items.get(position);
+        OptionItem.Option option = items.get(position);
 
         //체크박스 셋팅
         if (multiple == 1) {
@@ -95,7 +94,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ViewHolder
             holder.optionRadio.setClickable(false);
             holder.optionCheckBox.setVisibility(View.GONE);
         }
-        holder.optionPrice.setText(PriceUtil.optionComma_won(option.getMenu_price()));
+        holder.optionPrice.setText(option.getMenu_price());
     }
 
 

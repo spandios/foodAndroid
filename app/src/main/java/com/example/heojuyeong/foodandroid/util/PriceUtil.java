@@ -10,6 +10,8 @@ import java.text.DecimalFormat;
 
 public class PriceUtil {
 
+
+
     public static String TextViewToString(TextView textView) {
         return textView.getText().toString();
     }

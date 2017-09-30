@@ -1,8 +1,8 @@
 package com.example.heojuyeong.foodandroid.model;
 
 
-import org.parceler.Parcel;
-import org.parceler.ParcelConstructor;
+import com.example.heojuyeong.foodandroid.model.cart.CartItem;
+import com.example.heojuyeong.foodandroid.model.user.UserItem;
 
 import java.util.ArrayList;
 
@@ -10,71 +10,37 @@ import java.util.ArrayList;
  * Created by heojuyeong on 2017. 9. 13..
  */
 
-@Parcel
+
 public class OrderItem  {
 
-    MenuItem menuItem;
-    CurrentLocationRestaurantItem.Restaurant restaurant;
-    ArrayList<MenuItem.Options.Option> optionNecessary;
-    ArrayList<MenuItem.Options.Option> optionNotNecessary;
+    UserItem user;
+    ArrayList<CartItem> cartItems=new ArrayList<>();
     int status;
+
     public OrderItem(){
 
     }
 
-   @ParcelConstructor
-    public OrderItem(MenuItem menuItem, CurrentLocationRestaurantItem.Restaurant restaurant, ArrayList<MenuItem.Options.Option> optionNecessary, ArrayList<MenuItem.Options.Option> optionNotNecessary, int status) {
-
-        this.menuItem = menuItem;
-        this.restaurant = restaurant;
-        this.optionNecessary = optionNecessary;
-        this.optionNotNecessary = optionNotNecessary;
+    public OrderItem(UserItem user, ArrayList<CartItem> cartItems, int status) {
+        this.user = user;
+        this.cartItems = cartItems;
         this.status = status;
     }
 
-    public OrderItem(MenuItem menuItem, CurrentLocationRestaurantItem.Restaurant restaurant, int status) {
-
-        this.menuItem = menuItem;
-        this.restaurant = restaurant;
-        this.status = status;
-        optionNecessary=null;
-        optionNotNecessary=null;
+    public UserItem getUser() {
+        return user;
     }
 
-
-
-
-
-    public MenuItem getMenuItem() {
-        return menuItem;
+    public void setUser(UserItem user) {
+        this.user = user;
     }
 
-    public void setMenuItem(MenuItem menuItem) {
-        this.menuItem = menuItem;
+    public ArrayList<CartItem> getCartItems() {
+        return cartItems;
     }
 
-    public CurrentLocationRestaurantItem.Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(CurrentLocationRestaurantItem.Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
-    public ArrayList<MenuItem.Options.Option> getOptionNecessary() {
-        return optionNecessary;
-    }
-
-    public void setOptionNecessary(ArrayList<MenuItem.Options.Option> optionNecessary) {
-        this.optionNecessary = optionNecessary;
-    }
-
-    public ArrayList<MenuItem.Options.Option> getOptionNotNecessary() {
-        return optionNotNecessary;
-    }
-
-    public void setOptionNotNecessary(ArrayList<MenuItem.Options.Option> optionNotNecessary) {
-        this.optionNotNecessary = optionNotNecessary;
+    public void setCartItems(ArrayList<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public int getStatus() {

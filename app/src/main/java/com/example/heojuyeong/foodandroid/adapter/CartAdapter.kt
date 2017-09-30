@@ -11,7 +11,7 @@ import com.example.heojuyeong.foodandroid.model.cart.CartItem
 import com.example.heojuyeong.foodandroid.util.PriceUtil
 import com.example.heojuyeong.foodandroid.util.RealmUtil
 import com.jakewharton.rxbinding2.view.RxView
-import kotlinx.android.synthetic.main.cart_listview_item.view.*
+import kotlinx.android.synthetic.main.item_cart.view.*
 import java.util.*
 
 
@@ -19,12 +19,15 @@ import java.util.*
  * A custom adapter to use with the RecyclerView widget.
  */
 class CartAdapter(private val mContext: Context, private var modelList: ArrayList<CartItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     var cart_menu_quantity=1
+
     private var mItemClickListener: OnItemClickListener? = null
 //    fun updateList(modelList: ArrayList<CartItem>) {
 //        this.modelList = modelList
 //        notifyDataSetChanged()
 //    }
+
 
     private fun removeList(position:Int){
         RealmUtil.removeDataById(CartItem::class.java, modelList[position].id)
@@ -36,22 +39,22 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.cart_listview_item, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_cart, viewGroup, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var optionPrice=0
-        if (holder is ViewHolder) {
+        if (holder is CartAdapter.ViewHolder) {
             val model = getItem(position)
             holder.cart_menu_name.text=model.menu.menu_name
             holder.cart_menu_price.text=PriceUtil.comma_won(model.menu.menu_price)
 
             //옵션 textView , 옵션 총 가격 계산
             for(i in model.option.indices){
-                optionPrice+=model.option[i].menu_option_price
+                optionPrice+=PriceUtil.getOriginalPrice(model.option[i].menu_option_price)
                 val textView=TextView(mContext)
-                textView.text = model.option[i].menu_option_cateogory_name+" : "+model.option[i].menu_option_name
+                textView.text = model.option[i].menu_option_category_name +" : "+model.option[i].menu_option_name
                 holder.cart_menu_option_layout.addView(textView)
             }
 

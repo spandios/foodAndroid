@@ -17,10 +17,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.activity.DetailRestaurantActivity;
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.adapter.CurrentLocationListAdapter;
+import com.example.heojuyeong.foodandroid.adapter.RestaurantAdapter;
 import com.example.heojuyeong.foodandroid.http.RestaurantService;
-import com.example.heojuyeong.foodandroid.model.CurrentLocationRestaurantItem;
-import com.example.heojuyeong.foodandroid.model.LocationItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.LocationItem;
 import com.example.heojuyeong.foodandroid.rx.RxBus;
 import com.example.heojuyeong.foodandroid.activity.settingLocationMapActivity;
 import com.example.heojuyeong.foodandroid.util.GPS_Util;
@@ -65,7 +65,6 @@ public class CurLocationFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         //현재 위치 정보 db에서 가져옴
         locationItems=RealmUtil.findDataAll(LocationItem.class).get(0);
-        Logger.d(locationItems);
         String menuType=mContext.getResources().getString(R.string.restaurant_menu_type1);
         restaurantMenuType=menuType.substring(1,menuType.length());
         super.onCreate(savedInstanceState);
@@ -74,7 +73,7 @@ public class CurLocationFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_cur_location, container, false);
+        final View view = inflater.inflate(R.layout.fragment_current_location, container, false);
         ButterKnife.bind(this,view);
         setDialog();
         return view;
@@ -148,11 +147,11 @@ public class CurLocationFragment extends Fragment {
     /** Param 위치 거리 음식종류 **/
     void getCurLocationRestaurant(int maxDistance,String menuType){
         //기본 메뉴조건
-        Call<CurrentLocationRestaurantItem> call =
+        Call<RestaurantItem> call =
         RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, menuType);
-        call.enqueue(new Callback<CurrentLocationRestaurantItem>() {
+        call.enqueue(new Callback<RestaurantItem>() {
             @Override
-            public void onResponse(Call<CurrentLocationRestaurantItem> call, final Response<CurrentLocationRestaurantItem> response) {
+            public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
                 if (response.isSuccessful()) {
 
                     //주변에 데이터 없는경우 에러메세지 TOAST
@@ -162,7 +161,7 @@ public class CurLocationFragment extends Fragment {
 
                     if(response.body().getRestaurants()!=null){
 
-                        CurrentLocationListAdapter adapter = new CurrentLocationListAdapter(mContext, R.layout.fragment_cur_location_listview_item, response.body().getRestaurants());
+                        RestaurantAdapter adapter = new RestaurantAdapter(mContext, R.layout.item_restaurant, response.body().getRestaurants());
 
                         currentLocationListView.setAdapter(adapter);
 
@@ -186,7 +185,7 @@ public class CurLocationFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<CurrentLocationRestaurantItem> call, Throwable t) {
+            public void onFailure(Call<RestaurantItem> call, Throwable t) {
                 Logger.d(t);
                 Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
             }

@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.heojuyeong.foodandroid.activity.DetailReviewImageActivity;
 import com.example.heojuyeong.foodandroid.R;
-import com.example.heojuyeong.foodandroid.model.MenuItem;
+import com.example.heojuyeong.foodandroid.activity.DetailReviewImageActivity;
+import com.example.heojuyeong.foodandroid.model.menu.ReviewItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,9 +19,10 @@ import java.util.ArrayList;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     Context context;
-    private ArrayList<MenuItem.Review> items;
+    private ArrayList<ReviewItem> items;
 
-    public ReviewAdapter(Context context, ArrayList<MenuItem.Review> items){
+
+    public ReviewAdapter(Context context, ArrayList<ReviewItem> items){
         this.context=context;
         this.items=items;
     }
@@ -29,7 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.menu_review_listview_item, parent, false);
+                .inflate(R.layout.item_menu_review, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ReviewAdapter.ViewHolder vh = new ReviewAdapter.ViewHolder(v);
         return vh;
@@ -37,22 +38,18 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final MenuItem.Review reviewItem=items.get(position);
-        Picasso.with(context).load(reviewItem.getReviewer().getProfile_image()).fit().into(holder.detailHotMenuReviewerImage);
-        holder.detailHotMenuReviewerId.setText(reviewItem.getReviewer().getName());
+        final ReviewItem reviewItem=items.get(position);
+        Picasso.with(context).load(reviewItem.getProfile_image()).fit().into(holder.detailHotMenuReviewerImage);
+        holder.detailHotMenuReviewerId.setText(reviewItem.getName());
         holder.detailHotMenuReviewContent.setText(reviewItem.getContent());
-
         if(reviewItem.getImage().isEmpty()){
             holder.detailHotMenuReviewImage.setVisibility(View.GONE);
         }else{
             Picasso.with(context).load(reviewItem.getImage()).fit().into(holder.detailHotMenuReviewImage);
-            holder.detailHotMenuReviewImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(context, DetailReviewImageActivity.class);
-                    intent.putExtra("reviewImage", reviewItem.getImage());
-                    context.startActivity(intent);
-                }
+            holder.detailHotMenuReviewImage.setOnClickListener(v -> {
+                Intent intent=new Intent(context, DetailReviewImageActivity.class);
+                intent.putExtra("reviewImage", reviewItem.getImage());
+                context.startActivity(intent);
             });
         }
 

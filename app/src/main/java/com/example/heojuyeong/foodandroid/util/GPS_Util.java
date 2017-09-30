@@ -14,7 +14,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.example.heojuyeong.foodandroid.model.LocationItem;
+import com.example.heojuyeong.foodandroid.model.restaurant.LocationItem;
 
 //위치정보얻기 Latitude longitude
 public class GPS_Util extends Service implements LocationListener {
@@ -51,8 +51,17 @@ public class GPS_Util extends Service implements LocationListener {
 
     }
     public void insertDB(){
-        LocationItem locationItem=new LocationItem(locationName,lat,lng);
-        RealmUtil.insertData(locationItem);
+
+        if(lat!=0&&lng!=0&&locationName!=null){
+
+            LocationItem locationItem=new LocationItem(locationName,lat,lng);
+            RealmUtil.insertData(locationItem);
+
+        }else{
+
+        }
+
+
 
     }
 
@@ -80,6 +89,7 @@ public class GPS_Util extends Service implements LocationListener {
                             lat=location.getLatitude();
                             lng=location.getLongitude();
                             locationName=getLocationName();
+
                         }
                     }
                 }
