@@ -9,7 +9,7 @@ android {
     productFlavors {
         dev {
             dimension "stage"
-            minSdkVersion 21
+            minSdkVersion 16
             versionCode 100
         }
         prd {
@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.heojuyeong.foodandroid"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         multiDexEnabled true

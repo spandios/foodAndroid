@@ -4,7 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.example.heojuyeong.foodandroid.util.GPS_Util;
+import com.example.heojuyeong.foodandroid.util.GpsUtil;
+import com.example.heojuyeong.foodandroid.util.TedPermissionUtil;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
@@ -25,13 +26,17 @@ public class CommonValueApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Realm.init(getApplicationContext());
 
+
+        TedPermissionUtil tedPermissionUtil=new TedPermissionUtil(this);
+        Realm.init(getApplicationContext());
         RealmConfiguration realmConfiguration=new RealmConfiguration.Builder().inMemory().build();
         Realm.setDefaultConfiguration(realmConfiguration);
         Logger.addLogAdapter(new AndroidLogAdapter());
-        GPS_Util gps_util=new GPS_Util(this);
-        gps_util.insertDB();
+        GpsUtil.getGPS(this);
+
+
+
 
 
     }

@@ -9,7 +9,9 @@ import com.example.heojuyeong.foodandroid.adapter.OrderMenuAdapter
 import com.example.heojuyeong.foodandroid.model.cart.CartItem
 import com.example.heojuyeong.foodandroid.util.LayoutUtil
 import com.example.heojuyeong.foodandroid.util.PriceUtil
+import com.example.heojuyeong.foodandroid.util.RealmUtil
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import com.wdullaer.materialdatetimepicker.time.Timepoint
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.item_order_menu.view.*
@@ -54,6 +56,7 @@ class OrderActivity : AppCompatActivity() , com.wdullaer.materialdatetimepicker.
     private fun getCartItem(){
         val cartItem = realm.where(CartItem::class.java).findAll()
         cartItemList.addAll(realm.copyFromRealm(cartItem))
+
     }
 
 
@@ -65,16 +68,20 @@ class OrderActivity : AppCompatActivity() , com.wdullaer.materialdatetimepicker.
         //listview가 그려진 후 각 아이템의 가격을 더 해 최종가격을 구한다.
         orderMenuList.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                val childCount=orderMenuList.childCount
-                var i=0
+                val childCount=orderMenuList.adapter.itemCount
+//                Logger.d(childCount)
                 var sum=0
+                var i=0
                 while(i<childCount){
-                    val cartItemViewHolder = orderMenuList.getChildViewHolder(orderMenuList.getChildAt(i))
+                    val cartItemViewHolder=orderMenuList.findViewHolderForLayoutPosition(i)
+//                    val cartItemViewHolder = orderMenuList.getChildViewHolder(orderMenuList.getChildAt(i))
+//                    Logger.d(cartItemViewHolder.itemView.order_menu_result_price.text)
                     sum+= PriceUtil.getOriginalPrice(cartItemViewHolder.itemView.order_menu_result_price.text.toString())
                     i++
                 }
+
                 orderResultPrice.text=PriceUtil.comma_won(sum)
-                // remove this layout listener - as it will run every time the view updates
+//                 remove this layout listener - as it will run every time the view updates
                 if (orderMenuList.viewTreeObserver.isAlive) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         orderMenuList.viewTreeObserver
@@ -85,30 +92,38 @@ class OrderActivity : AppCompatActivity() , com.wdullaer.materialdatetimepicker.
                     }
                 }
             }
+
         })
 
 
     }
 
     private fun setView(){
+            //도착할 시간 설정
             orderArriveTime.setOnClickListener({
                 val now = Calendar.getInstance()
                 val hour = now.get(Calendar.HOUR_OF_DAY)
                 val minute = now.get(Calendar.MINUTE)
-
                 val dpd = TimePickerDialog.newInstance(
                         this@OrderActivity,hour,minute,false
                 )
-                dpd.setMinTime(hour,minute,0)
-//                dpd.setMaxTime()
+                dpd.setMinTime(Timepoint(hour,minute))
+                val realmRestaurant=RealmUtil.getRestaurantRealm()
+                //TODO 영업시간 지난 후 클릭 x
+//                dpd.setMaxTime(Timepoint(realmRestaurant[0].close_time.substring(0,2).toInt(),realmRestaurant[0].close_time.substring(3,5).toInt()))
+
                 dpd.show(fragmentManager, "Timepickerdialog")
+
+            })
+
+            orderComplete.setOnClickListener({
 
             })
     }
 
-
+    //선택한 시간 표시
     override fun onTimeSet(view: com.wdullaer.materialdatetimepicker.time.TimePickerDialog?, hourOfDay: Int, minute: Int, second: Int) {
-        val time = "예상 도착 시간: " + hourOfDay + "시 " + minute + "분"
+        val time = "예상 도착 시간: " + hourOfDay + ":" + minute
         orderArriveTime.text = time
         isSetArrivedTime =true
     }

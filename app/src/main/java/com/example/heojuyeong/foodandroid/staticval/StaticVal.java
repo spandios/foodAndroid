@@ -12,6 +12,8 @@ public class StaticVal {
 
     //location
     public final static boolean LocationSelectByMapRequest=true;
+    public final static int gpsSettingActivityRequestCode=0;
+
 
 
 }

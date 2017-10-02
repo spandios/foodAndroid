@@ -31,6 +31,7 @@ class OrderMenuAdapter(private val mContext: Context, private var modelList: Arr
             holder.orderMenuCount.text=cartItem.menu_count
             holder.orderResultPrice.text=cartItem.totalPrice
 
+            //옵션 텍스트 뷰 생성
             for(item in cartItem.option){
                 var optionName=TextView(mContext)
                 optionName.text=item.menu_option_name

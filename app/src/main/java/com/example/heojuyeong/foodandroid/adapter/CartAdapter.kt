@@ -19,7 +19,7 @@ import java.util.*
  * A custom adapter to use with the RecyclerView widget.
  */
 class CartAdapter(private val mContext: Context, private var modelList: ArrayList<CartItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    //기본 menu 수량은 1
     var cart_menu_quantity=1
 
     private var mItemClickListener: OnItemClickListener? = null
@@ -28,7 +28,7 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
 //        notifyDataSetChanged()
 //    }
 
-
+    //장바구니 아이템 삭제
     private fun removeList(position:Int){
         RealmUtil.removeDataById(CartItem::class.java, modelList[position].id)
         modelList.removeAt(position)
@@ -36,26 +36,34 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
         notifyItemRangeChanged(position, modelList.size)
     }
 
+    public fun notifyee(){
+
+        notifyDataSetChanged()
+    }
 
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_cart, viewGroup, false)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_cart, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var optionPrice=0
+        //자동 형 변환
         if (holder is CartAdapter.ViewHolder) {
             val model = getItem(position)
             holder.cart_menu_name.text=model.menu.menu_name
             holder.cart_menu_price.text=PriceUtil.comma_won(model.menu.menu_price)
 
-            //옵션 textView , 옵션 총 가격 계산
+            //옵션 텍스트 뷰 추가
+            //옵션카테고리:옵션이름 , 옵션 총 가격 계산
             for(i in model.option.indices){
+
                 optionPrice+=PriceUtil.getOriginalPrice(model.option[i].menu_option_price)
-                val textView=TextView(mContext)
-                textView.text = model.option[i].menu_option_category_name +" : "+model.option[i].menu_option_name
-                holder.cart_menu_option_layout.addView(textView)
+                val optionCateAndName=TextView(mContext)
+                optionCateAndName.text=String.format(mContext.getString(R.string.semi_clone),model.option[i].menu_option_category_name,model.option[i].menu_option_name)
+                holder.cart_menu_option_layout.addView(optionCateAndName)
             }
 
             //수량

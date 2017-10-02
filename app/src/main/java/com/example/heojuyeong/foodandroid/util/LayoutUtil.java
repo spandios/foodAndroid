@@ -28,8 +28,6 @@ public class LayoutUtil {
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_white));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-
-        recyclerView.setHasFixedSize(true);
     }
 
 

@@ -12,13 +12,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import com.example.heojuyeong.foodandroid.model.restaurant.LocationItem;
+import com.orhanobut.logger.Logger;
 
 //위치정보얻기 Latitude longitude
 public class GPS_Util extends Service implements LocationListener {
     private final Context mContext;
+
 
     boolean isGPSEnabled=false;
     boolean isNetworkEnabled=false;
@@ -33,50 +34,38 @@ public class GPS_Util extends Service implements LocationListener {
     //최소 GPS정보 업데이트 거리 10미터
     private static final long MIN_DISTNACE_CHANGE_FOR_UPDATES=10;
     //GPS update 간격 5분
-    private static final long MIN_TIME_BW_UPDATES=1000*60*5;
+    private static final long MIN_TIME_BW_UPDATES=1000*60*60;
 
     protected LocationManager locationManager;
 
     public GPS_Util(Context context){
         this.mContext=context;
-
         getLocation();
+        insertDB();
     }
 
     public String getLocationName(){
-
         GeoCoding geoCoding=GeoCoding.getInstance(mContext);
         return geoCoding.getLocationName(lat,lng);
-
-
     }
+
     public void insertDB(){
-
         if(lat!=0&&lng!=0&&locationName!=null){
-
             LocationItem locationItem=new LocationItem(locationName,lat,lng);
             RealmUtil.insertData(locationItem);
-
-        }else{
-
         }
-
-
-
     }
+
 
     public void getLocation(){
         try{
             //locationManger객체설정
             locationManager=(LocationManager)mContext.getSystemService(LOCATION_SERVICE);
-
             //gps가능한지
             isGPSEnabled=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             //network가능한지
             isNetworkEnabled=locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            if(!isGPSEnabled&&!isNetworkEnabled){//gps, network불가능하다면
-                Toast.makeText(mContext,"현재 gps정보 일기 실패", Toast.LENGTH_SHORT).show();
+            if(!isGPSEnabled&&!isNetworkEnabled){//GpsUtil, network불가능하다면
 
             }else{
                 this.isGetLocation=true;
@@ -85,15 +74,17 @@ public class GPS_Util extends Service implements LocationListener {
                     if(locationManager!=null){
                         location=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if(location!=null){
-
                             lat=location.getLatitude();
                             lng=location.getLongitude();
                             locationName=getLocationName();
+                            stopUsingGPS();
+                            return;
 
                         }
                     }
                 }
                 if(isGPSEnabled){
+
                     if(location==null){
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME_BW_UPDATES,MIN_DISTNACE_CHANGE_FOR_UPDATES,this);
                         if(locationManager!=null){
@@ -103,6 +94,8 @@ public class GPS_Util extends Service implements LocationListener {
                                 lat=location.getLatitude();
                                 lng=location.getLongitude();
                                 locationName=getLocationName();
+                                stopUsingGPS();
+                                Logger.d(lat);
                             }
                         }
                     }
@@ -116,6 +109,7 @@ public class GPS_Util extends Service implements LocationListener {
 
         }catch (SecurityException e){
             e.printStackTrace();
+
         }
 
     }

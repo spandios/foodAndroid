@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.heojuyeong.foodandroid.activity.CartActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:id="@+id/cartToolbar"
-
         >
 
         <TextView
@@ -34,17 +33,18 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:layout_below="@id/cartToolbar"
         android:id="@+id/cartListView"
         >
     </android.support.v7.widget.RecyclerView>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:padding="10dp"
+        android:layout_below="@+id/cartListView"
         >
         <Button
             android:layout_width="wrap_content"
@@ -55,12 +55,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_toRightOf="@id/cart_more_order"
             android:text="@string/order"
             android:id="@+id/cart_menu_order"/>
-
-
     </RelativeLayout>
 
-</LinearLayout>
+    </RelativeLayout>
+</ScrollView>

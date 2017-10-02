@@ -14,15 +14,16 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.heojuyeong.foodandroid.R;
+import com.example.heojuyeong.foodandroid.activity.CartActivity;
 import com.example.heojuyeong.foodandroid.http.OptionService;
 import com.example.heojuyeong.foodandroid.model.cart.CartItem;
 import com.example.heojuyeong.foodandroid.model.cart.CartMenu;
 import com.example.heojuyeong.foodandroid.model.cart.CartOption;
-import com.example.heojuyeong.foodandroid.model.cart.CartRestaurant;
 import com.example.heojuyeong.foodandroid.model.menu.MenuItem;
 import com.example.heojuyeong.foodandroid.model.menu.OptionItem;
 import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItem;
 import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItemRealm;
+import com.example.heojuyeong.foodandroid.util.IntentUtil;
 import com.example.heojuyeong.foodandroid.util.LayoutUtil;
 import com.example.heojuyeong.foodandroid.util.PriceUtil;
 import com.example.heojuyeong.foodandroid.util.RealmUtil;
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -55,21 +55,21 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     private OnCartCountClickListener onCartCountClickListener;
     final private RestaurantItem.Restaurant restaurant;
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public void setOnCartCountClickListener(OnCartCountClickListener onCartAddClickListenr) {
-        this.onCartCountClickListener = onCartAddClickListenr;
-    }
-
-
     public interface OnItemClickListener {
         void onItemClick(View view, int position, int menu_id);
     }
 
     public interface OnCartCountClickListener {
         void onCartCount(int cartSize);
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setOnCartCountClickListener(OnCartCountClickListener onCartAddClickListenr) {
+        this.onCartCountClickListener = onCartAddClickListenr;
     }
 
 
@@ -143,18 +143,71 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
     }
 
+    private void createOptionFooterButton(int index, ArrayList<MaterialDialog> optionDialogArray, LinearLayout dialog_menu_option_confirm_layout, TextView dialog_totalPrice, MaterialDialog optionDialog, MenuItem menuItem, String version) {
+        try {
+            switch (version) {
+                case "prev":
+                    Button prevOptionButton = new Button(context);
+                    prevOptionButton.setText("이전으로");
+                    prevOptionButton.setOnClickListener(v -> {
+                        TextView totalPrice = (TextView) optionDialogArray.get(index - 1).getView().findViewById(R.id.dialog_totalPrice);
+                        totalPrice.setText(dialog_totalPrice.getText().toString());
+                        optionDialog.dismiss();
+                        optionDialogArray.get(index - 1).show();
+                    });
+                    dialog_menu_option_confirm_layout.addView(prevOptionButton);
+                    break;
+
+
+                case "cart":
+                    Button addCartButton = new Button(context);
+                    addCartButton.setText("장바구니 담기");
+                    addCartButton.setOnClickListener(v -> {
+                        checkCartAndInsertOrOrder(menuItem,optionDialogArray,optionDialog,"cart");
+                    });
+                    dialog_menu_option_confirm_layout.addView(addCartButton);
+                    break;
+
+                case "order":
+                    Button directOrderButton = new Button(context);
+                    directOrderButton.setText("바로 주문");
+                    directOrderButton.setOnClickListener(v -> {
+                        checkCartAndInsertOrOrder(menuItem,optionDialogArray,optionDialog,"order");
+                    });
+                    dialog_menu_option_confirm_layout.addView(directOrderButton);
+                    break;
+
+
+                case "next":
+                    Button nextOptionButton = new Button(context);
+                    nextOptionButton.setText("다음으로");
+                    nextOptionButton.setOnClickListener(v -> {
+                        optionDialog.dismiss();
+                        TextView totalPrice = (TextView) optionDialogArray.get(index + 1).getView().findViewById(R.id.dialog_totalPrice);
+                        totalPrice.setText(dialog_totalPrice.getText().toString());
+                        optionDialogArray.get(index + 1).show();
+                    });
+                    dialog_menu_option_confirm_layout.addView(nextOptionButton);
+                    break;
+
+                default:
+                    throw new Exception("올바르지 않은 버젼");
+            }
+        } catch (Exception e) {
+            Logger.d(e);
+        }
+    }
 
     //메뉴옵션 dialog
     private void optionDialogShow(MenuItem menuItem, final ArrayList<OptionItem> options) {
 
-
         //dialog를 ArrayList에 추가
+        //optionDialogArray가 final 이기 때문에 이 함수가 끝난 이후에도 정보가 남아있음
         final ArrayList<MaterialDialog> optionDialogArray = new ArrayList<>();
 
         for (int i = 0; i < options.size(); i++) {
             final int index = i;
             final ArrayList<OptionItem.Option> optionItem = options.get(i).getOption();
-
             final MaterialDialog optionDialog = new MaterialDialog.Builder(context).customView(R.layout.dailog_menu_option, true).build();
             final View optionDialogView = optionDialog.getView();
             TextView category_name = (TextView) optionDialogView.findViewById(R.id.dialog_option_category_name);
@@ -164,218 +217,150 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
             final RecyclerView optionListView = (RecyclerView) optionDialogView.findViewById(R.id.dialog_menu_option_listview);
             LinearLayout dialog_menu_option_confirm_layout = (LinearLayout) optionDialogView.findViewById(R.id.dialog_menu_option_confirm_layout);
 
-
-            /**
-             * option header
+            /***
+             * 옵션 헤더 부분
              * **/
+            //옵션카테고리 이름
             category_name.setText(options.get(i).getMenu_option_category_name());
+            //남은 옵션 개수
             category_leftCount.setText("(" + (i + 1) + "/" + options.size() + ")");
+            //옵션 필수여부
             category_necessary.setText((options.get(i).getNecessary() == 1) ? "필수" : "필수아님");
+            //기본 총 가격
             dialog_totalPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
-            OptionAdapter.SelectCLickListener selectCLickListener = (isPlus, position) -> {
-                RecyclerView.ViewHolder viewHolder = optionListView.getChildViewHolder(optionListView.getChildAt(position));
-                TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
-                dialog_totalPrice.setText((isPlus.equals("plus")) ?
-                        PriceUtil.plusPrice(PriceUtil.TextViewToString(optionPrice), PriceUtil.TextViewToString(dialog_totalPrice)) :
-                        PriceUtil.minusPrice(PriceUtil.TextViewToString(optionPrice), PriceUtil.TextViewToString(dialog_totalPrice)));
-            };
 
 
-            /**option content**/
-            //클릭 안 되어있는 라디오를 클릭했을 때만 이벤트일어남
-            OptionAdapter.RadioClickListener radioClickListener = (position) -> {
-                //클릭 되어있는 라디오만 해제한뒤
-                for (int childCount = optionListView.getChildCount(), j = 0; j < childCount; j++) {
-                    RecyclerView.ViewHolder viewHolder = optionListView.getChildViewHolder(optionListView.getChildAt(j));
-                    RadioButton radioButton = (RadioButton) viewHolder.itemView.findViewById(R.id.dialog_menu_option_radio);
-                    if (radioButton.isChecked()) {
-                        radioButton.setChecked(false);
-                        TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
-                        dialog_totalPrice.setText(PriceUtil.minusPrice(PriceUtil.TextViewToString(dialog_totalPrice), PriceUtil.TextViewToString(optionPrice)));
-                    }
-                }
-
-                //클릭한 포지션의 라디오 체크
-                RecyclerView.ViewHolder viewHolder = optionListView.getChildViewHolder(optionListView.getChildAt(position));
-                RadioButton radioButton = (RadioButton) viewHolder.itemView.findViewById(R.id.dialog_menu_option_radio);
-                TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
-                radioButton.setChecked(true);
-                dialog_totalPrice.setText(PriceUtil.plusPrice(PriceUtil.TextViewToString(dialog_totalPrice), PriceUtil.TextViewToString(optionPrice)));
-
-            };
+            /**옵션 리스트 본문  **/
+            //옵션 리사이클러뷰 셋팅
+            setOptionRecyclerView(optionListView, optionItem, options.get(i).getMultiple(), dialog_totalPrice);
 
 
-            final OptionAdapter optionAdapter = new OptionAdapter(optionItem, context, options.get(i).getMultiple(), radioClickListener, selectCLickListener);
-            LayoutUtil.RecyclerViewSetting(context.getApplicationContext(), optionListView);
-            optionListView.setAdapter(optionAdapter);
-
-
-//            //맨 처음인덱스가 아니고 옵션2개이상 일때
-//            if (options.size()>1) {
-//                Button prevOptionButton = new Button(context);
-//                prevOptionButton.setText("이전으로");
-//                prevOptionButton.setOnClickListener(v -> {
-//                    TextView totalPrice = (TextView) optionDialogArray.get(index - 1).getView().findViewById(R.id.dialog_totalPrice);
-//                    totalPrice.setText(dialog_totalPrice.getText().toString());
-//                    optionDialog.dismiss();
-//                    optionDialogArray.get(index - 1).show();
-//                });
-//
-//                dialog_menu_option_confirm_layout.addView(prevOptionButton);
-//            }
-
-            /**option footer**/
-            //옵션 선택 카테고리의 인덱스가 마지막이면
+            /**옵션 하단 부분 **/
+            //마지막 옵션 창일 때
             if (options.size() == i + 1) {
-
-                //옵션 2개 이상일 때만
+                //옵션 2개 이상일 때만 이전버튼 생성
                 if (options.size() != 1) {
-                    Button prevOptionButton = new Button(context);
-                    prevOptionButton.setText("이전으로");
-                    prevOptionButton.setOnClickListener(v -> {
-                        TextView totalPrice = (TextView) optionDialogArray.get(index - 1).getView().findViewById(R.id.dialog_totalPrice);
-                        totalPrice.setText(dialog_totalPrice.getText().toString());
-                        optionDialog.dismiss();
-                        optionDialogArray.get(index - 1).show();
-                    });
-
-                    dialog_menu_option_confirm_layout.addView(prevOptionButton);
+                    createOptionFooterButton(index, optionDialogArray, dialog_menu_option_confirm_layout, dialog_totalPrice, optionDialog, menuItem, "prev");
                 }
-
-
-                Button addCartButton = new Button(context);
-                addCartButton.setText("장바구니 담기");
-                addCartButton.setOnClickListener(v -> {
-                    // 선택한 메뉴 정보를 로컬db에저장
-                    RealmResults<CartItem> cartItem = RealmUtil.findDataAll(CartItem.class);
-                    //기존 장바구니가 없으면 바로 추가
-                    if (cartItem.size()==0) {
-                        RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.openhour, restaurant.avg_cooking_time);
-                        RealmUtil.insertData(newRestaurant);
-                        RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
-                    } else if(cartItem.size()>0){
-                        //장바구니에 이미 메뉴가 존재하는 경우
-
-                        RealmResults<RestaurantItemRealm> defaultRestaurant = RealmUtil.findDataAll(RestaurantItemRealm.class);
-                        //기존 장바구니에 있는 식당과 현재 주문할려는 식당이 일치할 경우 장바구니에 메뉴를 추가한다
-                        if (defaultRestaurant.get(0).rest_id == restaurant.rest_id) {
-                            RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
-                            optionDialog.dismiss();
-                        }
-                        //일치하지 않을 경우 기존 장바구니를 삭제하고 새로운 식당의 메뉴를 추가할것인지 묻는다
-                        else {
-                            new MaterialDialog.Builder(context)
-                                    .content("기존 장바구니를 취소하고 새로운 음식점에서 주문하시겠어요?")
-                                    .positiveText("예")
-                                    .negativeText("아니요")
-                                    .onPositive((dialog, which) -> {
-                                        RealmUtil.removeDataAll(CartItem.class);
-                                        RealmUtil.removeDataAll(RestaurantItemRealm.class);
-                                        RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.openhour, restaurant.avg_cooking_time);
-                                        RealmUtil.insertData(newRestaurant);
-                                        RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
-                                        onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
-
-                                    })
-                                    .onNegative((dialog, which) -> {
-                                        dialog.dismiss();
-                                    })
-                                    .show();
-
-
-                        }
-
-                    }
-                    //기존장바구니 아이템과
-
-
-//                    RealmUtil.insertData(newRestaurant);
-//                    RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
-                    //장바구니 총 갯수 전달
-                    onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
-                    optionDialog.dismiss();
-
-                });
-
-
-                Button directOrderButton = new Button(context);
-                directOrderButton.setText("바로 주문");
-                directOrderButton.setOnClickListener(v -> {
-//                        OrderItem orderItem=initOrder(optionDialogArray,menuItem);
-                    optionDialog.dismiss();
-                });
-
-
-                dialog_menu_option_confirm_layout.addView(addCartButton);
-                dialog_menu_option_confirm_layout.addView(directOrderButton);
-
-                //선택항목이 2개이상 일 때만 이전으로 버튼 생성
-
+                createOptionFooterButton(index, optionDialogArray, dialog_menu_option_confirm_layout, dialog_totalPrice, optionDialog, menuItem, "cart");
+                createOptionFooterButton(index, optionDialogArray, dialog_menu_option_confirm_layout, dialog_totalPrice, optionDialog, menuItem, "order");
 
             }
-            //옵션 카테고리 마지막 x
+            //마지막 옵션 아닐 때
             else {
-
-                //맨 처음 시작이 아니라면
+                //맨 처음은 이전버튼을 만들지 않는다
                 if (i != 0) {
-                    Button prevOptionButton = new Button(context);
-                    prevOptionButton.setText("이전으로");
-                    prevOptionButton.setOnClickListener(v -> {
-                        optionDialog.dismiss();
-                        TextView totalPrice = (TextView) optionDialogArray.get(index - 1).getView().findViewById(R.id.dialog_totalPrice);
-                        totalPrice.setText(dialog_totalPrice.getText().toString());
-                        optionDialogArray.get(index - 1).show();
-
-                    });
-
-                    dialog_menu_option_confirm_layout.addView(prevOptionButton);
+                    createOptionFooterButton(index, optionDialogArray, dialog_menu_option_confirm_layout, dialog_totalPrice, optionDialog, menuItem, "prev");
                 }
-
-
-                Button nextOptionButton = new Button(context);
-                nextOptionButton.setText("다음으로");
-                nextOptionButton.setOnClickListener(v -> {
-                    optionDialog.dismiss();
-                    TextView totalPrice = (TextView) optionDialogArray.get(index + 1).getView().findViewById(R.id.dialog_totalPrice);
-                    totalPrice.setText(dialog_totalPrice.getText().toString());
-                    optionDialogArray.get(index + 1).show();
-                });
-
-                dialog_menu_option_confirm_layout.addView(nextOptionButton);
+                //다음 버튼 생성
+                createOptionFooterButton(index, optionDialogArray, dialog_menu_option_confirm_layout, dialog_totalPrice, optionDialog, menuItem, "next");
             }
 
-            optionDialogArray.add(optionDialog);
 
+            //만든 옵션 다이어로그 배열에 저장
+            optionDialogArray.add(optionDialog);
         }
 
+        //맨 처음 옵션 설정 창 보여줌
         optionDialogArray.get(0).show();
 
     }
 
+    private void checkCartAndInsertOrOrder(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray, MaterialDialog optionDialog,String version) {
+        RealmResults<CartItem> cartItem = RealmUtil.findDataAll(CartItem.class);
 
-    //리뷰dialogshow 함수
-//    private void reviewDialogShow(ArrayList<ReviewItem> reviewItem) {
-//        reviewDialog = new MaterialDialog.Builder(context).customView(R.layout.dialog_review_listview, true).build();
-//        View reviewDialogView = reviewDialog.getView();
-//        RecyclerView reviewListView = (RecyclerView) reviewDialogView.findViewById(R.id.reviewListView);
-//        ReviewAdapter reviewAdapter = new ReviewAdapter(context, reviewItem);
-//        LayoutUtil.RecyclerViewSetting(context, reviewListView);
-//        reviewListView.setAdapter(reviewAdapter);
-//        reviewDialog.show();
-//    }
+        //기존 장바구니가 없으면 바로 추가
+        if (cartItem.size() == 0) {
+            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time);
+            RealmUtil.insertData(newRestaurant);
+            RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
+            if(version.equals("order")){
+                IntentUtil.startActivity(context, CartActivity.class);
+            }
+            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+            optionDialog.dismiss();
 
-    //선탠된 메뉴 CartItem RealmObject 생성
-    private CartItem createCartMenuItem(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray) {
-        CartMenu menu = new CartMenu(menuItem.getMenu_id(), menuItem.getName(), menuItem.getPrice(), menuItem.getDescription(), menuItem.getAvgtime());
-        CartRestaurant cartRestaurant = new CartRestaurant(restaurant.rest_id, restaurant.name, restaurant.address, restaurant.rest_admin_id, restaurant.distance, restaurant.latlng[1], restaurant.latlng[0]);
-        CartItem cartItem;
-        if (optionDialogArray.size() >= 1) {
-            RealmList<CartOption> menuOption = getMenuOption(optionDialogArray);
-            cartItem = new CartItem(getNextKey(), menu, cartRestaurant, menuOption);
-        } else {
-            cartItem = new CartItem(getNextKey(), menu, cartRestaurant);
+        } else if (cartItem.size() > 0) {
+            //장바구니에 이미 메뉴가 존재하는 경우
+            RealmResults<RestaurantItemRealm> defaultRestaurant = RealmUtil.findDataAll(RestaurantItemRealm.class);
+            //기존 장바구니에 있는 식당과 현재 주문할려는 식당이 일치할 경우 장바구니에 메뉴를 추가한다
+            if (defaultRestaurant.get(0).rest_id == restaurant.rest_id) {
+                RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
+                if(version.equals("order")){
+                    IntentUtil.startActivity(context, CartActivity.class);
+                }
+                onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+                optionDialog.dismiss();
+            }
+            //일치하지 않을 경우 기존 장바구니를 삭제하고 새로운 식당의 메뉴를 추가할것인지 묻는다
+            else {
+                new MaterialDialog.Builder(context)
+                        .content(context.getString(R.string.cart_delete_check))
+                        .positiveText("예")
+                        .negativeText("아니요")
+                        .onPositive((dialog, which) -> {
+                            RealmUtil.removeDataAll(CartItem.class);
+                            RealmUtil.removeDataAll(RestaurantItemRealm.class);
+                            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time);
+                            RealmUtil.insertData(newRestaurant);
+                            RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
+                            if(version.equals("order")){
+                                IntentUtil.startActivity(context, CartActivity.class);
+                            }
+                            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+                            optionDialog.dismiss();
+
+                        })
+                        .onNegative((dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .show();
+            }
         }
-        return cartItem;
+//        onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+//        optionDialog.dismiss();
+    }
+
+    private void setOptionRecyclerView(RecyclerView optionRecyclerView, ArrayList<OptionItem.Option> optionItem, int multiple, TextView dialog_totalPrice) {
+
+        //여러개 선택 가능한 옵션들의 클릭 콜백함수
+        OptionAdapter.SelectCLickListener selectCLickListener = (isPlus, position) -> {
+            RecyclerView.ViewHolder viewHolder = optionRecyclerView.getChildViewHolder(optionRecyclerView.getChildAt(position));
+            TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
+            dialog_totalPrice.setText((isPlus.equals("plus")) ?
+                    PriceUtil.plusPrice(PriceUtil.TextViewToString(optionPrice), PriceUtil.TextViewToString(dialog_totalPrice)) :
+                    PriceUtil.minusPrice(PriceUtil.TextViewToString(optionPrice), PriceUtil.TextViewToString(dialog_totalPrice)));
+        };
+
+        //한개만 선택 가능한 옵션들의 클릭 콜백함수
+        OptionAdapter.RadioClickListener radioClickListener = (position) -> {
+            //클릭 되어있는 라디오만 해제한뒤
+            for (int childCount = optionRecyclerView.getChildCount(), j = 0; j < childCount; j++) {
+                RecyclerView.ViewHolder viewHolder = optionRecyclerView.getChildViewHolder(optionRecyclerView.getChildAt(j));
+                RadioButton radioButton = (RadioButton) viewHolder.itemView.findViewById(R.id.dialog_menu_option_radio);
+                //체크 되어 있을 경우
+                if (radioButton.isChecked()) {
+                    //해제
+                    radioButton.setChecked(false);
+                    TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
+                    //최종값에 가격 마이너스 함
+                    dialog_totalPrice.setText(PriceUtil.minusPrice(PriceUtil.TextViewToString(dialog_totalPrice), PriceUtil.TextViewToString(optionPrice)));
+                }
+            }
+
+            //클릭한 포지션의 라디오 체크하고 최종값에 가격 플러스
+            RecyclerView.ViewHolder viewHolder = optionRecyclerView.getChildViewHolder(optionRecyclerView.getChildAt(position));
+            RadioButton radioButton = (RadioButton) viewHolder.itemView.findViewById(R.id.dialog_menu_option_radio);
+            TextView optionPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
+            radioButton.setChecked(true);
+            dialog_totalPrice.setText(PriceUtil.plusPrice(PriceUtil.TextViewToString(dialog_totalPrice), PriceUtil.TextViewToString(optionPrice)));
+
+        };
+
+        final OptionAdapter optionAdapter = new OptionAdapter(optionItem, context, multiple, radioClickListener, selectCLickListener);
+        LayoutUtil.RecyclerViewSetting(context.getApplicationContext(), optionRecyclerView);
+        optionRecyclerView.setAdapter(optionAdapter);
+
     }
 
     //필수, 선택 옵션 구분해서 값 얻어오기
@@ -421,21 +406,21 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     }
 
 
-    //Auto Increment id
-    private int getNextKey() {
-        try {
-            Realm realm = Realm.getDefaultInstance();
-            Number id = realm.where(CartItem.class).max("id");
-            if (id != null) {
-                return id.intValue() + 1;
-            } else {
-                return 0;
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return 0;
-        }
-    }
 
+
+    //선탠된 메뉴 CartItem RealmObject 생성
+    private CartItem createCartMenuItem(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray) {
+        CartMenu menu = new CartMenu(menuItem.getMenu_id(), menuItem.getName(), menuItem.getPrice(), menuItem.getDescription(), menuItem.getAvgtime());
+        CartItem cartItem;
+        if (optionDialogArray.size() >= 1) {
+            RealmList<CartOption> menuOption = getMenuOption(optionDialogArray);
+            cartItem = new CartItem(RealmUtil.getAutoIncrementId(CartItem.class), menu, menuOption);
+        } else {
+            cartItem = new CartItem(RealmUtil.getAutoIncrementId(CartItem.class), menu);
+        }
+        return cartItem;
+
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.hotMenuPicture)
@@ -454,7 +439,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         TextView detailHotMenuDescription;
         @BindView(R.id.detailHotMenuRating)
         TextView detailHotMenuRating;
-        @BindView(R.id.detailHotMenuReview)
+        @BindView(R.id.detailHotMenuReviewTextView)
         TextView detailHotMenuReview;
         @BindView(R.id.detailHotMenuCart)
         Button detailHotMenuCart;

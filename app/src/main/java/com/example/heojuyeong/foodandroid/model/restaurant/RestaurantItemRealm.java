@@ -7,6 +7,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by heojuyeong on 2017. 9. 30..
  */
 
+//한 개의 restaurant 유지
 public class RestaurantItemRealm extends RealmObject{
     @PrimaryKey
     int id=1;
@@ -14,19 +15,21 @@ public class RestaurantItemRealm extends RealmObject{
     public int rest_admin_id;
     public String name;
     public String address;
-    public String openhour;
+    public String open_time;
+    public String close_time;
     public String avg_cooking_time;
 
     public RestaurantItemRealm(){
 
     }
 
-    public RestaurantItemRealm(int rest_id, int rest_admin_id, String name, String address, String openhour, String avg_cooking_time) {
+    public RestaurantItemRealm(int rest_id, int rest_admin_id, String name, String address, String open_time, String close_time, String avg_cooking_time) {
         this.rest_id = rest_id;
         this.rest_admin_id = rest_admin_id;
         this.name = name;
         this.address = address;
-        this.openhour = openhour;
+        this.open_time=open_time;
+        this.close_time=close_time;
         this.avg_cooking_time = avg_cooking_time;
     }
 
@@ -63,12 +66,20 @@ public class RestaurantItemRealm extends RealmObject{
         this.address = address;
     }
 
-    public String getOpenhour() {
-        return openhour;
+    public String getOpen_time() {
+        return open_time;
     }
 
-    public void setOpenhour(String openhour) {
-        this.openhour = openhour;
+    public void setOpen_time(String open_time) {
+        this.open_time = open_time;
+    }
+
+    public String getClose_time() {
+        return close_time;
+    }
+
+    public void setClose_time(String close_time) {
+        this.close_time = close_time;
     }
 
     public String getAvg_cooking_time() {

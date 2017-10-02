@@ -13,17 +13,27 @@ import com.example.heojuyeong.foodandroid.util.LayoutUtil
 import com.example.heojuyeong.foodandroid.util.RealmUtil
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_cart.*
+import kotlinx.android.synthetic.main.item_cart.view.*
+
 
 class CartActivity : AppCompatActivity()  {
     val realm: Realm = Realm.getDefaultInstance()
-    val cartItemList = ArrayList<CartItem>()
+    private val cartItemList = ArrayList<CartItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
         setToolBar()
-        setCartAdapter()
         setView()
+        setCartAdapter()
+
+
+
+
+
+
+
+
     }
 
 
@@ -37,7 +47,6 @@ class CartActivity : AppCompatActivity()  {
     }
 
     private fun setCartAdapter() {
-
         val cartItem = realm.where(CartItem::class.java).findAll()
         cartItemList.addAll(realm.copyFromRealm(cartItem))
         val adapter = CartAdapter(this, cartItemList)
@@ -45,45 +54,41 @@ class CartActivity : AppCompatActivity()  {
             override fun onItemClick(view: View, position: Int, model: CartItem) {
             }
         })
-        LayoutUtil.RecyclerViewSetting(this.applicationContext,cartListView)
-        cartListView.adapter = adapter
+        LayoutUtil.RecyclerViewSetting(this.applicationContext, cartListView)
+        cartListView!!.adapter = adapter
 
-
-
-
-    }
+        }
 
     private fun setView(){
-        cart_menu_order.setOnClickListener({
-
-            val childCount = cartListView.childCount
-            var i = 0
-            while (i < childCount) {
-                val cartItemViewHolder = cartListView.getChildViewHolder(cartListView.getChildAt(i))
-                //최종 수량 가격 정보 추가함
-                val count:TextView= cartItemViewHolder.itemView.findViewById(R.id.cart_menu_quantity) as TextView
-                val totalPrice=cartItemViewHolder.itemView.findViewById(R.id.cart_menu_result_price) as TextView
-                cartItemList[i].menu_count=count.text.toString()
-                cartItemList[i].totalPrice=totalPrice.text.toString()
-                RealmUtil.insertData(cartItemList[i])
-                i++
-            }
-            if(cartItemList.size!=0){
-                IntentUtil.startActivity(this,OrderActivity::class.java)
-            }else{
-                Toast.makeText(this,"아이템이 없습니다", Toast.LENGTH_SHORT).show()
-            }
-
-
-
-        })
-
+        //모든 장바구니 삭제
         cartClear.setOnClickListener({
             RealmUtil.removeDataAll(CartItem::class.java)
-            cartListView.adapter = null
+            cartListView!!.adapter = null
         })
 
-    }
+        cart_menu_order.setOnClickListener({
+            if (cartItemList.size != 0) {
+                /** 장바구니 각각의 아이템  수량과 가격 데이터 삽입 후 주문 activity 호출*/
+                var childCount=cartListView.childCount
+                var i=0
+                while (i < childCount) {
+                    var cartItemViewHolder=cartListView.findViewHolderForAdapterPosition(i)
+                    val count: TextView = cartItemViewHolder.itemView.cart_menu_quantity as TextView
+                    val totalPrice = cartItemViewHolder.itemView.cart_menu_result_price as TextView
+                    cartItemList[i].menu_count = count.text.toString()
+                    cartItemList[i].totalPrice = totalPrice.text.toString()
+                    RealmUtil.insertData(cartItemList[i])
+                    i++
+                }
+
+                IntentUtil.startActivity(this,OrderActivity::class.java)
+            } else {
+                Toast.makeText(this, "아이템이 없습니다", Toast.LENGTH_SHORT).show()
+            }
 
 
+        })
+
+
+}
 }

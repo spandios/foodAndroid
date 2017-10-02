@@ -25,7 +25,8 @@ public class RestaurantItem {
         public String address;
         @SerializedName("restpicture")
         public String rest_picture;
-        public String openhour;
+        public String open_time;
+        public String close_time;
         public String holiday;
         public double rating;
         public int likes;
@@ -66,8 +67,13 @@ public class RestaurantItem {
             return rest_picture;
         }
 
-        public String getOpenhour() {
-            return openhour;
+
+        public String getOpen_time() {
+            return open_time;
+        }
+
+        public String getClose_time() {
+            return close_time;
         }
 
         public String getHoliday() {

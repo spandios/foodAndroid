@@ -6,9 +6,11 @@
     <string name="necessary">%1$s(필수)</string>
     <string name="notnecessary">%1$s(선택)</string>
     <string name="won">%1$s원</string>
-
+    <string name="cart_delete_check">기존 장바구니를 취소하고 새로운 음식점에서 주문하시겠어요?</string>
+    <string name="semi_clone">%1$s : %2$s</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="cart">장바구니</string>
+    <string name="resultPrice">총 결제금액 : </string>
     <string name="cart_more_order">메뉴 추가</string>
     <string name="order">주문하기</string>
     <string name="large_text">

@@ -1,5 +1,7 @@
 package com.example.heojuyeong.foodandroid.util;
 
+import com.example.heojuyeong.foodandroid.model.restaurant.RestaurantItemRealm;
+
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -59,6 +61,23 @@ public class RealmUtil {
         });
     }
 
+    public static RealmResults<RestaurantItemRealm> getRestaurantRealm(){
+        return findDataAll(RestaurantItemRealm.class);
+    }
+
+    //Auto Increment id
+    public static<T extends RealmObject> int getAutoIncrementId(Class<T> clazz) {
+        try {
+            Number id = realm.where(clazz).max("id");
+            if (id != null) {
+                return id.intValue() + 1;
+            } else {
+                return 0;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return 0;
+        }
+    }
 
 
 

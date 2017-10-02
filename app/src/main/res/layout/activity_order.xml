@@ -1,28 +1,40 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/orderToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/orderMenuList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderToolbar"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/orderMenuList"
+        >
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/orderResultPriceLayout"
+            android:layout_below="@+id/orderMenuList">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="결제금액"
+                android:text="@string/resultPrice"
                 android:layout_centerInParent="true"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="20sp"
@@ -37,31 +49,38 @@
                 android:layout_marginRight="10dp"
                 />
         </RelativeLayout>
-
-
         <Button
+            android:layout_above="@+id/requestText"
             android:id="@+id/orderArriveTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="예상 도착 시간"
-           />
+            />
 
         <EditText
             android:id="@+id/requestText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="요청사항"
+            android:layout_above="@+id/orderComplete"
             />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:id="@+id/orderComplete"
+            android:layout_alignParentBottom="true"
+            android:text="주문완료" />
+    </LinearLayout>
 
-            android:text="결제하기" />
 
 
 
-</LinearLayout>
+
+
+</RelativeLayout>
+</ScrollView>
 
 
 
