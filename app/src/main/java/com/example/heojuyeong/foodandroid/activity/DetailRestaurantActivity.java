@@ -96,36 +96,11 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 
     //Implement ItemClick -> 해당 position의 상세 레이아웃 펼쳐짐
     @Override
-    public void onItemClick(View view, int position, int menu_id) {
+    public void onItemClick(View view, int position, MenuItem menuItem) {
+
+
 
         //메뉴 클릭 시 우선 모든 레이아웃 상세 레이아웃 접은 뒤
-        TextView reviewText=(TextView)view.findViewById(R.id.detailHotMenuReviewTextView);
-        MenuReviewService.getReview(menu_id).enqueue(new Callback<ArrayList<ReviewItem>>() {
-            @Override
-            public void onResponse(Call<ArrayList<ReviewItem>> call, Response<ArrayList<ReviewItem>> response) {
-                if(response.isSuccessful()){
-                    if(response.body().size()>0){
-                        view.findViewById(R.id.detailHotMenuRating).setOnClickListener(v -> {
-                            reviewDialogShow(DetailRestaurantActivity.this,response.body());
-                        });
-                        reviewText.setOnClickListener(v -> {
-                            reviewDialogShow(DetailRestaurantActivity.this,response.body());
-                        });
-                        reviewText.setText("리뷰[" + response.body().size() + "]");
-
-                    }else{
-                        reviewText.setText("리뷰[0]");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<ReviewItem>> call, Throwable t) {
-                Logger.d(t);
-            }
-        });
-
-
         for (int childCount = recyclerView.getChildCount(), i = 0; i < childCount; i++) {
             RecyclerView.ViewHolder allViewHolder = recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
             allViewHolder.itemView.findViewById(R.id.masterHotMenu).setVisibility(View.VISIBLE);
@@ -133,7 +108,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         }
 
 
-        //해당 메뉴의 리뷰를 가져옴
+
 
 
         //클릭한 해당 포지션 상세 레이아웃 펼쳐짐
@@ -141,6 +116,28 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         view.findViewById(R.id.masterHotMenu).setVisibility(View.GONE);
         view.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
 
+        View.OnClickListener reviewClick= v -> MenuReviewService.getReview(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<ReviewItem>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ReviewItem>> call, Response<ArrayList<ReviewItem>> response) {
+                reviewDialogShow(DetailRestaurantActivity.this,response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ReviewItem>> call, Throwable t) {
+
+            }
+        });
+
+        //해당 메뉴의 리뷰를 가져옴
+        TextView reviewText=(TextView)view.findViewById(R.id.detailHotMenuReviewTextView);
+        if(menuItem.getReview_count()>0){
+            reviewText.setText("리뷰[" + menuItem.getReview_count() + "]");
+        }else{
+            reviewText.setText("리뷰[0]");
+        }
+
+        view.findViewById(R.id.detailHotMenuRating).setOnClickListener(reviewClick);
+        reviewText.setOnClickListener(reviewClick);
 
     }
 

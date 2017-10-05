@@ -11,9 +11,19 @@ public class RetrofitBase {
     private static RetrofitBase retrofitBase;
     private static Retrofit retrofit;
 
-    private RetrofitBase(){
-        retrofit=new retrofit2.Retrofit.Builder()
+    private RetrofitBase() {
+
+        retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("http://13.124.97.184")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    private static void RetrofitBaseLocal() {
+
+
+        retrofit = new retrofit2.Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:3000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
@@ -24,7 +34,14 @@ public class RetrofitBase {
             retrofitBase = new RetrofitBase();
             return retrofitBase;
         }
+        return retrofitBase;
+    }
 
+    public static RetrofitBase getLocalInstance() {
+        if (retrofit == null) {
+            RetrofitBaseLocal();
+            return retrofitBase;
+        }
         return retrofitBase;
     }
 

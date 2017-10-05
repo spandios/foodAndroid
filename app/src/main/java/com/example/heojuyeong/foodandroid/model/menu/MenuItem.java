@@ -15,6 +15,7 @@ public class MenuItem  {
     String rating;
     int viewcount;
     int likecount;
+    int review_count;
 
 
 
@@ -60,8 +61,10 @@ public class MenuItem  {
     }
 
 
-
+    public int getReview_count() {
+        return review_count;
     }
+}
 
 
 

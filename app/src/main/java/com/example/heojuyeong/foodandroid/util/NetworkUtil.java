@@ -14,14 +14,14 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class NetworkUtil {
 
-    public static void CheckandGetLocation(Activity activity){
+    public static void CheckNetGps(Activity activity){
+        //check network
         if (NetworkUtil.isNetworkConnected(activity)) {
-            //위치기능 비활성화한다면
+            //위치기능 비활성하이면
             if(!NetworkUtil.isGpsPossible(activity)){
                 SettingActivityUtil.settingGPS(activity);
             }
 
-            GPS_Util gps_util = new GPS_Util(activity.getApplicationContext());
         } else {
             SettingActivityUtil.notPossibleNetwork(activity);
         }

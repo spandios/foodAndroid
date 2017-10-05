@@ -6,26 +6,30 @@ import android.support.v7.app.AppCompatActivity
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import com.example.heojuyeong.foodandroid.R
 import com.example.heojuyeong.foodandroid.adapter.OrderMenuAdapter
+import com.example.heojuyeong.foodandroid.http.OrderService
+import com.example.heojuyeong.foodandroid.model.OrderItem
 import com.example.heojuyeong.foodandroid.model.cart.CartItem
 import com.example.heojuyeong.foodandroid.util.LayoutUtil
 import com.example.heojuyeong.foodandroid.util.PriceUtil
 import com.example.heojuyeong.foodandroid.util.RealmUtil
+import com.orhanobut.logger.Logger
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import com.wdullaer.materialdatetimepicker.time.Timepoint
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.item_order_menu.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 
 class OrderActivity : AppCompatActivity() , com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
 
-
-
-
     val realm: Realm = Realm.getDefaultInstance()
     var cartItemList=ArrayList<CartItem>()
     var isSetArrivedTime:Boolean=false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getCartItem()
@@ -33,14 +37,7 @@ class OrderActivity : AppCompatActivity() , com.wdullaer.materialdatetimepicker.
         setToolBar()
         setOrderAdapter()
         setView()
-
-
     }
-
-
-
-
-
 
     private fun setToolBar() {
         setSupportActionBar(orderToolbar)
@@ -51,14 +48,11 @@ class OrderActivity : AppCompatActivity() , com.wdullaer.materialdatetimepicker.
         orderToolbar.setNavigationOnClickListener { finish() }
     }
     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
-
     private fun getCartItem(){
         val cartItem = realm.where(CartItem::class.java).findAll()
         cartItemList.addAll(realm.copyFromRealm(cartItem))
 
     }
-
 
     private fun setOrderAdapter(){
         val adapter=OrderMenuAdapter(this,cartItemList)
@@ -117,8 +111,18 @@ class OrderActivity : AppCompatActivity() , com.wdullaer.materialdatetimepicker.
             })
 
             orderComplete.setOnClickListener({
-
+                val orderItem=OrderItem(1,1,1,cartItemList,"10분","빨리주세요",1,"2000원")
+                var call2=OrderService.order(orderItem)
+                call2.enqueue(object:Callback<OrderItem>{
+                    override fun onResponse(call: Call<OrderItem>?, response: Response<OrderItem>?) {
+                        Logger.d(response?.body().toString())
+                    }
+                    override fun onFailure(call: Call<OrderItem>?, t: Throwable?) {
+                        Logger.d(t)
+                    }
+                })
             })
+
     }
 
     //선택한 시간 표시

@@ -13,7 +13,7 @@ import com.example.heojuyeong.foodandroid.R;
 import com.example.heojuyeong.foodandroid.model.restaurant.LocationItem;
 import com.example.heojuyeong.foodandroid.rx.RxBus;
 import com.example.heojuyeong.foodandroid.staticval.StaticVal;
-import com.example.heojuyeong.foodandroid.util.GeoCoding;
+import com.example.heojuyeong.foodandroid.util.GeoUtil;
 import com.example.heojuyeong.foodandroid.util.RealmUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -85,9 +85,9 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
 
         googleMap.setOnCameraIdleListener(() -> {
             latLng=googleMap.getCameraPosition().target;
-            GeoCoding geoCoding=GeoCoding.getInstance(this);
+            GeoUtil geoUtil = GeoUtil.getInstance(this);
 
-            titleLocation.setText(geoCoding.getLocationName(latLng.latitude,latLng.longitude));
+            titleLocation.setText(geoUtil.getLocationName(latLng.latitude,latLng.longitude));
         });
 
 

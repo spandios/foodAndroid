@@ -4,7 +4,6 @@ import com.example.heojuyeong.foodandroid.model.OrderItem;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.POST;
 
 /**
@@ -15,29 +14,25 @@ public class OrderService {
 
 
     interface OrderInterFace{
-        @POST("api/order/")
-//        int menu_id;
-//        int rest_id;
-//        int user_id;
-//        int quantity;
-//        int status;
-//        String arrived_time;
-//        String message;
-//        String payment;
-        Call<OrderItem> order(@Field("menu_id")int menu_id,
-                                @Field("rest_id") int rest_id,
-                                @Field("user_id")int user_id,
-                                @Field("quantity")int quantity,
-                                @Field("message")String message,
-                                @Field("payment")String payment,
-                                @Field("arrived_time")String arrived_time,
-                                @Field("status")int status
-                                );
-        Call<OrderItem> order2(@Body OrderItem orderItem);
+//        Retrofit retrofit = new retrofit2.Retrofit.Builder()
+//                .baseUrl("http://10.0.2.2:3000")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
 
+        @POST("api/order/")
+        Call<OrderItem> order(@Body OrderItem orderItem);
 
 
     }
 
 
-}
+    public static Call<OrderItem> order(OrderItem orderItem){
+        OrderInterFace orderInterFace= RetrofitBase.getInstance().getRetrofit().create(OrderInterFace.class);
+        Call<OrderItem> call=orderInterFace.order(orderItem);
+        return call;
+    }
+
+
+    }
+
+

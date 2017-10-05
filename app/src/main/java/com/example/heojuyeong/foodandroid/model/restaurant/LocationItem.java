@@ -11,13 +11,15 @@ public class LocationItem extends RealmObject{
     @PrimaryKey
     int id=1;
     String locationName;
+    String tempLocationName;
     double lat;
     double lng;
+
 
     public LocationItem(){
 
     }
-    public LocationItem(String locationName, double lat, double lng) {
+    public LocationItem(String locationName,double lat, double lng) {
         this.locationName = locationName;
         this.lat = lat;
         this.lng = lng;
@@ -54,4 +56,6 @@ public class LocationItem extends RealmObject{
     public void setLng(double lng) {
         this.lng = lng;
     }
+
+
 }

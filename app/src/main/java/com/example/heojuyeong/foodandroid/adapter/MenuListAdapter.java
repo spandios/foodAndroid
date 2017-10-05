@@ -56,7 +56,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     final private RestaurantItem.Restaurant restaurant;
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, int menu_id);
+        void onItemClick(View view, int position, MenuItem menuItem);
     }
 
     public interface OnCartCountClickListener {
@@ -139,7 +139,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
 
         //각 아이템 클릭 리스너
-        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem.getMenu_id()));
+        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem));
 
     }
 

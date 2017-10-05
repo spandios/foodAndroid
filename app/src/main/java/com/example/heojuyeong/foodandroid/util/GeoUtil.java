@@ -4,8 +4,11 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.orhanobut.logger.Logger;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -13,27 +16,46 @@ import java.util.Locale;
  */
 
 //위치->주소명
-public class GeoCoding {
-    private static GeoCoding geoCoding;
+public class GeoUtil {
+    private static GeoUtil geoUtil;
     private static Geocoder geocoder;
 
-    private GeoCoding(Context context){
+    private GeoUtil(Context context){
         geocoder=new Geocoder(context, Locale.KOREA);
     }
 
-    public static GeoCoding getInstance(Context context){
+    public static GeoUtil getInstance(Context context){
         if(geocoder==null){
-            geoCoding=new GeoCoding(context);
-            return geoCoding;
+            geoUtil =new GeoUtil(context);
+            return geoUtil;
         }else{
-            return geoCoding;
+            return geoUtil;
         }
     }
+    public LatLng getLocation(String locationName){
+        try{
+            List<Address> addressList=geocoder.getFromLocationName(locationName,1);
+            LatLng latLng=new LatLng(addressList.get(0).getLatitude(),addressList.get(0).getLongitude());
+            return latLng;
 
-    public Geocoder getGeocoder(){
-        return geocoder;
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
+    public String getTempLocationName(double lat, double lng){
+        try{
+            //좌표->주소
+            Address addresses;
+            addresses=geocoder.getFromLocation(lat,lng,1).get(0);
+            return addresses.getAddressLine(0);
 
+        }catch (Exception e){
+            Logger.d(e);
+
+        }
+        return null;
+    }
     public String getLocationName(double lat,double lng){
          try{
              //좌표->주소
@@ -56,13 +78,12 @@ public class GeoCoding {
 
 
 
-
-
          }catch (Exception e){
             Logger.d(e);
 
-            return "지역을 읽을수 없습니다.";
+
          }
+         return null;
 
     }
 

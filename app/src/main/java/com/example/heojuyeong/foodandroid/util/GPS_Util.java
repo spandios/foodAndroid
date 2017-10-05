@@ -45,8 +45,8 @@ public class GPS_Util extends Service implements LocationListener {
     }
 
     public String getLocationName(){
-        GeoCoding geoCoding=GeoCoding.getInstance(mContext);
-        return geoCoding.getLocationName(lat,lng);
+        GeoUtil geoUtil = GeoUtil.getInstance(mContext);
+        return geoUtil.getLocationName(lat,lng);
     }
 
     public void insertDB(){
@@ -174,7 +174,6 @@ public class GPS_Util extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-
     }
 
     @Override
