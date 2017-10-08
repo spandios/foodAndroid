@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:693453888691:android:d3ccd4f5baf465ee",
+        "mobilesdk_app_id": "1:693453888691:android:7442af703f635b24",
         "android_client_info": {
-          "package_name": "com.example.heojuyeong.foodandroid"
+          "package_name": "com.example.fooddeuk"
         }
       },
       "oauth_client": [

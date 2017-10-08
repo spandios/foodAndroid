@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.heojuyeong.foodandroid.activity.DetailReviewImageActivity">
+    tools:context="com.example.fooddeuk.foodandroid.com.example.heojuyeong.activity.DetailReviewImageActivity">
 
     <TextView
         android:layout_width="20dp"

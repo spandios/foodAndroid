@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.heojuyeong.foodandroid.fragment.HomeFragment">
-    <TextView
+    android:orientation="vertical"
+    tools:context="com.example.fooddeuk.fragment.HomeFragment">
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="homeFragment"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp" />
 
-</RelativeLayout>
+   <Button
+       android:text="kakao login"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/test"/>
+
+    <Button
+        android:text="naver login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/naverlogin"/>
+
+
+</LinearLayout>

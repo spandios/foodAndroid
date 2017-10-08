@@ -5,12 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.heojuyeong.foodandroid.fragment.CurLocationFragment">
+    tools:context="com.example.fooddeuk.activity.MainActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/search_layout"
+        android:visibility="gone"
+        >
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:id="@+id/cancel_search"
+            android:text="취소"/>
+        <EditText
+            android:layout_toRightOf="@id/cancel_search"
+            android:layout_width="match_parent"
+            android:id="@+id/edit_search"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
     <!--top map banner-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.8"
+        android:layout_weight="1"
+        android:id="@+id/currentLocationTitle"
         android:background="@android:color/darker_gray">
 
         <ImageView
@@ -34,29 +55,26 @@
             android:layout_toRightOf="@+id/mapIcon"
             android:textSize="15dp" />
 
-        <Button
-            android:id="@+id/viewMapButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@+id/searchButton"
-             />
 
         <Button
+            android:text="검색"
             android:id="@+id/searchButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toLeftOf="@+id/filterButton" />
 
         <Button
+            android:text="필터"
+            android:textSize="10dp"
             android:id="@+id/filterButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
              />
+
     </RelativeLayout>
 <!--카테고리 선택-->
     <HorizontalScrollView
@@ -88,20 +106,21 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
-                android:id="@+id/menu_type_chiken"
+                android:id="@+id/menu_type_chicken"
                 android:layout_weight="1"
                 android:textSize="20sp"
                 android:tag="#치킨"
                 android:text="#치킨" />
             <TextView
+                android:id="@+id/menu_type_chinese"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:tag="중식"
-                android:text="중식" />
+                android:tag="#중식"
+                android:text="#중식" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

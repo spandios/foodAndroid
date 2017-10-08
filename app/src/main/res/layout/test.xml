@@ -16,7 +16,7 @@
             android:id="@+id/detailHotMenuPicture"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            app:srcCompat="@drawable/intro" />
+            app:srcCompat="@drawable/fm" />
 
 
         <RelativeLayout
