@@ -5,7 +5,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class settingLocationMapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class settingLocationMapActivity extends BaseActivity implements OnMapReadyCallback {
 
     @BindView(R.id.currentLocationSettingByMapTitleLocation)
     TextView titleLocation;
@@ -64,6 +63,7 @@ public class settingLocationMapActivity extends AppCompatActivity implements OnM
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.currentLocationSettingByMap);
+//        MapFragment mapFragment=(MapFragment) getFragmentManager().findFragmentById(R.id.currentLocationSettingByMap);
         mapFragment.getMapAsync(this);
 
     }

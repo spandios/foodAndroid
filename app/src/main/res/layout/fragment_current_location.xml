@@ -8,8 +8,7 @@
     tools:context="com.example.fooddeuk.activity.MainActivity">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="56dp"
         android:id="@+id/search_layout"
         android:visibility="gone"
         >
@@ -28,132 +27,131 @@
     </RelativeLayout>
     <!--top map banner-->
     <RelativeLayout
+        android:padding="3dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="56dp"
         android:id="@+id/currentLocationTitle"
-        android:background="@android:color/darker_gray">
-
-        <ImageView
-            android:id="@+id/mapIcon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="120dp"
-            android:layout_marginStart="120dp"
-            android:layout_alignBottom="@+id/currentLocationTextView"
-            app:srcCompat="@drawable/ic_explore_black_24dp"
-             />
+        >
+        <Button
+            android:id="@+id/restaurantListHam"
+            android:layout_width="20dp"
+            android:layout_height="14dp"
+            android:background="@drawable/ic_hamburger"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="14dp"
+            />
 
 
         <TextView
             android:id="@+id/currentLocationTextView"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="3dp"
-            android:layout_toEndOf="@+id/mapIcon"
-            android:layout_toRightOf="@+id/mapIcon"
-            android:textSize="15dp" />
-
-
-        <Button
-            android:text="검색"
-            android:id="@+id/searchButton"
-            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@+id/filterButton" />
-
+            android:textSize="18sp"
+            android:text="강남구 논현동"
+            android:textStyle="bold"
+            android:textColor="@color/charcoal_grey"
+            android:lineSpacingExtra="22.5sp"
+            android:layout_toRightOf="@+id/restaurantListHam"
+            android:layout_marginLeft="8.8dp"
+            android:layout_marginTop="16.2dp"
+            android:layout_centerVertical="true"
+            />
+        
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="7dp"
+            android:src="@drawable/ic_drop_down"
+            android:layout_toRightOf="@+id/currentLocationTextView"
+            android:layout_marginTop="21.5dp"
+            android:layout_marginLeft="8.5dp"
+            />
         <Button
-            android:text="필터"
+            android:background="@drawable/ic_filter"
             android:textSize="10dp"
             android:id="@+id/filterButton"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_width="18dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@+id/currentLocationCartButton"
+            />
+        <Button
+            android:id="@+id/currentLocationCartButton"
+            android:layout_width="21.5dp"
+            android:layout_height="20.8dp"
+            android:background="@drawable/ic_cart"
+            android:layout_toLeftOf="@+id/searchButton"
+            android:layout_marginRight="8.2dp"
+            android:layout_marginTop="14.8dp"
+
+            android:layout_marginLeft="10.2dp"
+
+            />
+        <Button
+            android:background="@drawable/ic_search"
+            android:id="@+id/searchButton"
+            android:layout_width="18.5dp"
+            android:layout_height="18.5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15.8dp"
+            android:layout_marginLeft="15.5dp"
+
              />
 
     </RelativeLayout>
 <!--카테고리 선택-->
     <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
         android:scrollbars="none">
 
         <LinearLayout
-
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:id="@+id/restaurantMenuCategoryLayout"
             >
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:textSize="20sp"
-                android:layout_weight="1"
+                style="@style/restaurantMenuCategory"
                 android:id="@+id/menu_type_japan"
                 android:tag="@string/restaurant_menu_type1"
-                android:text="@string/restaurant_menu_type1" />
+                android:text="@string/restaurant_menu_type1"
+                />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
+                style="@style/restaurantMenuCategory"
                 android:id="@+id/menu_type_chicken"
-                android:layout_weight="1"
-                android:textSize="20sp"
                 android:tag="#치킨"
                 android:text="#치킨" />
             <TextView
                 android:id="@+id/menu_type_chinese"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:textSize="20sp"
-                android:layout_weight="1"
+                style="@style/restaurantMenuCategory"
                 android:tag="#중식"
                 android:text="#중식" />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="20sp"
+                style="@style/restaurantMenuCategory"
                 android:text="testCategory" />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="20sp"
+                style="@style/restaurantMenuCategory"
                 android:text="testCategory" />
         </LinearLayout>
     </HorizontalScrollView>
 
-
-    <RelativeLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8.5">
+        android:layout_height="1dp"
+        android:src="@drawable/header_stroke"/>
 
-        <ListView
+
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/currentLocationListView"
+            android:layout_height="wrap_content"
+            android:id="@+id/restaurantRecyclerViewInList"
             android:scrollbars="none"
             >
-
-        </ListView>
-    </RelativeLayout>
+        </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

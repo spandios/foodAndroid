@@ -1,13 +1,12 @@
 package com.example.fooddeuk.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.example.fooddeuk.R;
 import com.squareup.picasso.Picasso;
 
-public class DetailReviewImageActivity extends AppCompatActivity {
+public class DetailReviewImageActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

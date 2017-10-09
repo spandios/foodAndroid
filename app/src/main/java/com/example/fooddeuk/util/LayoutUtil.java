@@ -6,8 +6,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 
 import com.example.fooddeuk.R;
+
+import java.util.HashMap;
 
 /**
  * Created by heojuyeong on 2017. 9. 22..
@@ -28,6 +31,15 @@ public class LayoutUtil {
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_white));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+    }
+
+    public static HashMap<String, Integer> DpToLayoutParams(Context context,float widthDp,float heightDp){
+        final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthDp, context.getResources().getDisplayMetrics());
+        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightDp, context.getResources().getDisplayMetrics());
+        HashMap<String,Integer> dpMap=new HashMap<>();
+        dpMap.put("width",width);
+        dpMap.put("height",height);
+        return dpMap;
     }
 
 

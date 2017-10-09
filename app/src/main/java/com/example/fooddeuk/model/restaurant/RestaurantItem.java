@@ -28,7 +28,7 @@ public class RestaurantItem {
         public String open_time;
         public String close_time;
         public String holiday;
-        public double rating;
+        public float rating;
         public int likes;
         public int reviewcount;
         public String avg_cooking_time;
@@ -80,7 +80,7 @@ public class RestaurantItem {
             return holiday;
         }
 
-        public double getRating() {
+        public float getRating() {
             return rating;
         }
 

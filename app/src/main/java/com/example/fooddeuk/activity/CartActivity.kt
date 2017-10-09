@@ -1,7 +1,6 @@
 package com.example.fooddeuk.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.item_cart.view.*
 
 
-class CartActivity : AppCompatActivity()  {
+class CartActivity : BaseActivity()  {
     val realm: Realm = Realm.getDefaultInstance()
     private val cartItemList = ArrayList<CartItem>()
 

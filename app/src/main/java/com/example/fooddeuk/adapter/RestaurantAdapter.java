@@ -1,76 +1,110 @@
 package com.example.fooddeuk.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.model.restaurant.RestaurantItem;
+import com.example.fooddeuk.util.LayoutUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Created by heojuyeong on 2017. 7. 20..
+ * Created by heojuyeong on 2017. 10. 9..
  */
 
-
-public class RestaurantAdapter extends ArrayAdapter<RestaurantItem.Restaurant>{
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
     private Context context;
-    private int resource;
-    private ArrayList<RestaurantItem.Restaurant> items;
+    private ArrayList<RestaurantItem.Restaurant> restaurantItem;
+    HashMap<String,Integer> starDpMap;
 
-    public RestaurantAdapter(Context context, int resource, ArrayList<RestaurantItem.Restaurant> items){
-        super(context,resource,items);
-        this.context=context;
-        this.resource=resource;
-        this.items=items;
+    public RestaurantAdapter(Context context, ArrayList<RestaurantItem.Restaurant> restaurantItem) {
+        this.context = context;
+        this.restaurantItem = restaurantItem;
+        starDpMap= LayoutUtil.DpToLayoutParams(context,12,(float)11.5);
     }
 
-
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View row=convertView;
-        CurrentListViewHolder viewHolder;
+    public RestaurantAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_restaurant, parent, false);
+        // set the view's size, margins, paddings and layout parameters
+        RestaurantAdapter.ViewHolder vh = new RestaurantAdapter.ViewHolder(v);
+        return vh;
+    }
 
 
-        if(row==null){
-            LayoutInflater inflater=LayoutInflater.from(context);
-            row=inflater.inflate(resource,parent,false);
-            viewHolder=new CurrentListViewHolder();
-            viewHolder.cur_location_item_image=(ImageView)row.findViewById(R.id.cur_location_item_image);
-            viewHolder.cur_location_item_rest_name=(TextView)row.findViewById(R.id.cur_location_item_rest_name);
-            viewHolder.cur_location_item_rating=(TextView)row.findViewById(R.id.cur_location_item_rating);
-            viewHolder.cur_location_item_reviewcount=(TextView)row.findViewById(R.id.cur_location_item_reviewcount);
-            viewHolder.cur_location_item_distance=(TextView)row.findViewById(R.id.cur_location_item_distance);
-            row.setTag(viewHolder);
-        }else{
-            viewHolder=(CurrentListViewHolder)row.getTag();
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        RestaurantItem.Restaurant item = restaurantItem.get(position);
+        float rating=item.rating;
+        Picasso.with(context).load(item.getRest_picture()).resize(150,150).into(holder.restaurantImageInList);
+        holder.restaurantNameInList.setText(item.name);
+        holder.restaurantReviewCountInList.setText(String.valueOf(item.reviewcount));
+        holder.restaurantAdminCommentInList.setText("todo");
+
+
+
+        for(int j=0; j<5; j++){
+            ImageView star=new ImageView(context);
+            star.setLayoutParams(new ViewGroup.LayoutParams(starDpMap.get("width"),starDpMap.get("height")));
+            if(rating==0){
+                //                ImageView blackStar=new ImageView(context);
+//                blackStar.setImageResource(R.drawable.ic_star);
+                star.setImageResource(R.drawable.ic_star);
+                holder.restaurantRatingStarInList.addView(star);
+
+            }else if(rating>=1.0){
+                rating-=1.0;
+                ImageView starRanked=new ImageView(context);
+//                starRanked.setImageResource(R.drawable.ic_star_ranked);
+                star.setImageResource(R.drawable.ic_star_ranked);
+
+                holder.restaurantRatingStarInList.addView(star);
+
+            }else if(rating==0.5){
+                rating-=0.5;
+//                ImageView halfRanked=new ImageView(context);
+//                halfRanked.setImageResource(R.drawable.ic_star_ranked_half);
+                star.setImageResource(R.drawable.ic_star_ranked_half);
+                holder.restaurantRatingStarInList.addView(star);
+
+            }
         }
+    }
 
-        RestaurantItem.Restaurant item=items.get(position);
-        Picasso.with(context).load(item.getRest_picture()).resize(150,150).into(viewHolder.cur_location_item_image);
-        viewHolder.cur_location_item_rest_name.setText(item.getName());
-        viewHolder.cur_location_item_rating.setText(Double.toString(item.getRating()));
-        viewHolder.cur_location_item_distance.setText(item.getDistance());
-        viewHolder.cur_location_item_reviewcount.setText(Integer.toString(item.getReviewcount()));
-        return row;
+    @Override
+    public int getItemCount() {
+        return restaurantItem.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView restaurantImageInList;
+        TextView restaurantNameInList;
+        TextView restaurantReviewCountInList;
+        TextView restaurantAdminCommentInList;
+        LinearLayout restaurantRatingStarInList;
+
+
+        ViewHolder(View itemView) {
+            super(itemView);
+
+            restaurantImageInList = (ImageView) itemView.findViewById(R.id.restaurantImageInList);
+            restaurantNameInList = (TextView) itemView.findViewById(R.id.restaurantNameInList);
+            restaurantReviewCountInList = (TextView) itemView.findViewById(R.id.restaurantReviewCountInList);
+            restaurantAdminCommentInList = (TextView) itemView.findViewById(R.id.restaurantAdminCommentInList);
+            restaurantRatingStarInList = (LinearLayout) itemView.findViewById(R.id.restaurantRatingStarInList);
+        }
     }
 
 
-    private static class CurrentListViewHolder{
 
-        public ImageView cur_location_item_image;
-        public TextView cur_location_item_rest_name;
-        public TextView cur_location_item_rating;
-        public TextView cur_location_item_reviewcount;
-        public TextView cur_location_item_distance;
-    }
 }

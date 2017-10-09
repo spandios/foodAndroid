@@ -1,7 +1,6 @@
 package com.example.fooddeuk.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Toast
 import com.example.fooddeuk.R
@@ -26,7 +25,7 @@ import retrofit2.Response
 import java.util.*
 
 
-class OrderActivity : AppCompatActivity(), com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
+class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
 
     val realm: Realm = Realm.getDefaultInstance()
     var cartItemList = ArrayList<CartItem>()

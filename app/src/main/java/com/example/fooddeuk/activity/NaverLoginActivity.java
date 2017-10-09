@@ -2,7 +2,6 @@ package com.example.fooddeuk.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,7 +11,7 @@ import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 
-public class NaverLoginActivity extends AppCompatActivity {
+public class NaverLoginActivity extends BaseActivity {
     OAuthLoginButton mOAuthLoginButton;
     OAuthLogin mOAuthLoginModule;
     private static Context mContext;

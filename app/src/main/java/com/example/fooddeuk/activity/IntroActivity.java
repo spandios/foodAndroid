@@ -3,7 +3,6 @@ package com.example.fooddeuk.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.example.fooddeuk.R;
@@ -18,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class IntroActivity extends AppCompatActivity{
+public class IntroActivity extends BaseActivity{
 
     private Handler handler;
 

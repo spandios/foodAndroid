@@ -15,6 +15,7 @@ import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.tsengvn.typekit.Typekit;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -81,6 +82,14 @@ public class CommonValueApplication extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter());
         new GPS(this).getGPS();
         KakaoSDK.init(new KakaoSDKAdapter());
+        Typekit.getInstance()
+                .addNormal(Typekit.createFromAsset(this, "fonts/Spoqa Han Sans Regular.ttf"))
+                .addBold(Typekit.createFromAsset(this, "fonts/Spoqa Han Sans Bold.ttf"))
+                .add("Light", Typekit.createFromAsset(this,"fonts/Spoqa Han Sans Light.ttf"))
+                .add("Thin", Typekit.createFromAsset(this,"fonts/Spoqa Han Sans Thin.ttf"));
+
+
+
 
 
     }
