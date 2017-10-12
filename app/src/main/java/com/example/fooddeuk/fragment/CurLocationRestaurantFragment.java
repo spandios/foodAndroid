@@ -5,22 +5,23 @@ import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
+import com.example.fooddeuk.activity.DetailRestaurantActivity;
 import com.example.fooddeuk.activity.settingLocationMapActivity;
 import com.example.fooddeuk.adapter.RestaurantAdapter;
 import com.example.fooddeuk.http.RestaurantService;
@@ -35,8 +36,7 @@ import com.example.fooddeuk.util.LayoutUtil;
 import com.example.fooddeuk.util.RealmUtil;
 import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,10 +52,10 @@ public class CurLocationRestaurantFragment extends Fragment {
     MaterialDialog locationSettingDialog;
     Activity mContext;
     LocationItem locationItems;
-    String filter=StaticVal.defaultFilter;
+    String filter = StaticVal.defaultFilter;
     int maxDistance = StaticVal.defaultCurrentLocationMenuMaxDistance;
     String restaurantMenuType;
-
+    RestaurantAdapter restaurantAdapter;
 
     @BindView(R.id.currentLocationTextView)
     TextView currentLocationTextView;
@@ -68,52 +68,69 @@ public class CurLocationRestaurantFragment extends Fragment {
     @BindView(R.id.edit_search)
     EditText editSearch;
     @BindView(R.id.restaurantMenuCategoryLayout)
-    LinearLayout restaurantMenuCategoryLayout;
+    RelativeLayout restaurantMenuCategoryLayout;
+    @BindView(R.id.menu_type_tab_selected)
+    ImageView menu_type_tab_selected;
+
 
     /**
      * 음식 종류에 따른 식당목록리스트 가져오기
      **/
-    @OnClick({R.id.menu_type_japan, R.id.menu_type_chicken,R.id.menu_type_chinese})
+
+    @OnClick({R.id.restaurant_menu_type1,R.id.restaurant_menu_type2, R.id.restaurant_menu_type3,R.id.restaurant_menu_type4,R.id.restaurant_menu_type5,R.id.restaurant_menu_type6})
     public void selectFoodType(TextView restaurant_menu_type) {
-        ArrayList<TextView> menu_type_list=new ArrayList<>();
-        for(int i=0; i<restaurantMenuCategoryLayout.getChildCount(); i++){
-            if(restaurantMenuCategoryLayout.getChildAt(i) instanceof TextView){
+        restaurantMenuType = restaurant_menu_type.getText().toString();
+        for (int i = 0; i < restaurantMenuCategoryLayout.getChildCount(); i++) {
+            if (restaurantMenuCategoryLayout.getChildAt(i) instanceof TextView) {
                 restaurantMenuCategoryLayout.getChildAt(i).setSelected(false);
-                ((TextView) restaurantMenuCategoryLayout.getChildAt(i)).setTypeface(null,Typeface.NORMAL);
+                ((TextView) restaurantMenuCategoryLayout.getChildAt(i)).setTypeface(restaurant_menu_type.getTypeface(), Typeface.NORMAL);
             }
         }
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.addRule(RelativeLayout.BELOW,R.id.restaurant_menu_type1);
+        int dp=LayoutUtil.DpToPx(getActivity(),Float.parseFloat(restaurant_menu_type.getTag().toString()));
+        params.setMargins(dp,LayoutUtil.DpToPx(getActivity(),4),0,0);
+        menu_type_tab_selected.setLayoutParams(params);
         restaurant_menu_type.setSelected(true);
         restaurant_menu_type.setTypeface(restaurant_menu_type.getTypeface(), Typeface.BOLD);
-//        restaurant_menu_type.setTextAppearance(getActivity(),R.style.restaurantMenuCategory);
-        restaurantMenuType=restaurant_menu_type.getText().toString().substring(1, restaurant_menu_type.getText().toString().length());
         getCurLocationRestaurant();
-    }
 
+    }
+    //Onclick Filter
     @OnClick(R.id.filterButton)
     public void setFilterRestaurant() {
-        DialogUtil.setFilterRestaurant(getActivity(), new DialogUtil.FilterCallback() {
-            @Override
-            public void filterResult(int distance, String filterValue) {
-                if(distance>0){
-                    maxDistance=distance;
-                }else{
-                    filter=filterValue;
-                }
-
-                getCurLocationRestaurant();
+        DialogUtil.setFilterRestaurant(getActivity(), (distance, filterValue) -> {
+            if (distance > 0) {
+                maxDistance = distance;
+            } else {
+                filter = filterValue;
             }
+            getCurLocationRestaurant();
         });
 
     }
+    //OnClick Cart in restaurantList
+    @OnClick(R.id.currentLocationCartButton)
+    public void goToCart(Button button){
+        button.setOnClickListener(v -> {
+
+        });
+    }
+
+
+    //Onclick Search
     @OnClick(R.id.searchButton)
-    public void serachRestaurant(){
+    public void searchRestaurant() {
         search_layout.setVisibility(View.VISIBLE);
         currentLocationTitle.setVisibility(View.GONE);
 
     }
 
     @OnClick(R.id.cancel_search)
-    public void cancelSearch(){
+    public void cancelSearch() {
         search_layout.setVisibility(View.GONE);
         currentLocationTitle.setVisibility(View.VISIBLE);
         getCurLocationRestaurant();
@@ -123,8 +140,8 @@ public class CurLocationRestaurantFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         //현재 위치 정보 db에서 가져옴
         super.onCreate(savedInstanceState);
-        String menuType = mContext.getResources().getString(R.string.restaurant_menu_type1);
-        restaurantMenuType = menuType.substring(1, menuType.length());
+
+        restaurantMenuType = mContext.getResources().getString(R.string.restaurant_menu_type1);
 
         RealmResults<LocationItem> realmResults = RealmUtil.findDataAll(LocationItem.class);
         if (realmResults.size() > 0) {
@@ -150,38 +167,29 @@ public class CurLocationRestaurantFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_current_location, container, false);
         ButterKnife.bind(this, view);
         setLocationSettingDialog();
-        editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_SEARCH){
-                    String rest_name=editSearch.getText().toString();
-                    getCurLocationRestaurantSearch(rest_name);
-                    return true;
-                }
-                return false;
+
+        editSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String rest_name = editSearch.getText().toString();
+                getCurLocationRestaurantSearch(rest_name);
+                return true;
             }
+            return false;
         });
         return view;
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        RealmResults<LocationItem> location=RealmUtil.findDataAll(LocationItem.class);
-//
-//        if(location.size()>0){
-//            locationItems=RealmUtil.findDataAll(LocationItem.class).get(0);
-//        }else{
-//            Logger.d("LOCATION NULL");
-//        }
+
 
         if (locationItems != null) {
             currentLocationTextView.setText(locationItems.getLocationName());
             getCurLocationRestaurant();
         }
-        //현재위치명
+
     }
 
     @Override
@@ -246,137 +254,91 @@ public class CurLocationRestaurantFragment extends Fragment {
     /**
      * 식당 리스트 뷰 Param 위치(locationItem) 최대거리(maxDistance) 식당메뉴타입(menuType)
      **/
+
+
     void getCurLocationRestaurantSearch(String rest_name) {
         //기본 메뉴조건
 
-        RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, restaurantMenuType,filter,rest_name).enqueue(new Callback<RestaurantItem>() {
+        RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, restaurantMenuType, filter, rest_name).enqueue(new Callback<RestaurantItem>() {
 
             @Override
             public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
-                if (response.isSuccessful()) {
-
-                    //주변에 데이터 없는경우 에러메세지 TOAST
-                    if (response.body().getStatus().equals("FAIL")) {
-                        Toast.makeText(getActivity(), response.body().getErrorMessage(), Toast.LENGTH_LONG).show();
-                        restaurantRecyclerViewInList.setAdapter(null);
-                    }else{
-                        if(response.body().getRestaurants().size()>0) {
-
-//                            RestaurantAdapter2 adapter = new RestaurantAdapter2(mContext, R.layout.item_restaurant, response.body().getRestaurants());
-                            RestaurantAdapter adapter=new RestaurantAdapter(getActivity(),response.body().getRestaurants());
-                            LayoutUtil.RecyclerViewSetting(getActivity(),restaurantRecyclerViewInList);
-                            restaurantRecyclerViewInList.setAdapter(adapter);
-                            HashMap<String,Integer> starDpMap= LayoutUtil.DpToLayoutParams(getActivity().getApplicationContext(),12,(float)11.5);
-//                            for(int i=0; i<currentLocationListView.getChildCount();i++){
-//                                View view=currentLocationListView.getChildAt(i);
-//                                float rating=adapter.getItem(i).getRating();
-//                                LinearLayout restaurantRatingStarInList=(LinearLayout)view.findViewById(R.id.restaurantRatingStarInList);
-//                                for(int j=0; j<5; j++){
-//                                    if(rating==0){
-//                                        ImageView blackStar=new ImageView(getActivity());
-//                                        blackStar.setImageResource(R.drawable.ic_star);
-//                                        blackStar.setLayoutParams(new ViewGroup.LayoutParams(starDpMap.get("width"),starDpMap.get("height")));
-//                                        restaurantRatingStarInList.addView(blackStar);
-//                                    }else if(rating>1){
-//                                        ImageView starRanked=new ImageView(getActivity());
-//                                        starRanked.setImageResource(R.drawable.ic_star_ranked);
-//                                        starRanked.setLayoutParams(new ViewGroup.LayoutParams(starDpMap.get("width"),starDpMap.get("height")));
-//                                        rating-=1.0;
-//                                        restaurantRatingStarInList.addView(starRanked);
-//                                    }else if(rating==0.5){
-//                                        ImageView halfRanked=new ImageView(getActivity());
-//                                        halfRanked.setImageResource(R.drawable.ic_star_ranked_half);
-//                                        halfRanked.setLayoutParams(new ViewGroup.LayoutParams(starDpMap.get("width"),starDpMap.get("height")));
-//                                        rating-=0.5;
-//                                        restaurantRatingStarInList.addView(halfRanked);
-//                                    }
-//                                }
-//
-//                            }
-
-
-
-                            adapter.notifyDataSetChanged();
-                            /**Go to DetailRestaurant**/
-                            /**Go to DetailRestaurant**/
-                            /**Go to DetailRestaurant**/
-//                            currentLocationListView.setOnItemClickListener((parent, view, position, id) -> {
-//                                Parcelable restaurant = Parcels.wrap(parent.getAdapter().getItem(position));
-//                                Bundle extra = new Bundle();
-//                                extra.putParcelable("restaurant", restaurant);
-//                                IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
-//                            });
-                        }else{
-                            Toast.makeText(mContext, "검색결과가 없습니다", Toast.LENGTH_LONG).show();
-                            restaurantRecyclerViewInList.setAdapter(null);
-
-                        }
-                    }
-
-                }
-
+                setRestaurantAdapter(response);
             }
 
             @Override
             public void onFailure(Call<RestaurantItem> call, Throwable t) {
                 Logger.d(t);
-                Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
+                Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG).show();
             }
         });
     }
+    void updateRestaurant(){
+        RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, restaurantMenuType, filter, "").enqueue(new Callback<RestaurantItem>() {
+            @Override
+            public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
+                restaurantRecyclerViewInList.invalidate();
+                restaurantAdapter.updateRestaurant(response.body().getRestaurants());
+                restaurantAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<RestaurantItem> call, Throwable t) {
+                Logger.d(t);
+                Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+
 
     void getCurLocationRestaurant() {
         //기본 메뉴조건
-
-        RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, restaurantMenuType,filter,"").enqueue(new Callback<RestaurantItem>() {
-
+        RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, restaurantMenuType, filter, "").enqueue(new Callback<RestaurantItem>() {
             @Override
             public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
-                if (response.isSuccessful()) {
-
-                    //주변에 데이터 없는경우 에러메세지 TOAST
-                    if (response.body().getStatus().equals("FAIL")) {
-                        Toast.makeText(mContext, response.body().getErrorMessage(), Toast.LENGTH_LONG).show();
-                        restaurantRecyclerViewInList.setAdapter(null);
-                    }else{
-                        if(response.body().getRestaurants().size()>0){
-                            RestaurantAdapter adapter=new RestaurantAdapter(mContext,response.body().getRestaurants());
-                            LayoutUtil.RecyclerViewSetting(mContext,restaurantRecyclerViewInList);
-                            restaurantRecyclerViewInList.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
-
-
-                            /**Go to DetailRestaurant**/
-                            /**Go to DetailRestaurant**/
-                            /**Go to DetailRestaurant**/
-//                            currentLocationListView.setOnItemClickListener((parent, view, position, id) -> {
-//                                Parcelable restaurant = Parcels.wrap(parent.getAdapter().getItem(position));
-//                                Bundle extra = new Bundle();
-//                                extra.putParcelable("restaurant", restaurant);
-//                                IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
-//                            });
-                        }else{
-                            Toast.makeText(mContext, "검색결과가 없습니다", Toast.LENGTH_LONG).show();
-                            RestaurantAdapter adapter=new RestaurantAdapter(mContext,response.body().getRestaurants());
-                            LayoutUtil.RecyclerViewSetting(mContext,restaurantRecyclerViewInList);
-                            restaurantRecyclerViewInList.setAdapter(adapter);
-
-                        }
-                    }
-
-                }
-
-                    }
+                setRestaurantAdapter(response);
+            }
 
             @Override
             public void onFailure(Call<RestaurantItem> call, Throwable t) {
                 Logger.d(t);
-                Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG);
+                Toast.makeText(mContext, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    public void setRestaurantAdapter(final Response<RestaurantItem> response) {
+        if (response.isSuccessful()) {
+            //주변에 데이터 없는경우 에러메세지 TOAST
+            if (response.body().getStatus().equals("FAIL")) {
+                Toast.makeText(getActivity(), response.body().getErrorMessage(), Toast.LENGTH_LONG).show();
+                restaurantRecyclerViewInList.setAdapter(null);
+            } else {
+                if (response.body().getRestaurants().size() > 0) {
+                    restaurantAdapter = new RestaurantAdapter(getActivity(), response.body().getRestaurants());
+                    /**Go to DetailRestaurant**/
+                    /**Go to DetailRestaurant**/
+                    /**Go to DetailRestaurant**/
+                    restaurantAdapter.setRestaurantItemClickListener(restaurant -> {
+                        Parcelable restaurantParcel = Parcels.wrap(restaurant);
+                        Bundle extra = new Bundle();
+                        extra.putParcelable("restaurant", restaurantParcel);
+                        IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
+                    });
 
+                    LayoutUtil.RecyclerViewSetting(getActivity(), restaurantRecyclerViewInList);
+                    restaurantRecyclerViewInList.setAdapter(restaurantAdapter);
+
+                } else {
+                    Toast.makeText(mContext, "검색결과가 없습니다", Toast.LENGTH_LONG).show();
+                    restaurantRecyclerViewInList.setAdapter(null);
+
+                }
+            }
+        }
+    }
 
 
 }
