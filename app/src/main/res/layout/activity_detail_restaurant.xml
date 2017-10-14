@@ -5,64 +5,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.example.fooddeuk.foodandroid.com.example.heojuyeong.activity.DetailRestaurantActivity">
+    tools:context="com.example.fooddeuk.activity.DetailRestaurantActivity">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_height="56dp"
+        android:padding="3dp"
         android:id="@+id/detailHotMenuHeader"
         >
 
         <Button
-            android:id="@+id/detailBackButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/backbutton"
-            android:layout_alignBottom="@+id/detailMapButton" />
+            android:id="@+id/rest_detail_back_btn"
+            android:layout_width="9dp"
+            android:layout_height="16dp"
+            android:background="@drawable/ic_back_black"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/rest_detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="left"
+            android:text="가게이름"
+            android:layout_toRightOf="@id/rest_detail_back_btn"
+            android:layout_marginLeft="25.5dp"
+            android:layout_marginTop="19dp"
+            android:textColor="@color/text_main"
+            android:lineSpacingExtra="4.5sp"
+            />
 
         <Button
-            android:id="@+id/detailMapButton"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:id="@+id/rest_detail_map"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:layout_toLeftOf="@+id/rest_detail_like"
+            android:layout_marginTop="18dp"
             android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/detailTopCartButton"
             android:background="@drawable/ic_explore_black_24dp" />
 
         <Button
-            android:id="@+id/detailTopCartButton"
-            android:background="@drawable/cart"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:id="@+id/rest_detail_like"
+            android:background="@drawable/ic_heart"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp" />
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="18dp" />
 
     </RelativeLayout>
 
-    <!--<HorizontalScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scrollbars="none"-->
-        <!--android:visibility="gone"-->
-        <!--android:id="@+id/detailMenuCategoryParentLayoutInHeaderScrollView"-->
-        <!--&gt;-->
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="horizontal"-->
-
-            <!--android:id="@+id/detailMenuCategoryParentLayoutInHeader"-->
-            <!--&gt;-->
-        <!--</LinearLayout>-->
-    <!--</HorizontalScrollView>-->
 
     <com.amar.library.ui.StickyScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-
-        app:stickyHeader="@+id/detailMenuCategoryParentLayoutInContentScrollView"
+        app:stickyHeader="@+id/rest_detail_menu_category_parent_sticky_layout"
         android:id="@+id/detailRestaurantScrollView"
         >
 
@@ -71,89 +75,145 @@
             android:layout_height="wrap_content"
             >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/detailRestaurantLayout"
-                >
-
-                <ImageView
-                    android:id="@+id/detailRestImage"
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent" />
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp">
+                    android:layout_height="104dp"
+                    android:id="@+id/rest_detail_info_layout"
+                    >
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/rest_name"
-                        android:textSize="20dp"
-                        android:text="가게명"
-                        />
-                    <TextView
-                        android:id="@+id/detailRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/rest_name"
-                        android:text="평점 "
-                        android:textSize="20dp"
+                    <ImageView
+                        android:id="@+id/rest_detail_image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/fm"
                         />
 
                     <TextView
-                        android:id="@+id/detailDiscountString"
+                        android:id="@+id/rest_detail_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/detailRating"
-                        android:layout_marginTop="5dp"
-                        android:text="포장 혜택 : " />
+                        android:layout_toRightOf="@+id/rest_detail_image"
+                        android:text="5.0"
+                        android:textStyle="bold"
+                        android:textColor="@color/tangerine"
+                        android:lineSpacingExtra="4.5sp"
+                        android:textSize="18sp"
+                        android:layout_marginTop="9.5dp"
+                        android:layout_marginLeft="16dp"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/rest_detail_rating_star_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/rest_detail_rating"
+                        android:layout_toRightOf="@+id/rest_detail_image"
+                        android:layout_marginLeft="16dp"
+                        >
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/detailDiscount"
+                        android:id="@+id/rest_detail_order_count_string"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/detailDiscountString"
-                        android:layout_toRightOf="@id/detailDiscountString"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_below="@+id/rest_detail_rating_star_layout"
+                        android:layout_toRightOf="@+id/rest_detail_image"
+                        android:layout_marginLeft="16dp"
+                        android:text="주문수"
+                        android:textColor="@color/text_sub"
+                        android:textSize="12sp"
+                        android:gravity="left"
+                        />
 
                     <TextView
-                        android:id="@+id/detailCommentList"
+                        android:id="@+id/rest_detail_order_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="허주영 : 넘나 맛있어요!"
-                        android:layout_marginTop="5dp"
-                        android:layout_below="@id/detailDiscountString" />
+                        android:layout_toRightOf="@id/rest_detail_order_count_string"
+                        android:layout_below="@+id/rest_detail_rating_star_layout"
+                        android:layout_marginLeft="3dp"
+                        android:textColor="@color/text_main"
+                        android:textSize="12sp"
+                        android:lineSpacingExtra="10.5sp"
+                        android:text="3443"
+                        />
+
+                    <TextView
+                        android:id="@+id/rest_detail_dangol_count_string"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/rest_detail_order_count"
+                        android:layout_below="@+id/rest_detail_rating_star_layout"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_sub"
+                        android:text="단골"
+                        android:layout_marginLeft="6dp"
+                        />
+                    <TextView
+                        android:id="@+id/rest_detail_dangol_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:textSize="12sp"
+                        android:text="343"
+                        android:textColor="@color/text_main"
+                        android:lineSpacingExtra="10.5sp"
+                        android:layout_toRightOf="@+id/rest_detail_dangol_count_string"
+                        android:layout_below="@id/rest_detail_rating_star_layout"
+                        />
+
+                    <TextView
+                        android:id="@+id/rest_detail_open_hour_string"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_sub"
+                        android:layout_below="@id/rest_detail_dangol_count_string"
+                        android:layout_toRightOf="@+id/rest_detail_image"
+                        android:layout_marginLeft="16dp"
+                        android:textSize="12sp"
+                        android:text="영업시간"
+                        />
+                    <TextView
+                        android:id="@+id/rest_detail_open_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_main"
+                        android:textSize="12sp"
+                        android:layout_toRightOf="@id/rest_detail_open_hour_string"
+                        android:layout_below="@+id/rest_detail_dangol_count"
+                        android:layout_marginLeft="3dp"
+                        android:text="08:00 ~ 22:00"
+                        />
                 </RelativeLayout>
-            </LinearLayout>
+
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
                 android:background="@android:color/background_light"
-                android:id="@+id/detailMenuCategoryParentLayoutInContentScrollView"
-                android:layout_below="@+id/detailRestaurantLayout"
+                android:id="@+id/rest_detail_menu_category_parent_sticky_layout"
+                android:layout_below="@+id/rest_detail_info_layout"
                 >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:id="@+id/detailMenuCategoryLayout"
+                    android:id="@+id/rest_detail_menu_category_layout"
                     >
                 </LinearLayout>
             </HorizontalScrollView>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/detailMenuListView"
+                android:id="@+id/rest_detail_menu_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                android:layout_below="@+id/detailMenuCategoryParentLayoutInContentScrollView"
+                android:layout_below="@+id/rest_detail_menu_category_parent_sticky_layout"
                 android:scrollbars="none">
             </android.support.v7.widget.RecyclerView>
 
@@ -175,7 +235,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_toRightOf="@id/callOrderButton"
-            android:id="@+id/cartButton"
+            android:id="@+id/rest_detail_cart_btn"
             android:textSize="25sp"
 
             android:layout_alignBaseline="@id/callOrderButton"
@@ -185,10 +245,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cartCount"
+            android:id="@+id/rest_detail_cart_count"
             android:textSize="20sp"
 
-            android:layout_toRightOf="@id/cartButton"
+            android:layout_toRightOf="@id/rest_detail_cart_btn"
             android:layout_marginTop="10dp"
             />
 

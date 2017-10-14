@@ -1,41 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/rest_filter_exit"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_exit_black" />
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textSize="14sp"
+             android:textColor="@color/text_main"
+             android:text="초기화"
+             android:layout_alignParentRight="true"
+             android:layout_marginTop="18dp"
+             android:layout_marginRight="15dp"
 
-    <Button
-        android:text="거리2km"
+
+             />
+
+    </RelativeLayout>
+
+
+    <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/distance2"/>
-    <Button
-        android:text="거리4km"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="4.5sp"
+        android:text="정렬 순서"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rest_filter_sort_order"
+            style="@style/rest_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="주문 많은 순" />
+
+        <TextView
+            android:id="@+id/rest_filter_sort_distance"
+            style="@style/rest_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/rest_filter_sort_order"
+            android:text="@string/filter_sort_distance"
+            android:textColor="@color/restaurant_menu_text_color_selector" />
+
+        <TextView
+            android:id="@+id/rest_filter_sort_rating"
+            style="@style/rest_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rest_filter_sort_order"
+            android:layout_marginTop="20dp"
+            android:text="@string/filter_sort_rating" />
+
+        <TextView
+            android:id="@+id/rest_filter_sort_discount"
+            style="@style/rest_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rest_filter_sort_distance"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/rest_filter_sort_rating"
+            android:text="@string/filter_sort_discount" />
+
+        <TextView
+            android:id="@+id/rest_filter_sort_review"
+            style="@style/rest_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rest_filter_sort_rating"
+            android:layout_marginTop="20dp"
+            android:text="@string/filter_sort_review" />
+
+        <TextView
+            android:id="@+id/rest_filter_sort_dangol"
+            style="@style/rest_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rest_filter_sort_rating"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/rest_filter_sort_review"
+            android:text="@string/filter_sort_dangol" />
+
+
+    </LinearLayout>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/distance4"/>
-    <Button
-        android:text="거리6km"
-        android:layout_width="wrap_content"
+
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="@string/filter_distance_title"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        android:textStyle="bold"
+
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/distance6"/>
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="15dp"
+        android:padding="10dp">
 
-    <Button
-        android:text="가까운순(기본)"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/distanceDefault"/>
+        <TextView
+            android:id="@+id/rest_filter_distance2km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center_vertical"
+            android:text="@string/filter_distance_2km"
+            android:textColor="#95989a"
+            android:textSize="16sp" />
 
-    <Button
-        android:text="평점 좋은 순"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/restaurantRating"/>
+        <TextView
+            android:id="@+id/rest_filter_distance4km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="65dp"
+            android:text="@string/filter_distance_4km"
+            android:textColor="#95989a"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/rest_filter_distance6km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="65dp"
+            android:layout_alignParentRight="true"
+            android:text="@string/filter_distance_6km"
+            android:textColor="#95989a"
+            android:textSize="16sp" />
 
 
-
-
-
-
+    </RelativeLayout>
 
 
 </LinearLayout>

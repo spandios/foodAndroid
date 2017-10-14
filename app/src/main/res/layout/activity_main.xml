@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorPrimary"
-        android:layout_weight="1">
+        android:layout_weight="0.7">
         <Button
             android:id="@+id/homeButton"
             android:layout_height="wrap_content"

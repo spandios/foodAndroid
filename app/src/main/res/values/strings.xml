@@ -13,6 +13,15 @@
     <string name="cart_more_order">메뉴 추가</string>
     <string name="order">주문하기</string>
     <string name="action_settings">Settings</string>
+
+    <!--할인율-->
+    <string name="sale5">-5%</string>
+    <string name="sale10">-10%</string>
+    <string name="sale15">-15%</string>
+    <string name="sale20">-20%</string>
+
+
+    <!--RESTAURANT MENU TYPE-->
     <string name="restaurant_menu_type1">일식</string>
     <string name="restaurant_menu_type2">치킨</string>
     <string name="restaurant_menu_type3">중식</string>
@@ -20,6 +29,20 @@
     <string name="restaurant_menu_type5">디저트</string>
     <string name="restaurant_menu_type6">커피</string>
     <string name="restaurant_admin_comment">사장님댓글</string>
+
+    <!--필터-->
+    <string name="filter_title">필터</string>
+    <string name="filter_sort_title">정렬순서</string>
+    <string name="filter_sort_order">주문 많은 순</string>
+    <string name="filter_sort_rating">평점 높은 순</string>
+    <string name="filter_sort_review">리뷰 많은 순</string>
+    <string name="filter_sort_dangol">단골 많은 순</string>
+    <string name="filter_sort_distance">가까운 순</string>
+    <string name="filter_sort_discount">할인율 순</string>
+    <string name="filter_distance_title">거리설정</string>
+    <string name="filter_distance_2km">~2km</string>
+    <string name="filter_distance_4km">~4km</string>
+    <string name="filter_distance_6km">~6km</string>
     <!--KAKAO-->
     <string name="kakao_app_key"> f0b0d4cebc2e3fd136521c7af53ed1b7</string>
     <!--facebook-->
@@ -28,7 +51,6 @@
 
     <string name="naver_client_key">2vk8SF2rhIKXZFvesSw1</string>
     <string name="naver_secret_key">AmSYVV56Q_</string>
-
 
 
     <string name="large_text">
@@ -74,5 +96,8 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

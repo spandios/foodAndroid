@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
+import com.example.fooddeuk.activity.CartActivity;
 import com.example.fooddeuk.activity.DetailRestaurantActivity;
 import com.example.fooddeuk.activity.settingLocationMapActivity;
 import com.example.fooddeuk.adapter.RestaurantAdapter;
@@ -56,6 +58,7 @@ public class CurLocationRestaurantFragment extends Fragment {
     int maxDistance = StaticVal.defaultCurrentLocationMenuMaxDistance;
     String restaurantMenuType;
     RestaurantAdapter restaurantAdapter;
+    boolean scrollEnough=false;
 
     @BindView(R.id.currentLocationTextView)
     TextView currentLocationTextView;
@@ -69,15 +72,24 @@ public class CurLocationRestaurantFragment extends Fragment {
     EditText editSearch;
     @BindView(R.id.restaurantMenuCategoryLayout)
     RelativeLayout restaurantMenuCategoryLayout;
+    @BindView(R.id.restaurant_menu_type1)
+    TextView restaurant_menu_type1;
     @BindView(R.id.menu_type_tab_selected)
     ImageView menu_type_tab_selected;
+    @BindView(R.id.restaurantCartButtonInList)
+    ImageView restaurantCartButtonInList;
+    @BindView(R.id.rest_list_cart_qty)
+    TextView rest_list_cart_qty;
+
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
 
     /**
      * 음식 종류에 따른 식당목록리스트 가져오기
      **/
 
-    @OnClick({R.id.restaurant_menu_type1,R.id.restaurant_menu_type2, R.id.restaurant_menu_type3,R.id.restaurant_menu_type4,R.id.restaurant_menu_type5,R.id.restaurant_menu_type6})
+    @OnClick({R.id.restaurant_menu_type1, R.id.restaurant_menu_type2, R.id.restaurant_menu_type3, R.id.restaurant_menu_type4, R.id.restaurant_menu_type5, R.id.restaurant_menu_type6})
     public void selectFoodType(TextView restaurant_menu_type) {
         restaurantMenuType = restaurant_menu_type.getText().toString();
         for (int i = 0; i < restaurantMenuCategoryLayout.getChildCount(); i++) {
@@ -90,19 +102,19 @@ public class CurLocationRestaurantFragment extends Fragment {
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        params.addRule(RelativeLayout.BELOW,R.id.restaurant_menu_type1);
-        int dp=LayoutUtil.DpToPx(getActivity(),Float.parseFloat(restaurant_menu_type.getTag().toString()));
-        params.setMargins(dp,LayoutUtil.DpToPx(getActivity(),4),0,0);
+        params.addRule(RelativeLayout.BELOW, R.id.restaurant_menu_type1);
+        int dp = LayoutUtil.DpToPx(getActivity(), Float.parseFloat(restaurant_menu_type.getTag().toString()));
+        params.setMargins(dp, LayoutUtil.DpToPx(getActivity(), 4), 0, 0);
         menu_type_tab_selected.setLayoutParams(params);
         restaurant_menu_type.setSelected(true);
         restaurant_menu_type.setTypeface(restaurant_menu_type.getTypeface(), Typeface.BOLD);
         getCurLocationRestaurant();
-
     }
+
     //Onclick Filter
     @OnClick(R.id.filterButton)
     public void setFilterRestaurant() {
-        DialogUtil.setFilterRestaurant(getActivity(), (distance, filterValue) -> {
+        DialogUtil.setRestaurantFilter(getActivity(), (distance, filterValue) -> {
             if (distance > 0) {
                 maxDistance = distance;
             } else {
@@ -112,11 +124,12 @@ public class CurLocationRestaurantFragment extends Fragment {
         });
 
     }
-    //OnClick Cart in restaurantList
-    @OnClick(R.id.currentLocationCartButton)
-    public void goToCart(Button button){
-        button.setOnClickListener(v -> {
 
+    //OnClick Cart in restaurantList
+    @OnClick(R.id.restaurantCartButtonInList)
+    public void goToCart(View imageview) {
+        imageview.setOnClickListener(v -> {
+            IntentUtil.startActivity(getActivity(), CartActivity.class);
         });
     }
 
@@ -160,14 +173,40 @@ public class CurLocationRestaurantFragment extends Fragment {
 
 
     }
-
+    //todo floatingbutton
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_current_location, container, false);
+        final View view = inflater.inflate(R.layout.fragment_restaurant, container, false);
         ButterKnife.bind(this, view);
         setLocationSettingDialog();
+        rest_list_cart_qty.bringToFront();
+        restaurant_menu_type1.setSelected(true);
+        restaurantRecyclerViewInList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
 
+                if(newState==RecyclerView.SCROLL_STATE_IDLE&scrollEnough){
+                    fab.show();
+                }else{
+                    fab.hide();
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy>10){
+                    scrollEnough=true;
+                }else{
+                    scrollEnough=false;
+                }
+
+            }
+        });
+//        rest_list_cart_qty.bringToFront();
         editSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 String rest_name = editSearch.getText().toString();
@@ -176,13 +215,14 @@ public class CurLocationRestaurantFragment extends Fragment {
             }
             return false;
         });
+        RelativeLayout r = (RelativeLayout) view.findViewById(R.id.currentLocationTitle);
+        r.bringChildToFront(r.findViewById(R.id.rest_list_cart_qty));
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
 
 
         if (locationItems != null) {
@@ -273,7 +313,8 @@ public class CurLocationRestaurantFragment extends Fragment {
             }
         });
     }
-    void updateRestaurant(){
+
+    void updateRestaurant() {
         RestaurantService.getCurrentLocationRestaurant(locationItems.getLat(), locationItems.getLng(), maxDistance, restaurantMenuType, filter, "").enqueue(new Callback<RestaurantItem>() {
             @Override
             public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
@@ -290,7 +331,6 @@ public class CurLocationRestaurantFragment extends Fragment {
         });
 
     }
-
 
 
     void getCurLocationRestaurant() {

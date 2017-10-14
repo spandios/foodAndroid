@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +8,11 @@
     android:orientation="vertical"
     tools:context="com.example.fooddeuk.activity.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <RelativeLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
@@ -70,32 +76,48 @@
             android:id="@+id/filterButton"
             android:layout_width="18dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="12dp"
             android:layout_marginTop="15dp"
-            android:layout_toLeftOf="@+id/currentLocationCartButton"
+            android:layout_marginRight="7.5dp"
+            android:layout_toLeftOf="@+id/restaurantCartButtonInList"
             android:background="@drawable/ic_filter"
             android:textSize="10dp" />
 
-        <Button
-            android:id="@+id/currentLocationCartButton"
+        <ImageView
+            android:id="@+id/restaurantCartButtonInList"
             android:layout_width="21.5dp"
             android:layout_height="20.8dp"
-            android:layout_marginLeft="10.2dp"
-            android:layout_marginRight="8.2dp"
+            android:layout_marginLeft="7.5dp"
+            android:layout_marginRight="7.5dp"
             android:layout_marginTop="14.8dp"
             android:layout_toLeftOf="@+id/searchButton"
-
             android:background="@drawable/ic_cart"
-
             />
+
+
+        <TextView
+            android:id="@+id/rest_list_cart_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:text="1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="4dp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="12.5sp"
+            tools:text="1"
+            android:layout_toLeftOf="@id/searchButton"
+            android:gravity="center"
+
+            android:background="@drawable/restaurant_list_cartqty_bg"
+            />
+
 
         <Button
             android:id="@+id/searchButton"
             android:layout_width="18.5dp"
             android:layout_height="18.5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="15.5dp"
+            android:layout_marginLeft="7.5dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="15.8dp"
             android:background="@drawable/ic_search"
@@ -154,9 +176,16 @@
             <TextView
                 android:id="@+id/restaurant_menu_type6"
                 android:layout_toRightOf="@+id/restaurant_menu_type5"
-                android:tag="350"
+                android:tag="345"
                 style="@style/restaurantMenuCategory"
                 android:text="@string/restaurant_menu_type6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/restaurant_menu_type6"
+                style="@style/restaurantMenuCategory"
+                android:text="Test Horizon Scroll"/>
 
             <ImageView
                 android:id="@+id/menu_type_tab_selected"
@@ -178,11 +207,26 @@
         android:layout_height="1dp"
         android:src="@drawable/header_stroke" />
 
-
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/restaurantRecyclerViewInList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"/>
+    </android.support.v4.view.ViewPager>
 
-</LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:backgroundTint="#35383c"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_top"
+            android:layout_gravity="bottom|end"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
+
+
+

@@ -98,13 +98,16 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MenuItem menuItem = items.get(position);
 
-
-        Picasso.with(context).load(menuItem.getMenupicture()).fit().into(holder.hotMenuPicture);
+//        basicPrice
+//        holder.menu_master_basic_price.setText(menuItem.getPrice());
+//        holder.menu_master_basic_price.setPaintFlags(holder.hotMenuPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
         holder.hotMenuName.setText(menuItem.getName());
-        holder.hotMenuPrice.setText(String.valueOf(menuItem.getPrice()));
+
+        holder.hotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
         holder.detailHotMenuName.setText(menuItem.getName());
-        holder.detailHotMenuPrice.setText(String.valueOf(menuItem.getPrice()));
+        holder.detailHotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
+
         holder.detailHotMenuRating.setText(menuItem.getRating());
 
 
@@ -424,11 +427,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.hotMenuPicture)
-        ImageView hotMenuPicture;
-        @BindView(R.id.hotMenuName)
+        @BindView(R.id.menu_master_name)
         TextView hotMenuName;
-        @BindView(R.id.hotMenuPrice)
+        @BindView(R.id.menu_master_price)
         TextView hotMenuPrice;
         @BindView(R.id.detailHotMenuPicture)
         ImageView detailHotMenuPicture;
@@ -446,7 +447,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         Button detailHotMenuCart;
         @BindView(R.id.detailHotMenuOrder)
         Button detailHotMenuOrder;
-
+//        @BindView(R.id.menu_master_basic_price)
+//        TextView menu_master_basic_price;
 
         ViewHolder(View itemView) {
             super(itemView);

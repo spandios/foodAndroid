@@ -4,10 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="cool_grey">#95989a</color>
-    <color name="tangerine">#ff8800</color>
+    <color name="tangerine">#ffff8800</color>
     <color name="charcoal_grey">#35383c</color>
     <color name="price">#ff5500</color>
     <color name="text_sub">#95989a</color>
+    <color name="text_main">#35383c</color>
 
 </resources>
 
