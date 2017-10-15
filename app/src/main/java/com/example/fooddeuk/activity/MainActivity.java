@@ -1,7 +1,9 @@
 package com.example.fooddeuk.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+
+
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
@@ -98,9 +100,9 @@ public class MainActivity extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.homeContent, new CurLocationRestaurantFragment());
+        fragmentTransaction.add(R.id.homeContent, new HomeFragment());
         fragmentTransaction.commit();
 
 //        RealmResults<UserItemRealm> userItemRealms= RealmUtil.findDataAll(UserItemRealm.class);
@@ -111,7 +113,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         if (homeFragmentFlag) {

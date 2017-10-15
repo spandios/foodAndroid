@@ -1,6 +1,5 @@
 package com.example.fooddeuk.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CurrentOrderFragment extends Fragment{
+public class CurrentOrderFragment extends android.support.v4.app.Fragment {
     private int user_id;
     @Nullable
     @Override
