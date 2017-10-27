@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.widget.ImageView;
 
 import com.example.fooddeuk.R;
+import com.example.fooddeuk.util.GPS;
 import com.example.fooddeuk.util.LoginUtil;
 import com.example.fooddeuk.util.NetworkUtil;
 import com.example.fooddeuk.util.login.KAKAO;
@@ -30,7 +31,7 @@ public class IntroActivity extends BaseActivity{
                 .load(R.drawable.fm)
                 .into(introImageView);
         init();
-        handler.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, 1500);
 
     }
 
@@ -51,7 +52,8 @@ public class IntroActivity extends BaseActivity{
         }
         //KAKAO
         KAKAO.kakaoAccessTokenInfo();
-
+        GPS gps=new GPS(this);
+        gps.getGPS();
         //NAVER
         OAuthLogin naverLoginModule= NAVER.getNaverLoginModule(this);
         if(naverLoginModule.getState(this).toString().equals("OK")){

@@ -21,9 +21,6 @@ public class LayoutUtil {
 //        nmLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(nmLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-//        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_white));
-
 
     }
 

@@ -1,11 +1,9 @@
 package com.example.fooddeuk.activity;
 
-import android.support.v4.app.FragmentManager;
-
-
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,6 +17,7 @@ import com.example.fooddeuk.fragment.SearchFragment;
 import com.example.fooddeuk.util.GPS;
 import com.example.fooddeuk.util.NetworkUtil;
 import com.example.fooddeuk.util.SettingActivityUtil;
+import com.example.fooddeuk.util.TedPermissionUtil;
 import com.facebook.CallbackManager;
 import com.facebook.ProfileTracker;
 import com.nhn.android.naverlogin.OAuthLogin;
@@ -94,9 +93,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        new TedPermissionUtil(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -146,6 +144,8 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
+
+
 
 
 

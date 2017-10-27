@@ -5,6 +5,8 @@ import com.example.fooddeuk.model.user.UserItem;
 
 import org.junit.Test;
 
+import java.util.Scanner;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -15,31 +17,24 @@ public class ExampleUnitTest {
 
     @Test
     public void test() {
-        float rating=(float)3.5;
-        for(int j=0; j<5; j++){
-            if(rating==0){
-                System.out.println("노별");
-            }else if(rating>=1.0){
-                rating-=1.0;
-                System.out.println("별");
-            }else if(rating==0.5){
-                System.out.println("반별");
-                rating-=0.5;
+       final int dollr=1100;
+        Scanner scanner=new Scanner(System.in);
+        int won=scanner.nextInt();
 
-            }
-//            System.out.println(rating);
-        }
+        double result=(double)won/dollr;
+        System.out.print(result);
+
 
 
 
     }
 
 
-    public void service(){
+    public void service() {
         try {
-            UserItem userItem=UserService.getUser("33").execute().body();
+            UserItem userItem = UserService.getUser("33").execute().body();
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 

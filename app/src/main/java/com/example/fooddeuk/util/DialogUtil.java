@@ -78,7 +78,7 @@ public class DialogUtil {
         distance4km.setOnClickListener(onClickListener);
         distance6km.setOnClickListener(onClickListener);
         rest_filter_sort_distance.setOnClickListener(onClickListener);
-
+        rest_filter_sort_rating.setOnClickListener(onClickListener);
         filterDialog.show();
     }
 

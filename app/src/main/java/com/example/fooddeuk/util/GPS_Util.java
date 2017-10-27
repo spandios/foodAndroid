@@ -74,10 +74,10 @@ public class GPS_Util extends Service implements LocationListener {
                     if(locationManager!=null){
                         location=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if(location!=null){
+                            Logger.d(location.getLatitude()) ;
                             lat=location.getLatitude();
                             lng=location.getLongitude();
                             locationName=getLocationName();
-                            stopUsingGPS();
                             return;
 
                         }
@@ -92,10 +92,13 @@ public class GPS_Util extends Service implements LocationListener {
 
                             if(location!=null){
                                 lat=location.getLatitude();
+
                                 lng=location.getLongitude();
                                 locationName=getLocationName();
-                                stopUsingGPS();
-                                Logger.d(lat);
+                                LocationItem locationItem=new LocationItem(getLocationName(),location.getLatitude(),location.getLongitude());
+
+                                RealmUtil.insertData(locationItem);
+
                             }
                         }
                     }

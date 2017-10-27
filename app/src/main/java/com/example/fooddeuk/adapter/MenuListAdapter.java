@@ -275,7 +275,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
         //기존 장바구니가 없으면 바로 추가
         if (cartItem.size() == 0) {
-            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time);
+            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time,restaurant.latlng[1],restaurant.latlng[0]);
             RealmUtil.insertData(newRestaurant);
             RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
             if(version.equals("order")){
@@ -305,7 +305,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                         .onPositive((dialog, which) -> {
                             RealmUtil.removeDataAll(CartItem.class);
                             RealmUtil.removeDataAll(RestaurantItemRealm.class);
-                            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time);
+                            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time,restaurant.latlng[1],restaurant.latlng[0]);
                             RealmUtil.insertData(newRestaurant);
                             RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
                             if(version.equals("order")){

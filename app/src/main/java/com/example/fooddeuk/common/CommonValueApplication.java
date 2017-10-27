@@ -6,8 +6,10 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.example.fooddeuk.util.GPS;
-import com.example.fooddeuk.util.TedPermissionUtil;
+import com.example.fooddeuk.model.restaurant.LocationItem;
+import com.example.fooddeuk.util.GPS_Util;
+import com.example.fooddeuk.util.GeoUtil;
+import com.example.fooddeuk.util.RealmUtil;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.IPushConfig;
 import com.kakao.auth.ISessionConfig;
@@ -17,6 +19,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tsengvn.typekit.Typekit;
 
+import io.nlopez.smartlocation.SmartLocation;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -25,6 +28,10 @@ public class CommonValueApplication extends Application {
     @SuppressLint("StaticFieldLeak")
     private static volatile CommonValueApplication instance = null;
     private static volatile Activity currentActivity = null;
+    public static double lat;
+    public static double lng;
+    public static String locationName;
+
 
 
     private static class KakaoSDKAdapter extends KakaoAdapter {
@@ -75,12 +82,12 @@ public class CommonValueApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance=this;
-        new TedPermissionUtil(this);
+
         Realm.init(this);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().inMemory().build();
         Realm.setDefaultConfiguration(realmConfiguration);
         Logger.addLogAdapter(new AndroidLogAdapter());
-        new GPS(this).getGPS();
+
         KakaoSDK.init(new KakaoSDKAdapter());
         Typekit.getInstance()
                 .addNormal(Typekit.createFromAsset(this, "fonts/Spoqa Han Sans Regular.ttf"))
@@ -88,11 +95,36 @@ public class CommonValueApplication extends Application {
                 .add("Light", Typekit.createFromAsset(this,"fonts/Spoqa Han Sans Light.ttf"))
                 .add("Thin", Typekit.createFromAsset(this,"fonts/Spoqa Han Sans Thin.ttf"));
 
+        SmartLocation.with(this).location()
+                .oneFix()
+                .start(location -> {
+                            lat = location.getLatitude();
 
+                            lng = location.getLongitude();
 
+                            locationName = GeoUtil.getInstance(this).getLocationName(lat, lng);
+                            if(lat==0.0||lng==0.0||locationName==null){
+                                Logger.d("GPS recall");
+                                GPS_Util gps_util=new GPS_Util(this);
+                                lat=gps_util.getLatitude();
+                                lng=gps_util.getLongitude();
+                                locationName=GeoUtil.getInstance(this).getLocationName(lat, lng);
+                                LocationItem locationItem = new LocationItem(locationName, lat, lng);
+                                RealmUtil.insertData(locationItem);
+                                return;
+                            }else{
+                                LocationItem locationItem = new LocationItem(locationName, lat, lng);
+                                RealmUtil.insertData(locationItem);
+                            }
 
-
+                        }
+                );
     }
+
+
+
+
+
 
 
     @Override

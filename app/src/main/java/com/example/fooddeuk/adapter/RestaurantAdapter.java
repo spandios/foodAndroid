@@ -57,6 +57,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         holder.restaurantNameInList.setText(item.name);
         holder.restaurantReviewCountInList.setText(String.valueOf(item.reviewcount));
         holder.restaurantAdminCommentInList.setText("todo");
+        holder.restaurantRatingStarInList.removeAllViews();
         setStarView(item.rating, holder.restaurantRatingStarInList);
 
 

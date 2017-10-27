@@ -18,12 +18,15 @@ public class RestaurantItemRealm extends RealmObject{
     public String open_time;
     public String close_time;
     public String avg_cooking_time;
+    public double lat;
+    public double lng;
+
 
     public RestaurantItemRealm(){
 
     }
 
-    public RestaurantItemRealm(int rest_id, String rest_admin_id, String name, String address, String open_time, String close_time, String avg_cooking_time) {
+    public RestaurantItemRealm(int rest_id, String rest_admin_id, String name, String address, String open_time, String close_time, String avg_cooking_time,double lat,double lng) {
         this.rest_id = rest_id;
         this.rest_admin_id = rest_admin_id;
         this.name = name;
@@ -31,6 +34,8 @@ public class RestaurantItemRealm extends RealmObject{
         this.open_time=open_time;
         this.close_time=close_time;
         this.avg_cooking_time = avg_cooking_time;
+        this.lat=lat;
+        this.lng=lng;
     }
 
 

@@ -16,6 +16,10 @@ public class OrderItem  {
 
     public int user_id;
     public int rest_id;
+    public String rest_name;
+    public double restLat;
+    public double restLng;
+
     public String rest_admin_id;
     public ArrayList<CartItem> cartItems;
     public String arrivedTime;
@@ -26,7 +30,7 @@ public class OrderItem  {
 
 
 
-    public OrderItem(int user_id, int rest_id, String rest_admin_id, ArrayList<CartItem> cartItems, String arrivedTime, String request, String status, String completePrice) {
+    public OrderItem(int user_id, int rest_id, String rest_admin_id, String rest_name,ArrayList<CartItem> cartItems, String arrivedTime, String request, String status, String completePrice, double restLat,double restLng) {
         this.user_id = user_id;
         this.rest_id = rest_id;
         this.rest_admin_id = rest_admin_id;
@@ -35,6 +39,9 @@ public class OrderItem  {
         this.request = request;
         this.status = status;
         this.completePrice = completePrice;
+        this.rest_name=rest_name;
+        this.restLat=restLat;
+        this.restLng = restLng;
         this.create_at=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(new Date(System.currentTimeMillis()));;
     }
 

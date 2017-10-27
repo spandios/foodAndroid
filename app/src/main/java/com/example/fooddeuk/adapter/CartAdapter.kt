@@ -35,13 +35,7 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, modelList.size)
     }
-
-    public fun notifyee(){
-
-        notifyDataSetChanged()
-    }
-
-
+    
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_cart, parent, false)

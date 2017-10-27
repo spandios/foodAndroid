@@ -19,8 +19,6 @@ public class OptionService {
         Call<ArrayList<OptionItem>> getOption(@Query("menu_id") int menu_id);
     }
 
-
-
     public static Call<ArrayList<OptionItem>> getOption(int menu_id) {
         OptionService.OptionInterface menuReviewInterface = RetrofitBase.getInstance().getRetrofit().create(OptionInterface.class);
         Call<ArrayList<OptionItem>> call = menuReviewInterface.getOption(menu_id);

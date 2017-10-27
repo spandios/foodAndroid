@@ -31,8 +31,11 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
     var cartItemList = ArrayList<CartItem>()
     var rest_id: Int? = null
     var rest_admin_id: String? = null
+    var rest_name:String?=null
     var isSetArrivedTime: Boolean = false
     var user_id: Int? = null
+    var lat : Double = 0.0
+    var lng : Double = 0.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +64,10 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
         if (restaurantResult.size > 0) {
             rest_id = restaurantResult[0].rest_id
             rest_admin_id = restaurantResult[0].rest_admin_id
+            rest_name=restaurantResult[0].name
+            lat=restaurantResult[0].lat
+            lng=restaurantResult[0].lng
+
         } else {
             Logger.e("restaurant정보 없음")
 
@@ -68,6 +75,7 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
         val userResult = RealmUtil.findDataAll(UserItemRealm::class.java)
         if (userResult.size > 0) {
             user_id = userResult[0].user_id
+
 
         } else {
             Logger.e("user정보 없음")
@@ -138,7 +146,7 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
                 //예상도착시간
                 val arrivedTime = orderArriveTime.text.subSequence(9, orderArriveTime.text.length)
                 //최종주문정보
-                val orderItem = OrderItem(/*userid*/ user_id!!, rest_id!!, rest_admin_id, cartItemList, arrivedTime.toString(), requestText.text.toString(), "주문수락대기", orderResultPrice.text.toString())
+                val orderItem = OrderItem(/*userid*/ user_id!!, rest_id!!, rest_admin_id, rest_name,cartItemList, arrivedTime.toString(), requestText.text.toString(), "주문수락대기", orderResultPrice.text.toString(),lat,lng)
                 /**주문하기**/
                 OrderService.order(orderItem).enqueue(object : Callback<OrderItem> {
                     override fun onResponse(call: Call<OrderItem>?, response: Response<OrderItem>?) {

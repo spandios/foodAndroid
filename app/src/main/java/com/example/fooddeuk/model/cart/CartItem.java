@@ -68,6 +68,7 @@ public class CartItem extends RealmObject {
         this.id = id;
     }
 
+
     public CartMenu getMenu() {
         return menu;
     }
