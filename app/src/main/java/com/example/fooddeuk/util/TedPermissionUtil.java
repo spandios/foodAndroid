@@ -21,6 +21,7 @@ public class TedPermissionUtil {
             public void onPermissionGranted() {
                 GPS gps=new GPS(context);
                 gps.getGPS();
+
             }
 
 
@@ -30,13 +31,13 @@ public class TedPermissionUtil {
             }
         };
 
-        new TedPermission(context)
+        TedPermission.with(context)
                 .setPermissionListener(permissionListener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.INTERNET,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_CONTACTS,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_NETWORK_STATE)
-                .setDeniedMessage("권한을 거부하시면 서비스를 정상적으로 이용하실수 없습니다.")
-                .setGotoSettingButton(true)
-                .setGotoSettingButtonText("권한 설정하기")
                 .check();
+
+
     }
 
 

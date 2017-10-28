@@ -1,9 +1,7 @@
 package com.example.fooddeuk.fragment;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -69,6 +67,7 @@ public class CurLocationRestaurantFragment extends Fragment {
     ViewPager rest_list_view_pager;
     @BindView(R.id.rest_list_view_pager_tab_layout)
     SmartTabLayout restListViewPagerTab;
+    RealmResults<LocationItem> realmResults;
 
 
     /**
@@ -86,6 +85,7 @@ public class CurLocationRestaurantFragment extends Fragment {
             } else {
                 filter = filterValue;
             }
+            rest_list_view_pager.getAdapter().notifyDataSetChanged();
 
         });
 
@@ -121,6 +121,7 @@ public class CurLocationRestaurantFragment extends Fragment {
         super.onCreate(savedInstanceState);
         commonValueApplication = (CommonValueApplication) getActivity().getApplication();
         restaurantMenuType = mContext.getResources().getString(R.string.restaurant_menu_type1);
+        realmResults=RealmUtil.findDataAll(LocationItem.class);
 
 
 
@@ -142,38 +143,37 @@ public class CurLocationRestaurantFragment extends Fragment {
             }
             return false;
         });
-        RealmResults<LocationItem> realmResults = RealmUtil.findDataAll(LocationItem.class);
+
         if (realmResults.size() > 0) {
-            Logger.d(realmResults.size());
             locationItems = realmResults.get(0);
             fragmentPagerAdapter = new fragmentPagerAdapter(getChildFragmentManager());
             rest_list_view_pager.setAdapter(fragmentPagerAdapter);
             restListViewPagerTab.setViewPager(rest_list_view_pager);
-        } else {
-            Logger.d("fail GPS");
-            GPS_Util gps_util = new GPS_Util(getActivity());
-            new Handler().postDelayed(() -> {
-                RealmResults<LocationItem> realmResults2 = RealmUtil.findDataAll(LocationItem.class);
-                if (realmResults2.size() > 0) {
-                    locationItems = realmResults.get(0);
-                    currentLocationTextView.setText(locationItems.getLocationName());
+        }else{
+            Logger.d("FAIL GPS");
 
-                }
-            }, 1500);
         }
+//        } else {
+//            Logger.d("fail GPS");
+//            GPS_Util gps_util = new GPS_Util(getActivity());
+//            new Handler().postDelayed(() -> {
+//                RealmResults<LocationItem> realmResults2 = RealmUtil.findDataAll(LocationItem.class);
+//                if (realmResults2.size() > 0) {
+//                    locationItems = realmResults.get(0);
+//                    currentLocationTextView.setText(locationItems.getLocationName());
+//
+//                }
+//            }, 1500);
+//        }
 
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
         super.onActivityCreated(savedInstanceState);
         if (locationItems != null) {
             currentLocationTextView.setText(locationItems.getLocationName());
-            fragmentPagerAdapter = new fragmentPagerAdapter(getChildFragmentManager());
-            rest_list_view_pager.setAdapter(fragmentPagerAdapter);
-            restListViewPagerTab.setViewPager(rest_list_view_pager);
         }
     }
 
@@ -239,28 +239,9 @@ public class CurLocationRestaurantFragment extends Fragment {
     /**
      * 식당 리스트 뷰 Param 위치(locationItem) 최대거리(maxDistance) 식당메뉴타입(menuType)
      **/
-    class MenuListAsnc extends AsyncTask<String,Integer,String>{
-        public MenuListAsnc() {
 
-        }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
-        }
-    }
-
-    public class fragmentPagerAdapter extends FragmentStatePagerAdapter {
+    public class fragmentPagerAdapter extends FragmentStatePagerAdapter{
 
         public fragmentPagerAdapter(FragmentManager fm) {
             super(fm);

@@ -15,6 +15,16 @@ public class LocationItem extends RealmObject{
     double lat;
     double lng;
 
+    @Override
+    public String toString() {
+        return "LocationItem{" +
+                "id=" + id +
+                ", locationName='" + locationName + '\'' +
+                ", tempLocationName='" + tempLocationName + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                '}';
+    }
 
     public LocationItem(){
 

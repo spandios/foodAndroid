@@ -14,11 +14,36 @@ public class RealmUtil {
     static Realm realm=Realm.getDefaultInstance();
 
     public static <T extends RealmObject> T getRealmObject(final T data){
-        return realm.copyToRealm(data);
+
+        try{
+            realm.beginTransaction();
+            T realmResult=realm.copyToRealm(data);
+            realm.commitTransaction();
+            return realmResult;
+        }catch (Throwable e){
+            if(realm.isInTransaction()) {
+                realm.cancelTransaction();
+            }
+            e.printStackTrace();
+        }
+        return null;
+
     }
     public static <T extends RealmObject> int getDataSize(Class<T> clazz){
-        int size= realm.where(clazz).findAll().size();
-        return size;
+
+        try{
+            realm.beginTransaction();
+            int size= realm.where(clazz).findAll().size();
+            realm.commitTransaction();
+            return size;
+
+        }catch (Throwable e){
+            if(realm.isInTransaction()) {
+                realm.cancelTransaction();
+            }
+            e.printStackTrace();
+        }
+        return 0;
     }
     public static <T extends RealmObject>void  insertData(final T data){
 
@@ -32,8 +57,20 @@ public class RealmUtil {
 
 
     public static <T extends RealmObject> RealmResults<T> findDataAll(Class<T> clazz) {
-        RealmResults<T> item = realm.where(clazz).findAll();
-        return item;
+        try{
+            realm.beginTransaction();
+            RealmResults<T> item = realm.where(clazz).findAll();
+            realm.commitTransaction();
+            return item;
+
+        }catch (Throwable e){
+            if(realm.isInTransaction()) {
+                realm.cancelTransaction();
+            }
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static <T extends RealmObject> RealmResults<T> findDataById(Class<T> clazz, int id){

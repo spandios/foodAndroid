@@ -15,6 +15,7 @@ import com.example.fooddeuk.fragment.HomeFragment;
 import com.example.fooddeuk.fragment.MenuFragment;
 import com.example.fooddeuk.fragment.SearchFragment;
 import com.example.fooddeuk.util.GPS;
+import com.example.fooddeuk.util.GPS_Util;
 import com.example.fooddeuk.util.NetworkUtil;
 import com.example.fooddeuk.util.SettingActivityUtil;
 import com.example.fooddeuk.util.TedPermissionUtil;
@@ -102,6 +103,7 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.homeContent, new HomeFragment());
         fragmentTransaction.commit();
+        GPS_Util gps_util = new GPS_Util(getApplicationContext());
 
 //        RealmResults<UserItemRealm> userItemRealms= RealmUtil.findDataAll(UserItemRealm.class);
 //        Logger.d(userItemRealms.get(0).email);

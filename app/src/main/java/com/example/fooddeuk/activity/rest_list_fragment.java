@@ -1,5 +1,8 @@
 package com.example.fooddeuk.activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -19,6 +22,8 @@ import com.example.fooddeuk.util.LayoutUtil;
 import com.orhanobut.logger.Logger;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -146,5 +151,30 @@ public class rest_list_fragment extends android.support.v4.app.Fragment {
         });
 
         return view;
+    }
+
+
+    class MenuListAsnc extends AsyncTask<ArrayList<RestaurantItem.Restaurant>,Integer,Void> {
+        public MenuListAsnc() {
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Dialog dialog = new ProgressDialog(getActivity());
+            dialog.show();
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Void doInBackground(ArrayList<RestaurantItem.Restaurant>... params) {
+            return null;
+        }
     }
 }
