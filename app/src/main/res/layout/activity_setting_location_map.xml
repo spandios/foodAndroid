@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/basic"
     android:layout_height="match_parent"
-    tools:context="com.example.fooddeuk.foodandroid.com.example.heojuyeong.activity.settingLocationMapActivity">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"

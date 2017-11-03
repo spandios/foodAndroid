@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.model.restaurant.RestaurantItem;
 import com.example.fooddeuk.util.LayoutUtil;
+import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,11 +56,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
         Picasso.with(context).load(item.getRest_picture()).resize(150, 150).into(holder.restaurantImageInList);
         holder.restaurantNameInList.setText(item.name);
-        holder.restaurantReviewCountInList.setText(String.valueOf(item.reviewcount));
+        holder.restaurantReviewCountInList.setText(String.valueOf(item.reviewCnt));
         holder.restaurantAdminCommentInList.setText("todo");
         holder.restaurantRatingStarInList.removeAllViews();
         setStarView(item.rating, holder.restaurantRatingStarInList);
-
+        Logger.d(item);
 
     }
 

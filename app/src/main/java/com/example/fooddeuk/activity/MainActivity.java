@@ -13,13 +13,12 @@ import com.example.fooddeuk.fragment.CurLocationRestaurantFragment;
 import com.example.fooddeuk.fragment.CurrentOrderFragment;
 import com.example.fooddeuk.fragment.HomeFragment;
 import com.example.fooddeuk.fragment.MenuFragment;
-import com.example.fooddeuk.fragment.SearchFragment;
 import com.example.fooddeuk.util.GPS;
 import com.example.fooddeuk.util.GPS_Util;
+import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.NetworkUtil;
 import com.example.fooddeuk.util.SettingActivityUtil;
 import com.example.fooddeuk.util.TedPermissionUtil;
-import com.facebook.CallbackManager;
 import com.facebook.ProfileTracker;
 import com.nhn.android.naverlogin.OAuthLogin;
 
@@ -31,7 +30,6 @@ import static com.example.fooddeuk.staticval.StaticVal.gpsSettingActivityRequest
 
 public class MainActivity extends BaseActivity {
     private boolean homeFragmentFlag = true;
-    public CallbackManager callbackManager;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     ProfileTracker profileTracker;
@@ -77,8 +75,9 @@ public class MainActivity extends BaseActivity {
 //                }, 200);// 0.5초 정도 딜레이를 준 후 시작
                 break;
             case R.id.mainSearchButton:
-                homeFragmentFlag = false;
-                fragmentTransaction.replace(R.id.homeContent, new SearchFragment());
+//                homeFragmentFlag = false;
+//                fragmentTransaction.replace(R.id.homeContent, new SearchFragment());
+                IntentUtil.startActivity(this,MapActivity.class);
 
                 break;
             case R.id.menuButton:

@@ -1,6 +1,5 @@
 package com.example.fooddeuk.activity;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,6 +43,8 @@ public class rest_list_fragment extends android.support.v4.app.Fragment {
     private String filter;
     private String rest_name;
     private boolean scrollEnough;
+    private ProgressDialog dialog;
+    ArrayList<RestaurantItem.Restaurant> restaurants;
 
     public rest_list_fragment() {
 
@@ -53,7 +54,14 @@ public class rest_list_fragment extends android.support.v4.app.Fragment {
     FloatingActionButton restListFab;
     @BindView(R.id.rest_list)
     RecyclerView restaurantList;
+    public static rest_list_fragment newInstance2(ArrayList<RestaurantItem.Restaurant> restaurants){
+        Bundle args = new Bundle();
 
+        args.putParcelable("restaurantList", Parcels.wrap(restaurants));
+        rest_list_fragment fragment = new rest_list_fragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public static rest_list_fragment newInstance(double lat, double lng, int maxDistance, String menuType, String filter, String rest_name) {
 
@@ -83,7 +91,6 @@ public class rest_list_fragment extends android.support.v4.app.Fragment {
         });
 
 
-
         if (getArguments() != null) {
             lat = getArguments().getDouble("lat");
             lng = getArguments().getDouble("lng");
@@ -104,77 +111,80 @@ public class rest_list_fragment extends android.support.v4.app.Fragment {
             new Exception().printStackTrace();
         }
 
-        RestaurantService.getCurrentLocationRestaurant(lat, lng, maxDistance, menuType, filter, rest_name).enqueue(new Callback<RestaurantItem>() {
-            @Override
-            public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
-                if (response.isSuccessful()) {
-                    RestaurantAdapter restaurantAdapter = new RestaurantAdapter(getActivity(), response.body().getRestaurants());
-                    restaurantAdapter.setRestaurantItemClickListener(restaurant -> {
-                        Parcelable restaurantParcel = Parcels.wrap(restaurant);
-                        Bundle extra = new Bundle();
-                        extra.putParcelable("restaurant", restaurantParcel);
-                        IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
-                    });
-                    LayoutUtil.RecyclerViewSetting(getActivity(), restaurantList);
-                    restaurantList.setAdapter(restaurantAdapter);
-
-                    if(response.body().getRestaurants().size()>10){
-                        restaurantList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                            @Override
-                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                                if (dy > 0 || dy < 0 && restListFab.isShown()) {
-                                    restListFab.hide();
-                                }
-                            }
-
-                            @Override
-                            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                                super.onScrollStateChanged(recyclerView, newState);
-                                if (newState == RecyclerView.SCROLL_STATE_IDLE&&recyclerView.computeVerticalScrollOffset()>300) {
-                                    restListFab.show();
-                                }
-                            }
-                        });
-                    }else{
-                        restListFab.hide();
-                    }
-
-                }
-            }
-
-
-            @Override
-            public void onFailure(Call<RestaurantItem> call, Throwable t) {
-                Logger.d(t);
-                Toast.makeText(getActivity(), "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG).show();
-            }
-        });
-
+        new MenuListAsnc().execute();
         return view;
     }
 
 
-    class MenuListAsnc extends AsyncTask<ArrayList<RestaurantItem.Restaurant>,Integer,Void> {
-        public MenuListAsnc() {
+    class MenuListAsnc extends AsyncTask<Void,Integer,Void> {
 
-        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Dialog dialog = new ProgressDialog(getActivity());
+            dialog = new ProgressDialog(getActivity());
             dialog.show();
 
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected Void doInBackground(Void... voids) {
+            RestaurantService.getCurrentLocationRestaurant(lat, lng, maxDistance, menuType, filter, rest_name).enqueue(new Callback<RestaurantItem>() {
+                @Override
+                public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
+                    if (response.isSuccessful()) {
+                        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(getActivity(), response.body().getRestaurants());
+                        restaurantAdapter.setRestaurantItemClickListener(restaurant -> {
+                            Parcelable restaurantParcel = Parcels.wrap(restaurant);
+                            Bundle extra = new Bundle();
+                            extra.putParcelable("restaurant", restaurantParcel);
+                            IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
+                        });
+                        LayoutUtil.RecyclerViewSetting(getActivity(), restaurantList);
+                        restaurantList.setAdapter(restaurantAdapter);
+
+                        if(response.body().getRestaurants().size()>10){
+                            restaurantList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                @Override
+                                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                    if (dy > 0 || dy < 0 && restListFab.isShown()) {
+                                        restListFab.hide();
+                                    }
+                                }
+
+                                @Override
+                                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                                    super.onScrollStateChanged(recyclerView, newState);
+                                    if (newState == RecyclerView.SCROLL_STATE_IDLE&&recyclerView.computeVerticalScrollOffset()>300) {
+                                        restListFab.show();
+                                    }
+                                }
+                            });
+                        }else{
+                            restListFab.hide();
+                        }
+
+                    }
+                }
+
+
+                @Override
+                public void onFailure(Call<RestaurantItem> call, Throwable t) {
+                    Logger.d(t);
+                    Toast.makeText(getActivity(), "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG).show();
+                }
+            });
+            return null;
         }
 
         @Override
-        protected Void doInBackground(ArrayList<RestaurantItem.Restaurant>... params) {
-            return null;
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            dialog.dismiss();
+
+
         }
+
+
     }
 }

@@ -31,7 +31,7 @@ public class IntroActivity extends BaseActivity{
                 .load(R.drawable.fm)
                 .into(introImageView);
         init();
-        handler.postDelayed(runnable, 1500);
+        handler.postDelayed(runnable, 500);
 
     }
 

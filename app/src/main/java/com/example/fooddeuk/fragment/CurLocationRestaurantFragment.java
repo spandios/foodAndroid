@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.CartActivity;
+import com.example.fooddeuk.activity.MapActivity;
 import com.example.fooddeuk.activity.rest_list_fragment;
 import com.example.fooddeuk.activity.settingLocationMapActivity;
 import com.example.fooddeuk.common.CommonValueApplication;
@@ -51,6 +52,7 @@ public class CurLocationRestaurantFragment extends Fragment {
     fragmentPagerAdapter fragmentPagerAdapter;
 
 
+
     @BindView(R.id.currentLocationTextView)
     TextView currentLocationTextView;
     @BindView(R.id.search_layout)
@@ -74,7 +76,16 @@ public class CurLocationRestaurantFragment extends Fragment {
      * 음식 종류에 따른 식당목록리스트 가져오기
      **/
 
-
+    @OnClick(R.id.restaurant_map_button)
+    public void restaurant_map_button(){
+        Bundle bundle=new Bundle();
+        bundle.putDouble("lat",locationItems.getLat());
+        bundle.putDouble("lng",locationItems.getLng());
+        bundle.putString("filter",filter);
+        bundle.putInt("maxDistance",maxDistance);
+        bundle.putString("menuType",restaurantMenuType);
+        IntentUtil.startActivity(getActivity(), MapActivity.class,bundle);
+    }
     //Onclick Filter
     @OnClick(R.id.filterButton)
     public void setFilterRestaurant() {
@@ -85,8 +96,7 @@ public class CurLocationRestaurantFragment extends Fragment {
             } else {
                 filter = filterValue;
             }
-            rest_list_view_pager.getAdapter().notifyDataSetChanged();
-
+            updateViewPager();
         });
 
     }
@@ -149,6 +159,7 @@ public class CurLocationRestaurantFragment extends Fragment {
             fragmentPagerAdapter = new fragmentPagerAdapter(getChildFragmentManager());
             rest_list_view_pager.setAdapter(fragmentPagerAdapter);
             restListViewPagerTab.setViewPager(rest_list_view_pager);
+
         }else{
             Logger.d("FAIL GPS");
 
@@ -300,4 +311,7 @@ public class CurLocationRestaurantFragment extends Fragment {
     public void updateViewPager() {
             rest_list_view_pager.getAdapter().notifyDataSetChanged();
     }
+
+
+
 }

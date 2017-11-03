@@ -12,8 +12,8 @@ public class LocationItem extends RealmObject{
     int id=1;
     String locationName;
     String tempLocationName;
-    double lat;
-    double lng;
+    public double lat;
+    public double lng;
 
     @Override
     public String toString() {

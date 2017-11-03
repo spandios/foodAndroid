@@ -68,7 +68,6 @@ dependencies {
     }
     compile group: 'com.kakao.sdk', name: 'usermgmt', version: '1.5.1'
 
-
 //    compile files('libs/3rdparty_login_library_android_4.1.4.jar')
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.4-2'
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.4-2'

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class RestaurantItem {
@@ -19,10 +20,31 @@ public class RestaurantItem {
 
     @Parcel
     public static class Restaurant  {
-
         Restaurant(){
 
         }
+        public int rest_id;
+        public String name;
+        public String tel;
+        public String address;
+        @SerializedName("picture")
+        public String rest_picture;
+        public String open_time;
+        public String close_time;
+        public String holiday;
+        public float rating;
+        public String description;
+
+        public int likeCnt;
+        public int reviewCnt;
+        public String avg_cooking_time;
+        public String discount;
+        public String rest_admin_id;
+        public String distance;
+        public int orderCnt;
+
+
+
         public void setRest_id(int rest_id) {
             this.rest_id = rest_id;
         }
@@ -59,12 +81,12 @@ public class RestaurantItem {
             this.rating = rating;
         }
 
-        public void setLikes(int likes) {
-            this.likes = likes;
+        public void setLikeCnt(int likeCnt) {
+            this.likeCnt = likeCnt;
         }
 
-        public void setReviewcount(int reviewcount) {
-            this.reviewcount = reviewcount;
+        public void setReviewCnt(int reviewCnt) {
+            this.reviewCnt = reviewCnt;
         }
 
         public void setDiscount(String discount) {
@@ -83,7 +105,7 @@ public class RestaurantItem {
             this.latlng = latlng;
         }
 
-        public Restaurant(int rest_id, String name, String tel, String address, String rest_picture, String open_time, String close_time, String holiday, float rating, int likes, int reviewcount, String avg_cooking_time, String discount, String rest_admin_id, String distance, double[] latlng) {
+        public Restaurant(int rest_id, String name, String tel, String address, String rest_picture, String open_time, String close_time, String holiday, float rating, String description, int likeCnt, int reviewCnt, String avg_cooking_time, String discount, String rest_admin_id, String distance, int orderCnt, double[] latlng) {
             this.rest_id = rest_id;
             this.name = name;
             this.tel = tel;
@@ -93,39 +115,33 @@ public class RestaurantItem {
             this.close_time = close_time;
             this.holiday = holiday;
             this.rating = rating;
-            this.likes = likes;
-            this.reviewcount = reviewcount;
+            this.description = description;
+            this.likeCnt = likeCnt;
+            this.reviewCnt = reviewCnt;
             this.avg_cooking_time = avg_cooking_time;
             this.discount = discount;
             this.rest_admin_id = rest_admin_id;
             this.distance = distance;
+            this.orderCnt = orderCnt;
             this.latlng = latlng;
         }
 
-        public int rest_id;
-        public String name;
-        public String tel;
-        public String address;
-        @SerializedName("restpicture")
-        public String rest_picture;
-        public String open_time;
-        public String close_time;
-        public String holiday;
-        public float rating;
-        public int likes;
-        public int reviewcount;
-        public String avg_cooking_time;
-        public String discount;
-        public String rest_admin_id;
-        public String distance;
+        public int getOrderCnt() {
+            return orderCnt;
+        }
+
+        public void setOrderCnt(int orderCnt) {
+            this.orderCnt = orderCnt;
+        }
+
         public double[] latlng=new double[1];
 
         public double[] getLatlng() {
             return latlng;
         }
 
-        public int getReviewcount(){
-            return reviewcount;
+        public int getReviewCnt(){
+            return reviewCnt;
         }
         public String getDistance(){
             return distance;
@@ -167,8 +183,8 @@ public class RestaurantItem {
             return rating;
         }
 
-        public int getLikes() {
-            return likes;
+        public int getLikeCnt() {
+            return likeCnt;
         }
 
         public String getRest_admin_id() {
@@ -184,7 +200,37 @@ public class RestaurantItem {
             this.avg_cooking_time = avg_cooking_time;
         }
 
+        public String getDescription() {
+            return description;
+        }
 
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return "Restaurant{" +
+                    "rest_id=" + rest_id +
+                    ", name='" + name + '\'' +
+                    ", tel='" + tel + '\'' +
+                    ", address='" + address + '\'' +
+                    ", rest_picture='" + rest_picture + '\'' +
+                    ", open_time='" + open_time + '\'' +
+                    ", close_time='" + close_time + '\'' +
+                    ", holiday='" + holiday + '\'' +
+                    ", rating=" + rating +
+                    ", description='" + description + '\'' +
+                    ", likeCnt=" + likeCnt +
+                    ", reviewCnt=" + reviewCnt +
+                    ", avg_cooking_time='" + avg_cooking_time + '\'' +
+                    ", discount='" + discount + '\'' +
+                    ", rest_admin_id='" + rest_admin_id + '\'' +
+                    ", distance='" + distance + '\'' +
+                    ", orderCnt=" + orderCnt +
+                    ", latlng=" + Arrays.toString(latlng) +
+                    '}';
+        }
     }
 
 
