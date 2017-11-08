@@ -3,8 +3,11 @@ package com.example.fooddeuk.activity;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +20,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.adapter.MenuListAdapter;
 import com.example.fooddeuk.adapter.ReviewAdapter;
+import com.example.fooddeuk.fragment.RestMenuCategoryFragment;
 import com.example.fooddeuk.http.MenuCategoryService;
 import com.example.fooddeuk.http.MenuReviewService;
 import com.example.fooddeuk.http.MenuService;
-import com.example.fooddeuk.model.cart.CartItem;
 import com.example.fooddeuk.model.menu.MenuCategoryItem;
 import com.example.fooddeuk.model.menu.MenuItem;
 import com.example.fooddeuk.model.menu.ReviewItem;
 import com.example.fooddeuk.model.restaurant.RestaurantItem;
-import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.LayoutUtil;
-import com.example.fooddeuk.util.RealmUtil;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 
@@ -51,8 +52,6 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     @BindView(R.id.rest_detail_name)
     TextView rest_detail_name;
 
-    @BindView(R.id.rest_detail_map)
-    Button rest_detail_map;
 
     @BindView(R.id.rest_detail_image)
     ImageView rest_detail_image;
@@ -63,24 +62,29 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     @BindView(R.id.rest_detail_rating_star_layout)
     LinearLayout rest_detail_rating_star_layout;
 
-    @BindView(R.id.rest_detail_menu_list)
-    RecyclerView rest_detail_menu_list;
+//    @BindView(R.id.rest_detail_menu_list)
+//    RecyclerView rest_detail_menu_list;
 
-    @BindView(R.id.rest_detail_cart_count)
-    TextView rest_detail_cart_count;
+//    @BindView(R.id.rest_detail_cart_count)
+//    TextView rest_detail_cart_count;
 
-    @BindView(R.id.rest_detail_menu_category_layout)
-    LinearLayout rest_detail_menu_category_layout;
+//    @BindView(R.id.rest_detail_menu_category_layout)
+//    LinearLayout rest_detail_menu_category_layout;
 
+    @BindView(R.id.rest_detail_main_tab_viewpager)
+    SmartViewPager rest_detail_main_tab_viewpager;
 
-
-
-    @BindView(R.id.rest_detail_cart_btn)
-    Button rest_detail_cart_btn;
-
-
+    @BindView(R.id.rest_detail_main_tab)
+    TabLayout rest_detail_main_tab;
 
 
+
+//    @BindView(R.id.rest_detail_cart_btn)
+//    Button rest_detail_cart_btn;
+
+
+
+    FragmentPagerAdapter fragmentPagerAdapter;
     RestaurantItem.Restaurant restaurant;
     HashMap<String, Integer> starDpMap;
 
@@ -92,12 +96,16 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         //Parcel로 선택된 식당 정보 가져옴
         /**from CurLocationRestaurantFragment**/
         /**from CurLocationRestaurantFragment**/
+
+
         restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
         starDpMap=LayoutUtil.DpToLayoutParams(getApplicationContext(), 12,11);
         viewSetting();
         setStarView(restaurant.rating,rest_detail_rating_star_layout);
+        fragmentPagerAdapter = new fragmentPagerAdapter(getSupportFragmentManager());
+        rest_detail_main_tab_viewpager.setAdapter(fragmentPagerAdapter);
+        rest_detail_main_tab.setupWithViewPager(rest_detail_main_tab_viewpager);
 
-        menuCategoryShow(restaurant.getRest_id());
 
 
     }
@@ -106,7 +114,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     //Implement CartAddClick -> 메뉴 추가 한 뒤 장바구니 개수 새로고침
     @Override
     public void onCartCount(int cartSize) {
-        rest_detail_cart_count.setText(String.valueOf(cartSize));
+//        rest_detail_cart_count.setText(String.valueOf(cartSize));
     }
 
 
@@ -117,20 +125,20 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 
 
         //메뉴 클릭 시 우선 모든 레이아웃 상세 레이아웃 접은 뒤
-        for (int childCount = rest_detail_menu_list.getChildCount(), i = 0; i < childCount; i++) {
-            RecyclerView.ViewHolder allViewHolder = rest_detail_menu_list.getChildViewHolder(rest_detail_menu_list.getChildAt(i));
-            allViewHolder.itemView.findViewById(R.id.menu_master_layout).setVisibility(View.VISIBLE);
-            allViewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
-        }
+//        for (int childCount = rest_detail_menu_list.getChildCount(), i = 0; i < childCount; i++) {
+//            RecyclerView.ViewHolder allViewHolder = rest_detail_menu_list.getChildViewHolder(rest_detail_menu_list.getChildAt(i));
+//            allViewHolder.itemView.findViewById(R.id.menu_master_layout).setVisibility(View.VISIBLE);
+//            allViewHolder.itemView.findViewById(R.id.detailHotMenu).setVisibility(View.GONE);
+//        }
 
 
 
 
 
         //클릭한 해당 포지션 상세 레이아웃 펼쳐짐
-        ((LinearLayoutManager) rest_detail_menu_list.getLayoutManager()).scrollToPositionWithOffset(position, 5);
+//        ((LinearLayoutManager) rest_detail_menu_list.getLayoutManager()).scrollToPositionWithOffset(position, 5);
         view.findViewById(R.id.menu_master_layout).setVisibility(View.GONE);
-        view.findViewById(R.id.detailHotMenu).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.menu_detail_layout).setVisibility(View.VISIBLE);
 
         View.OnClickListener reviewClick= v -> MenuReviewService.getReview(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<ReviewItem>>() {
             @Override
@@ -145,17 +153,19 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         });
 
         //해당 메뉴의 리뷰를 가져옴
-        TextView reviewText=(TextView)view.findViewById(R.id.detailHotMenuReviewTextView);
+        TextView reviewText=(TextView)view.findViewById(R.id.menu_detail_review);
         if(menuItem.getReview_count()>0){
             reviewText.setText("리뷰[" + menuItem.getReview_count() + "]");
         }else{
             reviewText.setText("리뷰[0]");
         }
 
-        view.findViewById(R.id.detailHotMenuRating).setOnClickListener(reviewClick);
+        view.findViewById(R.id.menu_detail_rating).setOnClickListener(reviewClick);
         reviewText.setOnClickListener(reviewClick);
 
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -164,36 +174,34 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
                 finish();
                 break;
 
-            case R.id.rest_detail_map:
-                break;
+//
 
 //            case R.id.detailTopCartButton:
 //                IntentUtil.startActivity(this, CartActivity.class);
 //                break;
-            case R.id.rest_detail_cart_btn:
-                IntentUtil.startActivity(this, CartActivity.class);
-                break;
+//            case R.id.rest_detail_cart_btn:
+//                IntentUtil.startActivity(this, CartActivity.class);
+//                break;
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        rest_detail_cart_count.setText(String.valueOf(RealmUtil.getDataSize(CartItem.class)));
+//        rest_detail_cart_count.setText(String.valueOf(RealmUtil.getDataSize(CartItem.class)));
 
     }
 
 
     private void viewSetting() {
         //MenuList
-        rest_detail_menu_list.setFocusable(false);
-        rest_detail_menu_list.setFocusableInTouchMode(false);
-        LayoutUtil.RecyclerViewSetting(getApplicationContext(), rest_detail_menu_list);
+
+//        LayoutUtil.RecyclerViewSetting(getApplicationContext(), rest_detail_menu_list);
         rest_detail_name.setText(restaurant.getName());
         Picasso.with(this).load(restaurant.getRest_picture()).resize(150, 150).into(rest_detail_image);
         rest_detail_rating.setText(Double.toString(restaurant.getRating()));
 //        discount.setText(restaurant.getDiscount());
-        rest_detail_cart_btn.setOnClickListener(this);
+//        rest_detail_cart_btn.setOnClickListener(this);
         rest_detail_back_btn.setOnClickListener(this);
 //        detailTopCartButton.setOnClickListener(this);
     }
@@ -211,7 +219,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
                         if(items.size()>0){
                             menuShow(items.get(0).getMenu_cate_gory_id());
                             for (int i = 0; i < items.size(); i++) {
-                                rest_detail_menu_category_layout.addView(makeMenuCategory(items.get(i).getCateName(), items.get(i).getMenu_cate_gory_id()));
+//                                rest_detail_menu_category_layout.addView(makeMenuCategory(items.get(i).getCateName(), items.get(i).getMenu_cate_gory_id()));
                             }
                         }else{
                             Logger.d("not result menuCategory");
@@ -235,10 +243,10 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<MenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
-                final MenuListAdapter adapter = new MenuListAdapter(DetailRestaurantActivity.this, response.body(), restaurant);
+                final MenuListAdapter adapter = new MenuListAdapter(DetailRestaurantActivity.this, response.body());
                 adapter.setOnCartCountClickListener(DetailRestaurantActivity.this);
                 adapter.setOnItemClickListener(DetailRestaurantActivity.this);
-                rest_detail_menu_list.setAdapter(adapter);
+//                rest_detail_menu_list.setAdapter(adapter);
 
             }
 
@@ -297,6 +305,53 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
                 star.setImageResource(R.drawable.ic_star_ranked_half);
                 rest_detail_rating_star_layout.addView(star);
 
+            }
+        }
+    }
+
+
+    public class fragmentPagerAdapter extends FragmentPagerAdapter {
+
+        public fragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+//        @Override
+//        public int getItemPosition(Object object) {
+//            return POSITION_NONE;
+//        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                   return RestMenuCategoryFragment.newInstance(restaurant.rest_id);
+                case 1:
+                    return RestMenuCategoryFragment.newInstance(restaurant.rest_id);
+                case 2:
+                    return RestMenuCategoryFragment.newInstance(restaurant.rest_id);
+
+            }
+            return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "메뉴";
+                case 1:
+                    return "메뉴판";
+                case 2:
+                    return "정보";
+
+                default:return null;
             }
         }
     }

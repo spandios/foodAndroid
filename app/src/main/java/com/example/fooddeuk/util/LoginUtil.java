@@ -64,7 +64,7 @@ public class LoginUtil {
              * **/
 
             getUser(provider_id, (err, userItem) -> {
-                if (err != null) {
+                if (userItem == null) {
                     Logger.d(err);
                     err.printStackTrace();
                 } else {
@@ -177,7 +177,6 @@ public class LoginUtil {
 
             @Override
             public void onFailure(Call<UserItem> call, Throwable t) {
-                t.printStackTrace();
                 getUserCallBack.userCallback(t, null);
             }
         });

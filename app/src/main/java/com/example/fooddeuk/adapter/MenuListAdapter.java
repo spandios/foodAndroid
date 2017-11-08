@@ -1,6 +1,7 @@
 package com.example.fooddeuk.adapter;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,14 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.CartActivity;
 import com.example.fooddeuk.http.OptionService;
+import com.example.fooddeuk.http.RestaurantService;
 import com.example.fooddeuk.model.cart.CartItem;
 import com.example.fooddeuk.model.cart.CartMenu;
 import com.example.fooddeuk.model.cart.CartOption;
@@ -48,12 +51,16 @@ import retrofit2.Response;
  */
 
 
-public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHolder> {
+public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
     private ArrayList<MenuItem> items;
     private Context context;
     private OnItemClickListener onItemClickListener;
     private OnCartCountClickListener onCartCountClickListener;
-    final private RestaurantItem.Restaurant restaurant;
+    private RestaurantItem.Restaurant restaurant;
+    private static final int noPicture = 0;
+    private static final int havePicture = 1;
+    private int expandedPosition = -1;
+    private RecyclerView mRecyclerView;
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position, MenuItem menuItem);
@@ -62,6 +69,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     public interface OnCartCountClickListener {
         void onCartCount(int cartSize);
     }
+
+
 
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -73,77 +82,187 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     }
 
 
-    public MenuListAdapter(Context context, ArrayList<MenuItem> items, RestaurantItem.Restaurant restaurant) {
+
+    public MenuListAdapter(Context context, ArrayList<MenuItem> items) {
         this.items = items;
         this.context = context;
-        this.restaurant = restaurant;
+
+        RestaurantService.getRestaurantById(items.get(0).getRest_id()).enqueue(new Callback<RestaurantItem>() {
+
+            @Override
+            public void onResponse(Call<RestaurantItem> call, Response<RestaurantItem> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus().equals("SUCCESS")) {
+                        restaurant = response.body().getRestaurants().get(0);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<RestaurantItem> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_menu, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+    public int getItemViewType(int position) {
+        if (items.get(position).getMenupicture().length() > 0) {
+            return havePicture;
+        } else {
+            return noPicture;
+        }
+
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == noPicture) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_menu_not_have_picture, parent, false);
+            // set the view's size, margins, paddings and layout parameters
+            ViewHolderNoPicture vh = new ViewHolderNoPicture(v);
+            return vh;
+        } else {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_menu_have_picture, parent, false);
+            // set the view's size, margins, paddings and layout parameters
+            ViewHolderWithPicture vh = new ViewHolderWithPicture(v);
+            return vh;
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder tmpHolder, int position) {
+        final MenuItem menuItem = items.get(position);
+        String reviewCount="["+menuItem.review_count+"]";
+
+        if (tmpHolder.getItemViewType() == noPicture) {
+            ViewHolderNoPicture holder = (ViewHolderNoPicture) tmpHolder;
+            //펼치기
+            if (position == expandedPosition) {
+                holder.menu_master_layout.setVisibility(View.GONE);
+                holder.menu_detail_layout.setVisibility(View.VISIBLE);
+            } else {
+                //접기
+                holder.menu_master_layout.setVisibility(View.VISIBLE);
+                holder.menu_detail_layout.setVisibility(View.GONE);
+            }
+            //펼치고 접는 클릭 이벤트리스너 등록
+            holder.itemView.setOnClickListener(MenuListAdapter.this);
+            holder.itemView.setTag(holder);
+
+            holder.hotMenuName.setText(menuItem.getName());
+            holder.hotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
+            holder.menu_detail_name.setText(menuItem.getName());
+            holder.menu_detail_price.setText(PriceUtil.comma_won(menuItem.getPrice()));
+            holder.menu_detail_rating.setText(menuItem.getRating());
+            holder.menu_detail_rating_bar.setRating(Float.parseFloat(menuItem.getRating()));
+            holder.menu_detail_rating_bar.setStepSize(0.5f);
+            holder.menu_detail_description.setText(menuItem.getDescription());
+            //주문하기
+            holder.menu_detail_order.setOnClickListener(v -> {
+                //옵션 선택사항이 있을 경우
+                OptionService.getOption(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<OptionItem>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<OptionItem>> call, Response<ArrayList<OptionItem>> response) {
+                        if (response.isSuccessful()) {
+
+                            if (response.body().size() > 0) {
+                                optionDialogShow(menuItem, response.body());
+                            } else {
+                                /**
+                                 *
+                                 * TODO 바로 주문
+                                 *
+                                 * **/
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<OptionItem>> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+
+            });
+            //각 아이템 클릭 리스너
+//            holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem));
+
+
+        } else {
+            ViewHolderWithPicture holder = (ViewHolderWithPicture) tmpHolder;
+            //펼치기
+            if (position == expandedPosition) {
+                holder.menu_master_layout.setVisibility(View.GONE);
+                holder.menu_detail_layout.setVisibility(View.VISIBLE);
+
+            } else {
+                //접기
+                holder.menu_master_layout.setVisibility(View.VISIBLE);
+                holder.menu_detail_layout.setVisibility(View.GONE);
+            }
+
+            holder.itemView.setOnClickListener(MenuListAdapter.this);
+            holder.itemView.setTag(holder);
+
+
+
+            Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.masterMenuImage);
+            Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
+
+            holder.hotMenuName.setText(menuItem.getName());
+            holder.hotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
+            holder.menu_detail_name.setText(menuItem.getName());
+            holder.menu_detail_price.setText(PriceUtil.comma_won(menuItem.getPrice()));
+            holder.menu_detail_rating.setText(menuItem.getRating());
+            holder.menu_detail_review.setText(reviewCount);
+            holder.menu_detail_rating_bar.setRating(Float.parseFloat(menuItem.getRating()));
+            holder.menu_detail_rating_bar.setStepSize(0.5f);
+            holder.menu_detail_description.setText(menuItem.getDescription());
+            //주문하기
+            holder.menu_detail_order.setOnClickListener(v -> {
+                //옵션 선택사항이 있을 경우
+                OptionService.getOption(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<OptionItem>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<OptionItem>> call, Response<ArrayList<OptionItem>> response) {
+                        if (response.isSuccessful()) {
+
+                            if (response.body().size() > 0) {
+                                optionDialogShow(menuItem, response.body());
+                            } else {
+                                /**
+                                 *
+                                 * TODO 바로 주문
+                                 *
+                                 * **/
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<OptionItem>> call, Throwable t) {
+                        t.printStackTrace();
+
+                    }
+                });
+
+            });
+
+
+            //각 아이템 클릭 리스너
+//            holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem));
+
+        }
+
+
     }
 
 
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        final MenuItem menuItem = items.get(position);
-
-//        basicPrice
-//        holder.menu_master_basic_price.setText(menuItem.getPrice());
-//        holder.menu_master_basic_price.setPaintFlags(holder.hotMenuPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
-        holder.hotMenuName.setText(menuItem.getName());
-
-        holder.hotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
-        holder.detailHotMenuName.setText(menuItem.getName());
-        holder.detailHotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
-
-        holder.detailHotMenuRating.setText(menuItem.getRating());
-
-
-        holder.detailHotMenuDescription.setText(menuItem.getDescription());
-        //주문하기
-        holder.detailHotMenuOrder.setOnClickListener(v -> {
-            //옵션 선택사항이 있을 경우
-            OptionService.getOption(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<OptionItem>>() {
-                @Override
-                public void onResponse(Call<ArrayList<OptionItem>> call, Response<ArrayList<OptionItem>> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body().size() > 0) {
-                            optionDialogShow(menuItem, response.body());
-                        } else {
-                            /**
-                             *
-                             * TODO 바로 주문
-                             *
-                             * **/
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ArrayList<OptionItem>> call, Throwable t) {
-                    Logger.d(t);
-
-                }
-            });
-
-        });
-
-
-        //각 아이템 클릭 리스너
-        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem));
-
     }
 
     private void createOptionFooterButton(int index, ArrayList<MaterialDialog> optionDialogArray, LinearLayout dialog_menu_option_confirm_layout, TextView dialog_totalPrice, MaterialDialog optionDialog, MenuItem menuItem, String version) {
@@ -166,7 +285,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                     Button addCartButton = new Button(context);
                     addCartButton.setText("장바구니 담기");
                     addCartButton.setOnClickListener(v -> {
-                        checkCartAndInsertOrOrder(menuItem,optionDialogArray,optionDialog,"cart");
+                        checkCartAndInsertOrOrder(menuItem, optionDialogArray, optionDialog, "cart");
                     });
                     dialog_menu_option_confirm_layout.addView(addCartButton);
                     break;
@@ -175,7 +294,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                     Button directOrderButton = new Button(context);
                     directOrderButton.setText("바로 주문");
                     directOrderButton.setOnClickListener(v -> {
-                        checkCartAndInsertOrOrder(menuItem,optionDialogArray,optionDialog,"order");
+                        checkCartAndInsertOrOrder(menuItem, optionDialogArray, optionDialog, "order");
                     });
                     dialog_menu_option_confirm_layout.addView(directOrderButton);
                     break;
@@ -270,15 +389,22 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
     }
 
-    private void checkCartAndInsertOrOrder(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray, MaterialDialog optionDialog,String version) {
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        mRecyclerView = recyclerView;
+    }
+
+    private void checkCartAndInsertOrOrder(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray, MaterialDialog optionDialog, String version) {
         RealmResults<CartItem> cartItem = RealmUtil.findDataAll(CartItem.class);
 
         //기존 장바구니가 없으면 바로 추가
         if (cartItem.size() == 0) {
-            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time,restaurant.latlng[1],restaurant.latlng[0]);
+            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time, restaurant.latlng[1], restaurant.latlng[0]);
             RealmUtil.insertData(newRestaurant);
             RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
-            if(version.equals("order")){
+            if (version.equals("order")) {
                 IntentUtil.startActivity(context, CartActivity.class);
             }
             onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
@@ -290,7 +416,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
             //기존 장바구니에 있는 식당과 현재 주문할려는 식당이 일치할 경우 장바구니에 메뉴를 추가한다
             if (defaultRestaurant.get(0).rest_id == restaurant.rest_id) {
                 RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
-                if(version.equals("order")){
+                if (version.equals("order")) {
                     IntentUtil.startActivity(context, CartActivity.class);
                 }
                 onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
@@ -305,10 +431,10 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                         .onPositive((dialog, which) -> {
                             RealmUtil.removeDataAll(CartItem.class);
                             RealmUtil.removeDataAll(RestaurantItemRealm.class);
-                            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time,restaurant.latlng[1],restaurant.latlng[0]);
+                            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time, restaurant.latlng[1], restaurant.latlng[0]);
                             RealmUtil.insertData(newRestaurant);
                             RealmUtil.insertData(createCartMenuItem(menuItem, optionDialogArray));
-                            if(version.equals("order")){
+                            if (version.equals("order")) {
                                 IntentUtil.startActivity(context, CartActivity.class);
                             }
                             onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
@@ -410,8 +536,6 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     }
 
 
-
-
     //선탠된 메뉴 CartItem RealmObject 생성
     private CartItem createCartMenuItem(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray) {
         CartMenu menu = new CartMenu(menuItem.getMenu_id(), menuItem.getName(), menuItem.getPrice(), menuItem.getAvgtime());
@@ -423,39 +547,106 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
             cartItem = new CartItem(RealmUtil.getAutoIncrementId(CartItem.class), menu);
         }
         return cartItem;
-
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+
+    @Override
+    public void onClick(View v) {
+        RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) v.getTag();
+        //레이아웃 접기
+        if (expandedPosition >= 0) {
+            int prev = expandedPosition;
+            notifyItemChanged(prev);
+        }
+
+        //레이아웃 펼치기
+        expandedPosition = holder.getAdapterPosition();
+        notifyItemChanged(expandedPosition);
+        //레이아웃 높이 remeasure
+        mRecyclerView.requestLayout();
+        mRecyclerView.invalidate();
+    }
+
+    static class ViewHolderWithPicture extends RecyclerView.ViewHolder {
+
+
+        @BindView(R.id.menu_master_layout)
+        ConstraintLayout menu_master_layout;
+        @BindView(R.id.menu_detail_layout)
+        LinearLayout menu_detail_layout;
+        @BindView(R.id.menu_master_image)
+        ImageView masterMenuImage;
         @BindView(R.id.menu_master_name)
         TextView hotMenuName;
         @BindView(R.id.menu_master_price)
         TextView hotMenuPrice;
-        @BindView(R.id.detailHotMenuPicture)
+
+        @BindView(R.id.menu_detail_picture)
         ImageView detailHotMenuPicture;
-        @BindView(R.id.detailHotMenuName)
-        TextView detailHotMenuName;
-        @BindView(R.id.detailHotMenuPrice)
-        TextView detailHotMenuPrice;
-        @BindView(R.id.detailHotMenuDescritption)
-        TextView detailHotMenuDescription;
-        @BindView(R.id.detailHotMenuRating)
-        TextView detailHotMenuRating;
-        @BindView(R.id.detailHotMenuReviewTextView)
-        TextView detailHotMenuReview;
+        @BindView(R.id.menu_detail_name)
+        TextView menu_detail_name;
+        @BindView(R.id.menu_detail_price)
+        TextView menu_detail_price;
+        @BindView(R.id.menu_detail_description)
+        TextView menu_detail_description;
+        @BindView(R.id.menu_detail_rating)
+        TextView menu_detail_rating;
+        @BindView(R.id.menu_detail_rating_bar)
+        RatingBar menu_detail_rating_bar;
+        @BindView(R.id.menu_detail_review)
+        TextView menu_detail_review;
         @BindView(R.id.detailHotMenuCart)
-        Button detailHotMenuCart;
+        Button menu_detail_cart;
         @BindView(R.id.detailHotMenuOrder)
-        Button detailHotMenuOrder;
+        Button menu_detail_order;
 //        @BindView(R.id.menu_master_basic_price)
 //        TextView menu_master_basic_price;
 
-        ViewHolder(View itemView) {
+        ViewHolderWithPicture(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
         }
 
+    }
+
+    static class ViewHolderNoPicture extends RecyclerView.ViewHolder {
+        @BindView(R.id.menu_master_layout)
+        ConstraintLayout menu_master_layout;
+        @BindView(R.id.menu_detail_layout)
+        LinearLayout menu_detail_layout;
+        @BindView(R.id.menu_master_name)
+
+        TextView hotMenuName;
+        @BindView(R.id.menu_master_price)
+        TextView hotMenuPrice;
+
+        @BindView(R.id.menu_detail_name)
+        TextView menu_detail_name;
+        @BindView(R.id.menu_detail_price)
+        TextView menu_detail_price;
+        @BindView(R.id.menu_detail_description)
+        TextView menu_detail_description;
+        @BindView(R.id.menu_detail_rating)
+        TextView menu_detail_rating;
+        @BindView(R.id.menu_detail_rating_bar)
+        RatingBar menu_detail_rating_bar;
+        @BindView(R.id.menu_detail_review)
+        TextView menu_detail_review;
+        @BindView(R.id.detailHotMenuCart)
+        Button menu_detail_cart;
+        @BindView(R.id.detailHotMenuOrder)
+        Button menu_detail_order;
+
+
+        ViewHolderNoPicture(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        public void bind(MenuItem menuItem){
+
+        }
     }
 
 

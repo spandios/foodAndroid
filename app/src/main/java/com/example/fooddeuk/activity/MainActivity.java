@@ -12,10 +12,10 @@ import com.example.fooddeuk.R;
 import com.example.fooddeuk.fragment.CurLocationRestaurantFragment;
 import com.example.fooddeuk.fragment.CurrentOrderFragment;
 import com.example.fooddeuk.fragment.HomeFragment;
-import com.example.fooddeuk.fragment.MenuFragment;
+import com.example.fooddeuk.fragment.UserFragment;
+import com.example.fooddeuk.fragment.SearchFragment;
 import com.example.fooddeuk.util.GPS;
 import com.example.fooddeuk.util.GPS_Util;
-import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.NetworkUtil;
 import com.example.fooddeuk.util.SettingActivityUtil;
 import com.example.fooddeuk.util.TedPermissionUtil;
@@ -75,14 +75,14 @@ public class MainActivity extends BaseActivity {
 //                }, 200);// 0.5초 정도 딜레이를 준 후 시작
                 break;
             case R.id.mainSearchButton:
-//                homeFragmentFlag = false;
-//                fragmentTransaction.replace(R.id.homeContent, new SearchFragment());
-                IntentUtil.startActivity(this,MapActivity.class);
+                homeFragmentFlag = false;
+                fragmentTransaction.replace(R.id.homeContent, new SearchFragment());
+
 
                 break;
             case R.id.menuButton:
                 homeFragmentFlag = false;
-                fragmentTransaction.replace(R.id.homeContent, new MenuFragment());
+                fragmentTransaction.replace(R.id.homeContent, new UserFragment());
 
                 break;
         }

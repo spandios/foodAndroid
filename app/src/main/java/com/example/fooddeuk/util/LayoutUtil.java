@@ -20,6 +20,7 @@ public class LayoutUtil {
         final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context);
 //        nmLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(nmLayoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }

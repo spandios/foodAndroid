@@ -122,8 +122,7 @@ public class rest_list_fragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(getActivity());
-            dialog.show();
+
 
         }
 
@@ -180,7 +179,7 @@ public class rest_list_fragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            dialog.dismiss();
+
 
 
         }

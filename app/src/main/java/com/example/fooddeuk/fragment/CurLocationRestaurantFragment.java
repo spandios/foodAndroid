@@ -129,7 +129,7 @@ public class CurLocationRestaurantFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         //현재 위치 정보 db에서 가져옴
         super.onCreate(savedInstanceState);
-        commonValueApplication = (CommonValueApplication) getActivity().getApplication();
+
         restaurantMenuType = mContext.getResources().getString(R.string.restaurant_menu_type1);
         realmResults=RealmUtil.findDataAll(LocationItem.class);
 
@@ -265,7 +265,7 @@ public class CurLocationRestaurantFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 4;
+            return 8;
         }
 
 
@@ -301,6 +301,14 @@ public class CurLocationRestaurantFragment extends Fragment {
                     return "전체";
                 case 3:
                     return "중식";
+                case 4:
+                    return "test";
+                case 5:
+                    return "test";
+                case 6:
+                    return "test";
+                case 7:
+                    return "test";
 
                 default:
                     return null;

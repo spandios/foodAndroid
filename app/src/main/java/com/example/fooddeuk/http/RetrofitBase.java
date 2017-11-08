@@ -2,6 +2,8 @@ package com.example.fooddeuk.http;
 
 import com.google.gson.GsonBuilder;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -12,6 +14,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitBase {
     private static RetrofitBase retrofitBase;
     private static Retrofit retrofit;
+    HttpLoggingInterceptor logging=new HttpLoggingInterceptor();
+    OkHttpClient client = new OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build();
 
     private RetrofitBase() {
         GsonBuilder gson=new GsonBuilder().setLenient();
@@ -19,6 +25,7 @@ public class RetrofitBase {
 
         retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("http://13.124.159.166")
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson.create()))
                 .build();
     }

@@ -5,17 +5,17 @@ package com.example.fooddeuk.model.menu;
  */
 
 public class MenuItem  {
-    int menu_id;
-    int rest_id;
-    String name;
-    int price;
-    String description;
-    String avgtime;
-    String menupicture;
-    String rating;
-    int viewcount;
-    int likecount;
-    int review_count;
+    public int menu_id;
+    public int rest_id;
+    public String name;
+    public int price;
+    public String description;
+    public String avgtime;
+    public String menupicture;
+    public String rating;
+    public int viewcount;
+    public int likecount;
+    public int review_count;
 
 
 
@@ -63,6 +63,23 @@ public class MenuItem  {
 
     public int getReview_count() {
         return review_count;
+    }
+
+    @Override
+    public String toString() {
+        return "MenuItem{" +
+                "menu_id=" + menu_id +
+                ", rest_id=" + rest_id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", avgtime='" + avgtime + '\'' +
+                ", menupicture='" + menupicture + '\'' +
+                ", rating='" + rating + '\'' +
+                ", viewcount=" + viewcount +
+                ", likecount=" + likecount +
+                ", review_count=" + review_count +
+                '}';
     }
 }
 

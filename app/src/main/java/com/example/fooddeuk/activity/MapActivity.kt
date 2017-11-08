@@ -2,27 +2,31 @@ package com.example.fooddeuk.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.widget.Toast
+import android.view.View
 import com.example.fooddeuk.R
 import com.example.fooddeuk.http.RestaurantService
 import com.example.fooddeuk.model.restaurant.RestaurantItem
+import com.example.fooddeuk.util.IntentUtil
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.orhanobut.logger.Logger
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_map.*
+import org.parceler.Parcels
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MapActivity : BaseActivity(), OnMapReadyCallback {
+class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     lateinit var filter: String
     var maxDistance: Int? = null
     lateinit var menuType: String
@@ -43,12 +47,15 @@ class MapActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
+        googleMap.setOnMarkerClickListener(this)
+        googleMap.setOnMapClickListener {   rest_description_box.visibility=View.GONE}
         val extra = intent.extras
         filter = extra.getString("filter")
         maxDistance = extra.getInt("maxDistance")
         menuType = extra.getString("menuType")
         lat = extra.getDouble("lat")
         lng = extra.getDouble("lng")
+
         googleMap.setLatLngBoundsForCameraTarget(LatLngBounds(LatLng(35.0, 126.0), LatLng(38.0, 128.0)))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(getLatLng()))
         googleMap.setMinZoomPreference(12.0f)
@@ -59,8 +66,20 @@ class MapActivity : BaseActivity(), OnMapReadyCallback {
         googleMap.uiSettings.isMyLocationButtonEnabled
         googleMap.uiSettings.isZoomControlsEnabled
 
-        MenuListAsnc().execute()
 
+        RestaurantService.getCurrentLocationRestaurant(lat!!, lng!!, maxDistance!!, menuType, filter, "").enqueue(object:Callback<RestaurantItem>{
+            override fun onResponse(call: Call<RestaurantItem>?, response: Response<RestaurantItem>?) {
+                if(response!!.isSuccessful){
+                    if(response.body()!!.status==("SUCCESS")){
+                        restaurantList=response.body()!!.restaurants
+                        drawRestListMarker()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<RestaurantItem>?, t: Throwable?) {
+                t!!.printStackTrace()
+            }
+        })
 
     }
 
@@ -68,63 +87,33 @@ class MapActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun drawRestListMarker() {
         googleMap.clear()
-
-        for ((i, restaurant) in restaurantList!!.withIndex()) {
-            Logger.d(restaurant.name + restaurant.latlng[1] + restaurant.latlng[0])
-            if (restaurant.latlng[1] >= 1 || restaurant.latlng[0] >= 1) {
-
-                // Get the icon for the feature
-                val marker = googleMap.addMarker(MarkerOptions()
-                        .position(LatLng(restaurant.latlng[1], restaurant.latlng[0]))
-                        .title(restaurant.name))
-                marker.tag = i
-            }
+        for(i in 0 until restaurantList!!.size){
+            val marker = googleMap.addMarker(MarkerOptions()
+                    .position(LatLng(restaurantList!![i].latlng[1], restaurantList!![i].latlng[0]))
+                    .title(restaurantList!![i].name))
+            marker.tag = i+1
         }
     }
 
-    internal inner class MenuListAsnc : AsyncTask<Void, Int, Void>() {
 
 
-        override fun onPreExecute() {
-            super.onPreExecute()
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        var tag = marker!!.tag as Int
+        var restaurant = restaurantList!![tag-1]
+        Logger.d(restaurant.name)
+        rest_map_name.text = restaurant.name
+        Picasso.with(this).load(restaurant.rest_picture).into(rest_map_picture)
+        rest_map_desc.text=restaurant.description
+        rest_description_box.visibility=View.VISIBLE
+        rest_description_box.setOnClickListener({
+            val restaurantParcel = Parcels.wrap<RestaurantItem.Restaurant>(restaurant)
+            val extra = Bundle()
+            extra.putParcelable("restaurant", restaurantParcel)
+            IntentUtil.startActivity(this, DetailRestaurantActivity::class.java, extra)
 
-
-        }
-
-        override fun doInBackground(vararg voids: Void): Void? {
-            RestaurantService.getCurrentLocationRestaurant(lat!!, lng!!, maxDistance!!, menuType, filter, "").enqueue(object : Callback<RestaurantItem> {
-                override fun onResponse(call: Call<RestaurantItem>, response: Response<RestaurantItem>) {
-                    if (response.isSuccessful) {
-                        restaurantList = response.body()!!.restaurants
-                        drawRestListMarker()
-
-//                        restaurantAdapter.setRestaurantItemClickListener { restaurant ->
-//                            val restaurantParcel = Parcels.wrap<Restaurant>(restaurant)
-//                            val extra = Bundle()
-//                            extra.putParcelable("restaurant", restaurantParcel)
-//                            IntentUtil.startActivity(getActivity(), DetailRestaurantActivity::class.java, extra)
-//                        }
-                    }
-                }
-
-
-                override fun onFailure(call: Call<RestaurantItem>, t: Throwable) {
-                    Logger.d(t)
-                    Toast.makeText(this@MapActivity, "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG).show()
-                }
-            })
-            return null
-        }
-
-        override fun onPostExecute(aVoid: Void?) {
-            super.onPostExecute(aVoid)
-
-
-        }
-
-
+        })
+        return false
     }
-
 }
 
 
