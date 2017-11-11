@@ -1,5 +1,6 @@
 package com.example.fooddeuk.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -70,12 +71,13 @@ public class RestMenuCategoryFragment extends Fragment {
             rest_id = getArguments().getInt("rest_id");
             getMenuCategory();
         }
-
-
         return view;
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     public void getMenuCategory(){
         MenuCategoryService.getMenuCategory(rest_id).enqueue(new Callback<MenuCategoryItem>() {

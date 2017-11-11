@@ -37,9 +37,7 @@
        app:stl_drawDecorationAfterTab="false"
 
        />
-   <!--app:stl_defaultTabBackground="?attr/selectableItemBackground"-->
-   <!--app:stl_customTabTextLayoutId="@layout/custom_tab"-->
-   <!--app:stl_customTabTextViewId="@id/custom_text"-->
+
    <com.example.fooddeuk.activity.MenuPager
        android:layout_width="match_parent"
        android:layout_height="wrap_content"

@@ -21,7 +21,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.CartActivity;
 import com.example.fooddeuk.activity.MapActivity;
-import com.example.fooddeuk.activity.rest_list_fragment;
 import com.example.fooddeuk.activity.settingLocationMapActivity;
 import com.example.fooddeuk.common.CommonValueApplication;
 import com.example.fooddeuk.model.restaurant.LocationItem;
@@ -273,19 +272,19 @@ public class CurLocationRestaurantFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "일식", filter, "");
+                    return Rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "일식", filter, "");
 
                 case 1:
-                    return rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "치킨", filter, "");
+                    return Rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "치킨", filter, "");
 
                 case 2:
-                    return rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "", filter, "");
+                    return Rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "", filter, "");
 
                 case 3:
-                    return rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "중식", filter, "");
+                    return Rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "중식", filter, "");
 
                 default:
-                    return rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "일식", filter, "");
+                    return Rest_list_fragment.newInstance(locationItems.getLat(), locationItems.getLng(), maxDistance, "일식", filter, "");
             }
 
         }

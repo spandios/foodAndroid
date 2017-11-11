@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.CartActivity;
+import com.example.fooddeuk.http.MenuReviewService;
 import com.example.fooddeuk.http.OptionService;
 import com.example.fooddeuk.http.RestaurantService;
 import com.example.fooddeuk.model.cart.CartItem;
@@ -24,6 +25,7 @@ import com.example.fooddeuk.model.cart.CartMenu;
 import com.example.fooddeuk.model.cart.CartOption;
 import com.example.fooddeuk.model.menu.MenuItem;
 import com.example.fooddeuk.model.menu.OptionItem;
+import com.example.fooddeuk.model.menu.ReviewItem;
 import com.example.fooddeuk.model.restaurant.RestaurantItem;
 import com.example.fooddeuk.model.restaurant.RestaurantItemRealm;
 import com.example.fooddeuk.util.IntentUtil;
@@ -51,7 +53,7 @@ import retrofit2.Response;
  */
 
 
-public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<MenuItem> items;
     private Context context;
     private OnItemClickListener onItemClickListener;
@@ -61,9 +63,12 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int havePicture = 1;
     private int expandedPosition = -1;
     private RecyclerView mRecyclerView;
+    int[] originalPos = new int[2];
+
+
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, MenuItem menuItem);
+        void onItemClick(RecyclerView.ViewHolder view,float y,RecyclerView recyclerView);
     }
 
     public interface OnCartCountClickListener {
@@ -72,23 +77,160 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
 
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    static private void reviewDialogShow(Context context, ArrayList<ReviewItem> reviewItem) {
+        MaterialDialog reviewDialog = new MaterialDialog.Builder(context).customView(R.layout.dialog_review_listview, true).build();
+        View reviewDialogView = reviewDialog.getView();
+        RecyclerView reviewListView = (RecyclerView) reviewDialogView.findViewById(R.id.reviewListView);
+        ReviewAdapter reviewAdapter = new ReviewAdapter(context, reviewItem);
+        LayoutUtil.RecyclerViewSetting(context, reviewListView);
+        reviewListView.setAdapter(reviewAdapter);
+        reviewDialog.show();
     }
 
-    public void setOnCartCountClickListener(OnCartCountClickListener onCartAddClickListenr) {
-        this.onCartCountClickListener = onCartAddClickListenr;
+    private void reviewClick(RecyclerView.ViewHolder view){
+
+        MenuReviewService.getReview(items.get(view.getAdapterPosition()).menu_id).enqueue(new Callback<ArrayList<ReviewItem>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ReviewItem>> call, Response<ArrayList<ReviewItem>> response) {
+                reviewDialogShow(context,response.body());
+            }
+            @Override
+            public void onFailure(Call<ArrayList<ReviewItem>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
+
+//    private View.OnClickListener reviewCLickListener= v -> reviewClick();
+
+
+    private View.OnClickListener menuExpandLayoutListener =new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) v.getTag();
+            LinearLayout linearLayout=(LinearLayout)v.findViewById(R.id.menu_detail_layout);
+
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            linearLayout.setLayoutParams(layoutParams);
+
+            //레이아웃 접기
+            if (expandedPosition >= 0) {
+                int prev = expandedPosition;
+                notifyItemChanged(prev);
+            }
+            //레이아웃 펼치기
+            expandedPosition = holder.getAdapterPosition();
+            notifyItemChanged(expandedPosition);
+
+
+            //레이아웃 높이 remeasure
+            mRecyclerView.requestLayout();
+            mRecyclerView.invalidate();
+
+
+//            onItemClickListener.onItemClick(holder,LayoutUtil.convertPixelsToDp(mRecyclerView.getChildAt(holder.getAdapterPosition()).findViewById(R.id.menu_detail_layout).getTop(),context));
+
+
+//            Logger.d(originalPos[1]);
+//            mRecyclerView.getChildAt(holder.getAdapterPosition()).findViewById(R.id.menu_detail_layout).getLocationOnScreen(originalPos);
+
+//            onItemClickListener.onItemClick(holder,mRecyclerView.getChildAt(holder.getAdapterPosition()).findViewById(R.id.menu_detail_layout).getY(),mRecyclerView);
+
+        }
+    };
 
 
 
     public MenuListAdapter(Context context, ArrayList<MenuItem> items) {
         this.items = items;
         this.context = context;
+        getRestaurant();
+    }
 
-        RestaurantService.getRestaurantById(items.get(0).getRest_id()).enqueue(new Callback<RestaurantItem>() {
 
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == noPicture) {
+            View parentView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_menu_not_have_picture, parent, false);
+
+            // set the view's size, margins, paddings and layout parameters
+            ViewHolderNoPicture vh = new ViewHolderNoPicture(parentView);
+
+            vh.itemView.setOnClickListener(menuExpandLayoutListener);
+            vh.itemView.findViewById(R.id.menu_detail_rating).setOnClickListener(v-> reviewClick(vh));
+
+//            reviewClick(vh.itemView.findViewById(R.id.menu_detail_rating),items.get(vh.getAdapterPosition()).menu_id);
+
+            return vh;
+        } else {
+            View parentView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_menu_have_picture, parent, false);
+            // set the view's size, margins, paddings and layout parameters
+            ViewHolderWithPicture vh = new ViewHolderWithPicture(parentView);
+            vh.itemView.setOnClickListener(menuExpandLayoutListener);
+
+            /*Show Review Dialog*/
+            vh.itemView.findViewById(R.id.menu_detail_rating).setOnClickListener(v-> reviewClick(vh));
+//            reviewClick(vh.itemView.findViewById(R.id.menu_detail_rating),items.get(vh.getAdapterPosition()).menu_id);
+            return vh;
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder tmpHolder, int position) {
+        final MenuItem menuItem = items.get(position);
+
+        //메뉴 사진 없음
+        if (tmpHolder.getItemViewType() == noPicture) {
+            ViewHolderNoPicture holder = (ViewHolderNoPicture) tmpHolder;
+            holder.bind(menuItem);
+            /*------------------------------------------*/
+            //펼침
+            if (position == expandedPosition) {
+                holder.menu_master_layout.setVisibility(View.GONE);
+                holder.menu_detail_layout.setVisibility(View.VISIBLE);
+            } else {
+
+                holder.menu_master_layout.setVisibility(View.VISIBLE);
+                holder.menu_detail_layout.setVisibility(View.GONE);
+            }
+            holder.itemView.setTag(holder);
+
+            /*------------------------------------------*/
+            //주문하기
+            holder.menu_detail_order.setOnClickListener(v -> Order(menuItem));
+
+        } else {
+            ViewHolderWithPicture holder = (ViewHolderWithPicture) tmpHolder;
+            holder.bind(menuItem);
+            //사진
+            Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.menu_master_picture);
+            Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
+
+             /*------------------------------------------*/
+            //펼침
+            if (position == expandedPosition) {
+                holder.menu_master_layout.setVisibility(View.GONE);
+                holder.menu_detail_layout.setVisibility(View.VISIBLE);
+            } else {
+
+                holder.menu_master_layout.setVisibility(View.VISIBLE);
+                holder.menu_detail_layout.setVisibility(View.GONE);
+            }
+            holder.itemView.setTag(holder);
+
+            /*------------------------------------------*/
+            //주문하기
+            holder.menu_detail_order.setOnClickListener(v -> Order(menuItem));
+        }
+    }
+
+
+    //식당정보
+    private void getRestaurant(){
+        RestaurantService.getRestaurantById(items.get(0).rest_id).enqueue(new Callback<RestaurantItem>() {
             @Override
             public void onResponse(Call<RestaurantItem> call, Response<RestaurantItem> response) {
                 if (response.isSuccessful()) {
@@ -104,166 +246,34 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (items.get(position).getMenupicture().length() > 0) {
-            return havePicture;
-        } else {
-            return noPicture;
-        }
+    private void Order(MenuItem menuItem){
+        OptionService.getOption(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<OptionItem>>() {
+            @Override
+            public void onResponse(Call<ArrayList<OptionItem>> call, Response<ArrayList<OptionItem>> response) {
+                if (response.isSuccessful()) {
 
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == noPicture) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_menu_not_have_picture, parent, false);
-            // set the view's size, margins, paddings and layout parameters
-            ViewHolderNoPicture vh = new ViewHolderNoPicture(v);
-            return vh;
-        } else {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_menu_have_picture, parent, false);
-            // set the view's size, margins, paddings and layout parameters
-            ViewHolderWithPicture vh = new ViewHolderWithPicture(v);
-            return vh;
-        }
-
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder tmpHolder, int position) {
-        final MenuItem menuItem = items.get(position);
-        String reviewCount="["+menuItem.review_count+"]";
-
-        if (tmpHolder.getItemViewType() == noPicture) {
-            ViewHolderNoPicture holder = (ViewHolderNoPicture) tmpHolder;
-            //펼치기
-            if (position == expandedPosition) {
-                holder.menu_master_layout.setVisibility(View.GONE);
-                holder.menu_detail_layout.setVisibility(View.VISIBLE);
-            } else {
-                //접기
-                holder.menu_master_layout.setVisibility(View.VISIBLE);
-                holder.menu_detail_layout.setVisibility(View.GONE);
-            }
-            //펼치고 접는 클릭 이벤트리스너 등록
-            holder.itemView.setOnClickListener(MenuListAdapter.this);
-            holder.itemView.setTag(holder);
-
-            holder.hotMenuName.setText(menuItem.getName());
-            holder.hotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
-            holder.menu_detail_name.setText(menuItem.getName());
-            holder.menu_detail_price.setText(PriceUtil.comma_won(menuItem.getPrice()));
-            holder.menu_detail_rating.setText(menuItem.getRating());
-            holder.menu_detail_rating_bar.setRating(Float.parseFloat(menuItem.getRating()));
-            holder.menu_detail_rating_bar.setStepSize(0.5f);
-            holder.menu_detail_description.setText(menuItem.getDescription());
-            //주문하기
-            holder.menu_detail_order.setOnClickListener(v -> {
-                //옵션 선택사항이 있을 경우
-                OptionService.getOption(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<OptionItem>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<OptionItem>> call, Response<ArrayList<OptionItem>> response) {
-                        if (response.isSuccessful()) {
-
-                            if (response.body().size() > 0) {
-                                optionDialogShow(menuItem, response.body());
-                            } else {
-                                /**
-                                 *
-                                 * TODO 바로 주문
-                                 *
-                                 * **/
-                            }
-                        }
+                    if (response.body().size() > 0) {
+                        optionDialogShow(menuItem, response.body());
+                    } else {
+                        /**
+                         *
+                         * TODO 바로 주문
+                         *
+                         * **/
                     }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<OptionItem>> call, Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
-
-            });
-            //각 아이템 클릭 리스너
-//            holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem));
-
-
-        } else {
-            ViewHolderWithPicture holder = (ViewHolderWithPicture) tmpHolder;
-            //펼치기
-            if (position == expandedPosition) {
-                holder.menu_master_layout.setVisibility(View.GONE);
-                holder.menu_detail_layout.setVisibility(View.VISIBLE);
-
-            } else {
-                //접기
-                holder.menu_master_layout.setVisibility(View.VISIBLE);
-                holder.menu_detail_layout.setVisibility(View.GONE);
+                }
             }
 
-            holder.itemView.setOnClickListener(MenuListAdapter.this);
-            holder.itemView.setTag(holder);
+            @Override
+            public void onFailure(Call<ArrayList<OptionItem>> call, Throwable t) {
+                t.printStackTrace();
 
-
-
-            Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.masterMenuImage);
-            Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
-
-            holder.hotMenuName.setText(menuItem.getName());
-            holder.hotMenuPrice.setText(PriceUtil.comma_won(menuItem.getPrice()));
-            holder.menu_detail_name.setText(menuItem.getName());
-            holder.menu_detail_price.setText(PriceUtil.comma_won(menuItem.getPrice()));
-            holder.menu_detail_rating.setText(menuItem.getRating());
-            holder.menu_detail_review.setText(reviewCount);
-            holder.menu_detail_rating_bar.setRating(Float.parseFloat(menuItem.getRating()));
-            holder.menu_detail_rating_bar.setStepSize(0.5f);
-            holder.menu_detail_description.setText(menuItem.getDescription());
-            //주문하기
-            holder.menu_detail_order.setOnClickListener(v -> {
-                //옵션 선택사항이 있을 경우
-                OptionService.getOption(menuItem.getMenu_id()).enqueue(new Callback<ArrayList<OptionItem>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<OptionItem>> call, Response<ArrayList<OptionItem>> response) {
-                        if (response.isSuccessful()) {
-
-                            if (response.body().size() > 0) {
-                                optionDialogShow(menuItem, response.body());
-                            } else {
-                                /**
-                                 *
-                                 * TODO 바로 주문
-                                 *
-                                 * **/
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<OptionItem>> call, Throwable t) {
-                        t.printStackTrace();
-
-                    }
-                });
-
-            });
-
-
-            //각 아이템 클릭 리스너
-//            holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(v, holder.getAdapterPosition(), menuItem));
-
-        }
-
-
+            }
+        });
     }
 
 
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
+
 
     private void createOptionFooterButton(int index, ArrayList<MaterialDialog> optionDialogArray, LinearLayout dialog_menu_option_confirm_layout, TextView dialog_totalPrice, MaterialDialog optionDialog, MenuItem menuItem, String version) {
         try {
@@ -389,12 +399,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
 
-        mRecyclerView = recyclerView;
-    }
 
     private void checkCartAndInsertOrOrder(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray, MaterialDialog optionDialog, String version) {
         RealmResults<CartItem> cartItem = RealmUtil.findDataAll(CartItem.class);
@@ -549,38 +554,56 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return cartItem;
     }
 
-
     @Override
-    public void onClick(View v) {
-        RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) v.getTag();
-        //레이아웃 접기
-        if (expandedPosition >= 0) {
-            int prev = expandedPosition;
-            notifyItemChanged(prev);
+    public int getItemViewType(int position) {
+        if (items.get(position).getMenupicture().length() > 0) {
+            return havePicture;
+        } else {
+            return noPicture;
         }
-
-        //레이아웃 펼치기
-        expandedPosition = holder.getAdapterPosition();
-        notifyItemChanged(expandedPosition);
-        //레이아웃 높이 remeasure
-        mRecyclerView.requestLayout();
-        mRecyclerView.invalidate();
     }
 
-    static class ViewHolderWithPicture extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
 
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
+    }
+
+
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setOnCartCountClickListener(OnCartCountClickListener onCartAddClickListenr) {
+        this.onCartCountClickListener = onCartAddClickListenr;
+    }
+
+
+
+    class ViewHolderWithPicture extends RecyclerView.ViewHolder {
+
+        //Layout
         @BindView(R.id.menu_master_layout)
         ConstraintLayout menu_master_layout;
         @BindView(R.id.menu_detail_layout)
         LinearLayout menu_detail_layout;
-        @BindView(R.id.menu_master_image)
-        ImageView masterMenuImage;
-        @BindView(R.id.menu_master_name)
-        TextView hotMenuName;
-        @BindView(R.id.menu_master_price)
-        TextView hotMenuPrice;
 
+        //Master
+        @BindView(R.id.menu_master_picture)
+        ImageView menu_master_picture;
+        @BindView(R.id.menu_master_name)
+        TextView menu_master_name;
+        @BindView(R.id.menu_master_price)
+        TextView menu_master_price;
+
+        //Detail
         @BindView(R.id.menu_detail_picture)
         ImageView detailHotMenuPicture;
         @BindView(R.id.menu_detail_name)
@@ -595,9 +618,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RatingBar menu_detail_rating_bar;
         @BindView(R.id.menu_detail_review)
         TextView menu_detail_review;
-        @BindView(R.id.detailHotMenuCart)
+        @BindView(R.id.menu_detail_cart)
         Button menu_detail_cart;
-        @BindView(R.id.detailHotMenuOrder)
+        @BindView(R.id.menu_detail_order)
         Button menu_detail_order;
 //        @BindView(R.id.menu_master_basic_price)
 //        TextView menu_master_basic_price;
@@ -608,19 +631,43 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
 
+
+        public void bind(MenuItem menuItem){
+            String reviewCount="("+menuItem.review_count+")";
+            String menuPrice=PriceUtil.comma_won(menuItem.price);
+            if(menuItem.rating.length()==1){
+                menuItem.rating+=".0";
+            }
+            menu_master_name.setText(menuItem.getName());
+            menu_master_price.setText(menuPrice);
+            menu_detail_name.setText(menuItem.getName());
+            menu_detail_name.setText(menuItem.getName());
+            menu_detail_price.setText(menuPrice);
+            menu_detail_rating.setText(menuItem.rating);
+            menu_detail_review.setText(reviewCount);
+            menu_detail_rating_bar.setRating(Float.parseFloat(menuItem.getRating()));
+            menu_detail_rating_bar.setStepSize(0.5f);
+            menu_detail_description.setText(menuItem.getDescription());
+
+        }
+
     }
 
-    static class ViewHolderNoPicture extends RecyclerView.ViewHolder {
+    class ViewHolderNoPicture extends RecyclerView.ViewHolder {
+        //Layout
         @BindView(R.id.menu_master_layout)
         ConstraintLayout menu_master_layout;
         @BindView(R.id.menu_detail_layout)
         LinearLayout menu_detail_layout;
+
+
+        //Master
         @BindView(R.id.menu_master_name)
-
-        TextView hotMenuName;
+        TextView menu_master_name;
         @BindView(R.id.menu_master_price)
-        TextView hotMenuPrice;
+        TextView menu_master_price;
 
+        //Detail
         @BindView(R.id.menu_detail_name)
         TextView menu_detail_name;
         @BindView(R.id.menu_detail_price)
@@ -633,9 +680,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RatingBar menu_detail_rating_bar;
         @BindView(R.id.menu_detail_review)
         TextView menu_detail_review;
-        @BindView(R.id.detailHotMenuCart)
+        @BindView(R.id.menu_detail_cart)
         Button menu_detail_cart;
-        @BindView(R.id.detailHotMenuOrder)
+        @BindView(R.id.menu_detail_order)
         Button menu_detail_order;
 
 
@@ -645,7 +692,21 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(MenuItem menuItem){
-
+            String reviewCount="("+menuItem.review_count+")";
+            String menuPrice=PriceUtil.comma_won(menuItem.price);
+            if(menuItem.rating.length()==1){
+                menuItem.rating+=".0";
+            }
+            menu_master_name.setText(menuItem.getName());
+            menu_master_price.setText(menuPrice);
+            menu_detail_name.setText(menuItem.getName());
+            menu_detail_name.setText(menuItem.getName());
+            menu_detail_price.setText(menuPrice);
+            menu_detail_rating.setText(menuItem.rating);
+            menu_detail_review.setText(reviewCount);
+            menu_detail_rating_bar.setRating(Float.parseFloat(menuItem.rating));
+            menu_detail_rating_bar.setStepSize(0.5f);
+            menu_detail_description.setText(menuItem.getDescription());
         }
     }
 

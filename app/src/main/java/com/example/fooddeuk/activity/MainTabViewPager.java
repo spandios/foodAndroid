@@ -11,14 +11,14 @@ import android.view.View;
  * Created by heo on 2017. 11. 5..
  */
 
-public class SmartViewPager extends ViewPager {
+public class MainTabViewPager extends ViewPager {
     private int mCurrentPagePosition = 0;
     // -----------------------------------------------------------------------
     //
     // Constructor
     //
     // -----------------------------------------------------------------------
-    public SmartViewPager(Context context, AttributeSet attrs) {
+    public MainTabViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         mGestureDetector = new GestureDetector(context, new XScrollDetector());
     }

@@ -58,7 +58,6 @@ dependencies {
 //    androidTestCompile 'com.android.support.test:runner:0.5'
 
 
-
     compile('io.nlopez.smartlocation:library:3.3.2') {
         transitive = false
     }

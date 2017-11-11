@@ -190,20 +190,14 @@
                 app:tabTextColor="@color/text_main"
                 app:tabSelectedTextColor="@color/tangerine"
                 android:background="@color/silver"
-
                 />
 
-            <!--<FrameLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:id="@+id/testframe"-->
-                <!--/>-->
-            <com.example.fooddeuk.activity.SmartViewPager
+            <com.example.fooddeuk.activity.MainTabViewPager
                 android:id="@+id/rest_detail_main_tab_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            </com.example.fooddeuk.activity.SmartViewPager>
+            </com.example.fooddeuk.activity.MainTabViewPager>
 
 
 
