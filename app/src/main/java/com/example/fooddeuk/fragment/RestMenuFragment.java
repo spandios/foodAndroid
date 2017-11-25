@@ -16,6 +16,7 @@ import com.example.fooddeuk.adapter.MenuListAdapter;
 import com.example.fooddeuk.http.MenuService;
 import com.example.fooddeuk.model.menu.MenuItem;
 import com.example.fooddeuk.util.LayoutUtil;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,7 @@ public class RestMenuFragment extends Fragment  {
     }
 
     public void getMenuList(){
+        Logger.d(menu_category_id);
         MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<MenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
@@ -96,7 +98,8 @@ public class RestMenuFragment extends Fragment  {
                         LayoutUtil.RecyclerViewSetting(getActivity(),rest_detail_menu_list);
                         rest_detail_menu_list.setFocusable(true);
                         rest_detail_menu_list.setFocusableInTouchMode(true);
-                        rest_detail_menu_list.setNestedScrollingEnabled(false);
+                        rest_detail_menu_list.setNestedScrollingEnabled(true);
+
                         rest_detail_menu_list.setAdapter(menuListAdapter);
                     }else{
                         Toast.makeText(context,"No Menu Item",Toast.LENGTH_SHORT).show();

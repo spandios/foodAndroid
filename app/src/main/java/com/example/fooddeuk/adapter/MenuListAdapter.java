@@ -63,7 +63,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int havePicture = 1;
     private int expandedPosition = -1;
     private RecyclerView mRecyclerView;
-    int[] originalPos = new int[2];
+
 
 
 
@@ -88,7 +88,6 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void reviewClick(RecyclerView.ViewHolder view){
-
         MenuReviewService.getReview(items.get(view.getAdapterPosition()).menu_id).enqueue(new Callback<ArrayList<ReviewItem>>() {
             @Override
             public void onResponse(Call<ArrayList<ReviewItem>> call, Response<ArrayList<ReviewItem>> response) {
@@ -126,6 +125,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //레이아웃 높이 remeasure
             mRecyclerView.requestLayout();
             mRecyclerView.invalidate();
+            mRecyclerView.smoothScrollToPosition(holder.getAdapterPosition());
 
 
 //            onItemClickListener.onItemClick(holder,LayoutUtil.convertPixelsToDp(mRecyclerView.getChildAt(holder.getAdapterPosition()).findViewById(R.id.menu_detail_layout).getTop(),context));
@@ -208,6 +208,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //사진
             Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.menu_master_picture);
             Picasso.with(context).load(menuItem.getMenupicture()).transform(new CropCircleTransformation()).into(holder.detailHotMenuPicture);
+//            Picasso.with(context).load(menuItem.getMenupicture()).fit().into(holder.menu_master_picture);
+//            Picasso.with(context).load(menuItem.getMenupicture()).fit().into(holder.detailHotMenuPicture);
 
              /*------------------------------------------*/
             //펼침

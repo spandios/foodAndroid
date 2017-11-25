@@ -13,11 +13,11 @@
         android:layout_weight="2"
         android:id="@+id/home_event"
         android:orientation="vertical">
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="이벤트 부분"
-            android:gravity="center"/>
+            android:src="@drawable/event222"
+            />
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -152,7 +152,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="60dp"
-            android:text="식당명"
+            android:text="대학교"
             android:textSize="22sp"
             />
 

@@ -1,20 +1,19 @@
 package com.example.fooddeuk.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.MenuPager;
 import com.example.fooddeuk.http.MenuCategoryService;
 import com.example.fooddeuk.model.menu.MenuCategoryItem;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -34,9 +33,10 @@ public class RestMenuCategoryFragment extends Fragment {
     ArrayList<MenuCategoryItem.MenuCategory> menuCategories;
 
     @BindView(R.id.rest_menu_tab_layout)
-    SmartTabLayout tabLayout;
+    TabLayout tabLayout;
     @BindView(R.id.rest_detail_menu_category_view_pager)
     MenuPager viewPager;
+
 
 
 
@@ -57,7 +57,10 @@ public class RestMenuCategoryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            rest_id = getArguments().getInt("rest_id");
 
+        }
 
     }
 
@@ -67,16 +70,20 @@ public class RestMenuCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rest_menu_category, container, false);
         ButterKnife.bind(this,view);
-        if (getArguments() != null) {
-            rest_id = getArguments().getInt("rest_id");
-            getMenuCategory();
-        }
+
         return view;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getMenuCategory();
     }
 
     public void getMenuCategory(){
@@ -87,19 +94,15 @@ public class RestMenuCategoryFragment extends Fragment {
                     if (response.body().getStatus().equals("SUCCESS")) {
                         ArrayList<MenuCategoryItem.MenuCategory> items = response.body().getResults();
                         //default first  menu show
-                        if(items.size()>0){
+
                             menuCategories=items;
                             FragmentPagerAdapter fragmentPagerAdapter=new FragmentPagerAdapter(getChildFragmentManager());
                             viewPager.setAdapter(fragmentPagerAdapter);
+                            tabLayout.setupWithViewPager(viewPager);
 
-                            tabLayout.setViewPager(viewPager);
-
-                        }else{
-                            Logger.d(" Null menuCategory");
-                        }
 
                     } else {
-                        Logger.d(" Null menuCategory");
+                        Toast.makeText(getContext()," Menu Category FAIL",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -124,19 +127,19 @@ public class RestMenuCategoryFragment extends Fragment {
         }
 
 
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            if (position != mCurrentPosition) {
-                Fragment fragment = (Fragment) object;
-                MenuPager pager = (MenuPager) container;
-                if (fragment != null && fragment.getView() != null) {
-                    mCurrentPosition = position;
-                    pager.measureCurrentView(fragment.getView());
-
-                }
-            }
-        }
+//        @Override
+//        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+//            super.setPrimaryItem(container, position, object);
+//            if (position != mCurrentPosition) {
+//                Fragment fragment = (Fragment) object;
+//                MenuPager pager = (MenuPager) container;
+//                if (fragment != null && fragment.getView() != null) {
+//                    mCurrentPosition = position;
+//                    pager.measureCurrentView(fragment.getView());
+//
+//                }
+//            }
+//        }
 
         @Override
         public Fragment getItem(int position) {

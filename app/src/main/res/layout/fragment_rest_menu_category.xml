@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
+
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-   <com.ogaclejapan.smarttablayout.SmartTabLayout
+
+   <android.support.v4.widget.NestedScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+   <android.support.design.widget.TabLayout
        android:id="@+id/rest_menu_tab_layout"
+       app:layout_collapseMode="pin"
        android:layout_width="match_parent"
        android:layout_height="48dp"
+       android:background="#4dfceee2"
        app:stl_indicatorAlwaysInCenter="false"
        app:stl_indicatorWithoutPadding="false"
        app:stl_indicatorInFront="true"
@@ -31,20 +40,27 @@
        app:stl_defaultTabTextSize="12sp"
        app:stl_defaultTabTextHorizontalPadding="16dp"
        app:stl_defaultTabTextMinWidth="0dp"
-       app:stl_distributeEvenly="true"
+       app:stl_distributeEvenly="false"
        app:stl_clickable="true"
        app:stl_titleOffset="24dp"
        app:stl_drawDecorationAfterTab="false"
+       app:tabMode="scrollable" />
+   </android.support.v4.widget.NestedScrollView>
 
-       />
-
+   <android.support.v4.widget.NestedScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
    <com.example.fooddeuk.activity.MenuPager
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:id="@+id/rest_detail_menu_category_view_pager">
+       android:id="@+id/rest_detail_menu_category_view_pager"
+       app:layout_behavior="@string/appbar_scrolling_view_behavior"
+       >
 
    </com.example.fooddeuk.activity.MenuPager>
+   </android.support.v4.widget.NestedScrollView>
 
 
 
 </LinearLayout>
+

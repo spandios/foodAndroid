@@ -11,11 +11,9 @@ import android.widget.TextView;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.model.restaurant.RestaurantItem;
-import com.example.fooddeuk.util.LayoutUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,13 +26,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     private Context context;
     public ArrayList<RestaurantItem.Restaurant> restaurantItem;
     private RestaurantItemClickListener restaurantItemClickListener;
-    HashMap<String, Integer> starDpMap;
+//    HashMap<String, Integer> starDpMap;
 
 
     public RestaurantAdapter(Context context, ArrayList<RestaurantItem.Restaurant> restaurantItem) {
         this.context = context;
         this.restaurantItem = restaurantItem;
-        starDpMap = LayoutUtil.DpToLayoutParams(context, 12, (float) 11.5);
+//        starDpMap = LayoutUtil.DpToLayoutParams(context, 12, (float) 11.5);
     }
 
 
@@ -58,7 +56,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         holder.restaurantReviewCountInList.setText(String.valueOf(item.reviewCnt));
         holder.restaurantAdminCommentInList.setText("todo");
         holder.restaurantRatingStarInList.removeAllViews();
-        setStarView(item.rating, holder.restaurantRatingStarInList);
+//        setStarView(item.rating, holder.restaurantRatingStarInList);
 
 
     }
@@ -95,27 +93,27 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         }
     }
 
-    private void setStarView(float rating, LinearLayout restaurantRatingStarInList) {
-        for (int j = 0; j < 5; j++) {
-            ImageView star = new ImageView(context);
-            star.setLayoutParams(new ViewGroup.LayoutParams(starDpMap.get("width"), starDpMap.get("height")));
-            if (rating == 0) {
-                star.setImageResource(R.drawable.ic_star);
-                restaurantRatingStarInList.addView(star);
-
-            } else if (rating >= 1.0) {
-                rating -= 1.0;
-                star.setImageResource(R.drawable.ic_star_ranked);
-                restaurantRatingStarInList.addView(star);
-
-            } else if (rating == 0.5) {
-                rating -= 0.5;
-                star.setImageResource(R.drawable.ic_star_ranked_half);
-                restaurantRatingStarInList.addView(star);
-
-            }
-        }
-    }
+//    private void setStarView(float rating, LinearLayout restaurantRatingStarInList) {
+//        for (int j = 0; j < 5; j++) {
+//            ImageView star = new ImageView(context);
+//            star.setLayoutParams(new ViewGroup.LayoutParams(starDpMap.get("width"), starDpMap.get("height")));
+//            if (rating == 0) {
+//                star.setImageResource(R.drawable.ic_star);
+//                restaurantRatingStarInList.addView(star);
+//
+//            } else if (rating >= 1.0) {
+//                rating -= 1.0;
+//                star.setImageResource(R.drawable.ic_star_ranked);
+//                restaurantRatingStarInList.addView(star);
+//
+//            } else if (rating == 0.5) {
+//                rating -= 0.5;
+//                star.setImageResource(R.drawable.ic_star_ranked_half);
+//                restaurantRatingStarInList.addView(star);
+//
+//            }
+//        }
+//    }
 
     public interface RestaurantItemClickListener {
         void onItemClickListener(RestaurantItem.Restaurant restaurant);

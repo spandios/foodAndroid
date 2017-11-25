@@ -24,19 +24,35 @@ public class MenuPager extends ViewPager{
     }
 
     @Override
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (mCurrentView == null) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            return;
-        }
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
         int height = 0;
-        mCurrentView.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-        int h = mCurrentView.getMeasuredHeight();
-        if (h > height) height = h;
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            int h = child.getMeasuredHeight();
+            if (h > height) height = h;
+        }
+
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+//    @Override
+//    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        if (mCurrentView == null) {
+//            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//            return;
+//        }
+//        int height = 0;
+//        mCurrentView.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+//        int h = mCurrentView.getMeasuredHeight();
+//        if (h > height) height = h;
+//        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+//
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//    }
 
     public void measureCurrentView(View currentView) {
         mCurrentView = currentView;
