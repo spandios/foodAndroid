@@ -89,9 +89,9 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
             if (menuType == null) {
                 menuType = "";
             }
-            Logger.d(menuType);
+//            Logger.d(menuType);
             filter = getArguments().getString("filter");
-            Logger.d(filter);
+//            Logger.d(filter);
             rest_name = getArguments().getString("rest_name");
             if (rest_name == null) {
                 rest_name = "";
@@ -155,8 +155,6 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
                                 }else{
                                     restListFab.hide();
                                 }
-                            }else{
-                                Toast.makeText(getActivity(),"No Restaurant",Toast.LENGTH_SHORT).show();
                             }
 
                         }

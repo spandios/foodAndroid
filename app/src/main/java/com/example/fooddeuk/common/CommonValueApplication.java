@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.fooddeuk.model.restaurant.LocationItem;
 import com.example.fooddeuk.util.GPS_Util;
 import com.example.fooddeuk.util.GeoUtil;
@@ -19,6 +20,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tsengvn.typekit.Typekit;
 
+import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -81,6 +83,7 @@ public class CommonValueApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         instance=this;
 
         Realm.init(this);

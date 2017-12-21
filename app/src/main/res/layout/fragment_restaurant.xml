@@ -64,13 +64,14 @@
             android:layout_toRightOf="@+id/currentLocationTextView"
             android:src="@drawable/ic_drop_down" />
 
-        <Button
+        <ImageView
             android:id="@+id/restaurant_map_button"
             android:layout_width="18dp"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
-            android:layout_marginRight="7.5dp"
+            android:layout_marginRight="9dp"
             android:layout_toLeftOf="@+id/filterButton"
+            android:src="@drawable/ic_find_location_black"
             />
 
         <Button

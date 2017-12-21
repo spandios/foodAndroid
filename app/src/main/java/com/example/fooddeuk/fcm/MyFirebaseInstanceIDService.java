@@ -4,6 +4,7 @@ import com.example.fooddeuk.http.UserService;
 import com.facebook.AccessToken;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.kakao.util.helper.log.Logger;
 
 /**
  * Created by heojuyeong on 2017. 10. 5..
@@ -26,6 +27,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
+        Logger.d(refreshedToken);
         sendRegistrationToServer(refreshedToken);
     }
     // [END refresh_token]
@@ -41,6 +43,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private void sendRegistrationToServer(String token) {
         //FACEBOOK UPDATE TOKEN
         if(AccessToken.getCurrentAccessToken()!=null){
+            Logger.d(token);
             UserService.updateToken(AccessToken.getCurrentAccessToken().getUserId(),token);
         }
 

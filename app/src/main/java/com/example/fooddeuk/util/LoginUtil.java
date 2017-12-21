@@ -31,6 +31,7 @@ public class LoginUtil {
 
     public static void initUser(String provider_id){
         String fcm_token = FirebaseInstanceId.getInstance().getToken();
+        Logger.d(fcm_token);
         getUser(provider_id, (err, userItem) -> {
             if (err != null) err.printStackTrace();
 

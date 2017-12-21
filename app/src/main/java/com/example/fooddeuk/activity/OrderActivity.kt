@@ -110,7 +110,6 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
                     orderMenuList.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             }
-
         })
 
 
@@ -150,7 +149,7 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
                 /**주문하기**/
                 OrderService.order(orderItem).enqueue(object : Callback<OrderItem> {
                     override fun onResponse(call: Call<OrderItem>?, response: Response<OrderItem>?) {
-//                        Logger.d("response post order: " + response?.body().toString())
+                        Logger.d("response post order: " + response?.body().toString())
                     }
 
                     override fun onFailure(call: Call<OrderItem>?, t: Throwable?) {

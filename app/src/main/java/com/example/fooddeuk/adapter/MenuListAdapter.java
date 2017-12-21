@@ -160,6 +160,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.itemView.setOnClickListener(menuExpandLayoutListener);
             vh.itemView.findViewById(R.id.menu_detail_rating).setOnClickListener(v-> reviewClick(vh));
 
+
 //            reviewClick(vh.itemView.findViewById(R.id.menu_detail_rating),items.get(vh.getAdapterPosition()).menu_id);
 
             return vh;
@@ -172,6 +173,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             /*Show Review Dialog*/
             vh.itemView.findViewById(R.id.menu_detail_rating).setOnClickListener(v-> reviewClick(vh));
+            vh.itemView.findViewById(R.id.menu_detail_review_show).setOnClickListener(v->reviewClick(vh));
 //            reviewClick(vh.itemView.findViewById(R.id.menu_detail_rating),items.get(vh.getAdapterPosition()).menu_id);
             return vh;
         }
@@ -402,6 +404,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
+    //장바구니에 아이템이 있는지 없는지 체크
 
     private void checkCartAndInsertOrOrder(MenuItem menuItem, ArrayList<MaterialDialog> optionDialogArray, MaterialDialog optionDialog, String version) {
         RealmResults<CartItem> cartItem = RealmUtil.findDataAll(CartItem.class);
@@ -414,7 +417,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (version.equals("order")) {
                 IntentUtil.startActivity(context, CartActivity.class);
             }
-            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+//            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
             optionDialog.dismiss();
 
         } else if (cartItem.size() > 0) {
@@ -426,7 +429,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (version.equals("order")) {
                     IntentUtil.startActivity(context, CartActivity.class);
                 }
-                onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+//                onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
                 optionDialog.dismiss();
             }
             //일치하지 않을 경우 기존 장바구니를 삭제하고 새로운 식당의 메뉴를 추가할것인지 묻는다
@@ -444,7 +447,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             if (version.equals("order")) {
                                 IntentUtil.startActivity(context, CartActivity.class);
                             }
-                            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
+//                            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
                             optionDialog.dismiss();
 
                         })

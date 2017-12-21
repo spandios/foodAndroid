@@ -20,6 +20,8 @@ import com.example.fooddeuk.util.NetworkUtil;
 import com.example.fooddeuk.util.SettingActivityUtil;
 import com.example.fooddeuk.util.TedPermissionUtil;
 import com.facebook.ProfileTracker;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.kakao.util.helper.log.Logger;
 import com.nhn.android.naverlogin.OAuthLogin;
 
 import butterknife.BindView;
@@ -94,10 +96,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new TedPermissionUtil(this);
+        Logger.d(FirebaseInstanceId.getInstance().getToken());
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Logger.d(FirebaseInstanceId.getInstance().getToken());
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.homeContent, new HomeFragment());

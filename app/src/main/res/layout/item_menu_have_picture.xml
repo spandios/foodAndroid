@@ -181,6 +181,7 @@
 
 
                 <TextView
+                    android:id="@+id/menu_detail_review_show"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@id/menu_detail_review"
@@ -244,7 +245,7 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginLeft="30dp"
-                    android:text="사이즈, 맛(필수선택)"
+                    android:text="사이즈, 맛(필수옵션)"
                     android:textSize="16sp" />
 
 
@@ -300,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="30dp"
-                    android:text="추가 옵션"
+                    android:text="선택 옵션"
                     android:textSize="18sp" />
 
                 <ImageView

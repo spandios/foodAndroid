@@ -2,7 +2,6 @@ package com.example.fooddeuk.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.MenuPager;
 import com.example.fooddeuk.http.MenuCategoryService;
 import com.example.fooddeuk.model.menu.MenuCategoryItem;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class RestMenuCategoryFragment extends Fragment {
     ArrayList<MenuCategoryItem.MenuCategory> menuCategories;
 
     @BindView(R.id.rest_menu_tab_layout)
-    TabLayout tabLayout;
+    SmartTabLayout tabLayout;
     @BindView(R.id.rest_detail_menu_category_view_pager)
     MenuPager viewPager;
 
@@ -58,6 +58,7 @@ public class RestMenuCategoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
             rest_id = getArguments().getInt("rest_id");
 
         }
@@ -98,8 +99,8 @@ public class RestMenuCategoryFragment extends Fragment {
                             menuCategories=items;
                             FragmentPagerAdapter fragmentPagerAdapter=new FragmentPagerAdapter(getChildFragmentManager());
                             viewPager.setAdapter(fragmentPagerAdapter);
-                            tabLayout.setupWithViewPager(viewPager);
-
+                            tabLayout.setViewPager(viewPager);
+//                        tabLayout.setViewPager(viewPager);
 
                     } else {
                         Toast.makeText(getContext()," Menu Category FAIL",Toast.LENGTH_SHORT).show();

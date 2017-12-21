@@ -97,6 +97,9 @@
         <activity android:name=".activity.NaverLoginActivity" />
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.CurrentOrderActivity"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="986e4bbd6dc0c418fd293489d5b081c35f1f2a4a" />
     </application>
 
 </manifest>
