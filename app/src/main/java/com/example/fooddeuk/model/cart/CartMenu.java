@@ -7,16 +7,16 @@ import io.realm.RealmObject;
  */
 
 public class CartMenu extends RealmObject {
-    int menu_id;
+    String menu_id;
     String menu_name;
-    int menu_price;
+    String menu_price;
     String menu_avg_time;
 
     public CartMenu(){
 
     }
 
-    public CartMenu(int menu_id, String menu_name, int menu_price ,String menu_avg_time) {
+    public CartMenu(String menu_id, String menu_name, String menu_price ,String menu_avg_time) {
         this.menu_id = menu_id;
         this.menu_name = menu_name;
         this.menu_price = menu_price;
@@ -25,13 +25,8 @@ public class CartMenu extends RealmObject {
     }
 
 
-
-    public int getMenu_id() {
+    public String getMenu_id() {
         return menu_id;
-    }
-
-    public void setMenu_id(int menu_id) {
-        this.menu_id = menu_id;
     }
 
     public String getMenu_name() {
@@ -42,13 +37,10 @@ public class CartMenu extends RealmObject {
         this.menu_name = menu_name;
     }
 
-    public int getMenu_price() {
+    public String getMenu_price() {
         return menu_price;
     }
 
-    public void setMenu_price(int menu_price) {
-        this.menu_price = menu_price;
-    }
 
     public String getMenu_avg_time() {
         return menu_avg_time;

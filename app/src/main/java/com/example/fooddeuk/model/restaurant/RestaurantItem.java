@@ -1,5 +1,6 @@
 package com.example.fooddeuk.model.restaurant;
 
+import com.example.fooddeuk.model.menu.Menu;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -23,6 +24,7 @@ public class RestaurantItem {
         Restaurant(){
 
         }
+        public String _id;
         public int rest_id;
         public String name;
         public String tel;
@@ -34,7 +36,7 @@ public class RestaurantItem {
         public String holiday;
         public float rating;
         public String description;
-
+        public int dangolCnt;
         public int likeCnt;
         public int reviewCnt;
         public String avg_cooking_time;
@@ -42,6 +44,8 @@ public class RestaurantItem {
         public String rest_admin_id;
         public String distance;
         public int orderCnt;
+        @SerializedName("menu")
+        public ArrayList<Menu> menu;
 
 
 

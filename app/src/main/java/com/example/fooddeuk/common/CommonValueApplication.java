@@ -18,7 +18,6 @@ import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.tsengvn.typekit.Typekit;
 
 import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
@@ -92,11 +91,7 @@ public class CommonValueApplication extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter());
 
         KakaoSDK.init(new KakaoSDKAdapter());
-        Typekit.getInstance()
-                .addNormal(Typekit.createFromAsset(this, "fonts/Spoqa Han Sans Regular.ttf"))
-                .addBold(Typekit.createFromAsset(this, "fonts/Spoqa Han Sans Bold.ttf"))
-                .add("Light", Typekit.createFromAsset(this,"fonts/Spoqa Han Sans Light.ttf"))
-                .add("Thin", Typekit.createFromAsset(this,"fonts/Spoqa Han Sans Thin.ttf"));
+
 
         SmartLocation.with(this).location()
                 .oneFix()

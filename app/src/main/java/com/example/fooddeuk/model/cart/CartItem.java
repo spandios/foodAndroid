@@ -22,10 +22,12 @@ public class CartItem extends RealmObject {
     }
 
     public CartItem(int id, CartMenu menu,RealmList<CartOption> option) {
+
         this.id = id;
         this.menu = menu;
 
         this.option=option;
+
     }
 
     public CartItem(int id, CartMenu menu) {

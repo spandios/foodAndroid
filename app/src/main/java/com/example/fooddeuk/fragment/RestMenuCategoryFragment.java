@@ -1,27 +1,26 @@
 package com.example.fooddeuk.fragment;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.MenuPager;
-import com.example.fooddeuk.http.MenuCategoryService;
-import com.example.fooddeuk.model.menu.MenuCategoryItem;
+import com.example.fooddeuk.model.menu.Menu;
+import com.example.fooddeuk.model.restaurant.RestaurantItem;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by heo on 2017. 11. 5..
@@ -30,7 +29,7 @@ import retrofit2.Response;
 //메뉴카테고리 ->  tab layout  , 메뉴본문 -> viewpager
 public class RestMenuCategoryFragment extends Fragment {
     private int rest_id;
-    ArrayList<MenuCategoryItem.MenuCategory> menuCategories;
+    ArrayList<Menu> menuCategory;
 
     @BindView(R.id.rest_menu_tab_layout)
     SmartTabLayout tabLayout;
@@ -44,25 +43,29 @@ public class RestMenuCategoryFragment extends Fragment {
     public RestMenuCategoryFragment() {
     }
 
-    public static RestMenuCategoryFragment newInstance(int rest_id) {
-        Bundle args = new Bundle();
-        args.putInt("rest_id", rest_id);
+    public static RestMenuCategoryFragment newInstance(RestaurantItem.Restaurant restaurantWithMenuCategory) {
 
+        Parcelable menuParcel = Parcels.wrap(restaurantWithMenuCategory.menu);
+        Bundle extra = new Bundle();
+        extra.putParcelable("menuCategory", menuParcel);
+        extra.putInt("rest_id",restaurantWithMenuCategory.rest_id);
         RestMenuCategoryFragment restMenuCategoryFragment = new RestMenuCategoryFragment();
-        restMenuCategoryFragment.setArguments(args);
-
+        restMenuCategoryFragment.setArguments(extra);
         return restMenuCategoryFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-            rest_id = getArguments().getInt("rest_id");
+        if (getArguments() != null) {
+            menuCategory=Parcels.unwrap(getArguments().getParcelable("menuCategory"));
+
+            rest_id= getArguments().getInt("rest_id");
+
+
 
         }
-
     }
 
 
@@ -71,6 +74,9 @@ public class RestMenuCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rest_menu_category, container, false);
         ButterKnife.bind(this,view);
+        FragmentPagerAdapter fragmentPagerAdapter=new FragmentPagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(fragmentPagerAdapter);
+        tabLayout.setViewPager(viewPager);
 
         return view;
     }
@@ -84,39 +90,30 @@ public class RestMenuCategoryFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getMenuCategory();
+//        getMenuCategory();
     }
 
-    public void getMenuCategory(){
-        MenuCategoryService.getMenuCategory(rest_id).enqueue(new Callback<MenuCategoryItem>() {
-            @Override
-            public void onResponse(Call<MenuCategoryItem> call, Response<MenuCategoryItem> response) {
-                if(response.isSuccessful()){
-                    if (response.body().getStatus().equals("SUCCESS")) {
-                        ArrayList<MenuCategoryItem.MenuCategory> items = response.body().getResults();
-                        //default first  menu show
+//    public void getMenuCategory(){
+//        MenuCategoryService.getMenuCategory(rest_id).enqueue(new Callback<RestaurantItem.Restaurant>() {
+//            @Override
+//            public void onResponse(Call<RestaurantItem.Restaurant> call, Response<RestaurantItem.Restaurant> response) {
+//                if(response.isSuccessful()){
+//                    menu=response.body();
 
-                            menuCategories=items;
-                            FragmentPagerAdapter fragmentPagerAdapter=new FragmentPagerAdapter(getChildFragmentManager());
-                            viewPager.setAdapter(fragmentPagerAdapter);
-                            tabLayout.setViewPager(viewPager);
-//                        tabLayout.setViewPager(viewPager);
-
-                    } else {
-                        Toast.makeText(getContext()," Menu Category FAIL",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MenuCategoryItem> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RestaurantItem.Restaurant> call, Throwable t) {
+//                t.printStackTrace();
+//
+//            }
+//        });
+//
+//    }
 
 
-    public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
+    public class FragmentPagerAdapter extends android.support.v4.app.FragmentStatePagerAdapter{
         private int mCurrentPosition=-1;
         private FragmentPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -124,7 +121,7 @@ public class RestMenuCategoryFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return menuCategories.size();
+            return menuCategory.size();
         }
 
 
@@ -144,12 +141,13 @@ public class RestMenuCategoryFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return RestMenuFragment.newInstance(menuCategories.get(position).getMenu_cate_gory_id());
+
+            return RestMenuFragment.newInstance(menuCategory.get(position).menu_content,rest_id);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return menuCategories.get(position).getCateName();
+            return menuCategory.get(position).menu_category_name;
         }
     }
 

@@ -2,11 +2,15 @@ package com.example.fooddeuk.util;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.HashMap;
 
@@ -16,7 +20,18 @@ import java.util.HashMap;
 
 public class LayoutUtil {
 
+    public static void setMargins (View v, int left, int top, int right, int bottom) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(left, top, right, bottom);
+            v.requestLayout();
+        }
+    }
 
+    public static int convertSpToPixels(float sp, Context context) {
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+        return px;
+    }
 
     public static void RecyclerViewSetting(Context context, RecyclerView recyclerView){
         final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context);
@@ -37,12 +52,20 @@ public class LayoutUtil {
     }
 
 
+
     public static float convertDpToPixel(float dp, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        Resources r = context.getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
         return px;
     }
+    public static int convertDpToPixelInt(int dp, Context context){
+        Resources r = context.getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
+        return Math.round(px);
+    }
+
+
+
 
     /**
      * This method converts device specific pixels to density independent pixels.
@@ -57,6 +80,14 @@ public class LayoutUtil {
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
     }
+    public static View getDivider(Context context,int left,int top,int right,int bottom){
+        View division=new View(context);
+        division.setBackgroundColor(Color.parseColor("#817e7e"));
+        LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,Math.round(LayoutUtil.convertDpToPixel((float)0.3,context)));
+        layoutParams.setMargins(Math.round(LayoutUtil.convertDpToPixel(left,context)),top,right,bottom);
+        return division;
+    }
+
 
 
 

@@ -48,7 +48,7 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
         if (holder is CartAdapter.ViewHolder) {
             val model = getItem(position)
             holder.cart_menu_name.text=model.menu.menu_name
-            holder.cart_menu_price.text= PriceUtil.comma_won(model.menu.menu_price)
+            holder.cart_menu_price.text= model.menu.menu_price
 
             //옵션 텍스트 뷰 추가
             //옵션카테고리:옵션이름 , 옵션 총 가격 계산
@@ -56,7 +56,7 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
 
                 optionPrice+= PriceUtil.getOriginalPrice(model.option[i].menu_option_price)
                 val optionCateAndName=TextView(mContext)
-                optionCateAndName.text=String.format(mContext.getString(R.string.semi_clone),model.option[i].menu_option_category_name,model.option[i].menu_option_name)
+                optionCateAndName.text=model.option[i].menu_option_name
                 holder.cart_menu_option_layout.addView(optionCateAndName)
             }
 

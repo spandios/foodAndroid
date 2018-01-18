@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        android:font='@font/spoqa_han_sans_reqular'
+        android:fontStyle="normal"
+        app:font="@font/spoqa_han_sans_reqular"
+        app:fontStyle="normal"
+        />
+
+</font-family>

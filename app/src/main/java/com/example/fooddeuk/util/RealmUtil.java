@@ -1,6 +1,8 @@
 package com.example.fooddeuk.util;
 
+import com.example.fooddeuk.model.cart.CartOption;
 import com.example.fooddeuk.model.restaurant.RestaurantItemRealm;
+import com.orhanobut.logger.Logger;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -54,7 +56,22 @@ public class RealmUtil {
             }
         });
     }
+    public static <T extends RealmObject>void  insertData2(final T data){
 
+        realm.beginTransaction();
+        realm.insertOrUpdate(data);
+        realm.commitTransaction();
+    }
+
+    public static void test(){
+
+        RealmResults<CartOption> cartOption=realm.where(CartOption.class).findAll();
+        CartOption ca=cartOption.first();
+        int op=cartOption.size();
+        Logger.d(op);
+        Logger.d(ca);
+
+    }
 
     public static <T extends RealmObject> RealmResults<T> findDataAll(Class<T> clazz) {
         try{

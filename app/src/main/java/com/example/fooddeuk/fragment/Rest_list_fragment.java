@@ -125,6 +125,7 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
                     if (response.isSuccessful()) {
                         if(response.body().getStatus().equals("SUCCESS")){
                             if(response.body().getRestaurants().size()>0){
+
                                 RestaurantAdapter restaurantAdapter = new RestaurantAdapter(getActivity(), response.body().getRestaurants());
                                 restaurantAdapter.setRestaurantItemClickListener(restaurant -> {
                                     Parcelable restaurantParcel = Parcels.wrap(restaurant);
@@ -133,6 +134,7 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
                                     IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
                                 });
                                 LayoutUtil.RecyclerViewSetting(getActivity(), restaurantList);
+
                                 restaurantList.setAdapter(restaurantAdapter);
 
                                 if(response.body().getRestaurants().size()>10){
@@ -175,9 +177,6 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-
-
         }
 
 

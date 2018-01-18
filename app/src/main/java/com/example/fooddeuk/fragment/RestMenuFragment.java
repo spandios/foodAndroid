@@ -8,23 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.DetailRestaurantActivity;
 import com.example.fooddeuk.adapter.MenuListAdapter;
-import com.example.fooddeuk.http.MenuService;
-import com.example.fooddeuk.model.menu.MenuItem;
+import com.example.fooddeuk.model.menu.MenuContentItem;
 import com.example.fooddeuk.util.LayoutUtil;
-import com.orhanobut.logger.Logger;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by heo on 2017. 11. 5..
@@ -35,7 +31,8 @@ public class RestMenuFragment extends Fragment  {
     @BindView(R.id.rest_detail_menu_list)
     RecyclerView rest_detail_menu_list;
     private Context context;
-    private int menu_category_id;
+    ArrayList<MenuContentItem> menu;
+    int rest_id;
     private MenuListAdapter menuListAdapter;
 
 
@@ -45,9 +42,11 @@ public class RestMenuFragment extends Fragment  {
 
 
 
-    public static RestMenuFragment newInstance(int menu_category_id){
+    public static RestMenuFragment newInstance(ArrayList<MenuContentItem> menu,int rest_id){
+
         Bundle args=new Bundle();
-        args.putInt("menu_category_id",menu_category_id);
+        args.putInt("rest_id",rest_id);
+        args.putParcelable("menuContent", Parcels.wrap(menu));
         RestMenuFragment restMenuFragment=new RestMenuFragment();
         restMenuFragment.setArguments(args);
         return restMenuFragment;
@@ -57,7 +56,10 @@ public class RestMenuFragment extends Fragment  {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments()!=null){
-            menu_category_id=getArguments().getInt("menu_category_id");
+
+//            menu_category_id=getArguments().getInt("menu_category_id");
+            menu=Parcels.unwrap(getArguments().getParcelable("menuContent"));
+            rest_id=getArguments().getInt("rest_id");
 
         }
 
@@ -87,32 +89,42 @@ public class RestMenuFragment extends Fragment  {
     }
 
     public void getMenuList(){
-        Logger.d(menu_category_id);
-        MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<MenuItem>>() {
-            @Override
-            public void onResponse(Call<ArrayList<MenuItem>> call, final Response<ArrayList<MenuItem>> response) {
-                if(response.isSuccessful()){
-                    if(response.body().size()>0){
-                        menuListAdapter = new MenuListAdapter(getActivity(), response.body());
-                        menuListAdapter.setOnItemClickListener((DetailRestaurantActivity)context);
-                        LayoutUtil.RecyclerViewSetting(getActivity(),rest_detail_menu_list);
-                        rest_detail_menu_list.setFocusable(true);
-                        rest_detail_menu_list.setFocusableInTouchMode(true);
-                        rest_detail_menu_list.setNestedScrollingEnabled(true);
+        MenuListAdapter menuListAdapter=new MenuListAdapter(getActivity(),menu,rest_id);
+//        menuListAdapter = new MenuListAdapter(getActivity(), menu,rest_id);
+        menuListAdapter.setOnItemClickListener((DetailRestaurantActivity)context);
+        LayoutUtil.RecyclerViewSetting(getActivity(),rest_detail_menu_list);
+        rest_detail_menu_list.setFocusable(true);
+        rest_detail_menu_list.setFocusableInTouchMode(true);
+        rest_detail_menu_list.setNestedScrollingEnabled(true);
+        rest_detail_menu_list.setAdapter(menuListAdapter);
+        menuListAdapter.notifyDataSetChanged();
 
-                        rest_detail_menu_list.setAdapter(menuListAdapter);
-                    }else{
-                        Toast.makeText(context,"No Menu Item",Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<MenuItem>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+//        Logger.d(menu_category_id);
+//        MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<MenuContentItem>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<MenuContentItem>> call, final Response<ArrayList<MenuContentItem>> response) {
+//                if(response.isSuccessful()){
+//                    if(response.body().size()>0){
+//                        menuListAdapter = new MenuListAdapter(getActivity(), response.body());
+//                        menuListAdapter.setOnItemClickListener((DetailRestaurantActivity)context);
+//                        LayoutUtil.RecyclerViewSetting(getActivity(),rest_detail_menu_list);
+//                        rest_detail_menu_list.setFocusable(true);
+//                        rest_detail_menu_list.setFocusableInTouchMode(true);
+//                        rest_detail_menu_list.setNestedScrollingEnabled(true);
+//
+//                        rest_detail_menu_list.setAdapter(menuListAdapter);
+//                    }else{
+//                        Toast.makeText(context,"No Menu Item",Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<MenuContentItem>> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
     }
 
 

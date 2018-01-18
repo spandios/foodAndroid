@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/dialog_menu_option_item_layout"
+    >
+
+    <CheckBox
+        android:id="@+id/dialog_menu_option_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        />
+    <RadioButton
+        android:id="@+id/dialog_menu_option_radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:id="@+id/dialog_menu_option_price"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:text="1000원"
+        />
+
+</RelativeLayout>

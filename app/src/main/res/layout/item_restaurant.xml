@@ -24,7 +24,7 @@
         android:layout_marginTop="27dp"
         android:lineSpacingExtra="4sp"
         android:text="식당이름"
-        app:font="Bold"
+
         android:textColor="@color/charcoal_grey"
         android:textSize="18sp"
         />
@@ -39,7 +39,7 @@
         android:gravity="center_horizontal"
         android:text="@string/sale5"
         android:textColor="#ffffff"
-        app:font="Bold"
+
         android:layout_marginLeft="8dp"
         android:textSize="12sp"
         android:textAlignment="gravity" />
@@ -51,7 +51,7 @@
         android:layout_marginLeft="114dp"
         android:layout_marginTop="54dp"
         android:textSize="12sp"
-        app:font="Normal"
+
         android:textColor="@color/text_main"
         android:text="@string/review"
         />
@@ -64,7 +64,7 @@
         android:layout_marginTop="54dp"
         android:textSize="12sp"
         android:text="123"
-        app:font="Normal"
+
         android:textColor="@color/charcoal_grey"
         android:layout_marginLeft="10dp"
          />
@@ -76,7 +76,7 @@
         android:layout_toRightOf="@id/restaurantReviewCountInList"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="54dp"
-        app:font="Normal"
+
         android:textSize="12sp"
         android:textColor="@color/text_main"
         android:text="@string/restaurant_admin_comment"
@@ -88,8 +88,8 @@
         android:layout_toRightOf="@id/restaurantAdminCommentStringInList"
         android:textSize="12sp"
         android:text="123"
-        app:font="Normal"
         android:layout_marginTop="54dp"
+
         android:textColor="@color/charcoal_grey"
         android:layout_marginLeft="10dp"
         android:id="@+id/restaurantAdminCommentInList"
@@ -118,7 +118,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginLeft="10dp"
         android:text="123"
-        app:font="Normal"
+
         android:textSize="11sp"
         android:textColor="@color/text_sub"
         android:lineSpacingExtra="11.5sp"

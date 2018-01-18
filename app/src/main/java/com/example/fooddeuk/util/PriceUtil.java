@@ -21,6 +21,7 @@ public class PriceUtil {
     }
 
     public static String comma_won(int money) {
+
         int inValues = money;
         DecimalFormat Commas = new DecimalFormat("#,###");
         String result_int = Commas.format(inValues);
@@ -43,6 +44,7 @@ public class PriceUtil {
 
 
     static public String plusPrice(String price1, String price2) {
+
         return comma_won(getOriginalPrice(price1) + getOriginalPrice(price2));
     }
 

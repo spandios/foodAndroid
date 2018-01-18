@@ -1,6 +1,6 @@
 package com.example.fooddeuk.http;
 
-import com.example.fooddeuk.model.menu.MenuCategoryItem;
+import com.example.fooddeuk.model.restaurant.RestaurantItem;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -12,13 +12,13 @@ import retrofit2.http.Query;
 
 public class MenuCategoryService {
     interface MenuCategoryInterFace{
-        @GET("api/menu/readMenuCategory")
-        Call<MenuCategoryItem> getMenuCategory(@Query("rest_id") int rest_id);
+        @GET("api/menu")
+        Call<RestaurantItem.Restaurant> getMenu(@Query("rest_id") int rest_id);
     }
 
-    public static Call<MenuCategoryItem> getMenuCategory(int rest_id){
+    public static Call<RestaurantItem.Restaurant> getMenuCategory(int rest_id){
         MenuCategoryInterFace menuCategoryInterFace=RetrofitBase.getInstance().getRetrofit().create(MenuCategoryInterFace.class);
-        Call<MenuCategoryItem> call=menuCategoryInterFace.getMenuCategory(rest_id);
+        Call<RestaurantItem.Restaurant> call=menuCategoryInterFace.getMenu(rest_id);
         return call;
     }
 

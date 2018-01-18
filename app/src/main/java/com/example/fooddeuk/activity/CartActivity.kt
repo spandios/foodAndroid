@@ -48,7 +48,9 @@ class CartActivity : BaseActivity()  {
     private fun setCartAdapter() {
         val cartItem = realm.where(CartItem::class.java).findAll()
         cartItemList.addAll(realm.copyFromRealm(cartItem))
+
         val adapter = CartAdapter(this, cartItemList)
+
         adapter.SetOnItemClickListener(object : CartAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int, model: CartItem) {
             }

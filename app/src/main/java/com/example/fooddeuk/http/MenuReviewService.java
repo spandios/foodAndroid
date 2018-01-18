@@ -16,10 +16,10 @@ public class MenuReviewService {
 
    interface MenuReviewInterface{
        @GET("api/review/readReview")
-       Call<ArrayList<ReviewItem>> getReview(@Query("menu_id") int menu_id);
+       Call<ArrayList<ReviewItem>> getReview(@Query("menu_id") String menu_id);
     }
 
-    public static Call<ArrayList<ReviewItem>> getReview(int menu_id){
+    public static Call<ArrayList<ReviewItem>> getReview(String menu_id){
         MenuReviewService.MenuReviewInterface menuReviewInterface=RetrofitBase.getInstance().getRetrofit().create(MenuReviewInterface.class);
         Call<ArrayList<ReviewItem>> call=menuReviewInterface.getReview(menu_id);
         return call;

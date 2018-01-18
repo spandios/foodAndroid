@@ -2,6 +2,8 @@ package com.example.fooddeuk.http;
 
 import com.example.fooddeuk.model.restaurant.RestaurantItem;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -19,6 +21,10 @@ public class RestaurantService {
 
         @GET("api/restaurant/readRestaurant")
         Call<RestaurantItem> getRestaurantByRestId(@Query("rest_id")int rest_id);
+
+        @GET("api/restaurant/getPicture")
+        Call<ArrayList<String>> getPicture(@Query("rest_id")int rest_id);
+
     }
 
     public static Call<RestaurantItem> getCurrentLocationRestaurant(double curLat, double curLng, int maxDistance, String foodtype,String filter,String rest_name){
@@ -28,6 +34,10 @@ public class RestaurantService {
 
     public static Call<RestaurantItem> getRestaurantById(int rest_id){
         return RetrofitBase.getInstance().getRetrofit().create(RestaurantInterface.class).getRestaurantByRestId(rest_id);
+    }
+
+    public static Call<ArrayList<String>> getPicture(int rest_id){
+        return RetrofitBase.getInstance().getRetrofit().create(RestaurantInterface.class).getPicture(rest_id);
     }
 
 

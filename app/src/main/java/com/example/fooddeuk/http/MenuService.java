@@ -1,6 +1,6 @@
 package com.example.fooddeuk.http;
 
-import com.example.fooddeuk.model.menu.MenuItem;
+import com.example.fooddeuk.model.menu.MenuContentItem;
 
 import java.util.ArrayList;
 
@@ -16,12 +16,12 @@ public class MenuService {
 
     interface MenuInterFace{
         @GET("api/menu/readMenu")
-        Call<ArrayList<MenuItem>> getMenu(@Query("menu_category_id") int menu_category_id);
+        Call<ArrayList<MenuContentItem>> getMenu(@Query("menu_category_id") int menu_category_id);
     }
 
-    public static Call<ArrayList<MenuItem>> getMenu(int menu_category_id){
+    public static Call<ArrayList<MenuContentItem>> getMenu(int menu_category_id){
         MenuService.MenuInterFace menuInterFace= RetrofitBase.getInstance().getRetrofit().create(MenuService.MenuInterFace.class);
-        Call<ArrayList<MenuItem>> call=menuInterFace.getMenu(menu_category_id);
+        Call<ArrayList<MenuContentItem>> call=menuInterFace.getMenu(menu_category_id);
         return call;
     }
 

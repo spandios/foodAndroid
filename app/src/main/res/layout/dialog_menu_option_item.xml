@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
      android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:id="@+id/dialog_menu_option_item_layout">
 
-    <CheckBox
-        android:id="@+id/dialog_menu_option_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:textSize="15sp"
-         />
-    
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/dialog_menu_option_radio"
-        android:textSize="15sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="40dp"
+            android:textStyle="bold"
+            android:id="@+id/dialog_option_category_name"
+            android:text="카테고리네임"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_height="match_parent"
-        android:textSize="15sp"
-        android:gravity="center"
-        android:id="@+id/dialog_menu_option_price"
-        />
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/dialog_test"
+        >
+
+    </LinearLayout>
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/dialog_menu_option_content_listview">-->
+    <!--</android.support.v7.widget.RecyclerView>-->
+
+
+    </LinearLayout>
+
+
