@@ -79,39 +79,10 @@
             android:layout_width="18dp"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
-            android:layout_marginRight="7.5dp"
-            android:layout_toLeftOf="@+id/restaurantCartButtonInList"
+            android:layout_marginRight="9dp"
+            android:layout_toLeftOf="@+id/searchButton"
             android:background="@drawable/ic_filter"
             android:textSize="10dp" />
-
-        <ImageView
-            android:id="@+id/restaurantCartButtonInList"
-            android:layout_width="21.5dp"
-            android:layout_height="20.8dp"
-            android:layout_marginLeft="7.5dp"
-            android:layout_marginRight="7.5dp"
-            android:layout_marginTop="14.8dp"
-            android:layout_toLeftOf="@+id/searchButton"
-            android:background="@drawable/ic_cart"
-            />
-
-
-        <TextView
-            android:id="@+id/rest_list_cart_qty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:text="1"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="4dp"
-            android:textColor="#ffffff"
-            android:lineSpacingExtra="12.5sp"
-            tools:text="1"
-            android:layout_toLeftOf="@id/searchButton"
-            android:gravity="center"
-
-            android:background="@drawable/restaurant_list_cartqty_bg"
-            />
 
 
         <Button
@@ -119,7 +90,6 @@
             android:layout_width="18.5dp"
             android:layout_height="18.5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="7.5dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="15.8dp"
             android:background="@drawable/ic_search"

@@ -263,8 +263,9 @@
                     android:id="@+id/menu_detail_option_necessary_title"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+
                     android:layout_marginLeft="30dp"
+                    android:layout_centerVertical="true"
                     android:text="사이즈,"
                     android:textSize="14sp"
                     android:textStyle="bold"

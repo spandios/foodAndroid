@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class RestMenuCategoryFragment extends Fragment {
     private int rest_id;
     ArrayList<Menu> menuCategory;
-
+    private RestaurantItem.Restaurant restaurant;
     @BindView(R.id.rest_menu_tab_layout)
     SmartTabLayout tabLayout;
     @BindView(R.id.rest_detail_menu_category_view_pager)
@@ -44,9 +44,10 @@ public class RestMenuCategoryFragment extends Fragment {
     }
 
     public static RestMenuCategoryFragment newInstance(RestaurantItem.Restaurant restaurantWithMenuCategory) {
-
+        Parcelable restaurantParcel = Parcels.wrap(restaurantWithMenuCategory);
         Parcelable menuParcel = Parcels.wrap(restaurantWithMenuCategory.menu);
         Bundle extra = new Bundle();
+        extra.putParcelable("restaurant", restaurantParcel);
         extra.putParcelable("menuCategory", menuParcel);
         extra.putInt("rest_id",restaurantWithMenuCategory.rest_id);
         RestMenuCategoryFragment restMenuCategoryFragment = new RestMenuCategoryFragment();
@@ -60,7 +61,7 @@ public class RestMenuCategoryFragment extends Fragment {
 
         if (getArguments() != null) {
             menuCategory=Parcels.unwrap(getArguments().getParcelable("menuCategory"));
-
+            restaurant=Parcels.unwrap(getArguments().getParcelable("restaurant"));
             rest_id= getArguments().getInt("rest_id");
 
 
@@ -142,7 +143,7 @@ public class RestMenuCategoryFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
 
-            return RestMenuFragment.newInstance(menuCategory.get(position).menu_content,rest_id);
+            return RestMenuFragment.newInstance(menuCategory.get(position).menu_content,rest_id,restaurant);
         }
 
         @Override

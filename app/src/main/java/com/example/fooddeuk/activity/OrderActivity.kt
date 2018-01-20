@@ -1,7 +1,7 @@
 package com.example.fooddeuk.activity
 
 import android.os.Bundle
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import com.example.fooddeuk.R
 import com.example.fooddeuk.adapter.OrderMenuAdapter
@@ -40,6 +40,7 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        intent.extras.get("isDirect")
         getRealmItem()
         setContentView(R.layout.activity_order)
         setToolBar()
@@ -85,12 +86,12 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
     }
 
     private fun setOrderAdapter() {
-        val adapter = OrderMenuAdapter(this, cartItemList)
+        val adapter = OrderMenuAdapter(this, cartItemList, this.intent.extras.get("isDirect"))
         LayoutUtil.RecyclerViewSetting(this.applicationContext, orderMenuList)
         orderMenuList.adapter = adapter
 
-        //listview가 그려진 후 각 아이템의 가격을 더 해 최종가격을 구한다.
-        orderMenuList.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+//        listview가 그려진 후 각 아이템의 가격을 더 해 최종가격을 구한다.
+        orderMenuList.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 val childCount = orderMenuList.adapter.itemCount
 //                Logger.d(childCount)
@@ -144,8 +145,9 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
             if (isSetArrivedTime) {
                 //예상도착시간
                 val arrivedTime = orderArriveTime.text.subSequence(9, orderArriveTime.text.length)
+
                 //최종주문정보
-                val orderItem = OrderItem(/*userid*/ user_id!!, rest_id!!, rest_admin_id, rest_name,cartItemList, arrivedTime.toString(), requestText.text.toString(), "주문수락대기", orderResultPrice.text.toString(),lat,lng)
+                val orderItem = OrderItem(user_id!!, rest_id!!, rest_admin_id, rest_name,cartItemList, arrivedTime.toString(), requestText.text.toString(), "주문수락대기", orderResultPrice.text.toString(),lat,lng)
                 /**주문하기**/
                 OrderService.order(orderItem).enqueue(object : Callback<OrderItem> {
                     override fun onResponse(call: Call<OrderItem>?, response: Response<OrderItem>?) {

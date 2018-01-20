@@ -24,7 +24,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="클리어 test"
+            android:text="장바구니초기화"
+            android:layout_marginRight="10dp"
             android:id="@+id/cartClear"
             android:layout_gravity="end"/>
 
@@ -41,26 +42,27 @@
         >
     </android.support.v7.widget.RecyclerView>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp"
-        android:layout_below="@+id/cartListView"
+        android:padding="5dp"
         >
         <Button
+            android:layout_weight="3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/cart_more_order"
             android:id="@+id/cart_more_order"/>
 
         <Button
+            android:layout_weight="7"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/cart_more_order"
             android:text="@string/order"
             android:id="@+id/cart_menu_order"/>
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

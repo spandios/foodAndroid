@@ -13,13 +13,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.activity.CartActivity;
 import com.example.fooddeuk.activity.MapActivity;
 import com.example.fooddeuk.activity.settingLocationMapActivity;
 import com.example.fooddeuk.common.CommonValueApplication;
@@ -60,10 +58,7 @@ public class CurLocationRestaurantFragment extends Fragment {
     RelativeLayout currentLocationTitle;
     @BindView(R.id.edit_search)
     EditText editSearch;
-    @BindView(R.id.restaurantCartButtonInList)
-    ImageView restaurantCartButtonInList;
-    @BindView(R.id.rest_list_cart_qty)
-    TextView restListCartQty;
+
     @BindView(R.id.rest_list_view_pager)
     ViewPager rest_list_view_pager;
     @BindView(R.id.rest_list_view_pager_tab_layout)
@@ -100,13 +95,6 @@ public class CurLocationRestaurantFragment extends Fragment {
 
     }
 
-    //OnClick Cart in restaurantList
-    @OnClick(R.id.restaurantCartButtonInList)
-    public void goToCart(View imageview) {
-        imageview.setOnClickListener(v -> {
-            IntentUtil.startActivity(getActivity(), CartActivity.class);
-        });
-    }
 
 
     //Onclick Search

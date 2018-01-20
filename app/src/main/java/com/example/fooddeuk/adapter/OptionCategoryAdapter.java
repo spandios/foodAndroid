@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.model.menu.OptionItem;
 import com.example.fooddeuk.util.LayoutUtil;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,21 +30,26 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
     private ArrayList<OptionItem> optionCategory;
     private Context context;
     private RadioPriceListener radioPricelistener;
+    private SelectCLickListener selectCLickListener;
     private List<RadioButton> radioButtons=new ArrayList<>();
     private TextView plusPriceTextView;
 
 
 
-    public OptionCategoryAdapter(ArrayList<OptionItem> optionCategory, Context context, OptionContentAdapter.SelectCLickListener selectCLickListener,RadioPriceListener radioPriceListener) {
+    public OptionCategoryAdapter(ArrayList<OptionItem> optionCategory, Context context, OptionCategoryAdapter.SelectCLickListener selectCLickListener,RadioPriceListener radioPriceListener) {
         this.optionCategory = optionCategory;
         this.context = context;
         this.radioPricelistener=radioPriceListener;
-
+        this.selectCLickListener=selectCLickListener;
 
     }
 
     public interface  RadioPriceListener{
         void getRadioPrice(String plusPrice,String minusPrice);
+    }
+
+    public interface SelectCLickListener {
+        void onClickCheck(String isPlus, String price);
     }
 
     @Override
@@ -154,9 +158,8 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                     holder.dialog_test.addView(linearLayout);
                 }
 
-                //Mutilple true 선택옵션
+                //Mutilple true == 선택옵션
             }else{
-                  Logger.d("Multiple");
                   for(int i=0; i<optionItem.unnecessary.size();i++){
                       OptionItem.Option unNecessaryOption=optionItem.unnecessary.get(i);
                       LinearLayout.LayoutParams radioButtonLayOutParam=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,8);
@@ -165,8 +168,18 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                       checkBox.setLayoutParams(radioButtonLayOutParam);
                       checkBox.setTextSize(20);
                       checkBox.setTag(unNecessaryOption);
-                      checkBox.setId(R.id.option_radio);
+                      checkBox.setId(R.id.option_checkbox);
                       checkBox.setText(unNecessaryOption.menu_option_name);
+                      checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                          @Override
+                          public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                              if(b){
+                                  selectCLickListener.onClickCheck("plus",((OptionItem.Option) compoundButton.getTag()).menu_option_price);
+                              }else{
+                                  selectCLickListener.onClickCheck("minus",((OptionItem.Option) compoundButton.getTag()).menu_option_price);
+                              }
+                          }
+                      });
                       LinearLayout linearLayout=new LinearLayout(context);
                       linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                       linearLayout.addView(checkBox);
@@ -177,6 +190,7 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                       optionPrice.setTextSize(20);
                       optionPrice.setText("+"+ unNecessaryOption.menu_option_price+"원");
                       optionPrice.setLayoutParams(layoutParams2);
+
                       linearLayout.addView(optionPrice);
                       holder.dialog_test.addView(linearLayout);
                   }
@@ -209,8 +223,7 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                 plusPrice=((OptionItem.Option)button.getTag()).menu_option_price;
             }
         }
-        Logger.d(plusPrice);
-        Logger.d(minPrice);
+
         radioPricelistener.getRadioPrice(plusPrice,minPrice);
 
     }

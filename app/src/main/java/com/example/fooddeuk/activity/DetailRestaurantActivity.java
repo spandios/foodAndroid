@@ -59,8 +59,15 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     AppBarLayout appBarLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.rest_detail_back)
+    ImageView rest_detail_back;
+    @BindView(R.id.rest_detail_name)
+    TextView rest_detai_name;
     @BindView(R.id.rest_detail_heart)
     ImageView rest_detail_heart;
+    @BindView(R.id.rest_detail_cart)
+    ImageView rest_detail_cart;
 
     @BindView(R.id.rest_detail_image_viewpager)
     ViewPager rest_detail_image_viewpager;
@@ -250,33 +257,32 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
     private void viewSetting() {
         //MenuList
 
-//        rest_detail_name.setText(restaurant.getName());
+        rest_detai_name.setText(restaurant.getName());
+        rest_detai_name.setTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         final Drawable backArrow = getResources().getDrawable(R.drawable.ic_back_black);
         final Drawable heart = getResources().getDrawable(R.drawable.ic_heart);
+        final Drawable cart=getResources().getDrawable(R.drawable.ic_cart);
+
 
         backArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         heart.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        toolbar.setNavigationIcon(backArrow);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        cart.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        rest_detail_back.setImageDrawable(backArrow);
+        rest_detail_back.setOnClickListener(view -> finish());
 
         rest_detail_heart.setImageDrawable(heart);
+        rest_detail_cart.setImageDrawable(cart);
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             //collapse
             if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
                 backArrow.setColorFilter(getResources().getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP);
                 heart.setColorFilter(getResources().getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP);
-
-
-
+                cart.setColorFilter(getResources().getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP);
             } else if (verticalOffset == 0) {
                 backArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
                 heart.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+                cart.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
             } else {
                 // Somewhere in between
             }

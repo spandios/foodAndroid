@@ -1,368 +1,327 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <!--<android.support.constraint.ConstraintLayout-->
-    <!--android:id="@+id/detailHotMenuHeader"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="40dp"-->
-    <!--android:padding="5dp">-->
+<!--<android.support.constraint.ConstraintLayout--><!--android:id="@+id/detailHotMenuHeader"--><!--android:layout_width="match_parent"--><!--android:layout_height="40dp"--><!--android:padding="5dp">-->
 
-    <!--<Button-->
-    <!--android:id="@+id/rest_detail_back_btn"-->
-    <!--android:layout_width="12dp"-->
-    <!--android:layout_height="18dp"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginStart="16dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:background="@drawable/ic_back_black"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toTopOf="parent" />-->
+<!--<Button--><!--android:id="@+id/rest_detail_back_btn"--><!--android:layout_width="12dp"--><!--android:layout_height="18dp"--><!--android:layout_gravity="center"--><!--android:layout_marginBottom="8dp"--><!--android:layout_marginStart="16dp"--><!--android:layout_marginTop="8dp"--><!--android:background="@drawable/ic_back_black"--><!--app:layout_constraintBottom_toBottomOf="parent"--><!--app:layout_constraintStart_toStartOf="parent"--><!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <!--<TextView-->
-    <!--android:id="@+id/rest_detail_name"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginStart="20dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_toRightOf="@+id/rest_detail_back_btn"-->
-    <!--android:gravity="left"-->
-    <!--android:lineSpacingExtra="4.5sp"-->
-    <!--android:text="가게이름"-->
-    <!--android:textAlignment="center"-->
-    <!--android:textColor="@color/text_main"-->
-    <!--android:textSize="20sp"-->
-    <!--android:textStyle="bold"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintStart_toEndOf="@+id/rest_detail_back_btn"-->
-    <!--app:layout_constraintTop_toTopOf="parent" />-->
+<!--<TextView--><!--android:id="@+id/rest_detail_name"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="center"--><!--android:layout_marginBottom="8dp"--><!--android:layout_marginStart="20dp"--><!--android:layout_marginTop="8dp"--><!--android:layout_toRightOf="@+id/rest_detail_back_btn"--><!--android:gravity="left"--><!--android:lineSpacingExtra="4.5sp"--><!--android:text="가게이름"--><!--android:textAlignment="center"--><!--android:textColor="@color/text_main"--><!--android:textSize="20sp"--><!--android:textStyle="bold"--><!--app:layout_constraintBottom_toBottomOf="parent"--><!--app:layout_constraintStart_toEndOf="@+id/rest_detail_back_btn"--><!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <!--<Button-->
-    <!--android:id="@+id/rest_detail_like"-->
-    <!--android:layout_width="20dp"-->
-    <!--android:layout_height="20dp"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:background="@drawable/ic_heart"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintTop_toTopOf="parent" />-->
+<!--<Button--><!--android:id="@+id/rest_detail_like"--><!--android:layout_width="20dp"--><!--android:layout_height="20dp"--><!--android:layout_alignParentRight="true"--><!--android:layout_marginBottom="8dp"--><!--android:layout_marginEnd="8dp"--><!--android:layout_marginTop="8dp"--><!--android:background="@drawable/ic_heart"--><!--app:layout_constraintBottom_toBottomOf="parent"--><!--app:layout_constraintEnd_toEndOf="parent"--><!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <!--</android.support.constraint.ConstraintLayout>-->
+<!--</android.support.constraint.ConstraintLayout>-->
 
 
-    <android.support.design.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    tools:context="com.example.fooddeuk.activity.DetailRestaurantActivity"
-       >
+    android:orientation="vertical"
+    tools:context="com.example.fooddeuk.activity.DetailRestaurantActivity">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <!--<android.support.v7.widget.Toolbar-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_scrollFlags="scroll"-->
+        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="back"-->
+        <!--/>-->
+
+        <!--</android.support.v7.widget.Toolbar>-->
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+            app:contentScrim="@color/white"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <!--<android.support.v7.widget.Toolbar-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_scrollFlags="scroll"-->
-            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="back"-->
-            <!--/>-->
-
-            <!--</android.support.v7.widget.Toolbar>-->
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
+            <LinearLayout
+                android:id="@+id/rest_detail_info_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:contentScrim="@color/white"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:layout_height="425dp"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax">
 
-                <LinearLayout
-                    android:id="@+id/rest_detail_info_layout"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="425dp"
-                    android:orientation="vertical"
-                    app:layout_collapseMode="parallax">
+                    android:layout_height="280dp">
 
-                    <RelativeLayout
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/rest_detail_image_viewpager"
                         android:layout_width="match_parent"
-                        android:layout_height="280dp">
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/rest_detail_image_viewpager"
-                            android:layout_width="match_parent"
-                            android:layout_height="260dp"
-                            />
+                        android:layout_height="260dp" />
 
-                        <me.relex.circleindicator.CircleIndicator
-                            android:id="@+id/rest_detail_image_viewpager_indicator"
-                            android:layout_width="match_parent"
-                            android:layout_alignParentBottom="true"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="20dp"
-                            app:ci_gravity="right"/>
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/rest_detail_image_viewpager_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="20dp"
+                        app:ci_gravity="right" />
 
-                    </RelativeLayout>
+                </RelativeLayout>
 
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_above="@+id/rest_detail_main_tab">-->
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="fefe"/>-->
+
+
+                <!--</LinearLayout>-->
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:id="@+id/rest_detail_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+
+                        android:lineSpacingExtra="4.5sp"
+                        android:text="5.0"
+                        android:textColor="@color/tangerine"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_above="@+id/rest_detail_main_tab">-->
-                        <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="fefe"/>-->
+                    <!--android:id="@+id/rest_detail_rating_star_layout"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--app:layout_constraintLeft_toRightOf="@id/rest_detail_rating"-->
+                    <!--app:layout_constraintBaseline_toBaselineOf="@id/rest_detail_rating"-->
+                    <!--android:orientation="horizontal" />-->
+
+                    <RatingBar
+                        style="@style/CustomRatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="26dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="4.5"
+                        android:stepSize="0.5"
+                        app:layout_constraintLeft_toRightOf="@id/rest_detail_rating"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <!--</LinearLayout>-->
+                    <TextView
+                        android:id="@+id/rest_detail_review_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:lineSpacingExtra="10.5sp"
+                        android:text="평가 (777)"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/rest_detail_rating"
+                        app:layout_constraintTop_toBottomOf="@id/rest_detail_rating" />
 
 
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:id="@+id/constraintLayout">
+                    <TextView
+                        android:id="@+id/rest_detail_dangol_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:lineSpacingExtra="10.5sp"
+                        android:text="/  단골수 : 343"
 
-                        <TextView
-                            android:id="@+id/rest_detail_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBaseline_toBaselineOf="@id/rest_detail_review_count"
 
-                            android:lineSpacingExtra="4.5sp"
-                            android:text="5.0"
-                            android:textColor="@color/tangerine"
-                            android:textSize="26sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintLeft_toRightOf="@id/rest_detail_review_count" />
 
-                        <!--<LinearLayout-->
-                            <!--android:id="@+id/rest_detail_rating_star_layout"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_marginLeft="10dp"-->
-                            <!--app:layout_constraintLeft_toRightOf="@id/rest_detail_rating"-->
-                            <!--app:layout_constraintBaseline_toBaselineOf="@id/rest_detail_rating"-->
-                            <!--android:orientation="horizontal" />-->
+                    <TextView
+                        android:id="@+id/rest_detail_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:lineSpacingExtra="10.5sp"
+                        android:text="혜택 : 포장 시 콜라 무료제공"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/rest_detail_rating"
+                        app:layout_constraintTop_toBottomOf="@id/rest_detail_review_count" />
 
-                        <RatingBar
-                            style="@style/CustomRatingBar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="26dp"
-                            android:numStars="5"
-                            android:rating="4.5"
-                            android:stepSize="0.5"
-                            app:layout_constraintLeft_toRightOf="@id/rest_detail_rating"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="5dp"
-                            android:clickable="false"
-                            android:focusableInTouchMode="false"
-                            android:focusable="false"
-                            android:isIndicator="true"
-                            />
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="30dp"
 
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="36dp"
+                        android:src="@drawable/ic_find_location_black"
+                        app:layout_constraintRight_toLeftOf="@+id/rest_detail_call"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/rest_detail_review_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="10.5sp"
-                            app:layout_constraintTop_toBottomOf="@id/rest_detail_rating"
-                            app:layout_constraintStart_toStartOf="@id/rest_detail_rating"
-                            android:text="평가 (777)"
-                            android:textStyle="bold"
-                            android:layout_marginTop="5dp"
-                            android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/rest_detail_call"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="36dp"
+                        android:src="@drawable/ic_call_black_24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cool_grey" />
 
 
-                        <TextView
-                            android:id="@+id/rest_detail_dangol_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBaseline_toBaselineOf="@id/rest_detail_review_count"
-                            app:layout_constraintLeft_toRightOf="@id/rest_detail_review_count"
-                            android:layout_marginLeft="5dp"
+                <android.support.design.widget.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/rest_detail_main_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    app:tabGravity="fill"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="@color/tangerine"
 
-                            android:lineSpacingExtra="10.5sp"
-                            android:text="/  단골수 : 343"
-                            android:textStyle="bold"
+                    app:tabTextColor="@color/text_main">
 
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/rest_detail_discount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="10.5sp"
-                            app:layout_constraintTop_toBottomOf="@id/rest_detail_review_count"
-                            app:layout_constraintStart_toStartOf="@id/rest_detail_rating"
-                            android:text="혜택 : 포장 시 콜라 무료제공"
-                            android:textStyle="bold"
-                            android:layout_marginTop="5dp"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="30dp"
-
-                            android:layout_marginTop="36dp"
-                            android:src="@drawable/ic_find_location_black"
-                            app:layout_constraintRight_toLeftOf="@+id/rest_detail_call"
-                            android:layout_marginRight="10dp"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <ImageView
-                            android:id="@+id/rest_detail_call"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_marginTop="36dp"
-                            android:src="@drawable/ic_call_black_24dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginRight="10dp"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </android.support.constraint.ConstraintLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                    <android.support.design.widget.TabItem
+                        android:id="@+id/tabItem1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@color/cool_grey"
+                        android:text="메뉴"
+                        android:textStyle="bold" />
+
+                    <android.support.design.widget.TabItem
+                        android:id="@+id/tabItem2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="메뉴판"
+                        android:textStyle="bold" />
+
+                    <android.support.design.widget.TabItem
+                        android:id="@+id/tabItem3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정보"
+                        android:textStyle="bold" />
+                </android.support.design.widget.TabLayout>
+
+
+            </LinearLayout>
+
+            <!--android:background="@android:color/transparent"-->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/rest_detail_back"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginLeft="20dp"
+
+
                         />
 
+                    <TextView
+                        android:id="@+id/rest_detail_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/rest_detail_back"
+                        android:layout_marginLeft="20dp"
 
-                    <android.support.design.widget.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/rest_detail_main_tab"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:orientation="horizontal"
-                        app:tabGravity="fill"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabMode="fixed"
-                        app:tabSelectedTextColor="@color/tangerine"
+                        />
 
-                        app:tabTextColor="@color/text_main">
+                    <ImageView
+                        android:id="@+id/rest_detail_cart"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@+id/rest_detail_heart"
 
-                        <android.support.design.widget.TabItem
-                            android:id="@+id/tabItem1"
-                            android:background="@color/cool_grey"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="메뉴" />
-
-                        <android.support.design.widget.TabItem
-                            android:id="@+id/tabItem2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="메뉴판" />
-
-                        <android.support.design.widget.TabItem
-                            android:id="@+id/tabItem3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="정보" />
-                    </android.support.design.widget.TabLayout>
-
-
-
-
-                </LinearLayout>
-
-                <!--android:background="@android:color/transparent"-->
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    >
+                        />
 
                     <ImageView
                         android:id="@+id/rest_detail_heart"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="right"
-                        android:gravity="center_vertical"
                         android:layout_marginRight="10dp"
 
                         />
+                </RelativeLayout>
 
-                </android.support.v7.widget.Toolbar>
+            </android.support.v7.widget.Toolbar>
 
-                <!--app:collapseIcon="@drawable/ic_back_black"-->
-                <!--<android.support.v7.widget.Toolbar-->
-                <!--android:id="@+id/toolbar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="?attr/actionBarSize"-->
-                <!--app:layout_collapseMode="pin"-->
-                <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-                <!--&gt;-->
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" -->
-                <!--android:text="fff"/>-->
-                <!---->
-                <!--</android.support.v7.widget.Toolbar>-->
-            </android.support.design.widget.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
-
-
+            <!--app:collapseIcon="@drawable/ic_back_black"-->
+            <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--app:layout_collapseMode="pin"-->
+            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+            <!--&gt;-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" -->
+            <!--android:text="fff"/>-->
+            <!---->
+            <!--</android.support.v7.widget.Toolbar>-->
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
 
     <FrameLayout
-            android:id="@+id/rest_main_tab"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:id="@+id/rest_main_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-    </android.support.design.widget.CoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>
 
-    <!--android:layout_below="@+id/rest_detail_main_tab"-->
-    <!--<HorizontalScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:scrollbars="none"-->
-    <!--android:layout_marginTop="3dp"-->
-    <!--android:background="@android:color/background_light"-->
-    <!--android:id="@+id/rest_detail_menu_category_parent_sticky_layout"-->
-    <!--android:layout_below="@+id/rest_detail_main_tab"-->
-    <!--&gt;-->
+    <!--android:layout_below="@+id/rest_detail_main_tab"--><!--<HorizontalScrollView--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:scrollbars="none"--><!--android:layout_marginTop="3dp"--><!--android:background="@android:color/background_light"--><!--android:id="@+id/rest_detail_menu_category_parent_sticky_layout"--><!--android:layout_below="@+id/rest_detail_main_tab"--><!--&gt;-->
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:id="@+id/rest_detail_menu_category_layout"-->
-    <!--&gt;-->
-    <!--</LinearLayout>-->
-    <!--</HorizontalScrollView>-->
+    <!--<LinearLayout--><!--android:layout_width="wrap_content"--><!--android:layout_height="match_parent"--><!--android:orientation="horizontal"--><!--android:id="@+id/rest_detail_menu_category_layout"--><!--&gt;--><!--</LinearLayout>--><!--</HorizontalScrollView>-->
 
     <!--<android.support.v7.widget.RecyclerView-->
 
-    <!--android:id="@+id/rest_detail_menu_list"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:nestedScrollingEnabled="false"-->
-    <!--android:layout_below="@+id/rest_detail_menu_category_parent_sticky_layout"-->
-    <!--android:scrollbars="none">-->
-    <!--</android.support.v7.widget.RecyclerView>-->
+    <!--android:id="@+id/rest_detail_menu_list"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:nestedScrollingEnabled="false"--><!--android:layout_below="@+id/rest_detail_menu_category_parent_sticky_layout"--><!--android:scrollbars="none">--><!--</android.support.v7.widget.RecyclerView>-->
 
