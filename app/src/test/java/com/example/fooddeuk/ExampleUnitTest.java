@@ -1,18 +1,26 @@
 package com.example.fooddeuk;
 
-import com.example.fooddeuk.network.UserService;
-import com.example.fooddeuk.model.user.UserItem;
-
 import org.junit.Test;
 
 import java.util.Scanner;
 
 /**
- * Example local unit test, which will execute on the development machine (host).
+ * Example local unit network, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
+
+    public void service() {
+        try {
+
+        } catch (Exception e) {
+
+        }
+
+
+    }
 
 
     @Test
@@ -25,18 +33,6 @@ public class ExampleUnitTest {
         System.out.print(result);
 
 
-
-
-    }
-
-
-    public void service() {
-        try {
-            UserItem userItem = UserService.getUser("33").execute().body();
-
-        } catch (Exception e) {
-
-        }
 
 
     }

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 
-public class UserItem {
+public class UserResponse {
 
     @SerializedName("exist")
     public boolean exist;
@@ -15,10 +15,10 @@ public class UserItem {
     @SerializedName("user")
     public User user;
 
-    public UserItem(){
+    public UserResponse(){
 
     }
-    public UserItem(boolean exist, User user) {
+    public UserResponse(boolean exist, User user) {
         this.exist = exist;
         this.user = user;
     }
@@ -41,7 +41,7 @@ public class UserItem {
 
     @Override
     public String toString() {
-        return "UserItem{" +
+        return "UserResponse{" +
                 "exist=" + exist +
                 ", user=" + user +
                 '}';

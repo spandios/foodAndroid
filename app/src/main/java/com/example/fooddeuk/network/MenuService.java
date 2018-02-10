@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 
 public class MenuService {
 
-    interface MenuInterFace{
+    public interface MenuInterFace{
         @GET("api/menuCategory/readMenu")
         Call<ArrayList<Menu>> getMenu(@Query("menu_category_id") int menu_category_id);
     }

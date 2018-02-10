@@ -42,8 +42,8 @@ public class CurLocationRestaurantFragment extends Fragment {
     MaterialDialog locationSettingDialog;
     Activity mContext;
     LocationItem locationItems;
-    String filter = StaticVal.defaultFilter;
-    int maxDistance = StaticVal.defaultCurrentLocationMenuMaxDistance;
+    String filter = StaticVal.INSTANCE.getDefaultFilter();
+    int maxDistance = StaticVal.INSTANCE.getDefaultCurrentLocationMenuMaxDistance();
     String restaurantMenuType;
     CommonValueApplication commonValueApplication;
     fragmentPagerAdapter fragmentPagerAdapter;
@@ -289,13 +289,13 @@ public class CurLocationRestaurantFragment extends Fragment {
                 case 3:
                     return "중식";
                 case 4:
-                    return "test";
+                    return "HTTP";
                 case 5:
-                    return "test";
+                    return "HTTP";
                 case 6:
-                    return "test";
+                    return "HTTP";
                 case 7:
-                    return "test";
+                    return "HTTP";
 
                 default:
                     return null;

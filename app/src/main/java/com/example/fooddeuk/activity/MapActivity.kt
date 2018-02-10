@@ -31,8 +31,6 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     lateinit var filter: String
     var maxDistance: Int? = null
     lateinit var menuType: String
-    private var lat: Double? = null
-    var lng: Double? = null
     lateinit var googleMap: GoogleMap
     var restaurantList: ArrayList<Restaurant>? = null
 

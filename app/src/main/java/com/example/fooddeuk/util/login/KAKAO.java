@@ -38,7 +38,7 @@ public class KAKAO {
             public void onSuccess(UserProfile userProfile) {
                 Logger.d("로그인성공");
 
-                LoginUtil.CheckGetRegisterUser(new User(userProfile.getEmail(),String.valueOf(userProfile.getId()), userProfile.getNickname(),"kakao"));
+                LoginUtil.INSTANCE.CheckGetRegisterUser(new User(userProfile.getEmail(),String.valueOf(userProfile.getId()), userProfile.getNickname(),"kakao"));
             }
 
             @Override
@@ -108,7 +108,7 @@ public class KAKAO {
             public void onSuccess(AccessTokenInfoResponse accessTokenInfoResponse) {
                 long userId = accessTokenInfoResponse.getUserId();
                 Logger.d("KAKAO"+ userId);
-                LoginUtil.initUser(String.valueOf(userId));
+                LoginUtil.INSTANCE.initUser(String.valueOf(userId));
 
 
             }

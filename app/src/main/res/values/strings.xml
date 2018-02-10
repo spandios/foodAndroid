@@ -45,10 +45,10 @@
     <string name="filter_distance_6km">~6km</string>
     <!--KAKAO-->
     <string name="kakao_app_key"> f0b0d4cebc2e3fd136521c7af53ed1b7</string>
-    <!--facebook-->
+    <!--FACEBOOK-->
     <string name="facebook_app_id">218313098690667</string>
     <string name="fb_login_protocol_scheme">fb218313098690667</string>
-
+    <!--NAVER-->
     <string name="naver_client_key">2vk8SF2rhIKXZFvesSw1</string>
     <string name="naver_secret_key">AmSYVV56Q_</string>
 

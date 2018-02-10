@@ -77,7 +77,7 @@ public class GeocodingService {
 
         public static Call<GeocodingService> getCall(LatLng latLng) {
             String latlng = String.valueOf(latLng.latitude) + "," + String.valueOf(latLng.longitude);
-            Retrofit client = new Retrofit.Builder().baseUrl("http://maps.googleapis.com/").addConverterFactory(GsonConverterFactory.create()).build();
+            Retrofit client = new Retrofit.Builder().baseUrl("httpService://maps.googleapis.com/").addConverterFactory(GsonConverterFactory.create()).build();
             GeocodingService.GeocodingInterface service = client.create(GeocodingService.GeocodingInterface.class);
             Call<GeocodingService> call = service.get_location_name_retrofit(latlng);
 
@@ -85,7 +85,7 @@ public class GeocodingService {
         }
 
         public static Call<GeocodingService> getCall(String latLng) {
-            Retrofit client = new Retrofit.Builder().baseUrl("http://maps.googleapis.com/").addConverterFactory(GsonConverterFactory.create()).build();
+            Retrofit client = new Retrofit.Builder().baseUrl("httpService://maps.googleapis.com/").addConverterFactory(GsonConverterFactory.create()).build();
             GeocodingService.GeocodingInterface service = client.create(GeocodingService.GeocodingInterface.class);
             Call<GeocodingService> call = service.get_location_name_retrofit(latLng);
             return call;

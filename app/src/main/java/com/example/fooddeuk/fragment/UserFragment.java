@@ -82,7 +82,7 @@ public class UserFragment extends Fragment {
         loginButton.setFragment(this);
         // If using in a fragment
         callbackManager = CallbackManager.Factory.create();
-        LoginUtil.FaceBookLogin(loginButton,callbackManager);
+        LoginUtil.INSTANCE.FaceBookLogin(loginButton,callbackManager);
     }
 
 }

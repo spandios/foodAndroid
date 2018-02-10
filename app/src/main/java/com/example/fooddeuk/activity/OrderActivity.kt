@@ -57,6 +57,7 @@ class OrderActivity(private var cartItemList : ArrayList<CartItem> = ArrayList()
         val cartItem = realm.where(CartItem::class.java).findAll()
         cartItemList.addAll(realm.copyFromRealm(cartItem))
         restaurant = RealmUtil.findData(Restaurant::class.java)
+        Logger.d(restaurant._id)
 
 
     }
@@ -123,7 +124,6 @@ class OrderActivity(private var cartItemList : ArrayList<CartItem> = ArrayList()
                 val arrivedTime = orderArriveTime.text.subSequence(9, orderArriveTime.text.length)
                 val userSide = UserSide((RealmUtil.findData(User::class.java)),arrivedTime.toString(),requestText.text.toString(),orderResultPrice.text.toString())
                 val orderItem = OrderResponse(RestaurantSide(restaurant), userSide, cartItemList, "접수 대기")
-                Logger.d(orderItem)
                 OrderService.order(orderItem).enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
 

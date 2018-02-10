@@ -52,7 +52,7 @@ public class settingLocationMapActivity extends BaseActivity implements OnMapRea
                 case R.id.currentLocationSettingByMapConfirmButton:
                     LocationItem locationItem=new LocationItem(titleLocation.getText().toString(),latLng.latitude,latLng.longitude);
                     RealmUtil.insertData(locationItem);
-                    RxBus.publish(StaticVal.LocationSelectByMapRequest);
+                    RxBus.publish(StaticVal.INSTANCE.getLocationSelectByMapRequest());
                     finish();
                     break;
             }

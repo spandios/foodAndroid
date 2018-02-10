@@ -10,36 +10,27 @@ import android.widget.Button;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.fragment.CurLocationRestaurantFragment;
-import com.example.fooddeuk.fragment.OrderHistoryFragment;
-import com.example.fooddeuk.fragment.HomeFragment;
 import com.example.fooddeuk.fragment.DanGolFragment;
+import com.example.fooddeuk.fragment.HomeFragment;
+import com.example.fooddeuk.fragment.OrderHistoryFragment;
 import com.example.fooddeuk.fragment.UserFragment;
+import com.example.fooddeuk.staticval.StaticVal;
 import com.example.fooddeuk.util.GPS;
-import com.example.fooddeuk.util.GPS_Util;
 import com.example.fooddeuk.util.NetworkUtil;
 import com.example.fooddeuk.util.SettingActivityUtil;
-import com.example.fooddeuk.util.TedPermissionUtil;
-import com.facebook.ProfileTracker;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
 import com.kakao.util.helper.log.Logger;
-import com.nhn.android.naverlogin.OAuthLogin;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.fooddeuk.staticval.StaticVal.gpsSettingActivityRequestCode;
-
 public class MainActivity extends BaseActivity {
     private boolean homeFragmentFlag = true;
     public FragmentManager fragmentManager;
     public FragmentTransaction fragmentTransaction;
-    ProfileTracker profileTracker;
-    OAuthLogin naverLoginModule;
-
-
-
-
 
     @BindView(R.id.homeButton)
     Button homeButton;
@@ -54,7 +45,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.homeButton, R.id.currentOrderButton, R.id.mapButton, R.id.main_dangol, R.id.menuButton})
     public void click(Button view) {
-
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (view.getId()) {
             case R.id.homeButton:
@@ -74,13 +64,10 @@ public class MainActivity extends BaseActivity {
             case R.id.currentOrderButton:
                 homeFragmentFlag = false;
                 fragmentTransaction.replace(R.id.homeContent, new OrderHistoryFragment());
-
-
                 break;
             case R.id.menuButton:
                 homeFragmentFlag = false;
                 fragmentTransaction.replace(R.id.homeContent, new UserFragment());
-
                 break;
         }
         fragmentTransaction.commit();
@@ -90,18 +77,27 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new TedPermissionUtil(this);
-        Logger.d(FirebaseInstanceId.getInstance().getToken());
-        fragmentManager = getSupportFragmentManager();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        fragmentManager = getSupportFragmentManager();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
-
+        Logger.d("lat : "+ getLat() +" lng : "+ getLng());
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.homeContent, new HomeFragment());
         fragmentTransaction.commit();
-        GPS_Util gps_util = new GPS_Util(getApplicationContext());
+        LocationCallback locationCallback=new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+            }
+
+            @Override
+            public void onLocationAvailability(LocationAvailability locationAvailability) {
+                super.onLocationAvailability(locationAvailability);
+            }
+        };
+//        GPS_Util gps_util = new GPS_Util(getApplicationContext());
 
 //        RealmResults<UserItemRealm> userItemRealms= RealmUtil.findDataAll(UserItemRealm.class);
 //        Logger.d(userItemRealms.get(0).email);
@@ -147,7 +143,7 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == gpsSettingActivityRequestCode) {
+        if (requestCode == StaticVal.INSTANCE.getGpsSettingActivityRequestCode()) {
             if (NetworkUtil.isGpsPossible(this)) {
                 new GPS(this).getGPS();
 

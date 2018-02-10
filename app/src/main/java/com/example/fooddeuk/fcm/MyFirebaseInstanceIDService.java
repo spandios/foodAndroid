@@ -1,6 +1,6 @@
 package com.example.fooddeuk.fcm;
 
-import com.example.fooddeuk.network.UserService;
+import com.example.fooddeuk.common.CommonValueApplication;
 import com.facebook.AccessToken;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -29,6 +29,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Instance ID token to your app server.
         Logger.d(refreshedToken);
         sendRegistrationToServer(refreshedToken);
+        CommonValueApplication.fcmToken=refreshedToken;
     }
     // [END refresh_token]
 
@@ -42,9 +43,11 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      */
     private void sendRegistrationToServer(String token) {
         //FACEBOOK UPDATE TOKEN
+        //TODO
         if(AccessToken.getCurrentAccessToken()!=null){
             Logger.d(token);
-            UserService.updateToken(AccessToken.getCurrentAccessToken().getUserId(),token);
+//            HTTP.updateToken(AccessToken.g)
+//            UserService.updateToken(AccessToken.getCurrentAccessToken().getUserId(),token);
         }
 
     }

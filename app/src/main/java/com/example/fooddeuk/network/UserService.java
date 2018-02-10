@@ -1,7 +1,7 @@
 package com.example.fooddeuk.network;
 
 import com.example.fooddeuk.model.user.User;
-import com.example.fooddeuk.model.user.UserItem;
+import com.example.fooddeuk.model.user.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,9 +17,9 @@ import retrofit2.http.Query;
 
 public class UserService {
 
-    interface UserInterface{
+    public interface UserInterface{
         @GET("/api/user/readUser")
-        Call<UserItem> getUser(@Query("provider_id")String provider_id);
+        Call<UserResponse> getUser(@Query("provider_id")String provider_id);
 
 
         @POST("/api/user/createUser")
@@ -33,17 +33,5 @@ public class UserService {
 
 
 
-    public static Call<Void> createUser(User user){
-        return RetrofitBase.getInstance().getRetrofit().create(UserInterface.class).createUser(user);
-    }
-
-
-    public static Call<UserItem> getUser(String provider_id){
-        return RetrofitBase.getInstance().getRetrofit().create(UserInterface.class).getUser(provider_id);
-    }
-
-    public static Call<Void> updateToken(String provider_id,String fcm_token){
-        return RetrofitBase.getInstance().getRetrofit().create(UserInterface.class).updateToken(provider_id,fcm_token);
-    }
 
 }
