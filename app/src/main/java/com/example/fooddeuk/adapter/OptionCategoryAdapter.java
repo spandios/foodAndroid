@@ -13,7 +13,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.menu.OptionItem;
+import com.example.fooddeuk.model.menu.Option;
+import com.example.fooddeuk.model.menu.OptionCategory;
 import com.example.fooddeuk.util.LayoutUtil;
 
 import java.util.ArrayList;
@@ -27,16 +28,15 @@ import butterknife.ButterKnife;
  */
 
 public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAdapter.ViewHolder> {
-    private ArrayList<OptionItem> optionCategory;
+    private ArrayList<OptionCategory> optionCategory;
     private Context context;
     private RadioPriceListener radioPricelistener;
     private SelectCLickListener selectCLickListener;
     private List<RadioButton> radioButtons=new ArrayList<>();
-    private TextView plusPriceTextView;
 
 
 
-    public OptionCategoryAdapter(ArrayList<OptionItem> optionCategory, Context context, OptionCategoryAdapter.SelectCLickListener selectCLickListener,RadioPriceListener radioPriceListener) {
+    public OptionCategoryAdapter(ArrayList<OptionCategory> optionCategory, Context context, OptionCategoryAdapter.SelectCLickListener selectCLickListener, RadioPriceListener radioPriceListener) {
         this.optionCategory = optionCategory;
         this.context = context;
         this.radioPricelistener=radioPriceListener;
@@ -124,13 +124,13 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        OptionItem optionItem=optionCategory.get(position);
-        holder.dialog_option_category_name.setText(optionItem.menu_option_category_name);
+        OptionCategory optionCategory = this.optionCategory.get(position);
+        holder.dialog_option_category_name.setText(optionCategory.menu_option_category_name);
 
 
                 //필수  -> RADIO
-              if(!optionItem.multiple){
-                for(int i=0; i<optionItem.necessary.size();i++){
+              if(!optionCategory.multiple){
+                for(int i = 0; i< optionCategory.necessary.size(); i++){
                     LinearLayout.LayoutParams radioButtonLayOutParam=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,8);
                     radioButtonLayOutParam.setMargins(LayoutUtil.convertDpToPixelInt(12,context),LayoutUtil.convertDpToPixelInt(20,context),0,0);
 
@@ -140,9 +140,9 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                     }
                     optionRadio.setLayoutParams(radioButtonLayOutParam);
                     optionRadio.setTextSize(20);
-                    optionRadio.setTag(optionItem.necessary.get(i));
+                    optionRadio.setTag(optionCategory.necessary.get(i));
                     optionRadio.setId(R.id.option_radio);
-                    optionRadio.setText(optionItem.necessary.get(i).menu_option_name);
+                    optionRadio.setText(optionCategory.necessary.get(i).menu_option_name);
                     radioButtons.add(optionRadio);
                     LinearLayout linearLayout=new LinearLayout(context);
                     linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -152,7 +152,7 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                     TextView optionPrice=new TextView(context);
                     optionPrice.setGravity(Gravity.RIGHT);
                     optionPrice.setTextSize(20);
-                    optionPrice.setText("+"+ optionItem.necessary.get(i).menu_option_price+"원");
+                    optionPrice.setText("+"+ optionCategory.necessary.get(i).menu_option_price+"원");
                     optionPrice.setLayoutParams(layoutParams2);
                     linearLayout.addView(optionPrice);
                     holder.dialog_test.addView(linearLayout);
@@ -160,8 +160,8 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
 
                 //Mutilple true == 선택옵션
             }else{
-                  for(int i=0; i<optionItem.unnecessary.size();i++){
-                      OptionItem.Option unNecessaryOption=optionItem.unnecessary.get(i);
+                  for(int i = 0; i< optionCategory.unnecessary.size(); i++){
+                      Option unNecessaryOption= optionCategory.unnecessary.get(i);
                       LinearLayout.LayoutParams radioButtonLayOutParam=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,8);
                       radioButtonLayOutParam.setMargins(LayoutUtil.convertDpToPixelInt(12,context),LayoutUtil.convertDpToPixelInt(20,context),0,0);
                       CheckBox checkBox=new CheckBox(context);
@@ -174,9 +174,9 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                           @Override
                           public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                               if(b){
-                                  selectCLickListener.onClickCheck("plus",((OptionItem.Option) compoundButton.getTag()).menu_option_price);
+                                  selectCLickListener.onClickCheck("plus",((Option) compoundButton.getTag()).menu_option_price);
                               }else{
-                                  selectCLickListener.onClickCheck("minus",((OptionItem.Option) compoundButton.getTag()).menu_option_price);
+                                  selectCLickListener.onClickCheck("minus",((Option) compoundButton.getTag()).menu_option_price);
                               }
                           }
                       });
@@ -216,11 +216,11 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
         String minPrice=new String();
         for (RadioButton button : radioButtons){
             if (button != buttonView ) {
-                minPrice=((OptionItem.Option)button.getTag()).menu_option_price;
+                minPrice=((Option)button.getTag()).menu_option_price;
                 button.setChecked(false);
             }
             if(button==buttonView){
-                plusPrice=((OptionItem.Option)button.getTag()).menu_option_price;
+                plusPrice=((Option)button.getTag()).menu_option_price;
             }
         }
 

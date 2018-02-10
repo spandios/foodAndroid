@@ -29,14 +29,14 @@ public class UserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         setFacebookLogin(view);
 
-        Button button=(Button)view.findViewById(R.id.test);
+        Button button= view.findViewById(R.id.test);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IntentUtil.startActivity(getActivity(), KakaoLoginActivity.class);
             }
         });
-        Button button2=(Button)view.findViewById(R.id.naverlogin);
+        Button button2= view.findViewById(R.id.naverlogin);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +78,7 @@ public class UserFragment extends Fragment {
     }
 
     private void setFacebookLogin(View view){
-        loginButton = (LoginButton) view.findViewById(R.id.login_button);
+        loginButton = view.findViewById(R.id.login_button);
         loginButton.setFragment(this);
         // If using in a fragment
         callbackManager = CallbackManager.Factory.create();

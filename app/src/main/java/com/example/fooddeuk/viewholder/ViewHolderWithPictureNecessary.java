@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.menu.MenuContentItem;
+import com.example.fooddeuk.model.menu.Menu;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -81,27 +81,27 @@ public class ViewHolderWithPictureNecessary extends RecyclerView.ViewHolder {
     }
 
 
-    public void bind(MenuContentItem menuContentItem) {
-        Picasso.with(context).load(menuContentItem.picture).transform(new CropCircleTransformation()).into(menu_master_picture);
-        Picasso.with(context).load(menuContentItem.picture).transform(new CropCircleTransformation()).into(detailHotMenuPicture);
-        String reviewCount = "(" + menuContentItem.reviewCnt + ")";
-        String menuPrice = menuContentItem.price+"원";
-        if (menuContentItem.rating.length() == 1) {
-            menuContentItem.rating += ".0";
+    public void bind(Menu menu) {
+        Picasso.with(context).load(menu.picture).transform(new CropCircleTransformation()).into(menu_master_picture);
+        Picasso.with(context).load(menu.picture).transform(new CropCircleTransformation()).into(detailHotMenuPicture);
+        String reviewCount = "(" + menu.reviewCnt + ")";
+        String menuPrice = menu.price+"원";
+        if (menu.rating.length() == 1) {
+            menu.rating += ".0";
         }
-        menu_master_name.setText(menuContentItem.name);
+        menu_master_name.setText(menu.name);
         menu_master_price.setText(menuPrice);
-        menu_detail_name.setText(menuContentItem.name);
-        menu_detail_name.setText(menuContentItem.name);
+        menu_detail_name.setText(menu.name);
+        menu_detail_name.setText(menu.name);
         menu_detail_price.setText(menuPrice);
-        menu_detail_rating.setText(menuContentItem.rating);
+        menu_detail_rating.setText(menu.rating);
         menu_detail_review.setText(reviewCount);
-        menu_detail_rating_bar.setRating(Float.parseFloat(menuContentItem.rating));
+        menu_detail_rating_bar.setRating(Float.parseFloat(menu.rating));
         menu_detail_rating_bar.setStepSize(0.5f);
         menu_detail_order.setText(menuPrice + " 바로 주문");
 
-        if (menuContentItem.description.length() > 1) {
-            menu_detail_description.setText(menuContentItem.description);
+        if (menu.description.length() > 1) {
+            menu_detail_description.setText(menu.description);
         } else {
             menu_detail_description.setVisibility(View.GONE);
         }

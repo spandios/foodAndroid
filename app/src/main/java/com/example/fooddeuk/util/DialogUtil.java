@@ -20,16 +20,16 @@ public class DialogUtil {
     public static void setRestaurantFilter(Activity activity, FilterCallback filterCallback) {
         MaterialDialog filterDialog = new MaterialDialog.Builder(activity).customView(R.layout.dialog_filter, true).build();
         View view = filterDialog.getView();
-        ImageView rest_filter_exit = (ImageView) view.findViewById(R.id.rest_filter_exit);
-        TextView rest_filter_sort_distance=(TextView)view.findViewById(R.id.rest_filter_sort_distance);
-        TextView rest_filter_sort_order = (TextView) view.findViewById(R.id.rest_filter_sort_order);
-        TextView rest_filter_sort_rating = (TextView) view.findViewById(R.id.rest_filter_sort_rating);
-        TextView rest_filter_sort_review = (TextView) view.findViewById(R.id.rest_filter_sort_review);
-        TextView rest_filter_sort_dangol = (TextView) view.findViewById(R.id.rest_filter_sort_dangol);
-        TextView rest_filter_sort_discount = (TextView) view.findViewById(R.id.rest_filter_sort_discount);
-        TextView distance2km = (TextView) view.findViewById(R.id.rest_filter_distance2km);
-        TextView distance4km = (TextView) view.findViewById(R.id.rest_filter_distance4km);
-        TextView distance6km = (TextView) view.findViewById(R.id.rest_filter_distance6km);
+        ImageView rest_filter_exit = view.findViewById(R.id.rest_filter_exit);
+        TextView rest_filter_sort_distance= view.findViewById(R.id.rest_filter_sort_distance);
+        TextView rest_filter_sort_order = view.findViewById(R.id.rest_filter_sort_order);
+        TextView rest_filter_sort_rating = view.findViewById(R.id.rest_filter_sort_rating);
+        TextView rest_filter_sort_review = view.findViewById(R.id.rest_filter_sort_review);
+        TextView rest_filter_sort_dangol = view.findViewById(R.id.rest_filter_sort_dangol);
+        TextView rest_filter_sort_discount = view.findViewById(R.id.rest_filter_sort_discount);
+        TextView distance2km = view.findViewById(R.id.rest_filter_distance2km);
+        TextView distance4km = view.findViewById(R.id.rest_filter_distance4km);
+        TextView distance6km = view.findViewById(R.id.rest_filter_distance6km);
 
         rest_filter_sort_distance.setSelected(true);
         rest_filter_sort_distance.setTypeface(rest_filter_sort_distance.getTypeface(), Typeface.BOLD);

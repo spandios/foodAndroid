@@ -14,7 +14,7 @@ public class DetailReviewImageActivity extends BaseActivity {
         setContentView(R.layout.activity_detail_review_image);
         //X onclick
 //        TextView textView=(TextView)findViewById(R.id.);
-        ImageView detailReviewImage=(ImageView)findViewById(R.id.detailReviewImage);
+        ImageView detailReviewImage= findViewById(R.id.detailReviewImage);
         Picasso.with(this).load(getIntent().getStringExtra("reviewImage")).into(detailReviewImage);
 
     }

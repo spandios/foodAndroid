@@ -6,7 +6,7 @@ package com.example.fooddeuk.staticval;
 
 public class StaticVal {
 
-    //menu
+    //menuCategory
 
     public final static int defaultCurrentLocationMenuMaxDistance =10000; //m
 
@@ -18,6 +18,9 @@ public class StaticVal {
     //restaurant
     public final static String defaultFilter="distance";
 
+    //order
+
+    public final static int OrderFinish=1;
 
 
 

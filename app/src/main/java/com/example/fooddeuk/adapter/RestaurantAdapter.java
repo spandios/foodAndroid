@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.restaurant.RestaurantItem;
+import com.example.fooddeuk.model.restaurant.Restaurant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ import butterknife.ButterKnife;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
     private Context context;
-    public ArrayList<RestaurantItem.Restaurant> restaurantItem;
+    public ArrayList<Restaurant> restaurantItem;
     private RestaurantItemClickListener restaurantItemClickListener;
 //    HashMap<String, Integer> starDpMap;
 
 
-    public RestaurantAdapter(Context context, ArrayList<RestaurantItem.Restaurant> restaurantItem) {
+    public RestaurantAdapter(Context context, ArrayList<Restaurant> restaurantItem) {
         this.context = context;
         this.restaurantItem = restaurantItem;
 //        starDpMap = LayoutUtil.DpToLayoutParams(context, 12, (float) 11.5);
@@ -49,9 +49,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        RestaurantItem.Restaurant item = restaurantItem.get(position);
+        Restaurant item = restaurantItem.get(position);
 
-        Picasso.with(context).load(item.getRest_picture()).resize(150, 150).into(holder.restaurantImageInList);
+        Picasso.with(context).load(item.picture).resize(150, 150).into(holder.restaurantImageInList);
         holder.restaurantNameInList.setText(item.name);
         holder.restaurantReviewCountInList.setText(String.valueOf(item.reviewCnt));
         holder.restaurantAdminCommentInList.setText("todo");
@@ -116,17 +116,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 //    }
 
     public interface RestaurantItemClickListener {
-        void onItemClickListener(RestaurantItem.Restaurant restaurant);
+        void onItemClickListener(Restaurant restaurant);
     }
 
     public void setRestaurantItemClickListener(RestaurantItemClickListener restaurantItemClickListener) {
         this.restaurantItemClickListener = restaurantItemClickListener;
     }
 
-    public void updateRestaurant(ArrayList<RestaurantItem.Restaurant> restaurant){
+    public void updateRestaurant(ArrayList<Restaurant> restaurant){
             restaurantItem.clear();
             restaurantItem.addAll(restaurant);
             notifyDataSetChanged();
-
     }
 }

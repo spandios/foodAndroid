@@ -24,8 +24,8 @@ import com.example.fooddeuk.adapter.ImageViewPager;
 import com.example.fooddeuk.adapter.MenuListAdapter;
 import com.example.fooddeuk.fragment.HomeFragment;
 import com.example.fooddeuk.fragment.RestMenuCategoryFragment;
-import com.example.fooddeuk.http.RestaurantService;
-import com.example.fooddeuk.model.restaurant.RestaurantItem;
+import com.example.fooddeuk.model.restaurant.Restaurant;
+import com.example.fooddeuk.network.RestaurantService;
 import com.orhanobut.logger.Logger;
 
 import org.parceler.Parcels;
@@ -41,7 +41,7 @@ import retrofit2.Response;
 
 public class DetailRestaurantActivity extends AppCompatActivity implements MenuListAdapter.OnItemClickListener,MenuListAdapter.OnCartCountClickListener, View.OnClickListener {
 
-    RestaurantItem.Restaurant restaurant;
+    Restaurant restaurant;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     RestMenuCategoryFragment restMenuCategoryFragment;
@@ -109,7 +109,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 //    @BindView(R.id.rest_detail_main_tab)
 //    TabLayout rest_detail_main_tab;
 
-    //Menu ViewPager
+    //MenuCategory ViewPager
 //    @BindView(R.id.rest_detail_main_tab_viewpager)
 //    MainTabViewPager rest_detail_main_tab_viewpager;
 
@@ -136,7 +136,6 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         RestaurantService.getPicture(restaurant.rest_id).enqueue(new Callback<ArrayList<String>>() {
             @Override
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                Logger.d(response.body());
                 if(response.isSuccessful()){
                     imageViewPager=new ImageViewPager(DetailRestaurantActivity.this,response.body());
                     rest_detail_image_viewpager.setAdapter(imageViewPager);
@@ -258,7 +257,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         //MenuList
 
         rest_detai_name.setText(restaurant.getName());
-        rest_detai_name.setTextColor(Color.WHITE);
+        rest_detai_name.setTextColor(getResources().getColor(R.color.white));
         setSupportActionBar(toolbar);
         final Drawable backArrow = getResources().getDrawable(R.drawable.ic_back_black);
         final Drawable heart = getResources().getDrawable(R.drawable.ic_heart);
@@ -279,10 +278,12 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
                 backArrow.setColorFilter(getResources().getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP);
                 heart.setColorFilter(getResources().getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP);
                 cart.setColorFilter(getResources().getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP);
+                rest_detai_name.setTextColor(getResources().getColor(R.color.charcoal_grey));
             } else if (verticalOffset == 0) {
                 backArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
                 heart.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
                 cart.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+                rest_detai_name.setTextColor(getResources().getColor(R.color.white));
             } else {
                 // Somewhere in between
             }
@@ -293,7 +294,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 //                toolbar.setAlpha(255 - Math.round(f));
         });
 
-//        Picasso.with(this).load(restaurant.rest_picture).fit().into(rest_detail_image);
+//        Picasso.with(this).load(restaurant.picture).fit().into(rest_detail_image);
         rest_detail_rating.setText(Double.toString(restaurant.getRating()));
         rest_detail_review_count.setText("평가("+restaurant.reviewCnt+")");
         rest_detail_dangol_count.setText("/  단골수 : "+restaurant.dangolCnt);
@@ -353,7 +354,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 //
 //
 //        @Override
-//        public Fragment getItem(int position) {
+//        public Fragment getOrderHistoryItem(int position) {
 //            switch (position) {
 //                case 0:
 //                   return RestMenuCategoryFragment.newInstance(restaurant.rest_id);

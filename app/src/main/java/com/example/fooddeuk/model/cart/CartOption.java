@@ -15,8 +15,6 @@ public class CartOption extends RealmObject{
     public String menu_option_name;
     public String menu_option_price;
 
-
-
     public CartOption(){
 
     }
@@ -25,17 +23,10 @@ public class CartOption extends RealmObject{
         this.menu_option_id = menu_option_id;
         this.menu_option_name = menu_option_name;
         this.menu_option_price = menu_option_price;
-
     }
-
-
-
 
     public String getMenu_option_name() {
         return menu_option_name;
     }
-
-
-
 
 }

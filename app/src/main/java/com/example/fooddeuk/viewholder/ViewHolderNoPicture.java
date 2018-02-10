@@ -9,7 +9,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.menu.MenuContentItem;
+import com.example.fooddeuk.model.menu.Menu;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,22 +56,22 @@ public class ViewHolderNoPicture extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(MenuContentItem menuContentItem, int position) {
-        String reviewCount = "(" + menuContentItem.reviewCnt + ")";
-        String menuPrice = menuContentItem.price + "원";
-        if (menuContentItem.rating.length() == 1) {
-            menuContentItem.rating += ".0";
+    public void bind(Menu menu, int position) {
+        String reviewCount = "(" + menu.reviewCnt + ")";
+        String menuPrice = menu.price + "원";
+        if (menu.rating.length() == 1) {
+            menu.rating += ".0";
         }
-        menu_master_name.setText(menuContentItem.getName());
+        menu_master_name.setText(menu.getName());
         menu_master_price.setText(menuPrice);
-        menu_detail_name.setText(menuContentItem.getName());
-        menu_detail_name.setText(menuContentItem.getName());
+        menu_detail_name.setText(menu.getName());
+        menu_detail_name.setText(menu.getName());
         menu_detail_price.setText(menuPrice);
-        menu_detail_rating.setText(menuContentItem.rating);
+        menu_detail_rating.setText(menu.rating);
         menu_detail_review.setText(reviewCount);
-        menu_detail_rating_bar.setRating(Float.parseFloat(menuContentItem.rating));
+        menu_detail_rating_bar.setRating(Float.parseFloat(menu.rating));
         menu_detail_rating_bar.setStepSize(0.5f);
-        menu_detail_description.setText(menuContentItem.getDescription());
+        menu_detail_description.setText(menu.getDescription());
 
     }
 

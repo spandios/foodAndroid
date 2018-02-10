@@ -68,7 +68,7 @@
         android:layout_height="0.3dp"
         android:background="#817e7e" />
 
-    <!--Detail Menu start-->
+    <!--DetMenuCetegoryMenu start-->
 
 
     <LinearLayout

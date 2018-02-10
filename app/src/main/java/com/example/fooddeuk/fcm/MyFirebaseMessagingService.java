@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.MainActivity;
-import com.example.fooddeuk.model.menu.OrderItem;
+import com.example.fooddeuk.model.order.OrderResponse;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -50,10 +50,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-//            Logger.d(remoteMessage.getData().get("orderItem"));
-            OrderItem orderItem=new Gson().fromJson(remoteMessage.getData().get("orderItem"),OrderItem.class);
+            OrderResponse orderResponse = new Gson().fromJson(remoteMessage.getData().get("orderResponse"), OrderResponse.class);
 
         }
+
         if(remoteMessage.getNotification()!=null){
             title=remoteMessage.getNotification().getTitle();
             msg = remoteMessage.getNotification().getBody();

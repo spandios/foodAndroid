@@ -2,4 +2,29 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--OrderList-->
+    <dimen name="order_list_option_name_text">16sp</dimen>
+    <dimen name="order_list_map_title">18sp</dimen>
+    <dimen name="order_list_map_content">16sp</dimen>
+    <dimen name="order_list_option_name_margin">40dp</dimen>
+
+    <dimen name="order_list_option_price_text">16sp</dimen>
+    <dimen name="order_list_option_price_margin">32dp</dimen>
 </resources>

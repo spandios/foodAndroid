@@ -1,5 +1,6 @@
 package com.example.fooddeuk.util.login;
 
+import com.example.fooddeuk.model.user.User;
 import com.example.fooddeuk.util.LoginUtil;
 import com.kakao.auth.ApiResponseCallback;
 import com.kakao.auth.AuthService;
@@ -36,8 +37,8 @@ public class KAKAO {
             @Override
             public void onSuccess(UserProfile userProfile) {
                 Logger.d("로그인성공");
-                LoginUtil.CheckGetRegisterUser(userProfile.getEmail(),userProfile.getNickname(),String.valueOf(userProfile.getId()),"kakao");
 
+                LoginUtil.CheckGetRegisterUser(new User(userProfile.getEmail(),String.valueOf(userProfile.getId()), userProfile.getNickname(),"kakao"));
             }
 
             @Override

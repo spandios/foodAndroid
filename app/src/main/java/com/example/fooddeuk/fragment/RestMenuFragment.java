@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.DetailRestaurantActivity;
 import com.example.fooddeuk.adapter.MenuListAdapter;
-import com.example.fooddeuk.model.menu.MenuContentItem;
-import com.example.fooddeuk.model.restaurant.RestaurantItem;
+import com.example.fooddeuk.model.menu.Menu;
+import com.example.fooddeuk.model.restaurant.Restaurant;
 import com.example.fooddeuk.util.LayoutUtil;
 
 import org.parceler.Parcels;
@@ -32,9 +32,9 @@ public class RestMenuFragment extends Fragment  {
     @BindView(R.id.rest_detail_menu_list)
     RecyclerView rest_detail_menu_list;
     private Context context;
-    ArrayList<MenuContentItem> menu;
-    int rest_id;
-    private RestaurantItem.Restaurant restaurant;
+    ArrayList<Menu> menu;
+
+    private Restaurant restaurant;
     private MenuListAdapter menuListAdapter;
 
 
@@ -44,10 +44,10 @@ public class RestMenuFragment extends Fragment  {
 
 
 
-    public static RestMenuFragment newInstance(ArrayList<MenuContentItem> menu, int rest_id, RestaurantItem.Restaurant restaurant){
+    public static RestMenuFragment newInstance(ArrayList<Menu> menu, Restaurant restaurant){
 
         Bundle args=new Bundle();
-        args.putInt("rest_id",rest_id);
+
         args.putParcelable("menuContent", Parcels.wrap(menu));
         args.putParcelable("restaurant",Parcels.wrap(restaurant));
         RestMenuFragment restMenuFragment=new RestMenuFragment();
@@ -62,8 +62,9 @@ public class RestMenuFragment extends Fragment  {
 
 //            menu_category_id=getArguments().getInt("menu_category_id");
             menu=Parcels.unwrap(getArguments().getParcelable("menuContent"));
-            rest_id=getArguments().getInt("rest_id");
+
             restaurant=Parcels.unwrap(getArguments().getParcelable("restaurant"));
+
 
         }
 
@@ -93,8 +94,8 @@ public class RestMenuFragment extends Fragment  {
     }
 
     public void getMenuList(){
-        MenuListAdapter menuListAdapter=new MenuListAdapter(getActivity(),menu,rest_id,restaurant);
-//        menuListAdapter = new MenuListAdapter(getActivity(), menu,rest_id);
+        MenuListAdapter menuListAdapter=new MenuListAdapter(getActivity(),menu,restaurant);
+//        menuListAdapter = new MenuListAdapter(getActivity(), menuCategory,rest_id);
         menuListAdapter.setOnItemClickListener((DetailRestaurantActivity)context);
         LayoutUtil.RecyclerViewSetting(getActivity(),rest_detail_menu_list);
         rest_detail_menu_list.setFocusable(true);
@@ -104,9 +105,9 @@ public class RestMenuFragment extends Fragment  {
         menuListAdapter.notifyDataSetChanged();
 
 //        Logger.d(menu_category_id);
-//        MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<MenuContentItem>>() {
+//        MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<Menu>>() {
 //            @Override
-//            public void onResponse(Call<ArrayList<MenuContentItem>> call, final Response<ArrayList<MenuContentItem>> response) {
+//            public void onResponse(Call<ArrayList<Menu>> call, final Response<ArrayList<Menu>> response) {
 //                if(response.isSuccessful()){
 //                    if(response.body().size()>0){
 //                        menuListAdapter = new MenuListAdapter(getActivity(), response.body());
@@ -118,14 +119,14 @@ public class RestMenuFragment extends Fragment  {
 //
 //                        rest_detail_menu_list.setAdapter(menuListAdapter);
 //                    }else{
-//                        Toast.makeText(context,"No Menu Item",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,"No MenuCategory Item",Toast.LENGTH_SHORT).show();
 //                    }
 //                }
 //
 //            }
 //
 //            @Override
-//            public void onFailure(Call<ArrayList<MenuContentItem>> call, Throwable t) {
+//            public void onFailure(Call<ArrayList<Menu>> call, Throwable t) {
 //                t.printStackTrace();
 //            }
 //        });

@@ -28,18 +28,16 @@ public class LayoutUtil {
         }
     }
 
-    public static int convertSpToPixels(float sp, Context context) {
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
-        return px;
+    public static float convertSpToPixels(float sp, Context context) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+
     }
 
     public static void RecyclerViewSetting(Context context, RecyclerView recyclerView){
         final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context);
-//        nmLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(nmLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
     }
 
     public static HashMap<String, Integer> DpToLayoutParams(Context context,float widthDp,float heightDp){
@@ -50,6 +48,7 @@ public class LayoutUtil {
         dpMap.put("height",height);
         return dpMap;
     }
+
 
 
 

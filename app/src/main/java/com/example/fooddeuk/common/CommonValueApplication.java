@@ -32,6 +32,7 @@ public class CommonValueApplication extends Application {
     public static double lat;
     public static double lng;
     public static String locationName;
+    public static String rest_id;
 
 
 
@@ -77,6 +78,9 @@ public class CommonValueApplication extends Application {
 
     public static void setCurrentActivity(Activity currentActivity) {
         CommonValueApplication.currentActivity = currentActivity;
+    }
+    public static void setRest_id(String rest_id){
+        CommonValueApplication.rest_id=rest_id;
     }
 
     @Override

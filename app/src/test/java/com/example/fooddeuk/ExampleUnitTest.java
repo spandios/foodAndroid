@@ -1,6 +1,6 @@
 package com.example.fooddeuk;
 
-import com.example.fooddeuk.http.UserService;
+import com.example.fooddeuk.network.UserService;
 import com.example.fooddeuk.model.user.UserItem;
 
 import org.junit.Test;

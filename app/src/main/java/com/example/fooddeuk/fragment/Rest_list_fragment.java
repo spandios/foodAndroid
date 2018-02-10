@@ -15,8 +15,9 @@ import android.widget.Toast;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.DetailRestaurantActivity;
 import com.example.fooddeuk.adapter.RestaurantAdapter;
-import com.example.fooddeuk.http.RestaurantService;
-import com.example.fooddeuk.model.restaurant.RestaurantItem;
+import com.example.fooddeuk.common.CommonValueApplication;
+import com.example.fooddeuk.model.restaurant.RestaurantResponse;
+import com.example.fooddeuk.network.RestaurantService;
 import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.LayoutUtil;
 import com.orhanobut.logger.Logger;
@@ -119,25 +120,27 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            RestaurantService.getCurrentLocationRestaurant(lat, lng, maxDistance, menuType, filter, rest_name).enqueue(new Callback<RestaurantItem>() {
+            RestaurantService.getCurrentLocationRestaurant(lat, lng, maxDistance, menuType, filter, rest_name).enqueue(new Callback<RestaurantResponse>() {
                 @Override
-                public void onResponse(Call<RestaurantItem> call, final Response<RestaurantItem> response) {
+                public void onResponse(Call<RestaurantResponse> call, final Response<RestaurantResponse> response) {
                     if (response.isSuccessful()) {
-                        if(response.body().getStatus().equals("SUCCESS")){
-                            if(response.body().getRestaurants().size()>0){
+                        if(response.body().status.equals("SUCCESS")){
+                            if(response.body().restaurants.size()>0){
 
-                                RestaurantAdapter restaurantAdapter = new RestaurantAdapter(getActivity(), response.body().getRestaurants());
+                                RestaurantAdapter restaurantAdapter = new RestaurantAdapter(getActivity(), response.body().restaurants);
                                 restaurantAdapter.setRestaurantItemClickListener(restaurant -> {
                                     Parcelable restaurantParcel = Parcels.wrap(restaurant);
                                     Bundle extra = new Bundle();
                                     extra.putParcelable("restaurant", restaurantParcel);
+                                    CommonValueApplication.setRest_id(restaurant.rest_id);
                                     IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
+                                    Logger.d(restaurant.name + " 선택 ", restaurant.rest_id + "저장");
                                 });
                                 LayoutUtil.RecyclerViewSetting(getActivity(), restaurantList);
 
                                 restaurantList.setAdapter(restaurantAdapter);
 
-                                if(response.body().getRestaurants().size()>10){
+                                if(response.body().restaurants.size()>10){
                                     restaurantList.addOnScrollListener(new RecyclerView.OnScrollListener() {
                                         @Override
                                         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -166,7 +169,7 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
 
 
                 @Override
-                public void onFailure(Call<RestaurantItem> call, Throwable t) {
+                public void onFailure(Call<RestaurantResponse> call, Throwable t) {
                     Logger.d(t);
                     Toast.makeText(getActivity(), "네트워크 연결에 실패했습니다", Toast.LENGTH_LONG).show();
                 }

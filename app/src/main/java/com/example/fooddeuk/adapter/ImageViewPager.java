@@ -38,13 +38,13 @@ public class ImageViewPager extends PagerAdapter{
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((LinearLayout) object);
+        return view == object;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View itemView = layoutInflater.inflate(R.layout.item_rest_detail_image_viewpager, container, false);
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.rest_detail_image);
+        ImageView imageView = itemView.findViewById(R.id.rest_detail_image);
 
         Picasso.with(context).load(images.get(position)).fit().into(imageView);
         container.addView(itemView);

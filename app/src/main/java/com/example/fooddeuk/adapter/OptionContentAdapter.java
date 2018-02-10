@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.menu.OptionItem;
+import com.example.fooddeuk.model.menu.Option;
 
 import java.util.ArrayList;
 
@@ -20,13 +20,13 @@ import butterknife.ButterKnife;
 
 
 public class OptionContentAdapter extends RecyclerView.Adapter<OptionContentAdapter.ViewHolder> {
-    private ArrayList<OptionItem.Option> items;
+    private ArrayList<Option> items;
     private Context context;
     private RadioClickListener radioClickListener;
     private SelectCLickListener selectCLickListener;
     private boolean multiple;
 
-    public OptionContentAdapter(ArrayList<OptionItem.Option> items, Context context, boolean multiple, RadioClickListener radioClickListener, SelectCLickListener selectCLickListener) {
+    public OptionContentAdapter(ArrayList<Option> items, Context context, boolean multiple, RadioClickListener radioClickListener, SelectCLickListener selectCLickListener) {
         this.items = items;
         this.context = context;
         this.multiple = multiple;
@@ -60,7 +60,7 @@ public class OptionContentAdapter extends RecyclerView.Adapter<OptionContentAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        OptionItem.Option option = items.get(position);
+        Option option = items.get(position);
 
         //체크박스 셋팅
         if (multiple == true) {

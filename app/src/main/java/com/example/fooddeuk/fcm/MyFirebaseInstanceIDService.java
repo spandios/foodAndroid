@@ -1,6 +1,6 @@
 package com.example.fooddeuk.fcm;
 
-import com.example.fooddeuk.http.UserService;
+import com.example.fooddeuk.network.UserService;
 import com.facebook.AccessToken;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;

@@ -19,7 +19,7 @@ import java.util.*
  * A custom adapter to use with the RecyclerView widget.
  */
 class CartAdapter(private val mContext: Context, private var modelList: ArrayList<CartItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    //기본 menu 수량은 1
+    //기본 menuCategory 수량은 1
     var cart_menu_quantity=1
 
     private var mItemClickListener: OnItemClickListener? = null
@@ -47,8 +47,8 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
         //자동 형 변환
         if (holder is CartAdapter.ViewHolder) {
             val model = getItem(position)
-            holder.cart_menu_name.text=model.menu.menu_name
-            holder.cart_menu_price.text= model.menu.menu_price+"원";
+            holder.cart_menu_name.text=model.menu.name
+            holder.cart_menu_price.text= model.menu.price+"원"
 
             //옵션 텍스트 뷰 추가
             //옵션카테고리:옵션이름 , 옵션 총 가격 계산
@@ -79,8 +79,8 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
                     .map{value->value-1}
                     .subscribe { value->
                         holder.cart_menu_quantity.text=value.toString()
-//                        holder.cart_menu_price.text = PriceUtil.minusPrice(PriceUtil.TextViewToString(holder.cart_menu_price),model.menu.menu_price)
-                        holder.cart_menu_result_price.text = PriceUtil.minusPrice(PriceUtil.TextViewToString(holder.cart_menu_result_price),model.menu.menu_price)
+//                        holder.cart_menu_price.text = PriceUtil.minusPrice(PriceUtil.TextViewToString(holder.cart_menu_price),model.menuCategory.menu_price)
+                        holder.cart_menu_result_price.text = PriceUtil.minusPrice(PriceUtil.TextViewToString(holder.cart_menu_result_price),model.menu.price)
 
                     }
 
@@ -91,8 +91,8 @@ class CartAdapter(private val mContext: Context, private var modelList: ArrayLis
                     .map{value->value+1}
                     .subscribe { value->
                         holder.cart_menu_quantity.text=value.toString()
-//                        holder.cart_menu_price.text = PriceUtil.plusPrice(PriceUtil.TextViewToString(holder.cart_menu_price),model.menu.menu_price)
-                        holder.cart_menu_result_price.text = PriceUtil.plusPrice(PriceUtil.TextViewToString(holder.cart_menu_result_price),model.menu.menu_price)
+//                        holder.cart_menu_price.text = PriceUtil.plusPrice(PriceUtil.TextViewToString(holder.cart_menu_price),model.menuCategory.menu_price)
+                        holder.cart_menu_result_price.text = PriceUtil.plusPrice(PriceUtil.TextViewToString(holder.cart_menu_result_price),model.menu.price)
                     }
         }
 

@@ -1,5 +1,7 @@
 package com.example.fooddeuk.model.cart;
 
+import com.example.fooddeuk.model.menu.Option;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -10,22 +12,19 @@ import io.realm.annotations.PrimaryKey;
 
 public class CartItem extends RealmObject {
     @PrimaryKey
-    int id;
-
-    CartMenu menu;
-    RealmList<CartOption> option;
-    String menu_count;
-    String totalPrice;
+    public int id;
+    public CartMenu menu;
+    public RealmList<Option> option;
+    public String menu_count;
+    public String totalPrice;
 
     public CartItem(){
 
     }
-
-    public CartItem(int id, CartMenu menu,RealmList<CartOption> option) {
+    public CartItem(int id, CartMenu menu,RealmList<Option> option) {
 
         this.id = id;
         this.menu = menu;
-
         this.option=option;
 
     }
@@ -34,6 +33,24 @@ public class CartItem extends RealmObject {
         this.id = id;
         this.menu = menu;
 
+    }
+
+
+
+    public CartMenu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(CartMenu menu) {
+        this.menu = menu;
+    }
+
+    public RealmList<Option> getOption() {
+        return option;
+    }
+
+    public void setOption(RealmList<Option> option) {
+        this.option = option;
     }
 
     public String getMenu_count() {
@@ -50,32 +67,5 @@ public class CartItem extends RealmObject {
 
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public RealmList<CartOption> getOption() {
-        return option;
-    }
-
-    public void setOption(RealmList<CartOption> option) {
-        this.option = option;
-    }
-
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
-    public CartMenu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(CartMenu menu){
-        this.menu=menu;
     }
 }

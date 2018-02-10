@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.example.fooddeuk.R;
+import com.example.fooddeuk.model.user.User;
 import com.example.fooddeuk.util.LoginUtil;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
@@ -47,7 +48,7 @@ public class NAVER {
                             String email = jsonResult.getString("email");
                             String name = jsonResult.getString("name");
                             String provider_id = jsonResult.getString("enc_id");
-                            LoginUtil.CheckGetRegisterUser(email,name,provider_id,"naver");
+                            LoginUtil.CheckGetRegisterUser(new User(email,provider_id,name,"naver"));
                             // 액티비티 이동 등 원하는 함수 호출
                         } catch (JSONException e) {
                             e.printStackTrace();

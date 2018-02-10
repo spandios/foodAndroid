@@ -42,7 +42,7 @@
             />
 
         <Button
-            android:id="@+id/currentOrderButton"
+            android:id="@+id/main_dangol"
             android:layout_height="wrap_content"
             android:layout_width="20dp"
             android:layout_weight="1"
@@ -63,13 +63,13 @@
             />
 
         <Button
-            android:id="@+id/mainSearchButton"
+            android:id="@+id/currentOrderButton"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:textSize="12sp"
-            android:text="장바구니" />
+            android:text="주문상황" />
 
 
         <Button

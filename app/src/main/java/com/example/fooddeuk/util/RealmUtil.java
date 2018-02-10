@@ -1,7 +1,6 @@
 package com.example.fooddeuk.util;
 
 import com.example.fooddeuk.model.cart.CartOption;
-import com.example.fooddeuk.model.restaurant.RestaurantItemRealm;
 import com.orhanobut.logger.Logger;
 
 import io.realm.Realm;
@@ -47,6 +46,7 @@ public class RealmUtil {
         }
         return 0;
     }
+
     public static <T extends RealmObject>void  insertData(final T data){
 
         realm.executeTransaction(new Realm.Transaction() {
@@ -56,6 +56,9 @@ public class RealmUtil {
             }
         });
     }
+
+
+
     public static <T extends RealmObject>void  insertData2(final T data){
 
         realm.beginTransaction();
@@ -77,6 +80,23 @@ public class RealmUtil {
         try{
             realm.beginTransaction();
             RealmResults<T> item = realm.where(clazz).findAll();
+            realm.commitTransaction();
+            return item;
+
+        }catch (Throwable e){
+            if(realm.isInTransaction()) {
+                realm.cancelTransaction();
+            }
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static <T extends RealmObject> T findData(Class<T> clazz) {
+        try{
+            realm.beginTransaction();
+            T item = realm.where(clazz).findFirst();
             realm.commitTransaction();
             return item;
 
@@ -115,9 +135,7 @@ public class RealmUtil {
         });
     }
 
-    public static RealmResults<RestaurantItemRealm> getRestaurantRealm(){
-        return findDataAll(RestaurantItemRealm.class);
-    }
+
 
     //Auto Increment id
     public static<T extends RealmObject> int getAutoIncrementId(Class<T> clazz) {

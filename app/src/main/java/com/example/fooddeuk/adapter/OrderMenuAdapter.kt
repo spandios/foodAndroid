@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.fooddeuk.R
 import com.example.fooddeuk.model.cart.CartItem
-import com.example.fooddeuk.util.PriceUtil
 import kotlinx.android.synthetic.main.item_order_menu.view.*
 import java.util.*
 
@@ -16,8 +15,7 @@ import java.util.*
  * Created by heojuyeong on 2017. 9. 30..
  */
 
-class OrderMenuAdapter(private val mContext: Context, private val modelList: ArrayList<CartItem>,private val isDirect: Any =false ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+class OrderMenuAdapter(private val mContext: Context, private val modelList: ArrayList<CartItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,29 +25,17 @@ class OrderMenuAdapter(private val mContext: Context, private val modelList: Arr
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val cartItem: CartItem =modelList[position]
+        val cartItem: CartItem = modelList[position]
         if (holder is OrderMenuAdapter.ViewHolder) {
-            holder.orderMenuName.text=cartItem.menu.menu_name
-            if(isDirect is Boolean){
-                if(isDirect){
-                    holder.orderMenuCount.text="1"
-                    var resultPrice=cartItem.menu.menu_price
-                    for(item in cartItem.option){
-                        resultPrice=PriceUtil.plusPrice(resultPrice,item.menu_option_price)
-                    }
-                    holder.orderResultPrice.text=resultPrice
-                }else{
-                    holder.orderMenuCount.text=cartItem.menu_count
-                    holder.orderResultPrice.text=cartItem.totalPrice
-                }
-            }
-
+            holder.orderMenuName.text = cartItem.menu.name
+            holder.orderMenuCount.text = cartItem.menu_count
+            holder.orderResultPrice.text = cartItem.totalPrice
 
 
             //옵션 텍스트 뷰 생성
-            for(item in cartItem.option){
-                var optionName=TextView(mContext)
-                optionName.text=item.menu_option_name
+            for (item in cartItem.option) {
+                var optionName = TextView(mContext)
+                optionName.text = item.menu_option_name
                 holder.orderMenuOptionLayout.addView(optionName)
             }
         }
@@ -62,11 +48,11 @@ class OrderMenuAdapter(private val mContext: Context, private val modelList: Arr
     }
 
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var orderMenuName=itemView.order_menu_name
-        var orderMenuCount=itemView.order_menu_count
-        var orderResultPrice=itemView.order_menu_result_price
-        var orderMenuOptionLayout=itemView.order_menu_option_layout
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var orderMenuName = itemView.order_menu_name
+        var orderMenuCount = itemView.order_menu_count
+        var orderResultPrice = itemView.order_menu_result_price
+        var orderMenuOptionLayout = itemView.order_menu_option_layout
     }
 
 }

@@ -6,8 +6,9 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
 import com.example.fooddeuk.R
-import com.example.fooddeuk.http.RestaurantService
-import com.example.fooddeuk.model.restaurant.RestaurantItem
+import com.example.fooddeuk.model.restaurant.Restaurant
+import com.example.fooddeuk.model.restaurant.RestaurantResponse
+import com.example.fooddeuk.network.RestaurantService
 import com.example.fooddeuk.util.IntentUtil
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,7 +34,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     private var lat: Double? = null
     var lng: Double? = null
     lateinit var googleMap: GoogleMap
-    var restaurantList: ArrayList<RestaurantItem.Restaurant>? = null
+    var restaurantList: ArrayList<Restaurant>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,8 +68,8 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         googleMap.uiSettings.isZoomControlsEnabled
 
 
-        RestaurantService.getCurrentLocationRestaurant(lat!!, lng!!, maxDistance!!, menuType, filter, "").enqueue(object:Callback<RestaurantItem>{
-            override fun onResponse(call: Call<RestaurantItem>?, response: Response<RestaurantItem>?) {
+        RestaurantService.getCurrentLocationRestaurant(lat!!, lng!!, maxDistance!!, menuType, filter, "").enqueue(object:Callback<RestaurantResponse>{
+            override fun onResponse(call: Call<RestaurantResponse>?, response: Response<RestaurantResponse>?) {
                 if(response!!.isSuccessful){
                     if(response.body()!!.status==("SUCCESS")){
                         restaurantList=response.body()!!.restaurants
@@ -76,7 +77,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                     }
                 }
             }
-            override fun onFailure(call: Call<RestaurantItem>?, t: Throwable?) {
+            override fun onFailure(call: Call<RestaurantResponse>?, t: Throwable?) {
                 t!!.printStackTrace()
             }
         })
@@ -89,7 +90,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         googleMap.clear()
         for(i in 0 until restaurantList!!.size){
             val marker = googleMap.addMarker(MarkerOptions()
-                    .position(LatLng(restaurantList!![i].latlng[1], restaurantList!![i].latlng[0]))
+                    .position(LatLng(restaurantList!![i].lat, restaurantList!![i].lng))
                     .title(restaurantList!![i].name))
             marker.tag = i+1
         }
@@ -102,11 +103,11 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         var restaurant = restaurantList!![tag-1]
         Logger.d(restaurant.name)
         rest_map_name.text = restaurant.name
-        Picasso.with(this).load(restaurant.rest_picture).into(rest_map_picture)
+        Picasso.with(this).load(restaurant.picture).into(rest_map_picture)
         rest_map_desc.text=restaurant.description
         rest_description_box.visibility=View.VISIBLE
         rest_description_box.setOnClickListener({
-            val restaurantParcel = Parcels.wrap<RestaurantItem.Restaurant>(restaurant)
+            val restaurantParcel = Parcels.wrap<Restaurant>(restaurant)
             val extra = Bundle()
             extra.putParcelable("restaurant", restaurantParcel)
             IntentUtil.startActivity(this, DetailRestaurantActivity::class.java, extra)

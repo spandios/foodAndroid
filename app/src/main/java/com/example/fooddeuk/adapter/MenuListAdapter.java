@@ -1,7 +1,6 @@
 package com.example.fooddeuk.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,16 +15,14 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.CartActivity;
-import com.example.fooddeuk.activity.OrderActivity;
-import com.example.fooddeuk.http.MenuReviewService;
 import com.example.fooddeuk.model.cart.CartItem;
 import com.example.fooddeuk.model.cart.CartMenu;
-import com.example.fooddeuk.model.cart.CartOption;
-import com.example.fooddeuk.model.menu.MenuContentItem;
-import com.example.fooddeuk.model.menu.OptionItem;
+import com.example.fooddeuk.model.menu.Menu;
+import com.example.fooddeuk.model.menu.Option;
+import com.example.fooddeuk.model.menu.OptionCategory;
 import com.example.fooddeuk.model.menu.ReviewItem;
-import com.example.fooddeuk.model.restaurant.RestaurantItem;
-import com.example.fooddeuk.model.restaurant.RestaurantItemRealm;
+import com.example.fooddeuk.model.restaurant.Restaurant;
+import com.example.fooddeuk.network.MenuReviewService;
 import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.LayoutUtil;
 import com.example.fooddeuk.util.PriceUtil;
@@ -52,11 +49,11 @@ import retrofit2.Response;
 
 
 public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<MenuContentItem> items;
+    private ArrayList<Menu> items;
     private Context context;
     private OnItemClickListener onItemClickListener;
     private OnCartCountClickListener onCartCountClickListener;
-    private RestaurantItem.Restaurant restaurant;
+    private Restaurant restaurant;
     private static final int pictureAndNoOption = 0;
     private static final int pictureAndNecessary = 1;
     private static final int pictureAndUnNecessary = 2;
@@ -67,15 +64,16 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int noPictureAndNoOption= 7;
     private int expandedPosition = -1;
     private RecyclerView mRecyclerView;
-    private ArrayList<OptionItem.Option> necessaryArrayList = new ArrayList<>();
-    private ArrayList<OptionItem.Option> unNecessaryArrayList = new ArrayList<>();
+    private ArrayList<Option> necessaryArrayList = new ArrayList<>();
+    private ArrayList<Option> unNecessaryArrayList = new ArrayList<>();
     private BottomSheetDialog[] optionDialogArray = new BottomSheetDialog[2];
 
 
-    public MenuListAdapter(Context context, ArrayList<MenuContentItem> items, int rest_id, RestaurantItem.Restaurant restaurant) {
+    public MenuListAdapter(Context context, ArrayList<Menu> items, Restaurant restaurant) {
         this.items = items;
         this.context = context;
         this.restaurant = restaurant;
+
     }
 
     public interface OnItemClickListener {
@@ -165,7 +163,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (items.get(position).picture.length() > 0) {
             boolean necessary = false;
             boolean unnecessary = false;
-            ArrayList<OptionItem> optionCategory = items.get(position).option;
+            ArrayList<OptionCategory> optionCategory = items.get(position).option;
             for (int i = 0; i < optionCategory.size(); i++) {
                 if (!optionCategory.get(i).multiple) {
                     necessary = true;
@@ -188,7 +186,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             boolean necessary = false;
             boolean unnecessary = false;
-            ArrayList<OptionItem> optionCategory = items.get(position).option;
+            ArrayList<OptionCategory> optionCategory = items.get(position).option;
             for (int i = 0; i < optionCategory.size(); i++) {
                 if (!optionCategory.get(i).multiple) {
                     necessary = true;
@@ -249,24 +247,24 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder tmpHolder, int position) {
-        final MenuContentItem menuContentItem = items.get(position);
+        final Menu menu = items.get(position);
 
         if (tmpHolder.getItemViewType() == noPictureAndNoOption) {
             ViewHolderNoPicture holder = (ViewHolderNoPicture) tmpHolder;
             holder.itemView.setTag(holder);
-            holder.bind(menuContentItem, position);
+            holder.bind(menu, position);
 
         } else if (tmpHolder.getItemViewType() == pictureAndNecessary) {
             ViewHolderWithPictureNecessary holder = (ViewHolderWithPictureNecessary) tmpHolder;
             holder.itemView.setTag(holder);
-            holder.bind(menuContentItem);
+            holder.bind(menu);
             if (position == expandedPosition) {
                 holder.menu_master_layout.setVisibility(View.GONE);
                 holder.menu_detail_layout.setVisibility(View.VISIBLE);
                 holder.itemView.setClickable(false);
                 holder.itemView.setEnabled(false);
-                setFirstNecessaryOption(menuContentItem, holder);
-                setNecessaryOptionDialog(menuContentItem, holder);
+                setFirstNecessaryOption(menu, holder);
+                setNecessaryOptionDialog(menu, holder);
             } else {
                 holder.menu_master_layout.setVisibility(View.VISIBLE);
                 holder.menu_detail_layout.setVisibility(View.GONE);
@@ -276,13 +274,13 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             ViewHolderWithPictureUnNecessary holder = (ViewHolderWithPictureUnNecessary) tmpHolder;
             holder.itemView.setTag(holder);
-            holder.bind(menuContentItem);
+            holder.bind(menu);
             if (position == expandedPosition) {
                 holder.menu_master_layout.setVisibility(View.GONE);
                 holder.menu_detail_layout.setVisibility(View.VISIBLE);
                 holder.itemView.setClickable(false);
                 holder.itemView.setEnabled(false);
-                setUnNecessaryOptionDialog(menuContentItem.option, holder);
+                setUnNecessaryOptionDialog(menu.option, holder);
             } else {
                 holder.menu_master_layout.setVisibility(View.VISIBLE);
                 holder.menu_detail_layout.setVisibility(View.GONE);
@@ -292,14 +290,14 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             ViewHolderWithPictureDoubleOption holder = (ViewHolderWithPictureDoubleOption) tmpHolder;
             holder.itemView.setTag(holder);
-            holder.bind(menuContentItem, position);
+            holder.bind(menu, position);
             if (position == expandedPosition) {
                 holder.menu_master_layout.setVisibility(View.GONE);
                 holder.menu_detail_layout.setVisibility(View.VISIBLE);
                 holder.itemView.setClickable(false);
                 holder.itemView.setEnabled(false);
-                setFirstNecessaryOption(menuContentItem, holder);
-                setDoubleOptionDialog(menuContentItem.option,holder);
+                setFirstNecessaryOption(menu, holder);
+                setDoubleOptionDialog(menu.option,holder);
             } else {
                 holder.menu_master_layout.setVisibility(View.VISIBLE);
                 holder.menu_detail_layout.setVisibility(View.GONE);
@@ -320,7 +318,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (optionView.findViewById(R.id.option_radio) != null) {
                     RadioButton radioOption = optionView.findViewById(R.id.option_radio);
                     if (radioOption.isChecked()) {
-                        OptionItem.Option optionContent = (OptionItem.Option) radioOption.getTag();
+                        Option optionContent = (Option) radioOption.getTag();
                         necessaryArrayList.add(optionContent);
                     }
                 }
@@ -337,7 +335,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (optionView.findViewById(R.id.option_checkbox) != null) {
                     CheckBox checkOption = optionView.findViewById(R.id.option_checkbox);
                     if (checkOption.isChecked()) {
-                        OptionItem.Option optionContent = (OptionItem.Option) checkOption.getTag();
+                        Option optionContent = (Option) checkOption.getTag();
                         unNecessaryArrayList.add(optionContent);
                     }
                 }
@@ -345,7 +343,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    void setDoubleOptionDialog(ArrayList<OptionItem> optionCategory, ViewHolderWithPictureDoubleOption viewHolder) {
+    void setDoubleOptionDialog(ArrayList<OptionCategory> optionCategory, ViewHolderWithPictureDoubleOption viewHolder) {
         BottomSheetDialog necessaryOptionDialog = new BottomSheetDialog(context);
         BottomSheetDialog unNecessaryOptionDialog = new BottomSheetDialog(context);
         View necessaryOptionDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_menu_option, null);
@@ -387,8 +385,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    void setNecessaryOptionDialog(MenuContentItem menuContentItem, ViewHolderWithPictureNecessary viewHolder) {
-        ArrayList<OptionItem> optionCategory = menuContentItem.option;
+    void setNecessaryOptionDialog(Menu menu, ViewHolderWithPictureNecessary viewHolder) {
+        ArrayList<OptionCategory> optionCategory = menu.option;
         BottomSheetDialog necessaryOptionDialog = new BottomSheetDialog(context);
         View necessaryOptionDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_menu_option, null);
         necessaryOptionDialog.setContentView(necessaryOptionDialogView);
@@ -416,7 +414,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (optionView.findViewById(R.id.option_radio) != null) {
                         RadioButton radioOption = optionView.findViewById(R.id.option_radio);
                         if (radioOption.isChecked()) {
-                            OptionItem.Option optionContent = (OptionItem.Option) radioOption.getTag();
+                            Option optionContent = (Option) radioOption.getTag();
                             necessaryArrayList.add(optionContent);
                         }
                     }
@@ -437,29 +435,29 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     /**
      * 필수 항목의 가장 첫번째 옵션(기본옵션) 가져와 뷰에 뿌려주고 저장
-     * param1 : Menu
+     * param1 : MenuCategory
      **/
 
-    void setFirstNecessaryOption(MenuContentItem menuContentItem, RecyclerView.ViewHolder viewHolder) {
+    void setFirstNecessaryOption(Menu menu, RecyclerView.ViewHolder viewHolder) {
         necessaryArrayList.clear();
-        ArrayList<OptionItem> optionCategoryArray = menuContentItem.option;
+        ArrayList<OptionCategory> optionCategoryArray = menu.option;
 
         StringBuffer necessaryCategoryText = new StringBuffer("");
         StringBuffer necessaryOptionText = new StringBuffer("");
         TextView title=viewHolder.itemView.findViewById(R.id.menu_detail_option_necessary_title);
         TextView content=viewHolder.itemView.findViewById(R.id.menu_detail_option_necessary_content);
-        if (menuContentItem.option.size() == 1) {
-            OptionItem.Option necessaryBasicOption = optionCategoryArray.get(0).necessary.get(0);
+        if (menu.option.size() == 1) {
+            Option necessaryBasicOption = optionCategoryArray.get(0).necessary.get(0);
             necessaryArrayList.add(necessaryBasicOption);
             Logger.d("기본 필수옵션 " + necessaryBasicOption.menu_option_name + " 추가");
             title.setText(optionCategoryArray.get(0).menu_option_category_name);
             content.setText(necessaryBasicOption.menu_option_name);
 
-        } else if (menuContentItem.option.size() > 1) {
+        } else if (menu.option.size() > 1) {
             for (int i = 0; i < optionCategoryArray.size(); i++) {
-                OptionItem categoryOption = optionCategoryArray.get(i);
+                OptionCategory categoryOption = optionCategoryArray.get(i);
                 if(categoryOption.necessary.size()>0){
-                    OptionItem.Option necessaryBasicOption=categoryOption.necessary.get(0);
+                    Option necessaryBasicOption=categoryOption.necessary.get(0);
                     if(i==0){
                         necessaryCategoryText.append(categoryOption.menu_option_category_name);
                         necessaryOptionText.append(necessaryBasicOption.menu_option_name);
@@ -483,7 +481,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    void setUnNecessaryOptionDialog(ArrayList<OptionItem> optionCategory, ViewHolderWithPictureUnNecessary holder) {
+    void setUnNecessaryOptionDialog(ArrayList<OptionCategory> optionCategory, ViewHolderWithPictureUnNecessary holder) {
         BottomSheetDialog unNecessaryOptionDialog = new BottomSheetDialog(context);
         View unNecessaryOptionDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_menu_option, null);
         unNecessaryOptionDialog.setContentView(unNecessaryOptionDialogView);
@@ -504,7 +502,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (optionView.findViewById(R.id.option_checkbox) != null) {
                         CheckBox checkOption = optionView.findViewById(R.id.option_checkbox);
                         if (checkOption.isChecked()) {
-                            OptionItem.Option optionContent = (OptionItem.Option) checkOption.getTag();
+                            Option optionContent = (Option) checkOption.getTag();
                             unNecessaryArrayList.add(optionContent);
                         }
                     }
@@ -525,31 +523,28 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     //장바구니에 아이템이 있는지 없는지 체크
-    private void checkCartAndInsertOrOrder(MenuContentItem menuContentItem, String version) {
+    private void checkCartAndInsertOrOrder(Menu menu, String version) {
         RealmResults<CartItem> cartItem = RealmUtil.findDataAll(CartItem.class);
-        Bundle bundle=new Bundle();
-        bundle.putBoolean("isDirect",true);
 
         //기존 장바구니가 없으면 바로 추가
         if (cartItem.size() == 0) {
-            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time, restaurant.latlng[1], restaurant.latlng[0]);
-            RealmUtil.insertData(newRestaurant);
-            RealmUtil.insertData2(createCartMenuItem(menuContentItem));
+            RealmUtil.insertData(restaurant);
+            RealmUtil.insertData(createCartMenuItem(new CartMenu(menu.menu_id,menu.name,menu.price,menu.avgtime)));
             if (version.equals("cart")) {
                 IntentUtil.startActivity(context, CartActivity.class);
             }else{
-                //Direct Order
-                IntentUtil.startActivity(context, OrderActivity.class,bundle);
+//                //Direct Order
+                IntentUtil.startActivity(context, CartActivity.class);
             }
 
 
 
         } else if (cartItem.size() > 0) {
             //장바구니에 이미 메뉴가 존재하는 경우
-            RealmResults<RestaurantItemRealm> defaultRestaurant = RealmUtil.findDataAll(RestaurantItemRealm.class);
+            Restaurant defaultRestaurant = RealmUtil.findData(Restaurant.class);
             //기존 장바구니에 있는 식당과 현재 주문할려는 식당이 일치할 경우 장바구니에 메뉴를 추가한다
-            if (defaultRestaurant.get(0).rest_id == restaurant.rest_id) {
-                RealmUtil.insertData2(createCartMenuItem(menuContentItem));
+            if (defaultRestaurant.rest_id == restaurant.rest_id) {
+                RealmUtil.insertData2(createCartMenuItem(new CartMenu(menu.menu_id,menu.name,menu.price,menu.avgtime)));
                 if (version.equals("cart")) {
                     IntentUtil.startActivity(context, CartActivity.class);
                 }else{
@@ -567,14 +562,13 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .negativeText("아니요")
                         .onPositive((dialog, which) -> {
                             RealmUtil.removeDataAll(CartItem.class);
-                            RealmUtil.removeDataAll(RestaurantItemRealm.class);
-                            RestaurantItemRealm newRestaurant = new RestaurantItemRealm(restaurant.rest_id, restaurant.rest_admin_id, restaurant.name, restaurant.address, restaurant.open_time, restaurant.close_time, restaurant.avg_cooking_time, restaurant.latlng[1], restaurant.latlng[0]);
-                            RealmUtil.insertData(newRestaurant);
-//                            RealmUtil.insertData(createCartMenuItem(menuContentItem, optionDialogArray));
+                            RealmUtil.removeDataAll(Restaurant.class);
+                            RealmUtil.insertData(restaurant);
+//                            RealmUtil.insertData(createCartMenuItem(menu, optionDialogArray));
                             if (version.equals("cart")) {
                                 IntentUtil.startActivity(context, CartActivity.class);
                             }else{
-                                IntentUtil.startActivity(context, OrderActivity.class,bundle);
+                                IntentUtil.startActivity(context, CartActivity.class);
                             }
 //                            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
 
@@ -589,42 +583,32 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     //필수, 선택 옵션 구분한뒤 localdb 변환
-    private RealmList<CartOption> getMenuOption() {
-        RealmList<CartOption> menuOption = new RealmList<>();
+    private RealmList<Option> getMenuOption() {
+        ArrayList<Option> menuOption = new ArrayList<>();
+        RealmList<Option> optionRealmList= new RealmList<>();
+
         //필수값 먼저 삽입한다
         if (necessaryArrayList.size() >= 1) {
-            for (int i = 0; i < necessaryArrayList.size(); i++) {
-                OptionItem.Option optionItem = necessaryArrayList.get(i);
-                CartOption option = new CartOption(optionItem.menu_option_id, optionItem.menu_option_name, optionItem.menu_option_price);
-                menuOption.add(option);
-            }
+            menuOption.addAll(necessaryArrayList);
         }
         if (unNecessaryArrayList.size() >= 1) {
             Logger.d("eee");
-            for (int i = 0; i < unNecessaryArrayList.size(); i++) {
-                OptionItem.Option optionItem = unNecessaryArrayList.get(i);
-
-                CartOption option = new CartOption(optionItem.menu_option_id, optionItem.menu_option_name, optionItem.menu_option_price);
-                menuOption.add(option);
-            }
+            menuOption.addAll(unNecessaryArrayList);
         }
+        optionRealmList.addAll(menuOption);
 
-
-        return menuOption;
+        return optionRealmList;
     }
 
 
     //선탠된 메뉴 CartItem RealmObject 생성
-    private CartItem createCartMenuItem(MenuContentItem menuContentItem) {
-        CartMenu menu = new CartMenu(menuContentItem.getMenu_id(), menuContentItem.getName(), menuContentItem.price, menuContentItem.getAvgtime());
+    private CartItem createCartMenuItem(CartMenu menu) {
         CartItem cartItem;
-
         if (necessaryArrayList.size() > 0 || unNecessaryArrayList.size() > 0) {
             cartItem = new CartItem(RealmUtil.getAutoIncrementId(CartItem.class), menu, getMenuOption());
         } else {
             cartItem = new CartItem(RealmUtil.getAutoIncrementId(CartItem.class), menu);
         }
-
         return cartItem;
     }
 
@@ -653,7 +637,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onCartCountClickListener = onCartAddClickListenr;
     }
 
-    void setOptionRecyclerView(RecyclerView optionCategoryList, Button menu_detail_order, TextView dialog_totalPrice, ArrayList<OptionItem> optionCategory, boolean necessary) {
+    void setOptionRecyclerView(RecyclerView optionCategoryList, Button menu_detail_order, TextView dialog_totalPrice, ArrayList<OptionCategory> optionCategory, boolean necessary) {
         LayoutUtil.RecyclerViewSetting(context, optionCategoryList);
         dialog_totalPrice.setText(menu_detail_order.getText().subSequence(0, menu_detail_order.getText().length() - 6));
 
@@ -675,7 +659,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         //선택
         if (!necessary) {
-            ArrayList<OptionItem> unNecessaryOptionList = new ArrayList<>();
+            ArrayList<OptionCategory> unNecessaryOptionList = new ArrayList<>();
             for (int i = 0; i < optionCategory.size(); i++) {
                 if (optionCategory.get(i).multiple) {
                     unNecessaryOptionList.add(optionCategory.get(i));
@@ -685,7 +669,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         //필수
         else {
-            ArrayList<OptionItem> necessaryOptionList = new ArrayList<>();
+            ArrayList<OptionCategory> necessaryOptionList = new ArrayList<>();
             for (int i = 0; i < optionCategory.size(); i++) {
                 if (!optionCategory.get(i).multiple) {
                     necessaryOptionList.add(optionCategory.get(i));
@@ -695,7 +679,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    String getSelectOption(ArrayList<OptionItem.Option> optionArrayList) {
+    String getSelectOption(ArrayList<Option> optionArrayList) {
         if (optionArrayList.size() == 1) {
             return optionArrayList.get(0).menu_option_name;
         } else if (optionArrayList.size() > 1) {

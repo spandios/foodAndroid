@@ -22,14 +22,14 @@ public class NaverLoginActivity extends BaseActivity {
         setContentView(R.layout.activity_naver_login);
         mContext = this;
         mOAuthLoginModule = NAVER.getNaverLoginModule(this);
-        Button logoutButton = (Button) findViewById(R.id.naverlogiut);
+        Button logoutButton = findViewById(R.id.naverlogiut);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOAuthLoginModule.logout(mContext);
             }
         });
-        OAuthLoginButton naverLoginButton = (OAuthLoginButton) findViewById(R.id.buttonOAuthLoginImg);
+        OAuthLoginButton naverLoginButton = findViewById(R.id.buttonOAuthLoginImg);
         naverLoginButton.setBgResourceId(R.drawable.img_loginbtn_usercustom);
         naverLoginButton.setOAuthLoginHandler(NAVER.getNaverLoginHandler(this,mOAuthLoginModule));
 

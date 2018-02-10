@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <Button
+
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_back_black"
+            android:layout_marginLeft="12dp"
+            android:onClick="onClick"
+
+            />
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/order_list_map_title"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_centerInParent="true"
+            android:text="식당이름"
+
+            />
+
+    </RelativeLayout>
+    <fragment
+        android:id="@+id/order_history_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+</LinearLayout>

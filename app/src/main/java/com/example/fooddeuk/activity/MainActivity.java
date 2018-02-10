@@ -10,10 +10,10 @@ import android.widget.Button;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.fragment.CurLocationRestaurantFragment;
-import com.example.fooddeuk.fragment.CurrentOrderFragment;
+import com.example.fooddeuk.fragment.OrderHistoryFragment;
 import com.example.fooddeuk.fragment.HomeFragment;
+import com.example.fooddeuk.fragment.DanGolFragment;
 import com.example.fooddeuk.fragment.UserFragment;
-import com.example.fooddeuk.fragment.SearchFragment;
 import com.example.fooddeuk.util.GPS;
 import com.example.fooddeuk.util.GPS_Util;
 import com.example.fooddeuk.util.NetworkUtil;
@@ -32,8 +32,8 @@ import static com.example.fooddeuk.staticval.StaticVal.gpsSettingActivityRequest
 
 public class MainActivity extends BaseActivity {
     private boolean homeFragmentFlag = true;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    public FragmentManager fragmentManager;
+    public FragmentTransaction fragmentTransaction;
     ProfileTracker profileTracker;
     OAuthLogin naverLoginModule;
 
@@ -45,14 +45,14 @@ public class MainActivity extends BaseActivity {
     Button homeButton;
     @BindView(R.id.currentOrderButton)
     Button currentOrderButton;
-    @BindView(R.id.mainSearchButton)
-    Button searchButton;
+    @BindView(R.id.main_dangol)
+    Button dangolButton;
     @BindView(R.id.mapButton)
     Button mapButton;
     @BindView(R.id.menuButton)
     Button menuButton;
 
-    @OnClick({R.id.homeButton, R.id.currentOrderButton, R.id.mapButton, R.id.mainSearchButton, R.id.menuButton})
+    @OnClick({R.id.homeButton, R.id.currentOrderButton, R.id.mapButton, R.id.main_dangol, R.id.menuButton})
     public void click(Button view) {
 
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -62,23 +62,18 @@ public class MainActivity extends BaseActivity {
                 fragmentTransaction.replace(R.id.homeContent, new HomeFragment());
 
                 break;
-            case R.id.currentOrderButton:
-                homeFragmentFlag = false;
-                fragmentTransaction.replace(R.id.homeContent, new CurrentOrderFragment());
 
+            case R.id.main_dangol:
+                homeFragmentFlag = false;
+                fragmentTransaction.replace(R.id.homeContent, new DanGolFragment());
                 break;
             case R.id.mapButton:
                 homeFragmentFlag = false;
                 fragmentTransaction.replace(R.id.homeContent, new CurLocationRestaurantFragment());
-
-
-//                new Handler().postDelayed(() -> {
-//
-//                }, 200);// 0.5초 정도 딜레이를 준 후 시작
                 break;
-            case R.id.mainSearchButton:
+            case R.id.currentOrderButton:
                 homeFragmentFlag = false;
-                fragmentTransaction.replace(R.id.homeContent, new SearchFragment());
+                fragmentTransaction.replace(R.id.homeContent, new OrderHistoryFragment());
 
 
                 break;
@@ -97,12 +92,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         new TedPermissionUtil(this);
         Logger.d(FirebaseInstanceId.getInstance().getToken());
+        fragmentManager = getSupportFragmentManager();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Logger.d(FirebaseInstanceId.getInstance().getToken());
-        fragmentManager = getSupportFragmentManager();
+
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.homeContent, new HomeFragment());
         fragmentTransaction.commit();
@@ -116,13 +111,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+
 
         if (homeFragmentFlag) {
             super.onBackPressed();
         } else {
             homeFragmentFlag = true;
+            fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.homeContent, new HomeFragment());
             fragmentTransaction.commit();
         }
@@ -132,13 +128,24 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+        if(getIntent().getExtras()!=null){
+            if(getIntent().getExtras().getBoolean("isOrder")){
+                Logger.d("e");
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.homeContent,new OrderHistoryFragment());
+                fragmentTransaction.commit();
+                homeFragmentFlag=false;
+
+            }
+        }
+
+
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
 
         if (requestCode == gpsSettingActivityRequestCode) {
             if (NetworkUtil.isGpsPossible(this)) {

@@ -34,7 +34,7 @@ public class KakaoLoginActivity extends Activity {
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
         Session.getCurrentSession().checkAndImplicitOpen();
-        Button button=(Button)findViewById(R.id.testbutton);
+        Button button= findViewById(R.id.testbutton);
         button.setText("로그아웃");
         button.setOnClickListener(new View.OnClickListener() {
             @Override

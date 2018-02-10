@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.menu.MenuContentItem;
+import com.example.fooddeuk.model.menu.Menu;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -89,28 +89,28 @@ public class ViewHolderWithPictureDoubleOption extends RecyclerView.ViewHolder {
     }
 
 
-    public void bind(MenuContentItem menuContentItem, int position) {
+    public void bind(Menu menu, int position) {
 
-        String reviewCount = "(" + menuContentItem.reviewCnt + ")";
-        String menuPrice = menuContentItem.price+"원";
-        if (menuContentItem.rating.length() == 1) {
-            menuContentItem.rating += ".0";
+        String reviewCount = "(" + menu.reviewCnt + ")";
+        String menuPrice = menu.price+"원";
+        if (menu.rating.length() == 1) {
+            menu.rating += ".0";
         }
-        Picasso.with(context).load(menuContentItem.picture).transform(new CropCircleTransformation()).into(menu_master_picture);
-        Picasso.with(context).load(menuContentItem.picture).transform(new CropCircleTransformation()).into(detailHotMenuPicture);
-        menu_master_name.setText(menuContentItem.name);
+        Picasso.with(context).load(menu.picture).transform(new CropCircleTransformation()).into(menu_master_picture);
+        Picasso.with(context).load(menu.picture).transform(new CropCircleTransformation()).into(detailHotMenuPicture);
+        menu_master_name.setText(menu.name);
         menu_master_price.setText(menuPrice);
-        menu_detail_name.setText(menuContentItem.name);
-        menu_detail_name.setText(menuContentItem.name);
+        menu_detail_name.setText(menu.name);
+        menu_detail_name.setText(menu.name);
         menu_detail_price.setText(menuPrice);
-        menu_detail_rating.setText(menuContentItem.rating);
+        menu_detail_rating.setText(menu.rating);
         menu_detail_review.setText(reviewCount);
-        menu_detail_rating_bar.setRating(Float.parseFloat(menuContentItem.rating));
+        menu_detail_rating_bar.setRating(Float.parseFloat(menu.rating));
         menu_detail_rating_bar.setStepSize(0.5f);
 
 
-        if (menuContentItem.description.length() > 1) {
-            menu_detail_description.setText(menuContentItem.description);
+        if (menu.description.length() > 1) {
+            menu_detail_description.setText(menu.description);
         } else {
             menu_detail_description.setVisibility(View.GONE);
         }
@@ -140,12 +140,12 @@ public class ViewHolderWithPictureDoubleOption extends RecyclerView.ViewHolder {
 
     /**
      * 필수 항목의 가장 첫번째 옵션 가져와 뷰에 뿌려주고 local db에 추가하기
-     * param1 : Menu
+     * param1 : MenuCategory
      **/
 
-//    void setFirstNecessaryOption(MenuContentItem menuContentItem) {
+//    void setFirstNecessaryOption(Menu menuContentItem) {
 //        necessaryArrayList.clear();
-//        ArrayList<OptionItem> optionCategory = new ArrayList<>();
+//        ArrayList<OptionCategory> optionCategory = new ArrayList<>();
 //        for (int i = 0; i < menuContentItem.option.size(); i++) {
 //            if (menuContentItem.option.get(i).necessary.size() > 0) {
 //                optionCategory.add(menuContentItem.option.get(i));
@@ -157,7 +157,7 @@ public class ViewHolderWithPictureDoubleOption extends RecyclerView.ViewHolder {
 //        StringBuffer necessaryOptionText = new StringBuffer("");
 //
 //        if (menuContentItem.option.size() == 1) {
-//            OptionItem.Option necessaryBasicOption = optionCategory.get(0).necessary.get(0);
+//            OptionCategory.Option necessaryBasicOption = optionCategory.get(0).necessary.get(0);
 //            necessaryArrayList.add(necessaryBasicOption);
 //            Logger.d("기본 필수옵션 " + necessaryBasicOption.menu_option_name + " 추가");
 //            menu_detail_option_necessary_title.setText(optionCategory.get(0).menu_option_category_name);
@@ -166,12 +166,12 @@ public class ViewHolderWithPictureDoubleOption extends RecyclerView.ViewHolder {
 //        } else if (menuContentItem.option.size() > 1) {
 //            for (int i = 0; i < optionCategory.size(); i++) {
 //
-//                OptionItem.Option necessaryBasicOption = optionCategory.get(i).necessary.get(0);
+//                OptionCategory.Option necessaryBasicOption = optionCategory.get(i).necessary.get(0);
 //                necessaryArrayList.add(necessaryBasicOption);
 //                Logger.d("기본 필수옵션 " + necessaryBasicOption.menu_option_name + " 추가");
 //
 //                //Category
-//                OptionItem categoryOption = optionCategory.get(i);
+//                OptionCategory categoryOption = optionCategory.get(i);
 //
 //
 //                if (i != optionCategory.size() - 1) {

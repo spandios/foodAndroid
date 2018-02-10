@@ -1,15 +1,19 @@
 package com.example.fooddeuk.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import com.example.fooddeuk.R
 import com.example.fooddeuk.adapter.OrderMenuAdapter
-import com.example.fooddeuk.http.OrderService
 import com.example.fooddeuk.model.cart.CartItem
-import com.example.fooddeuk.model.menu.OrderItem
-import com.example.fooddeuk.model.restaurant.RestaurantItemRealm
-import com.example.fooddeuk.model.user.UserItemRealm
+import com.example.fooddeuk.model.order.OrderResponse
+import com.example.fooddeuk.model.order.RestaurantSide
+import com.example.fooddeuk.model.order.UserSide
+import com.example.fooddeuk.model.restaurant.Restaurant
+import com.example.fooddeuk.model.user.User
+import com.example.fooddeuk.network.OrderService
 import com.example.fooddeuk.util.LayoutUtil
 import com.example.fooddeuk.util.PriceUtil
 import com.example.fooddeuk.util.RealmUtil
@@ -25,22 +29,11 @@ import retrofit2.Response
 import java.util.*
 
 
-class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
-
-    val realm: Realm = Realm.getDefaultInstance()
-    var cartItemList = ArrayList<CartItem>()
-    var rest_id: Int? = null
-    var rest_admin_id: String? = null
-    var rest_name:String?=null
-    var isSetArrivedTime: Boolean = false
-    var user_id: Int? = null
-    var lat : Double = 0.0
-    var lng : Double = 0.0
-
-
+class OrderActivity(private var cartItemList : ArrayList<CartItem> = ArrayList(),  private var user_id : String = "", private var isSetArrivedTime :Boolean = false) : AppCompatActivity(), com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
+    var realm: Realm = Realm.getDefaultInstance()
+    lateinit var restaurant : Restaurant
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        intent.extras.get("isDirect")
         getRealmItem()
         setContentView(R.layout.activity_order)
         setToolBar()
@@ -59,34 +52,17 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
 
     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
     private fun getRealmItem() {
+        isSetArrivedTime=true
+        //메뉴 옵션 아이템
         val cartItem = realm.where(CartItem::class.java).findAll()
         cartItemList.addAll(realm.copyFromRealm(cartItem))
-        val restaurantResult = RealmUtil.findDataAll(RestaurantItemRealm::class.java)
-        if (restaurantResult.size > 0) {
-            rest_id = restaurantResult[0].rest_id
-            rest_admin_id = restaurantResult[0].rest_admin_id
-            rest_name=restaurantResult[0].name
-            lat=restaurantResult[0].lat
-            lng=restaurantResult[0].lng
-
-        } else {
-            Logger.e("restaurant정보 없음")
-
-        }
-        val userResult = RealmUtil.findDataAll(UserItemRealm::class.java)
-        if (userResult.size > 0) {
-            user_id = userResult[0].user_id
-
-
-        } else {
-            Logger.e("user정보 없음")
-        }
+        restaurant = RealmUtil.findData(Restaurant::class.java)
 
 
     }
 
     private fun setOrderAdapter() {
-        val adapter = OrderMenuAdapter(this, cartItemList, this.intent.extras.get("isDirect"))
+        val adapter = OrderMenuAdapter(this, cartItemList)
         LayoutUtil.RecyclerViewSetting(this.applicationContext, orderMenuList)
         orderMenuList.adapter = adapter
 
@@ -127,7 +103,7 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
                     this@OrderActivity, hour, minute, false
             )
             dpd.setMinTime(Timepoint(hour, minute))
-            val realmRestaurant = RealmUtil.getRestaurantRealm()
+//            val realmRestaurant = RealmUtil.getRestaurantRealm()
             //TODO 영업시간 지난 후 클릭 x
 //                dpd.setMaxTime(Timepoint(realmRestaurant[0].close_time.substring(0,2).toInt(),realmRestaurant[0].close_time.substring(3,5).toInt()))
 
@@ -145,18 +121,24 @@ class OrderActivity : BaseActivity(), com.wdullaer.materialdatetimepicker.time.T
             if (isSetArrivedTime) {
                 //예상도착시간
                 val arrivedTime = orderArriveTime.text.subSequence(9, orderArriveTime.text.length)
+                val userSide = UserSide((RealmUtil.findData(User::class.java)),arrivedTime.toString(),requestText.text.toString(),orderResultPrice.text.toString())
+                val orderItem = OrderResponse(RestaurantSide(restaurant), userSide, cartItemList, "접수 대기")
+                Logger.d(orderItem)
+                OrderService.order(orderItem).enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
 
-                //최종주문정보
-                val orderItem = OrderItem(user_id!!, rest_id!!, rest_admin_id, rest_name,cartItemList, arrivedTime.toString(), requestText.text.toString(), "주문수락대기", orderResultPrice.text.toString(),lat,lng)
-                /**주문하기**/
-                OrderService.order(orderItem).enqueue(object : Callback<OrderItem> {
-                    override fun onResponse(call: Call<OrderItem>?, response: Response<OrderItem>?) {
-                        Logger.d("response post order: " + response?.body().toString())
+                        val intent = Intent(this@OrderActivity,MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        intent.putExtra("isOrder",true)
+                        startActivity(intent)
                     }
 
-                    override fun onFailure(call: Call<OrderItem>?, t: Throwable?) {
-                        Logger.d(t)
+                    override fun onFailure(call: Call<Void>?, t: Throwable?) {
+                        t?.printStackTrace();
                     }
+
+
+
                 })
             } else {
                 Toast.makeText(this, "시간을 체크하세요", Toast.LENGTH_SHORT).show()

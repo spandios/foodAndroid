@@ -19,9 +19,7 @@ public class TedPermissionUtil {
         PermissionListener permissionListener=new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                GPS gps=new GPS(context);
-                gps.getGPS();
-
+//                GPS_Util gps_util = new GPS_Util(context);
             }
 
 

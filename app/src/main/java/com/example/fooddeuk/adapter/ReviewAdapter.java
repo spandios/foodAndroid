@@ -74,12 +74,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         public ViewHolder(View itemView) {
             super(itemView);
-            detailHotMenuReviewerImage=(ImageView)itemView.findViewById(R.id.detailHotMenuReviewerImage);
-            detailHotMenuReviewerId=(TextView)itemView.findViewById(R.id.detailHotMenuReviewerId);
-            detailHotMenuReviewDate=(TextView)itemView.findViewById(R.id.detailHotMenuReviewDate);
-            detailHotMenuReviewStar=(TextView)itemView.findViewById(R.id.detailHotMenuReviewStar);
-            detailHotMenuReviewImage=(ImageView)itemView.findViewById(R.id.detailHotMenuReviewImage);
-            detailHotMenuReviewContent=(TextView)itemView.findViewById(R.id.detailHotMenuReviewContent);
+            detailHotMenuReviewerImage= itemView.findViewById(R.id.detailHotMenuReviewerImage);
+            detailHotMenuReviewerId= itemView.findViewById(R.id.detailHotMenuReviewerId);
+            detailHotMenuReviewDate= itemView.findViewById(R.id.detailHotMenuReviewDate);
+            detailHotMenuReviewStar= itemView.findViewById(R.id.detailHotMenuReviewStar);
+            detailHotMenuReviewImage= itemView.findViewById(R.id.detailHotMenuReviewImage);
+            detailHotMenuReviewContent= itemView.findViewById(R.id.detailHotMenuReviewContent);
 
 
         }

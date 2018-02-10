@@ -26,7 +26,7 @@ public class IntroActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        ImageView introImageView = (ImageView) findViewById(R.id.introImageView);
+        ImageView introImageView = findViewById(R.id.introImageView);
         Picasso.with(this)
                 .load(R.drawable.fm)
                 .into(introImageView);
@@ -44,7 +44,15 @@ public class IntroActivity extends BaseActivity{
 
     public void init() {
         NetworkUtil.CheckNetGps(this);
+
+        GPS gps=new GPS(this);
+        gps.getGPS();
+
+
+
         handler = new Handler();
+
+
         //facebook
         if (AccessToken.getCurrentAccessToken() != null) {
             LoginUtil.initUser(AccessToken.getCurrentAccessToken().getUserId());
@@ -52,8 +60,7 @@ public class IntroActivity extends BaseActivity{
         }
         //KAKAO
         KAKAO.kakaoAccessTokenInfo();
-        GPS gps=new GPS(this);
-        gps.getGPS();
+
         //NAVER
         OAuthLogin naverLoginModule= NAVER.getNaverLoginModule(this);
         if(naverLoginModule.getState(this).toString().equals("OK")){
