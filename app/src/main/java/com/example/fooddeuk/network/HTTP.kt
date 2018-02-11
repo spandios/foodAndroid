@@ -1,6 +1,6 @@
 package com.example.fooddeuk.network
 
-import com.example.fooddeuk.common.CommonApplication.httpService
+import com.example.fooddeuk.common.CommonValueApplication.httpService
 import com.example.fooddeuk.model.menu.ReviewItem
 import com.example.fooddeuk.model.order.OrderResponse
 import com.example.fooddeuk.model.restaurant.RestaurantResponse

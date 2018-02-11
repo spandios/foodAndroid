@@ -1,13 +1,6 @@
 package com.iwedding.app.helper
 
-import android.app.Activity
-import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import com.example.fooddeuk.common.CommonApplication
-import com.example.fooddeuk.common.CommonApplication.pref
-
-import java.util.HashSet
+import com.example.fooddeuk.common.CommonValueApplication.pref
 
 /**
  * Created by ifamily on 2016-10-19.
