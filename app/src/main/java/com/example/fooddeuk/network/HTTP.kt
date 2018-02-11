@@ -1,7 +1,6 @@
 package com.example.fooddeuk.network
 
-<<<<<<< HEAD
-import com.example.fooddeuk.common.CommonValueApplication.httpService
+import com.example.fooddeuk.common.CommonApplication.httpService
 import com.example.fooddeuk.model.menu.ReviewItem
 import com.example.fooddeuk.model.order.OrderResponse
 import com.example.fooddeuk.model.restaurant.RestaurantResponse
@@ -14,7 +13,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiPredicate
 import io.reactivex.schedulers.Schedulers
 import java.net.SocketTimeoutException
-import java.util.*
 
 /**
  * Created by heo on 2018. 2. 10..
@@ -67,40 +65,12 @@ object HTTP {
 
     //Review
     @JvmStatic
-    fun getReview(menu_id: String): Single<ArrayList<ReviewItem>>  = httpService.getReview(menu_id)
+    fun getReview(menu_id: String): Single<ArrayList<ReviewItem>> = httpService.getReview(menu_id)
 
 
     //ORDER
     fun order(orderResponse: OrderResponse): Completable = httpService.order(orderResponse)
 
     fun getCurrentOrder(user_id: String): Single<ArrayList<OrderResponse>> = httpService.getCurrentOrder(user_id)
-=======
-import com.example.fooddeuk.model.user.User
-import com.example.fooddeuk.model.user.UserItem
-import retrofit2.Call
-import retrofit2.http.*
-
-/**
- * Created by iwedding on 2018. 2. 10..
- */
-interface HTTP{
-    @GET("/api/user/readUser")
-    abstract fun getUser(@Query("provider_id") provider_id: String): Call<UserItem>
-
-
-    @POST("/api/user/createUser")
-    abstract fun createUser(@Body user: User): Call<Void>
-
-
-    @FormUrlEncoded
-    @POST("/api/user/updateToken")
-    abstract fun updateToken(@Field("provider_id") provider_id: String, @Field("fcm_token") fcm_token: String): Call<Void>
-
-
-
-
->>>>>>> origin/master
-
-
 
 }
