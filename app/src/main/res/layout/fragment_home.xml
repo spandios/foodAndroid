@@ -1,169 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:id="@+id/home_event"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/event222"
-            />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#030303" />
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:padding="10dp"
+        android:layout_height="200dp"
         >
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false"
+            >
+
+            <ImageView
+                android:id="@+id/backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                android:background="@drawable/rv"
+                android:foreground="@drawable/gradient_background"
+                />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_collapseMode="pin"
+                app:theme="@style/ToolBarStyle"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주소"
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    />
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
 
-            android:id="@+id/testleft"
-            android:text="아무거나"
-            app:layout_constraintHorizontal_bias="0.15"
-            app:layout_constraintVertical_bias="0.15"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/testcenter"
-
-            app:layout_constraintVertical_bias="0.15"
-            app:layout_constraintLeft_toRightOf="@+id/testleft"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="일식"
-            app:layout_constraintRight_toLeftOf="@+id/testright"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        <Button
-            android:layout_width="60dp"
-            android:id="@+id/testright"
-            android:layout_height="60dp"
-
-            app:layout_constraintVertical_bias="0.15"
-            app:layout_constraintLeft_toRightOf="@+id/testcenter"
-            app:layout_constraintRight_toRightOf="parent"
-
-            android:text="치킨"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="60dp"
 
 
-            android:id="@+id/testleft2"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.15"
-            app:layout_constraintTop_toBottomOf="@+id/testleft"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="중식"
-            />
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/testcenter2"
-
-            app:layout_constraintLeft_toRightOf="@+id/testleft2"
-            app:layout_constraintTop_toBottomOf="@+id/testcenter"
-            app:layout_constraintRight_toLeftOf="@+id/testright2"
-            android:text="양식"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        <Button
-            android:id="@+id/testright2"
-
-            android:layout_width="60dp"
-
-            android:layout_height="60dp"
-            app:layout_constraintLeft_toRightOf="@id/testcenter2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:text="타이"
-            app:layout_constraintTop_toBottomOf="@id/testright" />
-
-
-    </android.support.constraint.ConstraintLayout>
-    <View
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#030303" />
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="검색"
+            <FrameLayout
+                android:visibility="gone"
+                android:id="@+id/home_header_layout"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <RelativeLayout
+                    android:id="@+id/home_event"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="60dp"
-            android:id="@+id/testsearch1"
-            android:text="지역"
-            android:textSize="22sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/test"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/testsearch3"
-            app:layout_constraintLeft_toRightOf="@id/testsearch1"
-            android:textSize="22sp"
-            android:text="지도"
-            />
-        <TextView
-            android:id="@+id/testsearch3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="60dp"
-            android:text="대학교"
-            android:textSize="22sp"
-            />
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/home_event_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rv"/>
+
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/home_event_viewpager_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="20dp"
+                        app:ci_gravity="center" />
+                </RelativeLayout>
+            </FrameLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/home_parent_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:layout_constraintTop_toBottomOf="@id/home_header_layout">
+
+                <Button
+                    android:id="@+id/item1"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="내 주변"
+                    app:layout_constraintEnd_toStartOf="@+id/item2"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/item2"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    android:text="일식"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/item3"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="치킨"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/item2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/item4"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="중식"
+                    app:layout_constraintEnd_toStartOf="@+id/item5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item1" />
+
+                <Button
+                    android:id="@+id/item5"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    android:text="양식"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item2" />
+
+                <Button
+                    android:id="@+id/item6"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="타이"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/item5"
+                    app:layout_constraintTop_toBottomOf="@id/item3" />
+                <TextView
+                    app:layout_constraintTop_toBottomOf="@+id/item6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/large_text"
 
 
-    </android.support.constraint.ConstraintLayout>
+                    />
+
+            </android.support.constraint.ConstraintLayout>
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
+                />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>
 
-
-</LinearLayout>

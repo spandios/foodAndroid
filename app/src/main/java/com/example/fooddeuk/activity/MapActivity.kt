@@ -52,8 +52,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         filter = extra.getString("filter")
         maxDistance = extra.getInt("maxDistance")
         menuType = extra.getString("menuType")
-        lat = extra.getDouble("lat")
-        lng = extra.getDouble("lng")
+
 
         googleMap.setLatLngBoundsForCameraTarget(LatLngBounds(LatLng(35.0, 126.0), LatLng(38.0, 128.0)))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(getLatLng()))

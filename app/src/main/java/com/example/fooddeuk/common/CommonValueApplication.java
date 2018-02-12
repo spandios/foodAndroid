@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.support.multidex.MultiDex;
 
 import com.example.fooddeuk.network.HttpService;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.IPushConfig;
@@ -33,9 +32,6 @@ public class CommonValueApplication extends Application {
     private static volatile Activity currentActivity;
     public static double lat;
     public static double lng;
-    public static GoogleApiClient googleApiClient;
-    public static String locationName;
-    public static String rest_id;
     public static HttpService httpService;
     public static LocationManager locationManager;
     public static String fcmToken;
@@ -85,10 +81,6 @@ public class CommonValueApplication extends Application {
 
     public static void setCurrentActivity(Activity currentActivity) {
         CommonValueApplication.currentActivity = currentActivity;
-    }
-
-    public static void setRest_id(String rest_id){
-        CommonValueApplication.rest_id=rest_id;
     }
 
     @Override

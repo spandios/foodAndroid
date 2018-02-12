@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.DetailRestaurantActivity;
 import com.example.fooddeuk.adapter.RestaurantAdapter;
-import com.example.fooddeuk.common.CommonValueApplication;
 import com.example.fooddeuk.model.restaurant.RestaurantResponse;
 import com.example.fooddeuk.network.RestaurantService;
 import com.example.fooddeuk.util.IntentUtil;
@@ -132,7 +131,6 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
                                     Parcelable restaurantParcel = Parcels.wrap(restaurant);
                                     Bundle extra = new Bundle();
                                     extra.putParcelable("restaurant", restaurantParcel);
-                                    CommonValueApplication.setRest_id(restaurant.rest_id);
                                     IntentUtil.startActivity(getActivity(), DetailRestaurantActivity.class, extra);
                                     Logger.d(restaurant.name + " 선택 ", restaurant.rest_id + "저장");
                                 });

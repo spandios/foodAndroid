@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--<android.support.constraint.ConstraintLayout--><!--android:id="@+id/detailHotMenuHeader"--><!--android:layout_width="match_parent"--><!--android:layout_height="40dp"--><!--android:padding="5dp">-->
-
-<!--<Button--><!--android:id="@+id/rest_detail_back_btn"--><!--android:layout_width="12dp"--><!--android:layout_height="18dp"--><!--android:layout_gravity="center"--><!--android:layout_marginBottom="8dp"--><!--android:layout_marginStart="16dp"--><!--android:layout_marginTop="8dp"--><!--android:background="@drawable/ic_back_black"--><!--app:layout_constraintBottom_toBottomOf="parent"--><!--app:layout_constraintStart_toStartOf="parent"--><!--app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--<TextView--><!--android:id="@+id/rest_detail_name"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="center"--><!--android:layout_marginBottom="8dp"--><!--android:layout_marginStart="20dp"--><!--android:layout_marginTop="8dp"--><!--android:layout_toRightOf="@+id/rest_detail_back_btn"--><!--android:gravity="left"--><!--android:lineSpacingExtra="4.5sp"--><!--android:text="가게이름"--><!--android:textAlignment="center"--><!--android:textColor="@color/text_main"--><!--android:textSize="20sp"--><!--android:textStyle="bold"--><!--app:layout_constraintBottom_toBottomOf="parent"--><!--app:layout_constraintStart_toEndOf="@+id/rest_detail_back_btn"--><!--app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--<Button--><!--android:id="@+id/rest_detail_like"--><!--android:layout_width="20dp"--><!--android:layout_height="20dp"--><!--android:layout_alignParentRight="true"--><!--android:layout_marginBottom="8dp"--><!--android:layout_marginEnd="8dp"--><!--android:layout_marginTop="8dp"--><!--android:background="@drawable/ic_heart"--><!--app:layout_constraintBottom_toBottomOf="parent"--><!--app:layout_constraintEnd_toEndOf="parent"--><!--app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--</android.support.constraint.ConstraintLayout>-->
-
-
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -71,19 +60,6 @@
                         app:ci_gravity="right" />
 
                 </RelativeLayout>
-
-
-                <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_above="@+id/rest_detail_main_tab">-->
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="fefe"/>-->
-
-
-                <!--</LinearLayout>-->
 
 
                 <android.support.constraint.ConstraintLayout

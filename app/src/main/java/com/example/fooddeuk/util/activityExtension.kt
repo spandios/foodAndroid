@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity
  */
 
 //FRAGMENT REPLACE
-fun AppCompatActivity.replaceFragmentToActivity(fragment: Fragment, frameId: Int) {
+fun AppCompatActivity.replaceFragmentToActivity(frameId: Int,fragment: Fragment) {
     val transaction = this.supportFragmentManager.beginTransaction()
     transaction.replace(frameId, fragment)
     transaction.commit()
 }
+
+
+

@@ -20,7 +20,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.MapActivity;
 import com.example.fooddeuk.activity.settingLocationMapActivity;
-import com.example.fooddeuk.common.CommonValueApplication;
 import com.example.fooddeuk.model.restaurant.LocationItem;
 import com.example.fooddeuk.rx.RxBus;
 import com.example.fooddeuk.staticval.StaticVal;
@@ -37,7 +36,7 @@ import butterknife.OnClick;
 import io.realm.RealmResults;
 
 
-public class CurLocationRestaurantFragment extends Fragment {
+public class CurLocationRestaurantFragment extends Fragment{
     GPS_Util gps_util;
     MaterialDialog locationSettingDialog;
     Activity mContext;
@@ -45,7 +44,6 @@ public class CurLocationRestaurantFragment extends Fragment {
     String filter = StaticVal.INSTANCE.getDefaultFilter();
     int maxDistance = StaticVal.INSTANCE.getDefaultCurrentLocationMenuMaxDistance();
     String restaurantMenuType;
-    CommonValueApplication commonValueApplication;
     fragmentPagerAdapter fragmentPagerAdapter;
 
 

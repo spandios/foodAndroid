@@ -4,21 +4,6 @@
     <dimen name="text_margin">16dp</dimen>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!--OrderList-->
     <dimen name="order_list_option_name_text">16sp</dimen>
     <dimen name="order_list_map_title">18sp</dimen>
@@ -27,4 +12,10 @@
 
     <dimen name="order_list_option_price_text">16sp</dimen>
     <dimen name="order_list_option_price_margin">32dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <dimen name="design_bottom_navigation_active_text_size">12sp</dimen>
 </resources>
