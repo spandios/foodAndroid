@@ -12,6 +12,10 @@
     <color name="silver">#C0C0C0</color>
     <color name="white">#ffffffff</color>
     <color name="yelllow">#FFFF00</color>
+    <color name="black">#000000</color>
+    <color name="white_1">#9f9e9e</color>
+    <color name="white_2">#434242</color>
+
 
 
 </resources>

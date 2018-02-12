@@ -197,9 +197,9 @@ public class CurLocationRestaurantFragment extends Fragment{
     public void setLocationSettingDialog() {
         locationSettingDialog = new MaterialDialog.Builder(getActivity()).customView(R.layout.dialog_current_location, true).build();
         View dialogView = locationSettingDialog.getView();
-        final Button location_reload_button = dialogView.findViewById(R.id.dialog_current_location_reload_button);
-        final Button location_map_button = dialogView.findViewById(R.id.dialog_current_location_map_button);
-        final TextView location_cancel = dialogView.findViewById(R.id.dialog_current_location_cancel_textview);
+        final Button location_reload_button = dialogView.findViewById(R.id.btn_get_location);
+        final Button location_map_button = dialogView.findViewById(R.id.btn_map_get_location_);
+        final TextView location_cancel = dialogView.findViewById(R.id.btn_location_cancel);
         Button.OnClickListener onClickListener = v -> {
             switch (v.getId()) {
                 case R.id.currentLocationTextView:
@@ -207,7 +207,7 @@ public class CurLocationRestaurantFragment extends Fragment{
                     break;
 
                 //현재위치에서 재 검색
-                case R.id.dialog_current_location_reload_button:
+                case R.id.btn_get_location:
                     gps_util = new GPS_Util(getActivity().getApplicationContext());
                     gps_util.insertDB();
                     locationItems = RealmUtil.findDataAll(LocationItem.class).get(0);
@@ -216,11 +216,11 @@ public class CurLocationRestaurantFragment extends Fragment{
                     locationSettingDialog.dismiss();
                     break;
                 //지도에서 직접 위치 지정
-                case R.id.dialog_current_location_map_button:
+                case R.id.btn_map_get_location_:
                     locationSettingDialog.dismiss();
                     IntentUtil.startActivity(getActivity(), settingLocationMapActivity.class);
                     //닫기
-                case R.id.dialog_current_location_cancel_textview:
+                case R.id.btn_location_cancel:
                     locationSettingDialog.dismiss();
                     break;
             }

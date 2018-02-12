@@ -128,7 +128,7 @@ public class RestMenuCategoryFragment extends Fragment {
 //            if (position != mCurrentPosition) {
 //                Fragment fragment = (Fragment) object;
 //                MenuPager pager = (MenuPager) container;
-//                if (fragment != null && fragment.getView() != null) {
+//                if (fragments != null && fragments.getView() != null) {
 //                    mCurrentPosition = position;
 //                    pager.measureCurrentView(fragment.getView());
 //

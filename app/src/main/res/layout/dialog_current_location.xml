@@ -22,7 +22,7 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/dialog_current_location_reload_button"
+            android:id="@+id/btn_get_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="현 위치에서 재 검색" />
@@ -34,7 +34,7 @@
         android:layout_weight="1"
         >
         <Button
-            android:id="@+id/dialog_current_location_map_button"
+            android:id="@+id/btn_map_get_location_"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="지도에서 직접설정"/>
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
         <TextView
-            android:id="@+id/dialog_current_location_cancel_textview"
+            android:id="@+id/btn_location_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17dp"

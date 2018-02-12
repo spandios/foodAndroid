@@ -4,7 +4,7 @@
     <gradient
         android:angle="270"
         android:endColor="@android:color/transparent"
-        android:startColor="#5e4b4a4a" />
+        android:startColor="#59050505" />
     <corners android:radius="0dp" />
     <!--90 top-->
     <!--270 botoom-->

@@ -8,7 +8,6 @@ import android.os.Handler
 import android.widget.Toast
 import com.example.fooddeuk.R
 import com.example.fooddeuk.util.Location.setLocation
-import com.example.fooddeuk.util.Location.startLocationUpdate
 import com.example.fooddeuk.util.NetworkUtil
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -42,9 +41,9 @@ class IntroActivity : BaseActivity(){
         val permissionListener = object : PermissionListener {
             @SuppressLint("MissingPermission")
             override fun onPermissionGranted() {
-                setLocation()
-                startLocationUpdate()
-                nextActivity()
+                setLocation(applicationContext,{
+                    nextActivity()
+                })
             }
 
             override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {

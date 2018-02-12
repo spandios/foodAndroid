@@ -80,7 +80,7 @@ public class UserFragment extends Fragment {
     private void setFacebookLogin(View view){
         loginButton = view.findViewById(R.id.login_button);
         loginButton.setFragment(this);
-        // If using in a fragment
+        // If using in a fragments
         callbackManager = CallbackManager.Factory.create();
         LoginUtil.INSTANCE.FaceBookLogin(loginButton,callbackManager);
     }

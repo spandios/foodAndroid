@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/main_dangol" />
 
+    <item
+        android:id="@+id/navigation_near"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/main_near" />
+
 
     <item
         android:id="@+id/navigation_cart"

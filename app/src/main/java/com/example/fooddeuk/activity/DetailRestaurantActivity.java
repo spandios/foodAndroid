@@ -166,7 +166,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-// get the current selected tab's position and replace the fragment accordingly
+// get the current selected tab's position and replace the fragments accordingly
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
@@ -197,7 +197,7 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 
 //                FragmentManager fm = getSupportFragmentManager();
 //                FragmentTransaction ft = fm.beginTransaction();
-//                ft.replace(R.id.rest_main_tab, fragment);
+//                ft.replace(R.id.rest_main_tab, fragments);
 //                ft.commit();
             }
 

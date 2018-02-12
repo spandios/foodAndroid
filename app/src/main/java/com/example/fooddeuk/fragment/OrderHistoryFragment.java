@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.adapter.OrderHistoryAdapter;
 import com.example.fooddeuk.model.order.OrderResponse;
-import com.example.fooddeuk.model.user.User;
 import com.example.fooddeuk.network.OrderService;
 import com.example.fooddeuk.util.LayoutUtil;
-import com.example.fooddeuk.util.RealmUtil;
 
 import java.util.ArrayList;
 
@@ -41,7 +39,7 @@ public class OrderHistoryFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_history, container, false);
-        user_id=RealmUtil.findData(User.class).user_id;
+//        user_id=RealmUtil.findData(User.class).user_id;
         ButterKnife.bind(this,view);
         return view;
     }
@@ -49,7 +47,7 @@ public class OrderHistoryFragment extends android.support.v4.app.Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        order_history_loading_bar.setIndeterminateDrawable(new android.support.v4.widget.CircularProgressDrawable(getContext()));
+//        order_history_loading_bar.setIndeterminateDrawable(new android.support.v4.widget.CircularProgressDrawable(getContext()));
 
         /**
          *
@@ -57,19 +55,19 @@ public class OrderHistoryFragment extends android.support.v4.app.Fragment {
          *
          * */
 
-        getOrderHistoryData((err, item) -> {
-                if (err != null) {
-                    try {
-                        throw err;
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-
-                }else{
-                    order_history_loading_bar.setVisibility(View.GONE);
-                    setRecyclerView(currentOrderRecyclerView, item);
-                }
-            });
+//        getOrderHistoryData((err, item) -> {
+//                if (err != null) {
+//                    try {
+//                        throw err;
+//                    } catch (Throwable throwable) {
+//                        throwable.printStackTrace();
+//                    }
+//
+//                }else{
+//                    order_history_loading_bar.setVisibility(View.GONE);
+//                    setRecyclerView(currentOrderRecyclerView, item);
+//                }
+//            });
 
 
 
