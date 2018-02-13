@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import com.example.fooddeuk.R
-import com.example.fooddeuk.util.Location.setLocation
+import com.example.fooddeuk.location.Location.getLocation
+import com.example.fooddeuk.util.LoginUtil
 import com.example.fooddeuk.util.NetworkUtil
+import com.example.fooddeuk.util.StartActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.squareup.picasso.Picasso
@@ -23,26 +25,22 @@ class IntroActivity : BaseActivity(){
     }
 
     private fun basicInit() {
-        permissionCheck()
         Picasso.with(this).load(R.drawable.rv2).into(introImageView)
         NetworkUtil.CheckNetGps(this)
+        permissionCheck()
+    }
 
-    }
-    private fun nextActivity(){
-        Handler().postDelayed({
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            val intent = Intent(this@IntroActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 1000)
-    }
 
     private fun permissionCheck() {
         val permissionListener = object : PermissionListener {
             @SuppressLint("MissingPermission")
             override fun onPermissionGranted() {
-                setLocation(applicationContext,{
-                    nextActivity()
+                LoginUtil.checkUser({exist ->
+                    when(exist){
+                        true->getLocation({ lat, lng ->  nextActivity()})
+                        false->{StartActivity(LoginActivity::class.java)
+                        finish()}
+                    }
                 })
             }
 
@@ -59,8 +57,20 @@ class IntroActivity : BaseActivity(){
                 .check()
     }
 
+    private fun nextActivity(){
+        Handler().postDelayed({
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            val intent = Intent(this@IntroActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 10)
+    }
 
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
     override fun onBackPressed() {
         super.onBackPressed()

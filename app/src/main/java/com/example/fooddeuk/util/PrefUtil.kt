@@ -1,34 +1,44 @@
 package com.iwedding.app.helper
 
-import com.example.fooddeuk.common.CommonValueApplication.pref
+import android.content.Context
+import android.content.SharedPreferences
 
-/**
- * Created by ifamily on 2016-10-19.
- */
-class LoginPrefHelper() {
-    
+
+
+class PrefUtil {
+
     /**
      * 키에 해당하는 데이터(문자열)를 삽입한다.
      * @param key        키
      * @param value    문자열
      */
-
-
     companion object {
+        val PROVIDER_ID = "provider_id"
+        val EMAIL = "email"
+        val NAME = "name"
+        val FCM_TOKEN = "fcm_token"
+        val PHONE = "phone"
+        val PROVIDER = "provider"
+
+        lateinit var userPref: SharedPreferences
+        fun setPref(context: Context,key : String){
+            userPref =context.getSharedPreferences(key,Context.MODE_PRIVATE)
+        }
+
         fun put(key: String, value: String) {
-            val editor = pref.edit()
+            val editor = userPref.edit()
             editor.putString(key, value)
             editor.commit()
         }
 
         fun put(key: String, value: Int) {
-            val editor = pref.edit()
+            val editor = userPref.edit()
             editor.putInt(key, value)
             editor.commit()
         }
 
         fun put(key: String, value: Boolean?) {
-            val editor = pref.edit()
+            val editor = userPref.edit()
             editor.putBoolean(key, value!!)
             editor.commit()
         }
@@ -44,17 +54,17 @@ class LoginPrefHelper() {
         fun getValue(key: String, defaultValue: String): String? {
 
             try {
-                return pref.getString(key, defaultValue)
+                return userPref.getString(key, defaultValue)
             } catch (e: Exception) {
                 return defaultValue
             }
 
         }
 
-        fun getValue(key: String, defaultValue: Boolean?): Boolean? {
+        fun getValue(key: String, defaultValue: Boolean): Boolean {
 
             try {
-                return pref.getBoolean(key, defaultValue!!)
+                return userPref.getBoolean(key, defaultValue)
             } catch (e: Exception) {
                 return defaultValue
             }
@@ -64,7 +74,7 @@ class LoginPrefHelper() {
         fun getValue(key: String, defaultValue: Int): Int {
 
             try {
-                return pref.getInt(key, defaultValue)
+                return userPref.getInt(key, defaultValue)
             } catch (e: Exception) {
                 return defaultValue
             }
@@ -77,13 +87,13 @@ class LoginPrefHelper() {
          * @param key 키
          */
         fun removePreferences(key: String) {
-            val editor = pref.edit()
+            val editor = userPref.edit()
             editor.remove(key)
             editor.commit()
         }
 
         fun deleteData() {
-            val editor = pref.edit()
+            val editor = userPref.edit()
             editor.clear()
             editor.commit()
         }

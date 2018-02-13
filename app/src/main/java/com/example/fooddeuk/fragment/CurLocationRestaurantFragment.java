@@ -18,17 +18,18 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.fooddeuk.R;
+import com.example.fooddeuk.activity.LocationSettingByMapActivity;
 import com.example.fooddeuk.activity.MapActivity;
-import com.example.fooddeuk.activity.settingLocationMapActivity;
 import com.example.fooddeuk.model.restaurant.LocationItem;
 import com.example.fooddeuk.rx.RxBus;
 import com.example.fooddeuk.staticval.StaticVal;
 import com.example.fooddeuk.util.DialogUtil;
-import com.example.fooddeuk.util.GPS_Util;
 import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.RealmUtil;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.orhanobut.logger.Logger;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +38,6 @@ import io.realm.RealmResults;
 
 
 public class CurLocationRestaurantFragment extends Fragment{
-    GPS_Util gps_util;
     MaterialDialog locationSettingDialog;
     Activity mContext;
     LocationItem locationItems;
@@ -178,10 +178,10 @@ public class CurLocationRestaurantFragment extends Fragment{
         super.onResume();
         //지도로 수동 위치를 지정하면 그 위치를 현재위치로 설정한뒤 근처 식당 재검색
         RxBus.subscribe(o -> {
-            if ((boolean) o) {
-                locationItems = RealmUtil.findDataAll(LocationItem.class).get(0);
-                Logger.d(locationItems);
-                currentLocationTextView.setText(locationItems.getLocationName());
+            if ((boolean)(((HashMap)o).get(getString(R.string.rx_location_setting)))) {
+//                locationItems = RealmUtil.findDataAll(LocationItem.class).get(0);
+//                Logger.d(locationItems);
+//                currentLocationTextView.setText(locationItems.getLocationName());
 //                getCurLocationRestaurant();
             }
         });
@@ -205,11 +205,9 @@ public class CurLocationRestaurantFragment extends Fragment{
                 case R.id.currentLocationTextView:
                     locationSettingDialog.show();
                     break;
-
                 //현재위치에서 재 검색
                 case R.id.btn_get_location:
-                    gps_util = new GPS_Util(getActivity().getApplicationContext());
-                    gps_util.insertDB();
+//
                     locationItems = RealmUtil.findDataAll(LocationItem.class).get(0);
                     currentLocationTextView.setText(locationItems.getLocationName());
 //                    getCurLocationRestaurant();
@@ -218,7 +216,7 @@ public class CurLocationRestaurantFragment extends Fragment{
                 //지도에서 직접 위치 지정
                 case R.id.btn_map_get_location_:
                     locationSettingDialog.dismiss();
-                    IntentUtil.startActivity(getActivity(), settingLocationMapActivity.class);
+                    IntentUtil.startActivity(getActivity(), LocationSettingByMapActivity.class);
                     //닫기
                 case R.id.btn_location_cancel:
                     locationSettingDialog.dismiss();

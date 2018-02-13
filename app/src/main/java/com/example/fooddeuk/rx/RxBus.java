@@ -3,6 +3,8 @@ package com.example.fooddeuk.rx;
 
 import android.support.annotation.NonNull;
 
+import java.util.HashMap;
+
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
@@ -25,6 +27,10 @@ public class RxBus {
 
     public static void publish(@NonNull Object message) {
         sSubject.onNext(message);
+    }
+
+    public static Boolean getRxObjectBool(String key, Object object){
+        return (Boolean)((HashMap)object).get(key);
     }
 
 

@@ -7,10 +7,15 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.Window
 import com.example.fooddeuk.R
-import com.example.fooddeuk.fragment.*
+import com.example.fooddeuk.fragment.CurLocationRestaurantFragment
+import com.example.fooddeuk.fragment.DanGolFragment
+import com.example.fooddeuk.fragment.OrderHistoryFragment
+import com.example.fooddeuk.fragment.UserFragment
+import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.staticval.StaticVal
 import com.example.fooddeuk.util.NetworkUtil
 import com.example.fooddeuk.util.SettingActivityUtil
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -22,12 +27,18 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
+        stopLoading()
         fragments= arrayOf(HomeFragment(),DanGolFragment(),CurLocationRestaurantFragment(),OrderHistoryFragment(),UserFragment())
         setNavigation()
         setViewPager()
 
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Logger.d("destroy")
     }
 
     override fun onResume() {
@@ -88,6 +99,9 @@ class MainActivity : BaseActivity() {
            else -> null
        }
     }
+
+
+
 }
 
 

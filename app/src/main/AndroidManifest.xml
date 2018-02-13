@@ -12,7 +12,6 @@
     <application
         android:name=".common.CommonValueApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -51,7 +50,7 @@
             <!-- &lt;!&ndash;<category android:name="android.intent.category.DEFAULT" />&ndash;&gt; -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".activity.settingLocationMapActivity" />
+        <activity android:name=".activity.LocationSettingByMapActivity" />
         <activity
             android:name=".activity.OrderActivity"
             android:exported="true"
@@ -103,6 +102,7 @@
             android:name="io.fabric.ApiKey"
             android:value="986e4bbd6dc0c418fd293489d5b081c35f1f2a4a" />
 
+        <activity android:name=".activity.LoginActivity"></activity>
     </application>
 
 </manifest>

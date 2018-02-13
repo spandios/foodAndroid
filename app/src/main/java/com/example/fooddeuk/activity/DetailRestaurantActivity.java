@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.adapter.ImageViewPager;
 import com.example.fooddeuk.adapter.MenuListAdapter;
-import com.example.fooddeuk.fragment.HomeFragment;
+import com.example.fooddeuk.home.HomeFragment;
 import com.example.fooddeuk.fragment.RestMenuCategoryFragment;
 import com.example.fooddeuk.model.restaurant.Restaurant;
 import com.example.fooddeuk.network.RestaurantService;

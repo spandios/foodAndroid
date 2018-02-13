@@ -12,6 +12,7 @@ import com.facebook.FacebookException
 import com.facebook.GraphRequest
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
+import com.iwedding.app.helper.PrefUtil
 import com.orhanobut.logger.Logger
 
 /**
@@ -19,30 +20,52 @@ import com.orhanobut.logger.Logger
  */
 
 object LoginUtil {
-    /**
-     * 로그인 되있는지 안 되어있는지 , check할수있음
-     */
-//    { err, userResponse ->
-//        if (err != null) {
-//            err!!.printStackTrace()
-//        } else if (userResponse != null) {
-//            //기존에 등록되있는 회원이라면  //local DB
-//            if (userResponse!!.exist) {
-//                val user = userResponse!!.user
-//                if (userResponse!!.user.fcm_token != fcm_token) {
-//                    updateFcmTokenAndRealmInsert(userResponse!!.user, fcm_token)
-//                }
-//                insertUser(user)
-//                Logger.d(user.provider + "기존회원 : " + user.email)
-//            } else {
-//                //Login Button 온
-//                Logger.d("기존유저가 아님")
-//            }
-//        }
-//
-//    })
+
+    val providerId: String? = PrefUtil.getValue(PrefUtil.PROVIDER_ID, "")
+    var fcm_token: String? = PrefUtil.getValue(PrefUtil.FCM_TOKEN, "")
+    var phone: String? = PrefUtil.getValue(PrefUtil.PHONE, "")
+    var name: String? = PrefUtil.getValue(PrefUtil.NAME, "")
+
+
+    fun checkUser(callback : (exist : Boolean) -> Unit) {
+
+        Logger.d(providerId)
+        if (!providerId.isNullOrEmpty() && !fcm_token.isNullOrEmpty() && !phone.isNullOrEmpty()&&!name.isNullOrEmpty()) {
+            getUser(providerId!!, { err, userResponse ->
+                if (err != null) {
+                    err.printStackTrace()
+                } else {
+                    userResponse?.let {
+                        val user = it.user
+                        if (fcm_token!= user.fcm_token){
+                            fcm_token=user.fcm_token
+                            PrefUtil.put("fcm_token",user.fcm_token)
+                        }
+                        if(name!=user.user_name){
+                            name=user.user_name
+                            PrefUtil.put("name",user.user_name)
+                        }
+                        if (user.phone != phone) {
+                            Logger.d("phone fail")
+                            PrefUtil.put("phone",user.phone)
+                        }//TODO UPDATE PHONE
+
+                        insertUser(user)
+                        callback(true)
+                    }
+                }
+            })
+        } else {
+            Logger.d("user empty")
+            //TODO 유저 정보가 없음 go to LoginActivity
+            callback(false)
+
+        }
+    }
+
+
     fun initUser(provider_id: String) {
-        getUser(provider_id, {err, userResponse ->
+        getUser(provider_id, { err, userResponse ->
             userResponse?.let {
                 if (userResponse.exist) {
                     val user = userResponse.user
@@ -82,7 +105,7 @@ object LoginUtil {
                         Logger.d("기존 회원입니다.")
                     } else {
 
-                 HTTP.createUser(user).subscribe({ insertUser(user)},{it.printStackTrace()})
+                        HTTP.createUser(user).subscribe({ insertUser(user) }, { it.printStackTrace() })
                     }//신규유저라면
 
                 }
@@ -152,33 +175,28 @@ object LoginUtil {
     }
 
 
-    private fun getUser(provider_id: String, callback : (err : Throwable?, userResponse : UserResponse?)->Unit)  {
-        HTTP.getUser(provider_id).subscribe({ userResponse -> callback(null, userResponse) },{ throwable -> callback(throwable, null)})
+    private fun getUser(provider_id: String, callback: (err: Throwable?, userResponse: UserResponse?) -> Unit) {
+        HTTP.getUser(provider_id).subscribe({ userResponse -> callback(null, userResponse) }, { throwable -> callback(throwable, null) })
 
     }
 
 
     fun insertUser(item: User) {
-        Logger.d(item.user_id)
         RealmUtil.insertData(item)
-        Logger.d(RealmUtil.findData(User::class.java))
         Logger.d("유저 정보 db에 저장 성공 ")
     }
 
 
     fun updateFcmTokenAndRealmInsert(user: User, fcm_token: String) {
-        HTTP.updateToken(user.provider_id,fcm_token).subscribe({
+        HTTP.updateToken(user.provider_id, fcm_token).subscribe({
             Logger.d("fcm_token update!!")
             Logger.d("유저 정보 db에 저장 성공 ")
             user.fcm_token = fcm_token
             RealmUtil.insertData(user)
-        },{it.printStackTrace()})
+        }, { it.printStackTrace() })
     }
 
 
 
-    interface ExistUserCallback {
-        fun existCallback(err: Throwable, isExist: Boolean?)
-    }
 
 }

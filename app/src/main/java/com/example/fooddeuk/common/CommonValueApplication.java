@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.support.multidex.MultiDex;
 
 import com.example.fooddeuk.network.HttpService;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.iwedding.app.helper.PrefUtil;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.IPushConfig;
 import com.kakao.auth.ISessionConfig;
@@ -35,7 +35,6 @@ public class CommonValueApplication extends Application {
     public static HttpService httpService;
     public static LocationManager locationManager;
     public static String fcmToken;
-    public static SharedPreferences pref;
     
 
 
@@ -94,9 +93,7 @@ public class CommonValueApplication extends Application {
         KakaoSDK.init(new KakaoSDKAdapter());
         locationManager=(LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         fcmToken= FirebaseInstanceId.getInstance().getToken();
-
-
-
+        PrefUtil.Companion.setPref(this,"user");
 //        SmartLocation.with(this).location()
 //                .oneFix()
 //                .start(location -> {

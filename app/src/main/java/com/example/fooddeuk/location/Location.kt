@@ -1,7 +1,6 @@
-package com.example.fooddeuk.util
+package com.example.fooddeuk.location
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import com.example.fooddeuk.common.CommonValueApplication
@@ -14,16 +13,30 @@ import java.util.*
  */
 object Location {
     //100 = 1seconds
+    var buzy = false
     var lat: Double = 0.toDouble()
     var lng: Double = 0.toDouble()
+    lateinit var locationName : String
     val baseInterval: Long = 100
     val baseFastestInterval: Long = 100
     val basePriority = LocationRequest.PRIORITY_HIGH_ACCURACY
     @SuppressLint("StaticFieldLeak")
     lateinit var mFusedLocationClient: FusedLocationProviderClient
     lateinit var getLocationCallback: LocationCallback
-    lateinit var restartLocationCallback: LocationCallback
-    lateinit var geocoder : Geocoder
+    var restartLocationCallback: LocationCallback =object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            super.onLocationResult(locationResult)
+            lat = locationResult.locations[0].latitude
+            lng = locationResult.locations[0].longitude
+
+        }
+
+        override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
+            super.onLocationAvailability(locationAvailability)
+        }
+    }
+    val geocoder : Geocoder =Geocoder(CommonValueApplication.getInstance(),Locale.KOREA)
+
 
 
     var locationRequest: LocationRequest = LocationRequest().apply {
@@ -32,20 +45,16 @@ object Location {
         priority = basePriority
     }
 
-    private fun initGeocoder(context: Context){
-        geocoder= Geocoder(context,Locale.KOREA)
-    }
-
-    //
-    fun setLocation(context: Context,latLngCallback: () -> Unit) {
-        initGeocoder(context)
+    fun getLocation(callback : (lat : Double, lng : Double)->Unit) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(CommonValueApplication.getInstance())
         getLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 lat = locationResult.locations[0].latitude
                 lng = locationResult.locations[0].longitude
-                latLngCallback()
+
+//                getCallback(lat,lng)
+                callback(lat,lng)
                 mFusedLocationClient.removeLocationUpdates(this)
             }
 
@@ -53,17 +62,7 @@ object Location {
                 super.onLocationAvailability(locationAvailability)
             }
         }
-        restartLocationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                super.onLocationResult(locationResult)
-                lat = locationResult.locations[0].latitude
-                lng = locationResult.locations[0].longitude
-            }
 
-            override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
-                super.onLocationAvailability(locationAvailability)
-            }
-        }
         startLocationUpdate()
     }
 
@@ -72,16 +71,16 @@ object Location {
         mFusedLocationClient.requestLocationUpdates(locationRequest, getLocationCallback, null)
     }
 
-    @SuppressLint("MissingPermission")
-    fun persistLocationUpdate() {
-        mFusedLocationClient.requestLocationUpdates(locationRequest, restartLocationCallback, null)
-    }
+//    @SuppressLint("MissingPermission")
+//    fun persistLocationUpdate() {
+//        mFusedLocationClient.requestLocationUpdates(locationRequest, restartLocationCallback, null)
+//    }
+//
+//    fun stopLocationUpdate() {
+//        mFusedLocationClient.removeLocationUpdates(getLocationCallback)
+//    }
 
-    fun stopLocationUpdate() {
-        mFusedLocationClient.removeLocationUpdates(getLocationCallback)
-    }
-
-    fun getLocationName(lat: Double = this.lat, lng: Double = this.lng): String? {
+    fun getLocationName(lat: Double = Location.lat, lng: Double = Location.lng): String? {
         try {
             //좌표->주소
             val addresses: Address
@@ -93,20 +92,14 @@ object Location {
 
 
             if ((subLocality != null) and (thoroughFare != null)) {
-
                 return subLocality + " " + thoroughFare
-
             } else {
-                Logger.d(addresses.getAddressLine(0))
                 return addresses.getAddressLine(0).substring(12)
             }
-
-
         }
         catch (e: Exception) {
             Logger.d(e)
         }
-
         return null
 
     }
