@@ -13,31 +13,32 @@ class PrefUtil {
      * @param value    문자열
      */
     companion object {
-        val PROVIDER_ID = "provider_id"
-        val EMAIL = "email"
-        val NAME = "name"
-        val FCM_TOKEN = "fcm_token"
-        val PHONE = "phone"
-        val PROVIDER = "provider"
+        const val PROVIDER_ID = "provider_id"
+        const val EMAIL = "email"
+        const val NAME = "name"
+        const val FCM_TOKEN = "fcm_token"
+        const val PHONE = "phone"
+        const val PROVIDER = "provider"
+        const val EXIST = "EXIST"
 
         lateinit var userPref: SharedPreferences
         fun setPref(context: Context,key : String){
             userPref =context.getSharedPreferences(key,Context.MODE_PRIVATE)
         }
 
-        fun put(key: String, value: String) {
+        fun setValue(key: String, value: String) {
             val editor = userPref.edit()
             editor.putString(key, value)
             editor.commit()
         }
 
-        fun put(key: String, value: Int) {
+        fun setValue(key: String, value: Int) {
             val editor = userPref.edit()
             editor.putInt(key, value)
             editor.commit()
         }
 
-        fun put(key: String, value: Boolean?) {
+        fun setValue(key: String, value: Boolean?) {
             val editor = userPref.edit()
             editor.putBoolean(key, value!!)
             editor.commit()

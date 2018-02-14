@@ -123,8 +123,8 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
         ButterKnife.bind(this);
 
         //Parcel로 선택된 식당 정보 가져옴
-        /**from CurLocationRestaurantFragment**/
-        /**from CurLocationRestaurantFragment**/
+        /**from MyNearRestaurantFragment**/
+        /**from MyNearRestaurantFragment**/
         restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
 
         //메뉴관련 ViewPager 생성
@@ -336,9 +336,9 @@ public class DetailRestaurantActivity extends AppCompatActivity implements MenuL
 //    }
 
 
-//    public class fragmentPagerAdapter extends FragmentPagerAdapter {
+//    public class NearRestaurantStatePagerAdapter extends FragmentPagerAdapter {
 //
-//        public fragmentPagerAdapter(FragmentManager fm) {
+//        public NearRestaurantStatePagerAdapter(FragmentManager fm) {
 //            super(fm);
 //        }
 //

@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,8 +36,7 @@ import retrofit2.Response;
 public class Rest_list_fragment extends android.support.v4.app.Fragment {
 
     //Bind View
-    @BindView(R.id.rest_list_fab)
-    FloatingActionButton restListFab;
+
     @BindView(R.id.rest_list)
     RecyclerView restaurantList;
 
@@ -73,12 +72,6 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rest_list, container, false);
         ButterKnife.bind(this, view);
-        restListFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                restaurantList.smoothScrollToPosition(0);
-            }
-        });
 
 
         if (getArguments() != null) {
@@ -137,29 +130,8 @@ public class Rest_list_fragment extends android.support.v4.app.Fragment {
                                 LayoutUtil.RecyclerViewSetting(getActivity(), restaurantList);
 
                                 restaurantList.setAdapter(restaurantAdapter);
-
-                                if(response.body().restaurants.size()>10){
-                                    restaurantList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                        @Override
-                                        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                                            if (dy > 0 || dy < 0 && restListFab.isShown()) {
-                                                restListFab.hide();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                                            super.onScrollStateChanged(recyclerView, newState);
-                                            if (newState == RecyclerView.SCROLL_STATE_IDLE&&recyclerView.computeVerticalScrollOffset()>300) {
-                                                restListFab.show();
-                                            }
-                                        }
-                                    });
-                                }else{
-                                    restListFab.hide();
-                                }
+                                OverScrollDecoratorHelper.setUpOverScroll(restaurantList, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
                             }
-
                         }
 
                     }

@@ -1,4 +1,4 @@
-package com.example.fooddeuk.fcm;
+package com.example.fooddeuk.util;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;

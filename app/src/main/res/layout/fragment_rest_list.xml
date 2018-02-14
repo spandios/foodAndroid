@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/silver"
     >
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -12,18 +11,5 @@
         android:id="@+id/rest_list"
         android:background="@color/mdtp_white"
         />
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rest_list_fab"
-        app:fabSize="mini"
-        android:layout_margin="@dimen/fab_margin"
-        app:rippleColor="@color/tangerine"
-        android:layout_gravity="bottom|end"
-
-        />
-
-
-
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,6 +1,6 @@
 package com.example.fooddeuk.network
 
-import com.example.fooddeuk.common.CommonValueApplication.httpService
+import com.example.fooddeuk.GlobalApplication.httpService
 import com.example.fooddeuk.model.menu.ReviewItem
 import com.example.fooddeuk.model.order.OrderResponse
 import com.example.fooddeuk.model.restaurant.RestaurantResponse
@@ -18,6 +18,7 @@ import java.net.SocketTimeoutException
  * Created by heo on 2018. 2. 10..
  */
 object HTTP {
+
 
     fun basic(): BiPredicate<Int, Throwable> {
         return BiPredicate { retryCount, throwable -> retryCount <= 1 && throwable is SocketTimeoutException }
@@ -72,5 +73,7 @@ object HTTP {
     fun order(orderResponse: OrderResponse): Completable = httpService.order(orderResponse)
 
     fun getCurrentOrder(user_id: String): Single<ArrayList<OrderResponse>> = httpService.getCurrentOrder(user_id)
+
+
 
 }

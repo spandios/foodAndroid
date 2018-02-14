@@ -21,16 +21,14 @@ open class BaseActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+//        requestWindowFeature(Window.FEATURE_NO_TITLE)
     }
-
 
     fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
     fun stopLoading(){
         main_progressbar.visibility= View.GONE
-
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
@@ -46,7 +44,6 @@ open class BaseActivity : AppCompatActivity() {
             return
         }
         super.onBackPressed()
-
     }
 
 }

@@ -26,13 +26,13 @@ public class User extends RealmObject{
     public User(){
 
     }
-    public User(String email, String provider_id, String user_name, String provider) {
+    public User(String email, String provider_id, String user_name, String provider,String profile_image) {
         this.email = email;
         this.provider_id = provider_id;
         this.user_name = user_name;
         this.provider=provider;
         this.phone = "";
-        this.profile_image = "";
+        this.profile_image = profile_image;
     }
 
     public String getUser_id() {
@@ -94,13 +94,13 @@ public class User extends RealmObject{
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + user_id +
+                "user_id='" + user_id + '\'' +
                 ", email='" + email + '\'' +
                 ", provider_id='" + provider_id + '\'' +
                 ", user_name='" + user_name + '\'' +
                 ", fcm_token='" + fcm_token + '\'' +
                 ", phone='" + phone + '\'' +
-                ", profile_image='" + profile_image + '\'' +
+                ", provider='" + provider + '\'' +
                 '}';
     }
 }

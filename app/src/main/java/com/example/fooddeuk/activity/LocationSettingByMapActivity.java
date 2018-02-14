@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 
 
 public class LocationSettingByMapActivity extends BaseActivity implements OnMapReadyCallback {
-
+    private static final String LocationSettingByMap = "LocationSettingByMap";
     @BindView(R.id.currentLocationSettingByMapTitleLocation)
     TextView titleLocation;
     @BindView(R.id.currentLocationSettingByMapCancel)
@@ -49,7 +49,7 @@ public class LocationSettingByMapActivity extends BaseActivity implements OnMapR
                     Location.INSTANCE.setLng(latLng.longitude);
                     Location.INSTANCE.setLocationName(titleLocation.getText().toString());
                     HashMap<String,Boolean> locationConfirmRx =new HashMap<>();
-                    locationConfirmRx.put(getString(R.string.rx_location_setting),true);
+                    locationConfirmRx.put(LocationSettingByMap,true);
                     RxBus.publish(locationConfirmRx);
                     finish();
                     break;

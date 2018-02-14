@@ -7,6 +7,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:textColor="@color/restaurant_menu_text_color_selector"
+
     android:textSize="14sp"
     android:id="@+id/custom_text"
     >

@@ -3,7 +3,7 @@ package com.example.fooddeuk.location
 import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
-import com.example.fooddeuk.common.CommonValueApplication
+import com.example.fooddeuk.GlobalApplication
 import com.google.android.gms.location.*
 import com.orhanobut.logger.Logger
 import java.util.*
@@ -35,7 +35,7 @@ object Location {
             super.onLocationAvailability(locationAvailability)
         }
     }
-    val geocoder : Geocoder =Geocoder(CommonValueApplication.getInstance(),Locale.KOREA)
+    val geocoder : Geocoder =Geocoder(GlobalApplication.getInstance(),Locale.KOREA)
 
 
 
@@ -46,14 +46,13 @@ object Location {
     }
 
     fun getLocation(callback : (lat : Double, lng : Double)->Unit) {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(CommonValueApplication.getInstance())
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(GlobalApplication.getInstance())
         getLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 lat = locationResult.locations[0].latitude
                 lng = locationResult.locations[0].longitude
-
-//                getCallback(lat,lng)
+                locationName= getLocationName(lat,lng).toString()
                 callback(lat,lng)
                 mFusedLocationClient.removeLocationUpdates(this)
             }

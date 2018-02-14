@@ -2,7 +2,7 @@ package com.example.fooddeuk.util
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import com.example.fooddeuk.common.CommonValueApplication
+import com.example.fooddeuk.GlobalApplication
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -14,7 +14,7 @@ import com.orhanobut.logger.Logger
  */
 object googleApi {
 
-    val context = CommonValueApplication.getInstance()
+    val context = GlobalApplication.getInstance()
     val api = GoogleApiAvailability.getInstance()
 
     val googleApiClient = GoogleApiClient.Builder(googleApi.context)

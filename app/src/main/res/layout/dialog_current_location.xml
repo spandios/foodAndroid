@@ -22,7 +22,7 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_get_location"
+            android:id="@+id/btn_set_location_by_gps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="현 위치에서 재 검색" />
@@ -34,7 +34,7 @@
         android:layout_weight="1"
         >
         <Button
-            android:id="@+id/btn_map_get_location_"
+            android:id="@+id/btn_set_location_by_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="지도에서 직접설정"/>

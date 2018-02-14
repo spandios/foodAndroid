@@ -1,7 +1,6 @@
 package com.example.fooddeuk.activity
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -10,7 +9,6 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.location.Location.getLocation
 import com.example.fooddeuk.util.LoginUtil
 import com.example.fooddeuk.util.NetworkUtil
-import com.example.fooddeuk.util.StartActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.squareup.picasso.Picasso
@@ -33,14 +31,10 @@ class IntroActivity : BaseActivity(){
 
     private fun permissionCheck() {
         val permissionListener = object : PermissionListener {
-            @SuppressLint("MissingPermission")
+
             override fun onPermissionGranted() {
-                LoginUtil.checkUser({exist ->
-                    when(exist){
-                        true->getLocation({ lat, lng ->  nextActivity()})
-                        false->{StartActivity(LoginActivity::class.java)
-                        finish()}
-                    }
+                LoginUtil.checkUser({
+                        getLocation({ lat, lng ->  nextActivity()})
                 })
             }
 

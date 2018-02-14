@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.view.Window
 import com.example.fooddeuk.R
-import com.example.fooddeuk.fragment.CurLocationRestaurantFragment
 import com.example.fooddeuk.fragment.DanGolFragment
+import com.example.fooddeuk.fragment.MyNearRestaurantFragment
 import com.example.fooddeuk.fragment.OrderHistoryFragment
 import com.example.fooddeuk.fragment.UserFragment
 import com.example.fooddeuk.home.HomeFragment
-import com.example.fooddeuk.staticval.StaticVal
 import com.example.fooddeuk.util.NetworkUtil
 import com.example.fooddeuk.util.SettingActivityUtil
 import com.orhanobut.logger.Logger
@@ -22,18 +20,17 @@ class MainActivity : BaseActivity() {
     private var homeFragmentFlag = true
     private lateinit var fragments: Array<Fragment>
 
+    companion object {
+        private const val GpsSettingActivityRequestCode = 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
         stopLoading()
-        fragments= arrayOf(HomeFragment(),DanGolFragment(),CurLocationRestaurantFragment(),OrderHistoryFragment(),UserFragment())
+        fragments= arrayOf(HomeFragment(),DanGolFragment(), MyNearRestaurantFragment(),OrderHistoryFragment(),UserFragment())
         setNavigation()
         setViewPager()
-
-
-
     }
 
     override fun onDestroy() {
@@ -59,6 +56,8 @@ class MainActivity : BaseActivity() {
 
     private fun setViewPager(){
         home_viewpager.adapter=MyPagerAdapter(supportFragmentManager)
+
+
         navigation.setupWithViewPager(home_viewpager)
     }
 
@@ -76,7 +75,7 @@ class MainActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == StaticVal.gpsSettingActivityRequestCode) {
+        if (requestCode == GpsSettingActivityRequestCode) {
             if (!NetworkUtil.isGpsPossible(this)) {
                 SettingActivityUtil.settingGPS(this)
             }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.fooddeuk.activity.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+    <!--top map banner-->
+    <RelativeLayout
+        android:id="@+id/layout_near_header"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        >
+
+        <TextView
+            android:id="@+id/txt_near_current_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="16.2dp"
+            android:lineSpacingExtra="7.5sp"
+            android:text="강남구 논현동 59-9"
+            android:maxLength="18"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/charcoal_grey"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="7dp"
+            android:layout_marginLeft="8.5dp"
+            android:layout_marginTop="21.5dp"
+            android:layout_toRightOf="@+id/txt_near_current_location"
+            android:src="@drawable/ic_drop_down" />
+
+        <ImageView
+            android:id="@+id/btn_near_map"
+            android:layout_width="18dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="9dp"
+            android:layout_toLeftOf="@+id/btgn_near_filter"
+            android:src="@drawable/ic_find_location_black"
+            />
+
+        <Button
+            android:id="@+id/btgn_near_filter"
+            android:layout_width="18dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="9dp"
+            android:layout_toLeftOf="@+id/btn_near_restaurant_search"
+            android:background="@drawable/ic_filter"
+            android:textSize="10dp" />
+
+
+        <Button
+            android:id="@+id/btn_near_restaurant_search"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15.8dp"
+            android:background="@drawable/ic_search"
+            />
+    </RelativeLayout>
+
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.5dp"-->
+            <!--android:background="@color/silver"-->
+            <!--android:src="@drawable/divider"-->
+            <!--/>-->
+        <!--<com.ogaclejapan.smarttablayout.SmartTabLayout-->
+            <!--android:id="@+id/tab_rest_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="48dp"-->
+            <!--app:stl_indicatorAlwaysInCenter="false"-->
+            <!--app:stl_indicatorWithoutPadding="false"-->
+            <!--app:stl_indicatorInFront="false"-->
+            <!--app:stl_indicatorInterpolation="linear"-->
+            <!--app:stl_indicatorGravity="bottom"-->
+            <!--app:stl_indicatorColor="@color/tangerine"-->
+            <!--app:stl_indicatorThickness="3dp"-->
+            <!--app:stl_indicatorWidth="auto"-->
+            <!--app:stl_indicatorCornerRadius="2dp"-->
+            <!--app:stl_overlineColor="#4D000000"-->
+            <!--app:stl_overlineThickness="0dp"-->
+            <!--app:stl_underlineColor="#4D000000"-->
+            <!--app:stl_underlineThickness="1dp"-->
+            <!--app:stl_dividerColor="#4D000000"-->
+            <!--app:stl_dividerThickness="0dp"-->
+            <!--app:stl_defaultTabTextAllCaps="true"-->
+            <!--app:stl_defaultTabTextColor="@color/tangerine"-->
+            <!--app:stl_defaultTabTextSize="20sp"-->
+            <!--app:stl_defaultTabTextHorizontalPadding="16dp"-->
+            <!--app:stl_defaultTabTextMinWidth="0dp"-->
+            <!--app:stl_distributeEvenly="false"-->
+            <!--app:stl_clickable="true"-->
+            <!--app:stl_titleOffset="auto_center"-->
+            <!--app:stl_drawDecorationAfterTab="false"-->
+            <!--app:stl_customTabTextLayoutId="@layout/custom_tab"-->
+            <!--app:stl_customTabTextViewId="@id/custom_text"-->
+            <!--/>-->
+        <com.flyco.tablayout.SlidingTabLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:id="@+id/tab_rest_list"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            tl:tl_indicator_gravity="BOTTOM"
+            tl:tl_textBold="SELECT"
+            app:tl_textsize="16sp"
+            app:tl_textUnselectColor="@color/text_sub"
+            app:tl_textSelectColor="@color/tangerine"
+            tl:tl_underline_color="@color/cool_grey"
+            tl:tl_underline_gravity="BOTTOM"
+            tl:tl_underline_height="0.5dp"
+            app:tl_indicator_color="@color/tangerine"
+            app:tl_indicator_width_equal_title="true"
+            >
+
+
+        </com.flyco.tablayout.SlidingTabLayout>
+
+
+        <com.example.fooddeuk.util.SwipeViewPager
+            android:id="@+id/rest_list_view_pager"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            >
+        </com.example.fooddeuk.util.SwipeViewPager>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
+
+
+
