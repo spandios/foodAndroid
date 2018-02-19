@@ -3,10 +3,12 @@ package com.example.fooddeuk.network;
 import com.example.fooddeuk.model.menu.ReviewItem;
 import com.example.fooddeuk.model.order.OrderResponse;
 import com.example.fooddeuk.model.restaurant.RestaurantResponse;
+import com.example.fooddeuk.model.user.LocationResult;
 import com.example.fooddeuk.model.user.User;
 import com.example.fooddeuk.model.user.UserResponse;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -16,6 +18,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by heo on 2018. 2. 10..
@@ -35,9 +38,8 @@ public interface HttpService {
     Completable updateToken(@Field("provider_id")String provider_id, @Field("fcm_token")String fcm_token);
 
 
-    //Restaurant--
     @GET("api/restaurant/readCurrentLocation")
-    Single<RestaurantResponse> getCurrentLocationListItem(@Query("curLat") double curLat, @Query("curLng") double curLng, @Query("maxDistance") int maxDistance, @Query("foodtype") String foodtype, @Query("filter")String filter, @Query("rest_name")String rest_name);
+    Single<RestaurantResponse> getCurrentLocationRestaurant(@QueryMap Map<String,String> queryMap);
 
     @GET("api/restaurant/readRestaurant")
     Single<RestaurantResponse> getRestaurantByRestId(@Query("rest_id")String rest_id);
@@ -45,6 +47,9 @@ public interface HttpService {
     @GET("api/restaurant/getPicture")
     Single<ArrayList<String>> getPicture(@Query("rest_id")String rest_id);
 
+
+    @GET("api/restaurant/getLocationName")
+    Single<LocationResult> getLocationNameByNaver(@Query("query")String lnglat);
 
     //Review
     @GET("api/review/readReview")

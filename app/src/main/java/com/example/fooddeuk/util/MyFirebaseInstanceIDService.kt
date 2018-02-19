@@ -1,6 +1,7 @@
 package com.example.fooddeuk.util
 
 import com.example.fooddeuk.GlobalApplication
+import com.example.fooddeuk.`object`.Login
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService
 import com.iwedding.app.helper.PrefUtil
@@ -42,7 +43,7 @@ class MyFirebaseInstanceIDService : FirebaseInstanceIdService() {
         token?.let {
             val providerId: String? = PrefUtil.getValue(PrefUtil.PROVIDER_ID, "")
             if(!providerId.isNullOrEmpty()){
-                with(LoginUtil) {
+                with(Login) {
                     getUser(providerId!!,{err, userResponse ->
                         userResponse?.let{
                             updateFcmToken(userResponse.user,token)

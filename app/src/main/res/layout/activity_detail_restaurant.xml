@@ -15,18 +15,6 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <!--<android.support.v7.widget.Toolbar-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_scrollFlags="scroll"-->
-        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="back"-->
-        <!--/>-->
-
-        <!--</android.support.v7.widget.Toolbar>-->
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -93,9 +81,9 @@
                     <RatingBar
                         style="@style/CustomRatingBar"
                         android:layout_width="wrap_content"
-                        android:layout_height="26dp"
+                        android:layout_height="15dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="12dp"
                         android:clickable="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -149,18 +137,20 @@
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="30dp"
-
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="36dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
                         android:src="@drawable/ic_find_location_black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/rest_detail_call"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginRight="8dp"
+                         />
 
                     <ImageView
                         android:id="@+id/rest_detail_call"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="16dp"
                         android:layout_marginTop="36dp"
                         android:src="@drawable/ic_call_black_24dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -217,8 +207,10 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:padding="8dp"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
+                android:background="@color/colorPrimary"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                 <RelativeLayout
@@ -229,15 +221,14 @@
                         android:id="@+id/rest_detail_back"
                         android:layout_width="23dp"
                         android:layout_height="23dp"
-                        android:layout_marginLeft="20dp"
-
-
                         />
 
                     <TextView
                         android:id="@+id/rest_detail_name"
+                        android:textSize="18sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:layout_toRightOf="@id/rest_detail_back"
                         android:layout_marginLeft="20dp"
 
@@ -259,7 +250,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="right"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="8dp"
 
                         />
                 </RelativeLayout>

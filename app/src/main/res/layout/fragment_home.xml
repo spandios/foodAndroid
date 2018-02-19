@@ -82,13 +82,15 @@
         tools:background="#00000000">
 
         <TextView
-            android:id="@+id/header_address_text"
+            android:id="@+id/txt_home_location_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="주소"
+            tools:text="강남구 논현동"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="18sp"
+
+            />
 
         <ImageView
             android:id="@+id/header_search"

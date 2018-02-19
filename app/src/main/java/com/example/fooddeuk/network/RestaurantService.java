@@ -13,11 +13,10 @@ import retrofit2.http.Query;
  */
 
 public class RestaurantService {
-    //                .baseUrl("http://10.0.2.2:3000")
         private interface RestaurantInterface {
 
         @GET("api/restaurant/readCurrentLocation")
-        Call<RestaurantResponse> getCurrentLocationListItem(@Query("curLat") double curLat, @Query("curLng") double curLng, @Query("maxDistance") int maxDistance, @Query("foodtype") String foodtype, @Query("filter")String filter, @Query("rest_name")String rest_name);
+        Call<RestaurantResponse> getCurrentLocationListItem(@Query("curLat") double curLat, @Query("curLng") double curLng, @Query("maxDistance") int maxDistance, @Query("foodType") String foodtype, @Query("filter")String filter, @Query("rest_name")String rest_name);
 
         @GET("api/restaurant/readRestaurant")
         Call<RestaurantResponse> getRestaurantByRestId(@Query("rest_id")int rest_id);
@@ -27,8 +26,8 @@ public class RestaurantService {
 
     }
 
-    public static Call<RestaurantResponse> getCurrentLocationRestaurant(double curLat, double curLng, int maxDistance, String foodtype, String filter, String rest_name){
-        return RetrofitBase.getInstance().getRetrofit().create(RestaurantInterface.class).getCurrentLocationListItem(curLat,curLng,maxDistance,foodtype,filter,rest_name);
+    public static Call<RestaurantResponse> getCurrentLocationRestaurant(double curLat, double curLng, int maxDistance, String foodType, String filter, String rest_name){
+        return RetrofitBase.getInstance().getRetrofit().create(RestaurantInterface.class).getCurrentLocationListItem(curLat,curLng,maxDistance,foodType,filter,rest_name);
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.fooddeuk
+package com.example.fooddeuk.`object`
 
 /**
  * Created by heojuyeong on 2017. 9. 23..
@@ -16,8 +16,7 @@ object GlobalVariable {
 
 
     //FILTER
-    const val filter="filter"
-    const val distance="distnace"
+
 
 
     //menuCategory

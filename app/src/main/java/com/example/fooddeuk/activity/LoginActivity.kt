@@ -5,12 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.fooddeuk.GlobalVariable
-import com.example.fooddeuk.GlobalVariable.KAKAO
-import com.example.fooddeuk.GlobalVariable.NAVER
 import com.example.fooddeuk.R
+import com.example.fooddeuk.`object`.GlobalVariable
+import com.example.fooddeuk.`object`.GlobalVariable.KAKAO
+import com.example.fooddeuk.`object`.GlobalVariable.NAVER
+import com.example.fooddeuk.`object`.Login
 import com.example.fooddeuk.model.user.User
-import com.example.fooddeuk.util.LoginUtil
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -71,7 +71,7 @@ class LoginActivity : BaseActivity() {
                         val request = GraphRequest.newMeRequest(
                                 loginResult.accessToken
                         ) { `object`, response ->
-                                LoginUtil.registerUser(User(`object`.getString("email"), loginResult.accessToken.userId, `object`.getString("name"), GlobalVariable.FACEBOOK,""),loginCallback)
+                                Login.registerUser(User(`object`.getString("email"), loginResult.accessToken.userId, `object`.getString("name"), GlobalVariable.FACEBOOK,""),loginCallback)
                         }
                         val parameters = Bundle()
                         parameters.putString("fields", "id,name,email,gender")
@@ -116,7 +116,7 @@ class LoginActivity : BaseActivity() {
                                 val provider_id = jsonResult.getString("id")
                                 val profile_image = jsonResult.getString("profile_image")
                                 // 액티비티 이동 등 원하는 함수 호출
-                                LoginUtil.registerUser(User(email, provider_id, name, NAVER,profile_image),loginCallback)
+                                Login.registerUser(User(email, provider_id, name, NAVER,profile_image),loginCallback)
                             }
                             catch (e: JSONException) {
                                 e.printStackTrace()
@@ -154,7 +154,7 @@ class LoginActivity : BaseActivity() {
 
                 override fun onSuccess(userProfile: UserProfile) {
                     //로그인 성공
-                    LoginUtil.registerUser(User(userProfile.email, userProfile.id.toString(), userProfile.nickname, KAKAO,userProfile.profileImagePath),loginCallback)
+                    Login.registerUser(User(userProfile.email, userProfile.id.toString(), userProfile.nickname, KAKAO,userProfile.profileImagePath),loginCallback)
                 }
             })
 

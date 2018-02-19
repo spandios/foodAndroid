@@ -9,8 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.location.Location;
-import com.example.fooddeuk.rx.RxBus;
+import com.example.fooddeuk.object.Location;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,14 +17,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 
 public class LocationSettingByMapActivity extends BaseActivity implements OnMapReadyCallback {
-    private static final String LocationSettingByMap = "LocationSettingByMap";
     @BindView(R.id.currentLocationSettingByMapTitleLocation)
     TextView titleLocation;
     @BindView(R.id.currentLocationSettingByMapCancel)
@@ -42,18 +40,14 @@ public class LocationSettingByMapActivity extends BaseActivity implements OnMapR
         View.OnClickListener onClickListener = v -> {
             switch (v.getId()) {
                 case R.id.currentLocationSettingByMapCancel:
-                    finish();
                     break;
                 case R.id.currentLocationSettingByMapConfirmButton:
                     Location.INSTANCE.setLat(latLng.latitude);
                     Location.INSTANCE.setLng(latLng.longitude);
                     Location.INSTANCE.setLocationName(titleLocation.getText().toString());
-                    HashMap<String,Boolean> locationConfirmRx =new HashMap<>();
-                    locationConfirmRx.put(LocationSettingByMap,true);
-                    RxBus.publish(locationConfirmRx);
-                    finish();
                     break;
             }
+            finish();
         };
         cancelTextView.setOnClickListener(onClickListener);
         confirmTextView.setOnClickListener(onClickListener);
@@ -77,7 +71,13 @@ public class LocationSettingByMapActivity extends BaseActivity implements OnMapR
         googleMap.getUiSettings().isZoomControlsEnabled();
         googleMap.setOnCameraIdleListener(() -> {
             latLng=googleMap.getCameraPosition().target;
-            titleLocation.setText(Location.INSTANCE.getLocationName(latLng.latitude,latLng.longitude));
+            Location.INSTANCE.getLocationName(latLng.latitude, latLng.longitude, new Function1<String, Unit>() {
+                @Override
+                public Unit invoke(String s) {
+                    titleLocation.setText(s);
+                    return null;
+                }
+            });
         });
     }
 

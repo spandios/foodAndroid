@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.example.fooddeuk.R
 import com.example.fooddeuk.fragment.DanGolFragment
-import com.example.fooddeuk.fragment.MyNearRestaurantFragment
+import com.example.fooddeuk.fragment.NearFragment
 import com.example.fooddeuk.fragment.OrderHistoryFragment
 import com.example.fooddeuk.fragment.UserFragment
 import com.example.fooddeuk.home.HomeFragment
@@ -28,7 +28,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         stopLoading()
-        fragments= arrayOf(HomeFragment(),DanGolFragment(), MyNearRestaurantFragment(),OrderHistoryFragment(),UserFragment())
+        fragments= arrayOf(HomeFragment(),DanGolFragment(), NearFragment(),OrderHistoryFragment(),UserFragment())
         setNavigation()
         setViewPager()
     }
@@ -56,8 +56,6 @@ class MainActivity : BaseActivity() {
 
     private fun setViewPager(){
         home_viewpager.adapter=MyPagerAdapter(supportFragmentManager)
-
-
         navigation.setupWithViewPager(home_viewpager)
     }
 

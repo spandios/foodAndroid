@@ -1,137 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="112dp"
+    android:layout_height="120dp"
     xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/restaurantImageInList"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/fm" />
-
+        android:id="@+id/img_restaurant_list"
+        android:layout_width="110dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/rv2"
+        android:layout_marginRight="12dp"
+        />
 
     <TextView
-        android:id="@+id/restaurantNameInList"
+        android:id="@+id/txt_restaurant_name_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="113dp"
-        android:layout_marginTop="27dp"
+        android:layout_toRightOf="@id/img_restaurant_list"
+        android:layout_marginTop="4dp"
         android:lineSpacingExtra="4sp"
-        android:text="식당이름"
-
+        tools:text="호식이 두마리치킨 "
         android:textColor="@color/charcoal_grey"
-        android:textSize="18sp"
-        />
-
-    <TextView
-        android:id="@+id/restaurantSale"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_toRightOf="@+id/restaurantNameInList"
-        android:background="@drawable/layout_bg"
-        android:gravity="center_horizontal"
-        android:text="@string/sale5"
-        android:textColor="#ffffff"
-
-        android:layout_marginLeft="8dp"
-        android:textSize="12sp"
-        android:textAlignment="gravity" />
-
-    <TextView
-        android:id="@+id/restaurantReviewStringInList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="114dp"
-        android:layout_marginTop="54dp"
-        android:textSize="12sp"
-
-        android:textColor="@color/text_main"
-        android:text="@string/review"
-        />
-
-    <TextView
-        android:id="@+id/restaurantReviewCountInList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/restaurantReviewStringInList"
-        android:layout_marginTop="54dp"
-        android:textSize="12sp"
-        android:text="123"
-
-        android:textColor="@color/charcoal_grey"
-        android:layout_marginLeft="10dp"
-         />
-
-    <TextView
-        android:id="@+id/restaurantAdminCommentStringInList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/restaurantReviewCountInList"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="54dp"
-
-        android:textSize="12sp"
-        android:textColor="@color/text_main"
-        android:text="@string/restaurant_admin_comment"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/restaurantAdminCommentStringInList"
-        android:textSize="12sp"
-        android:text="123"
-        android:layout_marginTop="54dp"
-
-        android:textColor="@color/charcoal_grey"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/restaurantAdminCommentInList"
+        android:textSize="20sp"
+        android:textStyle="bold"
         />
 
 
-    <LinearLayout
-        android:id="@+id/restaurantRatingStarInList"
+
+    <RatingBar
+
+        android:id="@+id/star_restaurant_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/restaurantReviewStringInList"
-        android:layout_marginTop="7dp"
-        android:layout_toRightOf="@id/restaurantImageInList"
-        android:layout_marginLeft="17dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/restaurantRatingStarInList"/>
+        android:layout_height="15dp"
+
+        style="@style/CustomRatingBar"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_toRightOf="@+id/img_restaurant_list"
+        android:layout_below="@id/txt_restaurant_name_list"
+        android:layout_marginTop="8dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:rating="4.5"
+        android:stepSize="0.5"
+        app:layout_constraintLeft_toRightOf="@id/rest_detail_rating"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
 
     <TextView
-        android:id="@+id/restaurantCommentCountInList"
+        android:id="@+id/txt_restaurant_reviewCnt_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="10dp"
-        android:text="123"
-
-        android:textSize="11sp"
+        android:layout_marginTop="6dp"
+        android:text="(후기 : 123)"
+        android:textSize="14sp"
         android:textColor="@color/text_sub"
         android:lineSpacingExtra="11.5sp"
-        android:layout_toRightOf="@+id/restaurantRatingStarInList"/>
+        android:layout_below="@id/txt_restaurant_name_list"
+        android:layout_toRightOf="@+id/star_restaurant_list"
+        android:layout_marginStart="3dp"
+        />
+
+    <TextView
+        android:id="@+id/txt_restaurant_sale_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/star_restaurant_list"
+        android:layout_toRightOf="@id/img_restaurant_list"
+        android:layout_marginTop="6dp"
+        android:text="포장 시 최대: -10%"
+        android:textStyle="bold"
+        android:textColor="@color/tangerine"
+        android:textSize="14sp"
+        android:textAlignment="gravity" />
 
 
-    <!--<TextView-->
-        <!--android:layout_below="@+id/restaurantCommentCountInList"-->
-        <!--android:layout_toRightOf="@id/restaurantImageInList"-->
-        <!--android:id="@+id/restaurantDistanceInList"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="3km" />-->
+
+    <TextView
+        android:id="@+id/txt_restaurant_order_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/txt_restaurant_sale_list"
+        android:layout_toRightOf="@id/img_restaurant_list"
+        android:layout_marginTop="6dp"
+        android:textSize="14sp"
+        android:text="#현장주문 #세스코 "
+        />
+
+
 
 
 </RelativeLayout>

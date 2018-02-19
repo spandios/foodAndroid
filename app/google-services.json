@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "693453888691-4ssp8odov8ui2ovcpngubhnkkgrfj4di.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fooddeuk",
+            "certificate_hash": "d6cdeb7f8257e362a78bce66bc572bb38bd2f312"
+          }
+        },
+        {
           "client_id": "693453888691-1gjer391hpd9g4ah4uu7ak12dl829413.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693453888691-1gjer391hpd9g4ah4uu7ak12dl829413.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

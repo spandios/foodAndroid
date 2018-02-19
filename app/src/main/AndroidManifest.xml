@@ -95,12 +95,13 @@
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.CurrentOrderActivity" />
         <activity android:name=".activity.OrderHistoryMapActivity" />
+        <activity android:name=".activity.LoginActivity"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="986e4bbd6dc0c418fd293489d5b081c35f1f2a4a" />
 
-        <activity android:name=".activity.LoginActivity"></activity>
+
     </application>
 
 </manifest>

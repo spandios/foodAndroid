@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.util.HashMap;
-
 /**
  * Created by heojuyeong on 2017. 9. 22..
  */
@@ -30,26 +28,14 @@ public class LayoutUtil {
 
     public static float convertSpToPixels(float sp, Context context) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
-
     }
 
     public static void RecyclerViewSetting(Context context, RecyclerView recyclerView){
         final LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(nmLayoutManager);
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true); 고정된 아이템일 때 성능 최적화
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
-
-    public static HashMap<String, Integer> DpToLayoutParams(Context context,float widthDp,float heightDp){
-        final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthDp, context.getResources().getDisplayMetrics());
-        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightDp, context.getResources().getDisplayMetrics());
-        HashMap<String,Integer> dpMap=new HashMap<>();
-        dpMap.put("width",width);
-        dpMap.put("height",height);
-        return dpMap;
-    }
-
-
 
 
     public static float convertDpToPixel(float dp, Context context){
@@ -79,11 +65,11 @@ public class LayoutUtil {
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
     }
-    public static View getDivider(Context context,int left,int top,int right,int bottom){
+
+    public static View getDivider(Context context){
         View division=new View(context);
         division.setBackgroundColor(Color.parseColor("#817e7e"));
         LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,Math.round(LayoutUtil.convertDpToPixel((float)0.3,context)));
-        layoutParams.setMargins(Math.round(LayoutUtil.convertDpToPixel(left,context)),top,right,bottom);
         return division;
     }
 

@@ -1,10 +1,10 @@
-package com.example.fooddeuk.util
+package com.example.fooddeuk.`object`
 
 import com.example.fooddeuk.GlobalApplication
-import com.example.fooddeuk.GlobalVariable
 import com.example.fooddeuk.model.user.User
 import com.example.fooddeuk.model.user.UserResponse
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.util.RealmUtil
 import com.iwedding.app.helper.PrefUtil
 import com.orhanobut.logger.Logger
 
@@ -12,7 +12,7 @@ import com.orhanobut.logger.Logger
  * Created by heojuyeong on 2017. 10. 6..
  */
 
-object LoginUtil {
+object Login {
     fun checkUser(callback: () -> Unit) {
         var exist: Boolean? = PrefUtil.getValue(PrefUtil.EXIST, false)
         val providerId: String? = PrefUtil.getValue(PrefUtil.PROVIDER_ID, "")
@@ -29,14 +29,16 @@ object LoginUtil {
                 getUser(providerId!!, { err, userResponse ->
                     if (err != null) {
                         err.printStackTrace()
+                        Logger.d("서버 불가능")
+                        callback()
                     } else {
                         userResponse?.let {
                             if (it.exist) {
-                                Logger.d("provider id : $providerId , fcm_token $fcm_token , name $name" )
+                                Logger.d("provider id : $providerId , fcm_token $fcm_token , name $name")
                                 val user = it.user
-                                if(user.fcm_token!=GlobalApplication.fcmToken){
-                                    updateFcmToken(user,GlobalApplication.fcmToken)
-                                    user.fcm_token=GlobalApplication.fcmToken
+                                if (user.fcm_token != GlobalApplication.fcmToken) {
+                                    updateFcmToken(user, GlobalApplication.fcmToken)
+                                    user.fcm_token = GlobalApplication.fcmToken
                                 }
                                 if (fcm_token != GlobalApplication.fcmToken) {
                                     PrefUtil.setValue("fcm_token", user.fcm_token)
@@ -50,7 +52,7 @@ object LoginUtil {
 //                                    Logger.d("phone fail")
 //                                    PrefUtil.setValue("phone", user.phone)
 //                                }//TODO UPDATE PHONE
-                                GlobalVariable.provider=user.provider
+                                GlobalVariable.provider = user.provider
                                 GlobalVariable.isLogin = true
                                 insertUser(user)
                                 callback()
@@ -80,17 +82,17 @@ object LoginUtil {
 
     fun registerUser(user: User,callback: (success:Boolean) -> Unit) {
         try {
-            getUser(user.provider_id,{err, userResponse ->
-                if(err!=null) err.printStackTrace()
+            getUser(user.provider_id, { err, userResponse ->
+                if (err != null) err.printStackTrace()
                 userResponse?.let {
-                    GlobalVariable.provider=user.provider
+                    GlobalVariable.provider = user.provider
                     GlobalVariable.isLogin = true
 
-                    if(it.exist){
+                    if (it.exist) {
                         Logger.d("기존 유저입니다.")
                         insertUserPref(it.user)
                         callback(true)
-                    }else{
+                    } else {
                         user.fcm_token = GlobalApplication.fcmToken
                         HTTP.createUser(user).subscribe({
                             insertUser(user)

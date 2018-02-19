@@ -6,5 +6,4 @@ package com.example.fooddeuk.rx
 object RxUtil {
 
 
-
 }

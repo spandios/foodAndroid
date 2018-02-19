@@ -9,6 +9,7 @@ import android.support.multidex.MultiDex;
 
 import com.example.fooddeuk.login.KakaoSDKAdapter;
 import com.example.fooddeuk.network.HttpService;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.iwedding.app.helper.PrefUtil;
 import com.kakao.auth.KakaoSDK;
@@ -64,13 +65,16 @@ public class GlobalApplication extends Application {
         super.onCreate();
 //        Fabric.with(this, new Crashlytics());
         instance=this;
+        FirebaseApp.initializeApp(this);
+        fcmToken= FirebaseInstanceId.getInstance().getToken();
         initHTTP();
         initRealm();
+//        LeakCanary.install(this);
         Logger.addLogAdapter(new AndroidLogAdapter());
         KakaoSDK.init(new KakaoSDKAdapter());
         locationManager=(LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        fcmToken= FirebaseInstanceId.getInstance().getToken();
         PrefUtil.Companion.setPref(this,"user");
+
     }
 
 

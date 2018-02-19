@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
-import com.example.fooddeuk.GlobalVariable
 import com.example.fooddeuk.R
+import com.example.fooddeuk.`object`.GlobalVariable
 import com.example.fooddeuk.activity.LoginActivity
 import com.example.fooddeuk.util.StartActivity
 import com.facebook.login.LoginManager

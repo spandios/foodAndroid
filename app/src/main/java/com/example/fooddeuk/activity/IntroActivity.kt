@@ -6,15 +6,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import com.example.fooddeuk.R
-import com.example.fooddeuk.location.Location.getLocation
-import com.example.fooddeuk.util.LoginUtil
+import com.example.fooddeuk.`object`.Location.getLocation
+import com.example.fooddeuk.`object`.Login
 import com.example.fooddeuk.util.NetworkUtil
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
 import com.squareup.picasso.Picasso
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_intro.*
 
+
+
 class IntroActivity : BaseActivity(){
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,31 +27,21 @@ class IntroActivity : BaseActivity(){
     private fun basicInit() {
         Picasso.with(this).load(R.drawable.rv2).into(introImageView)
         NetworkUtil.CheckNetGps(this)
-        permissionCheck()
+        val rxPermissions = RxPermissions(this)
+        rxPermissions
+                .request(Manifest.permission.READ_CONTACTS, Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe { granted ->
+                    if (granted) {
+                        Login.checkUser({
+                            getLocation({ _, _ ->  nextActivity()})
+                        })
+                    } else {
+                        Toast.makeText(this@IntroActivity, "Permission Denied", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                }
     }
 
-
-    private fun permissionCheck() {
-        val permissionListener = object : PermissionListener {
-
-            override fun onPermissionGranted() {
-                LoginUtil.checkUser({
-                        getLocation({ lat, lng ->  nextActivity()})
-                })
-            }
-
-            override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {
-                Toast.makeText(this@IntroActivity, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show()
-                finish()
-            }
-        }
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionListener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                .check()
-    }
 
     private fun nextActivity(){
         Handler().postDelayed({
@@ -57,7 +49,7 @@ class IntroActivity : BaseActivity(){
             val intent = Intent(this@IntroActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 10)
+        }, 100)
     }
 
 
@@ -74,7 +66,7 @@ class IntroActivity : BaseActivity(){
 
 //        //facebook
 //        if (AccessToken.getCurrentAccessToken() != null) {
-//            LoginUtil.initUser(AccessToken.getCurrentAccessToken().userId)
+//            Login.initUser(AccessToken.getCurrentAccessToken().userId)
 //            return
 //        }
 //        //KAKAO
@@ -88,7 +80,7 @@ class IntroActivity : BaseActivity(){
 //                try {
 //                    val jsonResult = JSONObject(response).getJSONObject("response")
 //                    val provider_id = jsonResult.getString("enc_id")
-//                    LoginUtil.initUser(provider_id)
+//                    Login.initUser(provider_id)
 //                    // 액티비티 이동 등 원하는 함수 호출
 //                }
 //                catch (e: JSONException) {
