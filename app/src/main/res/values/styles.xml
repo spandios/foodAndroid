@@ -46,7 +46,7 @@
     <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/ratingbar</item>
         <item name="android:minHeight">30dp</item>
-        <item name="android:maxHeight">30dp</item>
+        <item name="android:maxHeight">60dp</item>
     </style>
 
     <style name="ToolBarStyle" parent="Theme.AppCompat">

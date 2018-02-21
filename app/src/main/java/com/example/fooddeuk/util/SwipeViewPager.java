@@ -5,8 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.orhanobut.logger.Logger;
-
 /**
  * Created by heo on 2018. 2. 15..
  */
@@ -27,7 +25,6 @@ public class SwipeViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        Logger.d(isSlide);
         return isSlide && super.onTouchEvent(ev);
     }
 

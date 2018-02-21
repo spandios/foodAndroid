@@ -46,9 +46,17 @@ class CustomFilterDialog internal constructor(internal var builder: Builder) {
         lateinit var img_filter_exit: ImageView
         lateinit var txt_filter_clear: TextView
         lateinit var filterParentLayout: LinearLayout
-        var isClearText: Boolean = true
-        var filterSelectColor: Int = 0
-        var filterUnSelectColor: Int = 0
+        private var isClearText: Boolean = true
+        private var filterSelectColor: Int = 0
+        private var filterUnSelectColor: Int = 0
+        private var contentTextSize = 16f
+        private var titleTextSize = 22f
+        private var verticalTextGravity = Gravity.LEFT
+        private var contentLeftMargin = 24
+        private var contentTopMargin = 24
+        private var isFirtSelectColor = true
+        private var contentTextTypeface = Typeface.DEFAULT
+
         lateinit var clearCallback: () -> Unit
 
         init {
@@ -78,6 +86,52 @@ class CustomFilterDialog internal constructor(internal var builder: Builder) {
                 (getChildAt(1) as LinearLayout).addView(contentFilter(filterContentData, contentClickListener))
             })
 
+            return this
+        }
+
+        fun setSelectedColor(color : Int){
+            this.filterSelectColor=color
+        }
+
+        fun setUnSelectedColor(color: Int){
+            this.filterUnSelectColor=color
+        }
+
+        fun setContentTextSize(size : Float) : Builder{
+            contentTextSize =size
+            return this
+        }
+
+        fun setTitleTextSize(size : Float) : Builder{
+            titleTextSize=size
+            return this
+        }
+
+        fun contentGravity(gravity : Int) : Builder{
+            verticalTextGravity=gravity
+            if(gravity==Gravity.CENTER){
+                contentLeftMargin=0
+            }
+            return this
+        }
+
+        fun contentLeftMargin(size : Int) : Builder{
+            contentLeftMargin=size
+            return this
+        }
+
+        fun contentTopMargin(size : Int) : Builder{
+            contentTopMargin=size
+            return this
+        }
+
+        fun isFirstSelectColor(flag : Boolean): Builder{
+            isFirtSelectColor=flag
+            return this
+        }
+
+        fun contentTypeFace(typeface: Typeface) : Builder{
+            contentTextTypeface=typeface
             return this
         }
 
@@ -115,7 +169,7 @@ class CustomFilterDialog internal constructor(internal var builder: Builder) {
 
 
 
-        fun isSetClearText(clearText: Boolean): Builder {
+        fun isClearText(clearText: Boolean): Builder {
             isClearText = clearText
             if (!isClearText) {
                 txt_filter_clear.visibility = View.GONE
@@ -140,27 +194,32 @@ class CustomFilterDialog internal constructor(internal var builder: Builder) {
 
             for (i in 2 until filterContentData.size) {
                 contentLayout.addView(TextView(context).apply {
-                    textSize = 16f
+                    textSize = contentTextSize
                     if (isVertical) {
                         layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-                            gravity = Gravity.LEFT
-                            setMargins(24.toPx, 24.toPx, 0, 0)
+                            gravity = verticalTextGravity
+                            setMargins(contentLeftMargin.toPx, contentTopMargin.toPx, 0, 0)
                         }
                     } else {
                         for (i in 0 until filterContentData.size - 2) {
                             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
-                                setMargins(24.toPx, 24.toPx, 0, 0)
+                                setMargins(contentLeftMargin.toPx, contentTopMargin.toPx, 0, 0)
                             }
 
                         }
                     }
                     setTextColor(filterUnSelectColor)
 
-                    if (i == 2) {
-                        setTextColor(filterSelectColor)
+                    //처음텍스트색상
+                    if(isFirtSelectColor){
+                        if (i == 2) {
+                            setTextColor(filterSelectColor)
+                        }
                     }
 
+
                     text = filterContentData[i]
+                    typeface=contentTextTypeface
 
                     setOnClickListener({
                         backToDefaultText(contentLayout)
@@ -192,7 +251,7 @@ class CustomFilterDialog internal constructor(internal var builder: Builder) {
         private fun getBasicTitle(filterName: String): TextView {
             return TextView(context).apply {
                 text = filterName
-                textSize = 22f
+                textSize = titleTextSize
                 setTypeface(null, Typeface.BOLD)
             }
         }

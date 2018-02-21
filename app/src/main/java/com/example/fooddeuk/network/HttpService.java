@@ -45,7 +45,7 @@ public interface HttpService {
     Single<RestaurantResponse> getRestaurantByRestId(@Query("rest_id")String rest_id);
 
     @GET("api/restaurant/getPicture")
-    Single<ArrayList<String>> getPicture(@Query("rest_id")String rest_id);
+    Single<ArrayList<String>> getPicture(@Query("_id")String _id);
 
 
     @GET("api/restaurant/getLocationName")

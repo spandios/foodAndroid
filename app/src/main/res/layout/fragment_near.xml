@@ -17,7 +17,7 @@
         <RelativeLayout
             android:id="@+id/layout_near_header"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:id="@+id/txt_near_location_name"
@@ -30,9 +30,9 @@
                 android:lineSpacingExtra="7.5sp"
                 android:maxLength="18"
                 android:maxLines="1"
-                android:text="강남구 논현동 59-9"
+                tools:text="강남구 논현동 59-9"
                 android:textColor="@color/charcoal_grey"
-                android:textSize="18sp"
+                android:textSize="19sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -46,28 +46,28 @@
 
             <ImageView
                 android:id="@+id/btn_near_map"
-                android:layout_width="18dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="25dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
                 android:layout_toLeftOf="@+id/btn_near_filter"
                 android:src="@drawable/ic_find_location_black" />
 
             <Button
                 android:id="@+id/btn_near_filter"
-                android:layout_width="18dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/btn_near_restaurant_search"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/ic_filter"
                 />
 
             <ImageView
                 android:id="@+id/btn_near_restaurant_search"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="22dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 />

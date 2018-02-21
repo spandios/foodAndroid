@@ -1,7 +1,6 @@
 package com.example.fooddeuk.fragment
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,10 @@ import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.R
 import com.example.fooddeuk.activity.DetailRestaurantActivity
 import com.example.fooddeuk.adapter.RestaurantAdapter
-import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.LayoutUtil
 import com.example.fooddeuk.util.StartActivity
-import com.orhanobut.logger.Logger
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import kotlinx.android.synthetic.main.fragment_rest_list.*
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
@@ -43,22 +41,20 @@ class NearRestaurantFragment : android.support.v4.app.Fragment() {
         arguments?.let {
             queryMap = Parcels.unwrap<HashMap<String, String>>(it.getParcelable("queryMap"))
 
-            //해당 메뉴타입에 맞는 매장 리사이클러뷰 셋팅
+            //매장 리사이클러뷰 셋팅
             HTTP.Single(GlobalApplication.httpService.getCurrentLocationRestaurant(queryMap)).bindToLifecycle(this).subscribe(
                     { result ->
                         if (result.status == "SUCCESS") {
                             if (result.restaurants.size > 0) {
-                                recycle_restaurant.let {
-                                    it.setBackgroundColor(ContextCompat.getColor(context!!,R.color.white))
-                                    LayoutUtil.RecyclerViewSetting(context, it)
-                                    OverScrollDecoratorHelper.setUpOverScroll(it, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
-                                    it.adapter = RestaurantAdapter(activity!!, result.restaurants).apply {
-                                        setRestaurantItemClickListener(object : RestaurantAdapter.RestaurantItemClickListener{
-                                            override fun onItemClickListener(restaurant: Restaurant) {
-                                                StartActivity(DetailRestaurantActivity::class.java, Bundle().apply { putParcelable("restaurant", Parcels.wrap<Restaurant>(restaurant)) })
-                                                Logger.d(restaurant.name + " 선택 ", restaurant.rest_id + "저장")
-                                            }
-                                        })
+                                with(recycle_restaurant){
+                                    LayoutUtil.RecyclerViewSetting(context, this)
+                                    setHasFixedSize(true)
+                                    OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
+                                    adapter = RestaurantAdapter(activity!!, result.restaurants).apply {
+                                        restaurantItemClickListener={
+                                            RxBus.intentPublish(RxBus.DetailRestaurantActivityData,it)
+                                            StartActivity(DetailRestaurantActivity::class.java)
+                                        }
                                     }
                                 }
                             }
@@ -66,6 +62,7 @@ class NearRestaurantFragment : android.support.v4.app.Fragment() {
                     }
             ) { throwable -> throwable.printStackTrace() }
         }
+
         return view
     }
 

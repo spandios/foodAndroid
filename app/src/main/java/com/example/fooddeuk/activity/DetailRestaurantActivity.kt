@@ -3,7 +3,6 @@ package com.example.fooddeuk.activity
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.os.Parcelable
 import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -11,19 +10,20 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.R
-import com.example.fooddeuk.adapter.ImageViewPager
 import com.example.fooddeuk.adapter.MenuListAdapter
+import com.example.fooddeuk.adapter.restaurantImageVPAdapter
 import com.example.fooddeuk.fragment.RestMenuCategoryFragment
 import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.network.HTTP.Single
+import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.addFragmentToActivity
 import com.example.fooddeuk.util.hideFragmentToActivity
 import com.example.fooddeuk.util.replaceFragmentToActivity
 import com.example.fooddeuk.util.showFragmentToActivity
 import com.orhanobut.logger.Logger
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_detail_restaurant.*
-import org.parceler.Parcels
 
 
 /**from NearRestaurantFragment */
@@ -33,7 +33,7 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 
     lateinit var restaurant: Restaurant
     lateinit var restMenuCategoryFragment: RestMenuCategoryFragment
-    lateinit var imageViewPager: ImageViewPager
+    lateinit var restaurantImageVPAdapter: restaurantImageVPAdapter
     private val cart by lazy {
         ContextCompat.getDrawable(this, R.drawable.ic_cart)?.apply { setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP) }
     }
@@ -48,7 +48,11 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_restaurant)
-        restaurant = Parcels.unwrap(intent.getParcelableExtra<Parcelable>("restaurant"))
+        RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData,this.javaClass, Consumer {
+            it->if(it is Restaurant){
+            restaurant=it
+        }
+        })
         //메뉴 프레그멘트 생성
         restMenuCategoryFragment = RestMenuCategoryFragment.newInstance(restaurant)
 
@@ -121,9 +125,9 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
     private fun viewSetting() {
         setSupportActionBar(toolbar)
         //식당 대표 사진
-        Single(GlobalApplication.httpService.getPicture(restaurant.rest_id)).bindToLifecycle(this).subscribe({
-            imageViewPager = ImageViewPager(this@DetailRestaurantActivity, it)
-            rest_detail_image_viewpager.adapter = imageViewPager
+        Single(GlobalApplication.httpService.getPicture(restaurant._id)).bindToLifecycle(this).subscribe({
+            restaurantImageVPAdapter = restaurantImageVPAdapter(this@DetailRestaurantActivity, it)
+            rest_detail_image_viewpager.adapter = restaurantImageVPAdapter
             rest_detail_image_viewpager_indicator.setViewPager(rest_detail_image_viewpager)
         }, { it.printStackTrace() })
 
@@ -174,18 +178,11 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
                 }
             }
         }
-
-        //        Picasso.with(this).load(restaurant.picture).fit().into(rest_detail_image);
         rest_detail_rating!!.text = java.lang.Double.toString(restaurant.getRating().toDouble())
         rest_detail_review_count!!.text = "평가(" + restaurant.reviewCnt + ")"
         rest_detail_dangol_count!!.text = "/  단골수 : " + restaurant.dangolCnt
-        toolbar_layout!!.title = restaurant.name
-        toolbar_layout!!.setExpandedTitleColor(Color.WHITE)
-        val bottomPx = 180 // margin in dips
-        val d = resources.displayMetrics.density
-        val margin = (bottomPx * d).toInt()
-        toolbar_layout!!.expandedTitleMarginBottom = margin
-        toolbar_layout!!.setExpandedTitleTextAppearance(R.style.ExpandedAppBar)
+
+
 
         //        rest_detail_back_btn.setOnClickListener(this);
 
@@ -196,6 +193,11 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
         backArrow?.setColorFilter(ContextCompat.getColor(this, colorResource), PorterDuff.Mode.SRC_ATOP)
         cart?.setColorFilter(ContextCompat.getColor(this, colorResource), PorterDuff.Mode.SRC_ATOP)
         heart?.setColorFilter(ContextCompat.getColor(this, colorResource), PorterDuff.Mode.SRC_ATOP)
+    }
+
+    override fun onDestroy() {
+        RxBus.intentUnregister(this.javaClass)
+        super.onDestroy()
     }
 
     //    private void setStarView(float rating, LinearLayout rest_detail_rating_star_layout) {

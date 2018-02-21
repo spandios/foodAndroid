@@ -14,7 +14,7 @@
     <string name="cart_more_order">메뉴 추가</string>
     <string name="order">주문하기</string>
     <string name="action_settings">Settings</string>
-
+    <string name="reviewcnt">(%1$s)</string>
 
     <!--할인율-->
     <string name="sale5">-5%</string>
@@ -45,12 +45,10 @@
     <string name="filter_sort4">리뷰 많은 순</string>
 
 
-
     <string name="filter_distance_title">거리설정</string>
     <string name="filter_distance_3km">~3km</string>
     <string name="filter_distance_6km">~6km</string>
     <string name="filter_distance_9km">~9km</string>
-
 
 
     <!--KAKAO-->

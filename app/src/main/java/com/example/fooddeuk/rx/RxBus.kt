@@ -6,6 +6,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 
@@ -18,10 +19,10 @@ import io.reactivex.subjects.PublishSubject
 
 object RxBus {
     val MapActivityData = 0
+    val DetailRestaurantActivityData = 1
 
     private val sSubjectMap = SparseArray<PublishSubject<Any>>()
     private val sSubscriptionsMap = HashMap<Any,CompositeDisposable>()
-
 
     fun publish(subject: Int, @NonNull message: Any) {
         getSubject(subject).onNext(message)
@@ -36,6 +37,7 @@ object RxBus {
         }
         return subject
     }
+
 
     @NonNull
     private fun getCompositeSubscription(@NonNull `object`: Any): CompositeDisposable{
@@ -60,31 +62,46 @@ object RxBus {
     }
 
 
+    private val sIntentSubjectMap = SparseArray<BehaviorSubject<Any>>()
+    private val sIntentDisposable = HashMap<Class<*>,CompositeDisposable>()
+
+    fun intentPublish(subject: Int,message: Any){
+        getIntentSubject(subject).onNext(message)
+    }
+
+    private fun getIntentSubject(subjectCode: Int): BehaviorSubject<Any> {
+        var subject = sIntentSubjectMap.get(subjectCode)
+        if (subject == null) {
+            subject = BehaviorSubject.create()
+            subject.subscribeOn(AndroidSchedulers.mainThread())
+            sIntentSubjectMap.put(subjectCode, subject)
+        }
+        return subject
+    }
+
+    fun intentSubscribe(subject: Int, @NonNull lifecycle: Class<*>, @NonNull action: Consumer<Any>) {
+        val subscription = getIntentSubject(subject).subscribe(action)
+        getIntentCompositeDisposable(lifecycle).add(subscription)
+    }
+
+    private fun getIntentCompositeDisposable(@NonNull clazz: Class<*>): CompositeDisposable{
+        var compositeSubscription = sIntentDisposable[clazz]
+        if (compositeSubscription == null) {
+            compositeSubscription = CompositeDisposable()
+            sIntentDisposable[clazz] = compositeSubscription
+        }
+        return compositeSubscription
+    }
+
+    fun intentUnregister(@NonNull lifecycle: Class<*>) {
+        //We have to remove the composition from the map, because once you unsubscribe it can't be used anymore
+        val compositeDisposable = sIntentDisposable.remove(lifecycle)
+        compositeDisposable?.dispose()
+    }
 
 
 
 
-//        fun locationNameFromMapBus(bus: BusCallback) {
-//            RxBus.subscribe({ o ->
-//                val result = o as String
-//                if (result == LocationSettingByMapSUCCESS) {
-//                    bus.callback(true)
-//                } else {
-//                    bus.callback(false)
-//                }
-//            })
-//        }
-
-//
-//    private fun RxBusLocationNameByMap(){
-//        RxBus.subscribe { result->
-//            if(result is String){
-//                if(result==RxBus.LocationSettingByMapSUCCESS){
-//                    header_address_text.text=Location.locationName
-//                }
-//            }
-//        }
-//    }
 
 
 }

@@ -20,6 +20,7 @@ import com.example.fooddeuk.activity.LocationSettingByMapActivity
 import com.example.fooddeuk.activity.MainActivity
 import com.example.fooddeuk.activity.MapActivity
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.CustomFilterDialog
 import com.example.fooddeuk.util.StartActivity
 import com.example.fooddeuk.util.SwipeViewPager
@@ -60,24 +61,22 @@ class NearFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        btn_near_restaurant_search.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_search)?.apply {
-            setColorFilter(ContextCompat.getColor(context!!, R.color.black), PorterDuff.Mode.SRC_ATOP)
-        })
-
         setFilter()
         setLocation()
-        setRestaurantListWithViewPager()
 
-        //MAP
+        setRestaurantListWithViewPager()
         btn_near_map.setOnClickListener({
-            StartActivity(MapActivity::class.java, Bundle().apply {
-                putSerializable("MapData", queryMap(restaurantMenuType))
-            })
+            RxBus.intentPublish(RxBus.MapActivityData,queryMap(restaurantMenuType))
+            StartActivity(MapActivity::class.java)
         })
 
     }
 
     override fun onResume() {
+        btn_near_restaurant_search.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_search)?.apply {
+            setColorFilter(ContextCompat.getColor(context!!, R.color.black), PorterDuff.Mode.SRC_ATOP)
+        })
+
         txt_near_location_name.setText(Location.locationName)
         super.onResume()
     }
@@ -130,7 +129,7 @@ class NearFragment : Fragment() {
         }
 
         customFilterDialog = CustomFilterDialog.Builder(context!!)
-                .isSetClearText(true)
+                .isClearText(true)
                 .setFilter(sortlist, sortListener)
                 .setFilter(distanceList,distanceListener)
                 .SetClearCallback {

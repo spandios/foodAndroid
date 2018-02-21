@@ -15,20 +15,14 @@ import java.util.*
  * Created by heojuyeong on 2017. 10. 9..
  */
 
-class RestaurantAdapter
-//    HashMap<String, Integer> starDpMap;
-
-
-(private val context: Context, var restaurantItem: ArrayList<Restaurant>)//        starDpMap = LayoutUtil.DpToLayoutParams(context, 12, (float) 11.5);
-    : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
-    private var restaurantItemClickListener: RestaurantItemClickListener? = null
-
+class RestaurantAdapter(private val context: Context, private var restaurantItem: ArrayList<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
+    lateinit var restaurantItemClickListener: (restaurant : Restaurant)->Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantAdapter.ViewHolder {
 
         // set the view's size, margins, paddings and layout parameters
-        val viewHolder = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_restaurant, parent, false))
-        viewHolder.itemView.setOnClickListener({restaurantItemClickListener?.onItemClickListener(restaurantItem[viewHolder.adapterPosition])})
+        val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_restaurant, parent, false))
+        viewHolder.itemView.setOnClickListener({ restaurantItemClickListener(restaurantItem[viewHolder.adapterPosition]) })
         return viewHolder
     }
 
@@ -47,18 +41,18 @@ class RestaurantAdapter
     override fun getItemCount(): Int = restaurantItem.size
 
 
-    inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(restaurant: Restaurant){
-            with(itemView){
+        fun bind(restaurant: Restaurant) {
+            with(itemView) {
                 Picasso.with(context).load(restaurant.picture).fit().into(img_restaurant_list)
-                txt_restaurant_name_list.text=restaurant.name
-                star_restaurant_list.rating=restaurant.rating
-                txt_restaurant_reviewCnt_list.text="리뷰(${restaurant.reviewCnt})"
+                txt_restaurant_name_list.text = restaurant.name
+                star_restaurant_list.rating = restaurant.rating
+                txt_restaurant_reviewCnt_list.text = "리뷰(${restaurant.reviewCnt})"
 
-                if(restaurant.discount.isNotEmpty()) {
-                    txt_restaurant_sale_list.text="포장 시 최대 -${restaurant.discount}"
-                } else txt_restaurant_sale_list.visibility=View.GONE
+                if (restaurant.discount.isNotEmpty()) {
+                    txt_restaurant_sale_list.text = "포장 시 최대 -${restaurant.discount}"
+                } else txt_restaurant_sale_list.visibility = View.GONE
             }
 
         }
@@ -66,14 +60,6 @@ class RestaurantAdapter
     }
 
 
-
-    interface RestaurantItemClickListener {
-        fun onItemClickListener(restaurant: Restaurant)
-    }
-
-    fun setRestaurantItemClickListener(restaurantItemClickListener: RestaurantItemClickListener) {
-        this.restaurantItemClickListener = restaurantItemClickListener
-    }
 
     fun updateRestaurant(restaurant: ArrayList<Restaurant>) {
         restaurantItem.clear()
