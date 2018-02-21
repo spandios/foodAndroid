@@ -163,6 +163,7 @@ class NearFragment : Fragment() {
                 return
             }
         })
+
         tab_rest_list.setViewPager(vp_rest_list)
     }
 

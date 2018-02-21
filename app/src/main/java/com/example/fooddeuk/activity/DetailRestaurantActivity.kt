@@ -3,7 +3,6 @@ package com.example.fooddeuk.activity
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
@@ -17,9 +16,7 @@ import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.network.HTTP.Single
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.addFragmentToActivity
-import com.example.fooddeuk.util.hideFragmentToActivity
 import com.example.fooddeuk.util.replaceFragmentToActivity
-import com.example.fooddeuk.util.showFragmentToActivity
 import com.orhanobut.logger.Logger
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import io.reactivex.functions.Consumer
@@ -62,29 +59,29 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 //        addFragmentToActivity(R.id.rest_main_tab, testFragment)
         addFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
         replaceFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
-        rest_detail_main_tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0 -> {
-                        showFragmentToActivity(restMenuCategoryFragment)
-//                        hideFragmentToActivity(testFragment)
-                    }
-                    1 -> {
-                        hideFragmentToActivity(restMenuCategoryFragment)
-//                        showFragmentToActivity(testFragment)
-                    }
-                    2 -> {
-                        hideFragmentToActivity(restMenuCategoryFragment)
-//                        showFragmentToActivity(testFragment)
-                    }
-                }
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+//        rest_detail_main_tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab) {
+//                when (tab.position) {
+//                    0 -> {
+//                        showFragmentToActivity(restMenuCategoryFragment)
+////                        hideFragmentToActivity(testFragment)
+//                    }
+//                    1 -> {
+//                        hideFragmentToActivity(restMenuCategoryFragment)
+////                        showFragmentToActivity(testFragment)
+//                    }
+//                    2 -> {
+//                        hideFragmentToActivity(restMenuCategoryFragment)
+////                        showFragmentToActivity(testFragment)
+//                    }
+//                }
+//
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab) {}
+//
+//            override fun onTabReselected(tab: TabLayout.Tab) {}
+//        })
     }
 
 
@@ -130,8 +127,8 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
             rest_detail_image_viewpager.adapter = restaurantImageVPAdapter
             rest_detail_image_viewpager_indicator.setViewPager(rest_detail_image_viewpager)
         }, { it.printStackTrace() })
-
-        rest_detail_name.text = restaurant.getName()
+        rest_detail_name.text=restaurant.name
+        rest_detail_name2.text = restaurant.name
         rest_detail_name.setTextColor(ContextCompat.getColor(this,R.color.white))
 
         rest_detail_back.setImageDrawable(backArrow)
@@ -142,38 +139,33 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 
         app_bar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             //collapse
-//            if (Math.abs(verticalOffset) == appBarLayout.totalScrollRange) {
-//                backArrow.setColorFilter(resources.getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP)
-//                heart.setColorFilter(resources.getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP)
-//                cart.setColorFilter(resources.getColor(R.color.charcoal_grey), PorterDuff.Mode.SRC_ATOP)
-//                rest_detail_name.setTextColor(resources.getColor(R.color.charcoal_grey))
-//            } else if (verticalOffset == 0) {
-//                backArrow.setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP)
-//                heart.setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP)
-//                cart.setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP)
-//                rest_detail_name.setTextColor(resources.getColor(R.color.white))
-//            } else {
-//                // Somewhere in between
-//            }
-//
+            if (Math.abs(verticalOffset) == appBarLayout.totalScrollRange) {
+                rest_detail_name.visibility=View.VISIBLE
+                rest_detail_name.setTextColor(Color.BLACK)
+            }else{
+                rest_detail_name.visibility=View.GONE
+            }
+
             var alpha = ((Math.min(1f, verticalOffset.toFloat() / ((appBarLayout.height - toolbar.height) * -1).toFloat())) * 255).toInt()
             toolbar.background.alpha = alpha
             when (alpha) {
                 in 0..130 -> {
-                    rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+//                    rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
                     setIconChangeColor(R.color.white)
                 }
-                in 61..120 -> {
+                in 130..160 -> {
+//                    rest_detail_name.visibility=View.GONE
                     rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white_1))
                     setIconChangeColor(R.color.white_1)
                 }
 
-                in 121..180 -> {
-                    rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white_2))
+                in 161..190 -> {
+
+//                    rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white_2))
                     setIconChangeColor(R.color.white_2)
                 }
-                in 180..255 -> {
-                    rest_detail_name.setTextColor(Color.BLACK)
+                in 190..255 -> {
+//                    rest_detail_name.setTextColor(Color.BLACK)
                     setIconChangeColor(R.color.black)
                 }
             }

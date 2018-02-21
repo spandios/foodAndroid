@@ -8,15 +8,13 @@
 
    <android.support.v4.widget.NestedScrollView
        android:layout_width="match_parent"
-
        android:layout_height="50dp"
        android:fillViewport="true">
-
+      <!--android:background="#4dfceee2"-->
    <com.ogaclejapan.smarttablayout.SmartTabLayout
        android:id="@+id/rest_menu_tab_layout"
        android:layout_width="match_parent"
        android:layout_height="50dp"
-       android:background="#4dfceee2"
        app:stl_indicatorAlwaysInCenter="false"
        app:stl_indicatorWithoutPadding="false"
        app:stl_indicatorInFront="true"
@@ -31,12 +29,12 @@
        app:stl_underlineColor="#4D000000"
        app:stl_underlineThickness="1dp"
        app:stl_dividerColor="#4D000000"
-       app:stl_dividerThickness="0dp"
+       app:stl_dividerThickness="1dp"
        app:stl_defaultTabTextAllCaps="true"
        app:stl_defaultTabTextColor="#FC000000"
-       app:stl_defaultTabTextSize="12sp"
-       app:stl_defaultTabTextHorizontalPadding="16dp"
-       app:stl_defaultTabTextMinWidth="0dp"
+       app:stl_defaultTabTextSize="14sp"
+       app:stl_defaultTabTextHorizontalPadding="8dp"
+       app:stl_defaultTabTextMinWidth="1dp"
        app:stl_distributeEvenly="true"
        app:stl_clickable="true"
        app:stl_titleOffset="24dp"
@@ -46,18 +44,36 @@
 
    <android.support.v4.widget.NestedScrollView
        android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-   <com.example.fooddeuk.activity.MenuPager
-       android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:id="@+id/rest_detail_menu_category_view_pager"
        app:layout_behavior="@string/appbar_scrolling_view_behavior"
        >
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+         <com.example.fooddeuk.activity.MenuPager
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:id="@+id/rest_detail_menu_category_view_pager"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+             />
 
-   </com.example.fooddeuk.activity.MenuPager>
+            <TextView
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:id="@+id/rest_detail_discount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:lineSpacingExtra="10.5sp"
+                android:text="혜택 : 포장 시 콜라 무료제공"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+      </LinearLayout>
+
+
    </android.support.v4.widget.NestedScrollView>
-
-
-
 </LinearLayout>
 

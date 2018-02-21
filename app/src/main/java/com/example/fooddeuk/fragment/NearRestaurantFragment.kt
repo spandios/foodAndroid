@@ -35,9 +35,10 @@ class NearRestaurantFragment : android.support.v4.app.Fragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_rest_list, container, false)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_rest_list, container, false)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         arguments?.let {
             queryMap = Parcels.unwrap<HashMap<String, String>>(it.getParcelable("queryMap"))
 
@@ -62,8 +63,6 @@ class NearRestaurantFragment : android.support.v4.app.Fragment() {
                     }
             ) { throwable -> throwable.printStackTrace() }
         }
-
-        return view
     }
 
 }

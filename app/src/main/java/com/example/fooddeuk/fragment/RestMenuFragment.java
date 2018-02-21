@@ -35,7 +35,6 @@ public class RestMenuFragment extends Fragment  {
     ArrayList<Menu> menu;
 
     private Restaurant restaurant;
-    private MenuListAdapter menuListAdapter;
 
 
     public RestMenuFragment(){
@@ -104,32 +103,7 @@ public class RestMenuFragment extends Fragment  {
         rest_detail_menu_list.setAdapter(menuListAdapter);
         menuListAdapter.notifyDataSetChanged();
 
-//        Logger.d(menu_category_id);
-//        MenuService.getMenu(menu_category_id).enqueue(new Callback<ArrayList<Menu>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<Menu>> call, final Response<ArrayList<Menu>> response) {
-//                if(response.isSuccessful()){
-//                    if(response.body().size()>0){
-//                        menuListAdapter = new MenuListAdapter(getActivity(), response.body());
-//                        menuListAdapter.setOnItemClickListener((DetailRestaurantActivity)context);
-//                        LayoutUtil.RecyclerViewSetting(getActivity(),rest_detail_menu_list);
-//                        rest_detail_menu_list.setFocusable(true);
-//                        rest_detail_menu_list.setFocusableInTouchMode(true);
-//                        rest_detail_menu_list.setNestedScrollingEnabled(true);
-//
-//                        rest_detail_menu_list.setAdapter(menuListAdapter);
-//                    }else{
-//                        Toast.makeText(context,"No MenuCategory Item",Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<Menu>> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
+
     }
 
 
