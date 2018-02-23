@@ -92,8 +92,8 @@ public class ViewHolderWithPictureUnNecessary extends RecyclerView.ViewHolder {
             menu.rating += ".0";
         }
 
-        Picasso.with(context).load(menu.picture).transform(new CropCircleTransformation()).into(menu_master_picture);
-        Picasso.with(context).load(menu.picture).transform(new CropCircleTransformation()).into(detailHotMenuPicture);
+        Picasso.with(context).load(menu.picture[0]).transform(new CropCircleTransformation()).into(menu_master_picture);
+        Picasso.with(context).load(menu.picture[0]).transform(new CropCircleTransformation()).into(detailHotMenuPicture);
         menu_master_name.setText(menu.name);
         menu_master_price.setText(menuPrice);
         menu_detail_name.setText(menu.name);

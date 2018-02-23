@@ -2,7 +2,6 @@ package com.example.fooddeuk.adapter;
 
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +27,8 @@ import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.LayoutUtil;
 import com.example.fooddeuk.util.PriceUtil;
 import com.example.fooddeuk.util.RealmUtil;
+import com.example.fooddeuk.viewholder.DoubleOptionViewHolder;
 import com.example.fooddeuk.viewholder.ViewHolderNoPicture;
-import com.example.fooddeuk.viewholder.ViewHolderWithPictureDoubleOption;
 import com.example.fooddeuk.viewholder.ViewHolderWithPictureNecessary;
 import com.example.fooddeuk.viewholder.ViewHolderWithPictureUnNecessary;
 import com.orhanobut.logger.Logger;
@@ -64,7 +63,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int noPictureAndDoubleOption= 6;
     private static final int noPictureAndNoOption= 7;
     private int expandedPosition = -1;
-    private int previousPosition = -1;
+
     private RecyclerView mRecyclerView;
     private ArrayList<Option> necessaryArrayList = new ArrayList<>();
     private ArrayList<Option> unNecessaryArrayList = new ArrayList<>();
@@ -115,45 +114,44 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) v.getTag();
             if(expandedPosition!=holder.getAdapterPosition()){
                 Menu menu=items.get(holder.getAdapterPosition());
+
                 //전에 펼쳐졌던 레이아웃 접기
                 if (expandedPosition >= 0) {
                     RecyclerView.ViewHolder prevViewHolder = mRecyclerView.findViewHolderForAdapterPosition(expandedPosition);
                     prevViewHolder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.GONE);
-                    prevViewHolder.itemView.findViewById(R.id.menu_master_layout).setVisibility(View.VISIBLE);
-//                prevViewHolder.itemView.setClickable(true);
                 }
-
                 //현재 클릭된 레이아웃 펼치기
                 onItemClickListener.onItemClick(holder,holder.itemView.getHeight(),holder.itemView.findViewById(R.id.menu_master_layout).getHeight());
                 expandedPosition = holder.getAdapterPosition();
-                holder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.VISIBLE); //펼치기
-                holder.itemView.findViewById(R.id.menu_master_layout).setVisibility(View.GONE);
-                ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(holder.getAdapterPosition(),0);
-            mRecyclerView.scrollToPosition(holder.getAdapterPosition());
+                holder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.VISIBLE);
 
-                if(holder instanceof ViewHolderWithPictureDoubleOption){
 
+                if(holder instanceof DoubleOptionViewHolder){
                     setFirstNecessaryOption(menu, holder);
-                    setDoubleOptionDialog(menu.option,(ViewHolderWithPictureDoubleOption)holder);
+                    setDoubleOptionDialog(menu.option,(DoubleOptionViewHolder)holder);
                 }else if(holder instanceof ViewHolderWithPictureNecessary){
 
                 }else if(holder instanceof ViewHolderWithPictureUnNecessary){
 
                 }
 
+
+            }else{
+                holder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.GONE);
+                expandedPosition=-1;
             }
 
         }
     };
 
 
-    public void setItemViewClickListener(RecyclerView.ViewHolder vh, String optionFLAG) {
+    void setItemViewClickListener(RecyclerView.ViewHolder vh, String optionFLAG) {
         //EXPAND
         vh.itemView.setOnClickListener(menuExpandLayoutListener);
 
         //SHOW REVIEW
-        vh.itemView.findViewById(R.id.menu_detail_rating).setOnClickListener(v -> reviewShow(vh));
-        vh.itemView.findViewById(R.id.menu_detail_review_show).setOnClickListener(v -> reviewShow(vh));
+//        vh.itemView.findViewById(R.id.menu_detail_rating).setOnClickListener(v -> reviewShow(vh));
+//        vh.itemView.findViewById(R.id.menu_detail_review_show).setOnClickListener(v -> reviewShow(vh));
 
         //OPTION
         if (optionFLAG.equals("necessary")) {
@@ -166,7 +164,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         //CART
-        vh.itemView.findViewById(R.id.menu_detail_cart).setOnClickListener(view -> checkCartAndInsertOrOrder(items.get(vh.getAdapterPosition()), "cart"));
+//        vh.itemView.findViewById(R.id.menu_detail_cart).setOnClickListener(view -> checkCartAndInsertOrOrder(items.get(vh.getAdapterPosition()), "cart"));
 
         //ORDER
         vh.itemView.findViewById(R.id.menu_detail_order).setOnClickListener(view -> checkCartAndInsertOrOrder(items.get(vh.getAdapterPosition()), "order"));
@@ -175,7 +173,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if (items.get(position).picture.length() > 0) {
+        if (items.get(position).picture.length > 0) {
             boolean necessary = false;
             boolean unnecessary = false;
             ArrayList<OptionCategory> optionCategory = items.get(position).option;
@@ -232,7 +230,6 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             View parentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_not_have_picture, parent, false);
             ViewHolderNoPicture vh = new ViewHolderNoPicture(parentView);
             vh.itemView.setOnClickListener(menuExpandLayoutListener);
-            vh.itemView.findViewById(R.id.menu_detail_rating).setOnClickListener(v -> reviewShow(vh));
             vh.itemView.findViewById(R.id.menu_detail_order).setOnClickListener(view -> checkCartAndInsertOrOrder(items.get(vh.getAdapterPosition()), "order"));
             return vh;
 
@@ -251,7 +248,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             View parentView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_menu_have_picture, parent, false);
             // set the view's size, margins, paddings and layout parameters
-            ViewHolderWithPictureDoubleOption vh = new ViewHolderWithPictureDoubleOption(context,parentView);
+            DoubleOptionViewHolder vh = new DoubleOptionViewHolder(context,parentView);
             setItemViewClickListener(vh, "double");
             return vh;
         }
@@ -264,11 +261,6 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder tmpHolder, int position) {
         final Menu menu = items.get(position);
 
-
-
-
-
-
         if (tmpHolder.getItemViewType() == noPictureAndNoOption) {
             ViewHolderNoPicture holder = (ViewHolderNoPicture) tmpHolder;
             holder.itemView.setTag(holder);
@@ -278,6 +270,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ViewHolderWithPictureNecessary holder = (ViewHolderWithPictureNecessary) tmpHolder;
             holder.itemView.setTag(holder);
             holder.bind(menu);
+
             if (position == expandedPosition) {
                 holder.menu_master_layout.setVisibility(View.GONE);
                 holder.menu_detail_layout.setVisibility(View.VISIBLE);
@@ -294,29 +287,14 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             ViewHolderWithPictureUnNecessary holder = (ViewHolderWithPictureUnNecessary) tmpHolder;
             holder.itemView.setTag(holder);
-
             holder.bind(menu);
-            if (position == expandedPosition) {
-                holder.menu_master_layout.setVisibility(View.GONE);
-                holder.menu_detail_layout.setVisibility(View.VISIBLE);
-                holder.itemView.setClickable(false);
-                setUnNecessaryOptionDialog(menu.option, holder);
-            } else {
-                holder.itemView.setClickable(true);
-                holder.menu_master_layout.setVisibility(View.VISIBLE);
-                holder.menu_detail_layout.setVisibility(View.GONE);
-            }
+
 
         } else if (tmpHolder.getItemViewType() == pictureAndDoubleOption) {
-            ViewHolderWithPictureDoubleOption holder = (ViewHolderWithPictureDoubleOption) tmpHolder;
+            DoubleOptionViewHolder holder = (DoubleOptionViewHolder) tmpHolder;
             holder.itemView.setTag(holder);
-            holder.bind(menu, position);
+            holder.bind(menu);
 
-            if (position != expandedPosition) {
-                holder.itemView.setClickable(true);
-                holder.menu_master_layout.setVisibility(View.VISIBLE);
-                holder.menu_detail_layout.setVisibility(View.GONE);
-            }
         }
     }
 
@@ -356,7 +334,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    void setDoubleOptionDialog(ArrayList<OptionCategory> optionCategory, ViewHolderWithPictureDoubleOption viewHolder) {
+    void setDoubleOptionDialog(ArrayList<OptionCategory> optionCategory, DoubleOptionViewHolder viewHolder) {
         BottomSheetDialog necessaryOptionDialog = new BottomSheetDialog(context);
         BottomSheetDialog unNecessaryOptionDialog = new BottomSheetDialog(context);
         View necessaryOptionDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_menu_option, null);
@@ -556,7 +534,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //장바구니에 이미 메뉴가 존재하는 경우
             Restaurant defaultRestaurant = RealmUtil.findData(Restaurant.class);
             //기존 장바구니에 있는 식당과 현재 주문할려는 식당이 일치할 경우 장바구니에 메뉴를 추가한다
-            if (defaultRestaurant.rest_id == restaurant.rest_id) {
+            if (defaultRestaurant.rest_id.equals(restaurant.rest_id)) {
                 RealmUtil.insertData2(createCartMenuItem(new CartMenu(menu.menu_id,menu.name,menu.price,menu.avgtime)));
                 if (version.equals("cart")) {
                     IntentUtil.startActivity(context, CartActivity.class);
@@ -605,7 +583,6 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             menuOption.addAll(necessaryArrayList);
         }
         if (unNecessaryArrayList.size() >= 1) {
-            Logger.d("eee");
             menuOption.addAll(unNecessaryArrayList);
         }
         optionRealmList.addAll(menuOption);
@@ -624,9 +601,6 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         return cartItem;
     }
-
-
-
 
 
     @Override

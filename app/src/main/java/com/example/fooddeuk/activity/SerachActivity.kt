@@ -7,10 +7,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import com.example.fooddeuk.R
-import com.example.fooddeuk.adapter.MenuVPAdapter
+import com.example.fooddeuk.adapter.MenuListVPAdapter
 import com.example.fooddeuk.model.menu.MenuCategory
 import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.rx.RxBus
+import com.example.fooddeuk.util.logger
 import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_serach.*
@@ -44,9 +45,10 @@ class SerachActivity : AppCompatActivity() {
             if (it is Restaurant) {
                 restaurant = it
                 menuCategory = restaurant.menuCategory
-                val vpAdapter = MenuVPAdapter(this, menuCategory, restaurant, { position: Int, menuItemHeight : Int->
+                val vpAdapter = MenuListVPAdapter(this, menuCategory, restaurant, { position: Int, menuItemHeight : Int->
                     Logger.d(menuItemHeight)
-                    scroll.scrollTo(0, scrollBaseHeight + (position * menuItemHeight)-100)
+                    logger("scroll",scrollBaseHeight+(position*menuItemHeight))
+                    scroll.scrollTo(0, scrollBaseHeight + (position * menuItemHeight))
                 })
                 vp.adapter = vpAdapter
 
@@ -55,6 +57,7 @@ class SerachActivity : AppCompatActivity() {
 
                 scroll.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
                     //                    logger("totoal ${scroll.getChildAt(0).height} scroll : ${scroll.height} image : ${test_image.height}, toolbar : ${toolbar.height} tab : ${tab.y} viewpager : ${vp.y}")
+                    logger(scrollY)
                     val alpha = (Math.min(1f, scrollY.toFloat() / totalScrollHeight)) * 255
                     if (alpha >= 255) {
                         tab2.visibility = View.VISIBLE

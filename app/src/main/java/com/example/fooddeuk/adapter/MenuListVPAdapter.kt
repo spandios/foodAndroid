@@ -18,9 +18,7 @@ import java.util.*
  * Created by heo on 2018. 2. 22..
  */
 
-class MenuVPAdapter(var context: Context, var menuCategories: ArrayList<MenuCategory>, val restaurant: Restaurant, val clickItemHeight : (position: Int, menuItemHeight : Int)->Unit) : PagerAdapter() {
-    private val MAX_CLICK_DURATION = 200
-    private var startClickTime: Long = 0
+class MenuListVPAdapter(var context: Context, var menuCategories: ArrayList<MenuCategory>, val restaurant: Restaurant, val clickItemHeight : (position: Int, menuItemHeight : Int)->Unit) : PagerAdapter() {
     internal var layoutInflater: LayoutInflater
 
     init {
@@ -36,7 +34,7 @@ class MenuVPAdapter(var context: Context, var menuCategories: ArrayList<MenuCate
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val itemView = layoutInflater.inflate(R.layout.item_menu, container, false)
+        val itemView = layoutInflater.inflate(R.layout.item_vp_menu_list, container, false)
         val menuRecyclerView = itemView.findViewById<RecyclerView>(R.id.test_recyclerview)
         val nmLayoutManager = LinearLayoutManager(context)
         menuRecyclerView.setLayoutManager(nmLayoutManager)

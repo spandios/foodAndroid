@@ -19,7 +19,7 @@ public class Menu {
     public String price;
     public String description;
     public String avgtime;
-    public String picture;
+    public String[] picture;
     public String rating;
     public int viewCnt;
     public int likeCnt;
@@ -31,13 +31,12 @@ public class Menu {
 
     }
 
-    public Menu(String menu_id, String name, String price, String description, String avgtime, String picture, String rating, int viewCnt, int likeCnt, int reviewCnt, ArrayList<OptionCategory> option) {
+    public Menu(String menu_id, String name, String price, String description, String avgtime, String rating, int viewCnt, int likeCnt, int reviewCnt, ArrayList<OptionCategory> option) {
         this.menu_id = menu_id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.avgtime = avgtime;
-        this.picture = picture;
         this.rating = rating;
         this.viewCnt = viewCnt;
         this.likeCnt = likeCnt;
@@ -63,9 +62,6 @@ public class Menu {
         return avgtime;
     }
 
-    public String getPicture() {
-        return picture;
-    }
 
     public String getRating() {
         return rating;
@@ -111,9 +107,6 @@ public class Menu {
         this.avgtime = avgtime;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
 
     public void setRating(String rating) {
         this.rating = rating;

@@ -72,7 +72,7 @@ public class RestMenuCategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_rest_menu_category, container, false);
         ButterKnife.bind(this,view);
         FragmentPagerAdapter fragmentPagerAdapter=new FragmentPagerAdapter(getChildFragmentManager());
-//        MenuVPAdapter menuVPAdapter= new MenuVPAdapter(getContext(), menuCategoryCategory, restaurant, new Function1<Integer, Unit>() {
+//        MenuListVPAdapter menuVPAdapter= new MenuListVPAdapter(getContext(), menuCategoryCategory, restaurant, new Function1<Integer, Unit>() {
 //            @Override
 //            public Unit invoke(Integer integer) {
 //                return null;

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.orhanobut.logger.Logger
 
 /**
@@ -46,6 +47,8 @@ fun AppCompatActivity.logger(str : String){
 fun AppCompatActivity.logger(any : Any){
     Logger.d(any)
 }
+
+fun View.findId(id: Int) : View = this.findViewById(id)
 
 fun AppCompatActivity.addFragmentToActivity(frameId: Int, fragment: Fragment) {
     val transaction = this.supportFragmentManager.beginTransaction()
