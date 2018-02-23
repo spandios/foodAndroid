@@ -13,7 +13,7 @@ import android.view.View;
 public class MenuPager extends ViewPager{
 
     private View mCurrentView;
-
+    private int mCurrentPosition;
 
     public MenuPager(Context context) {
         super(context);
@@ -22,6 +22,7 @@ public class MenuPager extends ViewPager{
     public MenuPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -39,20 +40,8 @@ public class MenuPager extends ViewPager{
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-//    @Override
-//    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        if (mCurrentView == null) {
-//            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//            return;
-//        }
-//        int height = 0;
-//        mCurrentView.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-//        int h = mCurrentView.getMeasuredHeight();
-//        if (h > height) height = h;
-//        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-//
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//    }
+
+
 
     public void measureCurrentView(View currentView) {
         mCurrentView = currentView;

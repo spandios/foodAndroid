@@ -48,7 +48,7 @@ public class RestMenuCategoryFragment extends Fragment {
         Parcelable menuParcel = Parcels.wrap(restaurantWithMenuCategory.menuCategory);
         Bundle extra = new Bundle();
         extra.putParcelable("restaurant", restaurantParcel);
-        extra.putParcelable("menuCategoryCategory", menuParcel);
+        extra.putParcelable("menuCategory", menuParcel);
         RestMenuCategoryFragment restMenuCategoryFragment = new RestMenuCategoryFragment();
         restMenuCategoryFragment.setArguments(extra);
         return restMenuCategoryFragment;
@@ -59,7 +59,7 @@ public class RestMenuCategoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            menuCategoryCategory =Parcels.unwrap(getArguments().getParcelable("menuCategoryCategory"));
+            menuCategoryCategory =Parcels.unwrap(getArguments().getParcelable("menuCategory"));
             restaurant=Parcels.unwrap(getArguments().getParcelable("restaurant"));
 
         }
@@ -72,8 +72,17 @@ public class RestMenuCategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_rest_menu_category, container, false);
         ButterKnife.bind(this,view);
         FragmentPagerAdapter fragmentPagerAdapter=new FragmentPagerAdapter(getChildFragmentManager());
+//        MenuVPAdapter menuVPAdapter= new MenuVPAdapter(getContext(), menuCategoryCategory, restaurant, new Function1<Integer, Unit>() {
+//            @Override
+//            public Unit invoke(Integer integer) {
+//                return null;
+//            }
+//        });
+
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout.setViewPager(viewPager);
+
+
 
         return view;
     }
@@ -122,25 +131,24 @@ public class RestMenuCategoryFragment extends Fragment {
         }
 
 
-//        @Override
-//        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-//            super.setPrimaryItem(container, position, object);
-//            if (position != mCurrentPosition) {
-//                Fragment fragment = (Fragment) object;
-//                MenuPager pager = (MenuPager) container;
-//                if (fragments != null && fragments.getView() != null) {
-//                    mCurrentPosition = position;
-//                    pager.measureCurrentView(fragment.getView());
-//
-//                }
-//            }
-//        }
-
         @Override
         public Fragment getItem(int position) {
 
             return RestMenuFragment.newInstance(menuCategoryCategory.get(position).menu_content,restaurant);
         }
+
+//        @Override
+//        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+//            super.setPrimaryItem(container, position, object);
+//            if (position != mCurrentPosition) {
+//                Fragment fragment = (Fragment) object;
+//                MenuPager pager = ( MenuPager)container;
+//                mCurrentPosition = position;
+//                pager.measureCurrentView(fragment.getView());
+//            }
+//        }
+
+
 
         @Override
         public CharSequence getPageTitle(int position) {

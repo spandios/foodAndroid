@@ -2,6 +2,7 @@ package com.example.fooddeuk.adapter;
 
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int noPictureAndDoubleOption= 6;
     private static final int noPictureAndNoOption= 7;
     private int expandedPosition = -1;
+    private int previousPosition = -1;
     private RecyclerView mRecyclerView;
     private ArrayList<Option> necessaryArrayList = new ArrayList<>();
     private ArrayList<Option> unNecessaryArrayList = new ArrayList<>();
@@ -77,12 +79,14 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public interface OnItemClickListener {
-        void onItemClick(RecyclerView.ViewHolder view, float y, RecyclerView recyclerView);
+        void onItemClick(RecyclerView.ViewHolder view, float y, int menuItemHeight);
     }
 
     public interface OnCartCountClickListener {
         void onCartCount(int cartSize);
     }
+
+
 
     private void reviewShow(RecyclerView.ViewHolder view) {
         MenuReviewService.getReview(items.get(view.getAdapterPosition()).menu_id).enqueue(new Callback<ArrayList<ReviewItem>>() {
@@ -109,24 +113,35 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View v) {
             RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) v.getTag();
-            LinearLayout linearLayout = v.findViewById(R.id.menu_detail_layout);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            linearLayout.setLayoutParams(layoutParams);
-            //레이아웃 접기
-            if (expandedPosition >= 0) {
-                int prev = expandedPosition;
-                notifyItemChanged(prev);
+            if(expandedPosition!=holder.getAdapterPosition()){
+                Menu menu=items.get(holder.getAdapterPosition());
+                //전에 펼쳐졌던 레이아웃 접기
+                if (expandedPosition >= 0) {
+                    RecyclerView.ViewHolder prevViewHolder = mRecyclerView.findViewHolderForAdapterPosition(expandedPosition);
+                    prevViewHolder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.GONE);
+                    prevViewHolder.itemView.findViewById(R.id.menu_master_layout).setVisibility(View.VISIBLE);
+//                prevViewHolder.itemView.setClickable(true);
+                }
+
+                //현재 클릭된 레이아웃 펼치기
+                onItemClickListener.onItemClick(holder,holder.itemView.getHeight(),holder.itemView.findViewById(R.id.menu_master_layout).getHeight());
+                expandedPosition = holder.getAdapterPosition();
+                holder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.VISIBLE); //펼치기
+                holder.itemView.findViewById(R.id.menu_master_layout).setVisibility(View.GONE);
+                ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(holder.getAdapterPosition(),0);
+            mRecyclerView.scrollToPosition(holder.getAdapterPosition());
+
+                if(holder instanceof ViewHolderWithPictureDoubleOption){
+
+                    setFirstNecessaryOption(menu, holder);
+                    setDoubleOptionDialog(menu.option,(ViewHolderWithPictureDoubleOption)holder);
+                }else if(holder instanceof ViewHolderWithPictureNecessary){
+
+                }else if(holder instanceof ViewHolderWithPictureUnNecessary){
+
+                }
+
             }
-            //레이아웃 펼치기
-            expandedPosition = holder.getAdapterPosition();
-            notifyItemChanged(expandedPosition);
-
-
-            //레이아웃 높이 remeasure
-            mRecyclerView.requestLayout();
-            mRecyclerView.invalidate();
-            mRecyclerView.smoothScrollToPosition(holder.getAdapterPosition());
-
 
         }
     };
@@ -249,6 +264,11 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder tmpHolder, int position) {
         final Menu menu = items.get(position);
 
+
+
+
+
+
         if (tmpHolder.getItemViewType() == noPictureAndNoOption) {
             ViewHolderNoPicture holder = (ViewHolderNoPicture) tmpHolder;
             holder.itemView.setTag(holder);
@@ -262,10 +282,10 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.menu_master_layout.setVisibility(View.GONE);
                 holder.menu_detail_layout.setVisibility(View.VISIBLE);
                 holder.itemView.setClickable(false);
-                holder.itemView.setEnabled(false);
                 setFirstNecessaryOption(menu, holder);
                 setNecessaryOptionDialog(menu, holder);
             } else {
+                holder.itemView.setClickable(true);
                 holder.menu_master_layout.setVisibility(View.VISIBLE);
                 holder.menu_detail_layout.setVisibility(View.GONE);
             }
@@ -274,36 +294,29 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             ViewHolderWithPictureUnNecessary holder = (ViewHolderWithPictureUnNecessary) tmpHolder;
             holder.itemView.setTag(holder);
+
             holder.bind(menu);
             if (position == expandedPosition) {
                 holder.menu_master_layout.setVisibility(View.GONE);
                 holder.menu_detail_layout.setVisibility(View.VISIBLE);
                 holder.itemView.setClickable(false);
-                holder.itemView.setEnabled(false);
                 setUnNecessaryOptionDialog(menu.option, holder);
             } else {
+                holder.itemView.setClickable(true);
                 holder.menu_master_layout.setVisibility(View.VISIBLE);
                 holder.menu_detail_layout.setVisibility(View.GONE);
             }
 
         } else if (tmpHolder.getItemViewType() == pictureAndDoubleOption) {
-
             ViewHolderWithPictureDoubleOption holder = (ViewHolderWithPictureDoubleOption) tmpHolder;
             holder.itemView.setTag(holder);
             holder.bind(menu, position);
-            if (position == expandedPosition) {
-                holder.menu_master_layout.setVisibility(View.GONE);
-                holder.menu_detail_layout.setVisibility(View.VISIBLE);
-                holder.itemView.setClickable(false);
-                holder.itemView.setEnabled(false);
-                setFirstNecessaryOption(menu, holder);
-                setDoubleOptionDialog(menu.option,holder);
-            } else {
+
+            if (position != expandedPosition) {
+                holder.itemView.setClickable(true);
                 holder.menu_master_layout.setVisibility(View.VISIBLE);
                 holder.menu_detail_layout.setVisibility(View.GONE);
             }
-
-
         }
     }
 

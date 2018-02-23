@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.orhanobut.logger.Logger
 
 /**
  * Created by heo on 2018. 2. 11..
@@ -34,7 +35,17 @@ val Float.toPx : Float
 val Float.toDP : Float
     get()=(this/Resources.getSystem().displayMetrics.density)
 
+fun AppCompatActivity.logger(tag : String ="",obj : Any){
+    Logger.d(tag+":"+" "+obj)
+}
 
+fun AppCompatActivity.logger(str : String){
+    Logger.d(str)
+}
+
+fun AppCompatActivity.logger(any : Any){
+    Logger.d(any)
+}
 
 fun AppCompatActivity.addFragmentToActivity(frameId: Int, fragment: Fragment) {
     val transaction = this.supportFragmentManager.beginTransaction()

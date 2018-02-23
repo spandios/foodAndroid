@@ -5,13 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.fooddeuk.activity.MainActivity"
-    android:fitsSystemWindows="true"
+
     >
 
     <com.example.fooddeuk.util.SwipeViewPager
         android:id="@+id/home_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fitsSystemWindows="true"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

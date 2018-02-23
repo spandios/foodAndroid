@@ -3,6 +3,7 @@ package com.example.fooddeuk.activity
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
@@ -12,9 +13,12 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.adapter.MenuListAdapter
 import com.example.fooddeuk.adapter.restaurantImageVPAdapter
 import com.example.fooddeuk.fragment.RestMenuCategoryFragment
+import com.example.fooddeuk.home.HomeFragment
+import com.example.fooddeuk.model.menu.MenuCategory
 import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.network.HTTP.Single
 import com.example.fooddeuk.rx.RxBus
+import com.example.fooddeuk.util.StartActivity
 import com.example.fooddeuk.util.addFragmentToActivity
 import com.example.fooddeuk.util.replaceFragmentToActivity
 import com.orhanobut.logger.Logger
@@ -30,7 +34,10 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 
     lateinit var restaurant: Restaurant
     lateinit var restMenuCategoryFragment: RestMenuCategoryFragment
+    lateinit var homeFragment: HomeFragment
     lateinit var restaurantImageVPAdapter: restaurantImageVPAdapter
+    lateinit var menuCategoryList: ArrayList<MenuCategory>
+
     private val cart by lazy {
         ContextCompat.getDrawable(this, R.drawable.ic_cart)?.apply { setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP) }
     }
@@ -48,18 +55,24 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
         RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData,this.javaClass, Consumer {
             it->if(it is Restaurant){
             restaurant=it
+            menuCategoryList=restaurant.menuCategory
+            setFragment()
+            viewSetting()
         }
         })
-        //메뉴 프레그멘트 생성
-        restMenuCategoryFragment = RestMenuCategoryFragment.newInstance(restaurant)
+        tab_rest_main.tabMode=TabLayout.MODE_FIXED
+        tab_rest_main.tabGravity = TabLayout.GRAVITY_FILL
+        tab_rest_main.addTab(tab_rest_main.newTab().setText("메뉴"),true)
+        tab_rest_main.addTab(tab_rest_main.newTab().setText("스토리"))
+        tab_rest_main.addTab(tab_rest_main.newTab().setText("후기"))
+        tab_rest_main.setSelectedTabIndicatorHeight(0)
 
-        viewSetting()
 
-//        testFragment = HomeFragment()
-//        addFragmentToActivity(R.id.rest_main_tab, testFragment)
-        addFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
-        replaceFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
-//        rest_detail_main_tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+
+
+//
+//        tab_rest_main.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 //            override fun onTabSelected(tab: TabLayout.Tab) {
 //                when (tab.position) {
 //                    0 -> {
@@ -84,7 +97,14 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 //        })
     }
 
+    fun setFragment(){
+        restMenuCategoryFragment = RestMenuCategoryFragment.newInstance(restaurant)
+        homeFragment= HomeFragment()
+        addFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
+        addFragmentToActivity(R.id.rest_main_tab,homeFragment)
+        replaceFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
 
+    }
     //Implement CartAddClick -> 메뉴 추가 한 뒤 장바구니 개수 새로고침
     override fun onCartCount(cartSize: Int) {
         //        rest_detail_cart_count.setText(String.valueOf(cartSize));
@@ -92,7 +112,7 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 
     //TODO 더 안정화
     //Implement ItemClick -> 해당 position의 상세 레이아웃 펼쳐짐
-    override fun onItemClick(view: RecyclerView.ViewHolder, y: Float, recyclerView: RecyclerView) {
+    override fun onItemClick(view: RecyclerView.ViewHolder, y: Float, menuItemHeight: Int) {
         Logger.d(view.itemView.y)
 
     }
@@ -129,6 +149,16 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
         }, { it.printStackTrace() })
         rest_detail_name.text=restaurant.name
         rest_detail_name2.text = restaurant.name
+//        toolbar_layout.isTitleEnabled=true
+//        toolbar_layout.set
+//        toolbar_layout!!.title = restaurant.name
+//        toolbar_layout.expandedTitleMarginTop=200
+////        toolbar_layout!!.setExpandedTitleColor(Color.WHITE)
+////        val bottomPx = 180 // margin in dips
+////        val d = resources.displayMetrics.density
+////        val margin = (bottomPx * d).toInt()
+////        toolbar_layout!!.expandedTitleMarginBottom = margin
+//        toolbar_layout!!.setExpandedTitleTextAppearance(R.style.ExpandedAppBar)
         rest_detail_name.setTextColor(ContextCompat.getColor(this,R.color.white))
 
         rest_detail_back.setImageDrawable(backArrow)
@@ -136,6 +166,10 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 
         rest_detail_heart.setImageDrawable(heart)
         rest_detail_cart.setImageDrawable(cart)
+        rest_detail_cart.setOnClickListener {
+            RxBus.intentPublish(3,restaurant)
+            StartActivity(SerachActivity::class.java)
+        }
 
         app_bar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             //collapse
@@ -170,9 +204,9 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
                 }
             }
         }
-        rest_detail_rating!!.text = java.lang.Double.toString(restaurant.getRating().toDouble())
-        rest_detail_review_count!!.text = "평가(" + restaurant.reviewCnt + ")"
-        rest_detail_dangol_count!!.text = "/  단골수 : " + restaurant.dangolCnt
+        rest_detail_rating!!.text = java.lang.Double.toString(restaurant.getRating().toDouble())+"(${restaurant.reviewCnt})"
+//        rest_detail_review_count!!.text = "평가(" + restaurant.reviewCnt + ")"
+//        rest_detail_dangol_count!!.text = "/  단골수 : " + restaurant.dangolCnt
 
 
 
@@ -192,73 +226,9 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
         super.onDestroy()
     }
 
-    //    private void setStarView(float rating, LinearLayout rest_detail_rating_star_layout) {
-    //        for (int j = 0; j < 5; j++) {
-    //            ImageView star = new ImageView(getApplicationContext());
-    //            star.setLayoutParams(new ViewGroup.LayoutParams(starDpMap.get("width"), starDpMap.get("height")));
-    //            if (rating == 0) {
-    //                star.setImageResource(R.drawable.ic_star);
-    //                rest_detail_rating_star_layout.addView(star);
-    //
-    //            } else if (rating >= 1.0) {
-    //                rating -= 1.0;
-    //                star.setImageResource(R.drawable.ic_star_ranked);
-    //                rest_detail_rating_star_layout.addView(star);
-    //
-    //            } else if (rating == 0.5) {
-    //                rating -= 0.5;
-    //                star.setImageResource(R.drawable.ic_star_ranked_half);
-    //                rest_detail_rating_star_layout.addView(star);
-    //            }
-    //        }
-    //    }
 
 
-    //    public class NearRestaurantStatePagerAdapter extends FragmentPagerAdapter {
-    //
-    //        public NearRestaurantStatePagerAdapter(FragmentManager fm) {
-    //            super(fm);
-    //        }
-    //
-    ////        @Override
-    ////        public int getItemPosition(Object object) {
-    ////            return POSITION_NONE;
-    ////        }
-    //
-    //        @Override
-    //        public int getCount() {
-    //            return 3;
-    //        }
-    //
-    //
-    //        @Override
-    //        public Fragment getOrderHistoryItem(int position) {
-    //            switch (position) {
-    //                case 0:
-    //                   return RestMenuCategoryFragment.newInstance(restaurant.rest_id);
-    //                case 1:
-    //                    return RestMenuCategoryFragment.newInstance(restaurant.rest_id);
-    //                case 2:
-    //                    return RestMenuCategoryFragment.newInstance(restaurant.rest_id);
-    //
-    //            }
-    //            return null;
-    //        }
-    //
-    //        @Override
-    //        public CharSequence getPageTitle(int position) {
-    //            switch (position) {
-    //                case 0:
-    //                    return "메뉴";
-    //                case 1:
-    //                    return "메뉴판";
-    //                case 2:
-    //                    return "정보";
-    //
-    //                default:return null;
-    //            }
-    //        }
-    //    }
+
 
 
 }

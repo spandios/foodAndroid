@@ -5,20 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
+
+    >
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/menu_master_layout"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:padding="8dp">
+        android:layout_height="90dp"
+        >
 
         <ImageView
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
             android:id="@+id/menu_master_picture"
             android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginStart="16dp"
-
+            android:layout_height="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,6 +63,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
 
     </android.support.constraint.ConstraintLayout>
 
@@ -71,48 +84,36 @@
     <LinearLayout
         android:id="@+id/menu_detail_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="14dp">
-
-                <ImageView
-                    android:id="@+id/menu_detail_picture"
-                    android:layout_width="160dp"
-                    android:layout_height="180dp"
-
-
-                    app:srcCompat="@drawable/fm" />
-
-
-                <!--style="@style/CustomRatingBar"-->
-
-            </RelativeLayout>
+            android:orientation="horizontal"
+            android:padding="12dp"
+            >
+            <ImageView
+                android:id="@+id/menu_detail_picture"
+                android:layout_width="160dp"
+                android:layout_height="130dp"
+                app:srcCompat="@drawable/fm" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="10dp">
+                >
 
                 <TextView
                     android:id="@+id/menu_detail_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+
                     android:text="메뉴네임"
-                    android:textColor="@color/tangerine"
-                    android:textSize="25sp" />
+                    android:textColor="@color/text_main"
+                    android:textSize="22sp" />
 
 
                 <TextView
@@ -121,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@id/menu_detail_name"
                     android:layout_below="@id/menu_detail_name"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:text="5.0"
                     android:textColor="@color/tangerine"
                     android:textSize="20sp" />
@@ -193,8 +194,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/menu_detail_review"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="8dp"
                     android:text="가격"
+                    android:textColor="@color/price"
                     android:textSize="22sp" />
 
 
@@ -206,7 +208,7 @@
 
         <TextView
             android:id="@+id/menu_detail_description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="35dp"
             android:layout_marginStart="35dp"
@@ -217,7 +219,7 @@
 
 
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/menu_detail_option_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -225,31 +227,27 @@
             >
 
 
-
-
-
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
                 android:id="@+id/menu_detail_necessary_option_layout"
-                >
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.3dp"
                         android:layout_marginTop="8dp"
-                        android:background="#CC817e7e"
-                        />
+                        android:background="#CC817e7e" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="필수옵션"
-                        android:textSize="16sp"
                         android:layout_centerHorizontal="true"
+                        android:text="필수옵션"
+                        android:textSize="14sp"
                         android:textStyle="bold"
 
 
@@ -262,21 +260,21 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="30dp"
-                    android:text="사이즈"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:gravity="left"
                     android:singleLine="true"
-                    android:gravity="left"/>
+                    android:text="사이즈"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/menu_detail_option_necessary_arrow"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="15dp"
                     android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
 
                     />
 
@@ -284,20 +282,17 @@
                     android:id="@+id/menu_detail_option_necessary_content"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="8dp"
-
                     android:layout_centerVertical="true"
-                    android:singleLine="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_toLeftOf="@id/menu_detail_option_necessary_arrow"
                     android:ellipsize="end"
                     android:gravity="right"
                     android:scrollHorizontally="true"
-                    android:layout_toLeftOf="@id/menu_detail_option_necessary_arrow"
-                    />
-
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
 
             </RelativeLayout>
@@ -309,31 +304,32 @@
 
 
             <RelativeLayout
+                android:id="@+id/menu_detail_unnecessary_option_layout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/menu_detail_unnecessary_option_layout">
+                android:layout_height="40dp">
+
                 <TextView
                     android:id="@+id/menu_detail_option_unnecessary_title"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="30dp"
-                    android:text="선택옵션"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:gravity="left"
                     android:singleLine="true"
-                    android:gravity="left"/>
+                    android:text="선택옵션"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/menu_detail_option_unnecessary_arrow"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="15dp"
-
-                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
 
                     />
 
@@ -341,18 +337,17 @@
                     android:id="@+id/menu_detail_option_unnecessary_content"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_centerVertical="true"
-                    android:singleLine="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_toLeftOf="@id/menu_detail_option_unnecessary_arrow"
                     android:ellipsize="end"
                     android:gravity="right"
                     android:scrollHorizontally="true"
-                    android:layout_toLeftOf="@id/menu_detail_option_unnecessary_arrow"
-                    />
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
 
             </RelativeLayout>
@@ -362,7 +357,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.3dp"
-            android:background="#817e7e" />
+            android:background="@color/divider" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -376,12 +371,11 @@
                 android:textSize="20sp"
                 android:text="총 주문 금액 : 10000원"
                 android:layout_gravity="center"
-                android:visibility="gone"
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="45dp"
                 android:orientation="horizontal">
             <Button
                 android:id="@+id/menu_detail_cart"

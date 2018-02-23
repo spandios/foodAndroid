@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.example.fooddeuk.activity.DetailRestaurantActivity;
 import com.example.fooddeuk.adapter.MenuListAdapter;
 import com.example.fooddeuk.model.menu.Menu;
 import com.example.fooddeuk.model.restaurant.Restaurant;
-import com.example.fooddeuk.util.LayoutUtil;
 
 import org.parceler.Parcels;
 
@@ -96,12 +96,14 @@ public class RestMenuFragment extends Fragment  {
         MenuListAdapter menuListAdapter=new MenuListAdapter(getActivity(),menu,restaurant);
 //        menuListAdapter = new MenuListAdapter(getActivity(), menuCategory,rest_id);
         menuListAdapter.setOnItemClickListener((DetailRestaurantActivity)context);
-        LayoutUtil.RecyclerViewSetting(getActivity(),rest_detail_menu_list);
-        rest_detail_menu_list.setFocusable(true);
-        rest_detail_menu_list.setFocusableInTouchMode(true);
+        LinearLayoutManager nmLayoutManager = new LinearLayoutManager(context);
+        rest_detail_menu_list.setLayoutManager(nmLayoutManager);
+        rest_detail_menu_list.setFocusable(false);
+        rest_detail_menu_list.setFocusableInTouchMode(false);
         rest_detail_menu_list.setNestedScrollingEnabled(true);
         rest_detail_menu_list.setAdapter(menuListAdapter);
-        menuListAdapter.notifyDataSetChanged();
+
+//        menuListAdapter.notifyDataSetChanged();
 
 
     }

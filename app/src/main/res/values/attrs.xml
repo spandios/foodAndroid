@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="CustomFilterDialog">
-        <attr name="isClearText" format="boolean"/>
-        <attr name="selectTextColor" format="reference|integer" />
+    <declare-styleable name="ImageTextVertical">
+        <attr name="image" format="reference|integer"/>
+        <attr name="textSize" format="reference|integer"/>
+        <attr name="textColor" format="reference|integer" />
+        <attr name="text" format="reference|string"/>
+
 
     </declare-styleable>
 

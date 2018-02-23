@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <com.flyco.tablayout.SlidingTabLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/tab_menu"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:tl_indicator_color="@color/tangerine"
+        app:tl_indicator_width_equal_title="true"
+        app:tl_textSelectColor="@color/tangerine"
+        app:tl_textUnselectColor="@color/text_sub"
+        app:tl_textsize="18sp"
+        app:tl_indicator_gravity="BOTTOM"
+        app:tl_indicator_height="3dp"
+        app:tl_textBold="SELECT"
+
+        >
+    </com.flyco.tablayout.SlidingTabLayout>
+
+    <com.example.fooddeuk.activity.MenuPager
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/vp_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </com.example.fooddeuk.activity.MenuPager>
+    </LinearLayout>
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/large_text"-->
+    <!--/>-->
+
+</android.support.v4.widget.NestedScrollView>
