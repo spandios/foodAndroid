@@ -1,7 +1,6 @@
 package com.example.fooddeuk.viewholder;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,11 +13,15 @@ import android.widget.TextView;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.adapter.MenuDetailVPAdapter;
 import com.example.fooddeuk.model.menu.Menu;
+import com.example.fooddeuk.network.HTTP;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
+import static com.example.fooddeuk.GlobalApplication.httpService;
 
 /**
  * Created by heo on 2018. 1. 20..
@@ -28,7 +31,7 @@ public class DoubleOptionViewHolder extends RecyclerView.ViewHolder {
     public Context context;
     //Layout
     @BindView(R.id.menu_master_layout)
-    public ConstraintLayout menu_master_layout;
+    public RelativeLayout menu_master_layout;
     @BindView(R.id.menu_detail_layout)
     public LinearLayout menu_detail_layout;
 
@@ -78,15 +81,19 @@ public class DoubleOptionViewHolder extends RecyclerView.ViewHolder {
         if (menu.rating.length() == 1) {
             menu.rating += ".0";
         }
-        MenuDetailVPAdapter menuDetailVPAdapter=new MenuDetailVPAdapter(context,menu);
-        vp_menu_detail.setAdapter(menuDetailVPAdapter);
-        Picasso.with(context).load(menu.picture[0]).transform(new CropCircleTransformation()).into(menu_master_picture);
 
+        HTTP.INSTANCE.Single(httpService.getReview(menu.menu_id)).subscribe(reviewResponse -> {
+
+            if(reviewResponse.getSuccess()){
+                MenuDetailVPAdapter menuDetailVPAdapter=new MenuDetailVPAdapter(context,menu,reviewResponse.getResult());
+                vp_menu_detail.setAdapter(menuDetailVPAdapter);
+                OverScrollDecoratorHelper.setUpOverScroll(vp_menu_detail);
+            }
+        }, Throwable::printStackTrace);
+        Picasso.with(context).load(menu.picture[0]).fit().transform(new CropCircleTransformation()).into(menu_master_picture);
         menu_master_name.setText(menu.name);
         menu_master_price.setText(menuPrice);
         menu_detail_order.setText(menuPrice + " 바로 주문");
-
-
 
 
 

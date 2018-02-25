@@ -1,61 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/tab_rest_menu_real"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#ffefe3"
+        app:stl_clickable="true"
+        app:stl_customTabTextLayoutId="@layout/custom_tab"
+        app:stl_customTabTextViewId="@id/custom_text"
+        app:stl_defaultTabTextAllCaps="true"
+        app:stl_defaultTabTextColor="@color/text_main"
+        app:stl_defaultTabTextHorizontalPadding="4dp"
+        app:stl_defaultTabTextMinWidth="1dp"
+        app:stl_defaultTabTextSize="14sp"
+        app:stl_distributeEvenly="false"
+        app:stl_dividerColor="#4D000000"
+        app:stl_dividerThickness="1dp"
+        app:stl_drawDecorationAfterTab="false"
+        app:stl_indicatorAlwaysInCenter="false"
+        app:stl_indicatorColor="@color/tangerine"
+        app:stl_indicatorCornerRadius="2dp"
+        app:stl_indicatorGravity="bottom"
+        app:stl_indicatorInFront="true"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorThickness="2dp"
+        app:stl_indicatorWidth="auto"
+        app:stl_indicatorWithoutPadding="false"
+        app:stl_overlineColor="#4D000000"
+        app:stl_overlineThickness="0dp"
+        app:stl_titleOffset="24dp"
+        app:stl_underlineColor="#4D000000"
+        app:stl_underlineThickness="3dp"
+        app:tabMode="scrollable" />
 
-
-   <android.support.v4.widget.NestedScrollView
-       android:layout_width="match_parent"
-       android:layout_height="40dp"
-       android:fillViewport="true">
-         <com.ogaclejapan.smarttablayout.SmartTabLayout
-             android:id="@+id/rest_menu_tab_layout"
-             android:layout_width="match_parent"
-             android:layout_height="40dp"
-             android:background="#5cffefe3"
-             app:stl_indicatorAlwaysInCenter="false"
-             app:stl_indicatorWithoutPadding="false"
-             app:stl_indicatorInFront="true"
-             app:stl_indicatorInterpolation="smart"
-             app:stl_indicatorGravity="bottom"
-             app:stl_indicatorColor="@color/tangerine"
-             app:stl_indicatorThickness="2dp"
-             app:stl_indicatorWidth="auto"
-             app:stl_indicatorCornerRadius="2dp"
-             app:stl_overlineColor="#4D000000"
-             app:stl_overlineThickness="0dp"
-             app:stl_underlineColor="#4D000000"
-             app:stl_underlineThickness="3dp"
-             app:stl_dividerColor="#4D000000"
-             app:stl_dividerThickness="1dp"
-             app:stl_defaultTabTextAllCaps="true"
-             app:stl_defaultTabTextColor="@color/text_main"
-             app:stl_defaultTabTextSize="14sp"
-             app:stl_defaultTabTextHorizontalPadding="4dp"
-             app:stl_defaultTabTextMinWidth="1dp"
-             app:stl_distributeEvenly="false"
-             app:stl_clickable="true"
-             app:stl_customTabTextLayoutId="@layout/custom_tab"
-             app:stl_customTabTextViewId="@id/custom_text"
-             app:stl_titleOffset="24dp"
-             app:stl_drawDecorationAfterTab="false"
-             app:tabMode="scrollable" />
-   </android.support.v4.widget.NestedScrollView>
-
-   <android.support.v4.widget.NestedScrollView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-   <com.example.fooddeuk.activity.MenuPager
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/rest_detail_menu_category_view_pager"
-       app:layout_behavior="@string/appbar_scrolling_view_behavior"
-       />
-   </android.support.v4.widget.NestedScrollView>
-
-
+    <com.example.fooddeuk.activity.MenuPager
+        android:id="@+id/vp_menu_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
 

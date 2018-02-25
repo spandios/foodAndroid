@@ -1,8 +1,8 @@
 package com.example.fooddeuk.network;
 
-import com.example.fooddeuk.model.menu.ReviewItem;
 import com.example.fooddeuk.model.order.OrderResponse;
 import com.example.fooddeuk.model.restaurant.RestaurantResponse;
+import com.example.fooddeuk.model.review.ReviewResponse;
 import com.example.fooddeuk.model.user.LocationResult;
 import com.example.fooddeuk.model.user.User;
 import com.example.fooddeuk.model.user.UserResponse;
@@ -53,7 +53,7 @@ public interface HttpService {
 
     //Review
     @GET("api/review/readReview")
-    Single<ArrayList<ReviewItem>> getReview(@Query("menu_id") String menu_id);
+    Single<ReviewResponse> getReview(@Query("menu_id") String menu_id);
 
 
     //Order

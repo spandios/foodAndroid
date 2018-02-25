@@ -1,11 +1,13 @@
 package com.example.fooddeuk.adapter;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -13,6 +15,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.CartActivity;
 import com.example.fooddeuk.model.cart.CartItem;
@@ -20,9 +24,7 @@ import com.example.fooddeuk.model.cart.CartMenu;
 import com.example.fooddeuk.model.menu.Menu;
 import com.example.fooddeuk.model.menu.Option;
 import com.example.fooddeuk.model.menu.OptionCategory;
-import com.example.fooddeuk.model.menu.ReviewItem;
 import com.example.fooddeuk.model.restaurant.Restaurant;
-import com.example.fooddeuk.network.MenuReviewService;
 import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.LayoutUtil;
 import com.example.fooddeuk.util.PriceUtil;
@@ -37,9 +39,6 @@ import java.util.ArrayList;
 
 import io.realm.RealmList;
 import io.realm.RealmResults;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -87,25 +86,25 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
 
-    private void reviewShow(RecyclerView.ViewHolder view) {
-        MenuReviewService.getReview(items.get(view.getAdapterPosition()).menu_id).enqueue(new Callback<ArrayList<ReviewItem>>() {
-            @Override
-            public void onResponse(Call<ArrayList<ReviewItem>> call, Response<ArrayList<ReviewItem>> response) {
-                MaterialDialog reviewDialog = new MaterialDialog.Builder(context).customView(R.layout.dialog_review_listview, true).build();
-                View reviewDialogView = reviewDialog.getView();
-                RecyclerView reviewListView = reviewDialogView.findViewById(R.id.reviewListView);
-                ReviewAdapter reviewAdapter = new ReviewAdapter(context, response.body());
-                LayoutUtil.RecyclerViewSetting(context, reviewListView);
-                reviewListView.setAdapter(reviewAdapter);
-                reviewDialog.show();
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<ReviewItem>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
+//    private void reviewShow(RecyclerView.ViewHolder view) {
+//        MenuReviewService.getReview(items.get(view.getAdapterPosition()).menu_id).enqueue(new Callback<ArrayList<ReviewItem>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<ReviewItem>> call, Response<ArrayList<ReviewItem>> response) {
+//                MaterialDialog reviewDialog = new MaterialDialog.Builder(context).customView(R.layout.dialog_review_listview, true).build();
+//                View reviewDialogView = reviewDialog.getView();
+//                RecyclerView reviewListView = reviewDialogView.findViewById(R.id.reviewListView);
+//                ReviewAdapter reviewAdapter = new ReviewAdapter(context, response.body());
+//                LayoutUtil.RecyclerViewSetting(context, reviewListView);
+//                reviewListView.setAdapter(reviewAdapter);
+//                reviewDialog.show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<ReviewItem>> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
+//    }
 
 
     private View.OnClickListener menuExpandLayoutListener = new View.OnClickListener() {
@@ -115,16 +114,46 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if(expandedPosition!=holder.getAdapterPosition()){
                 Menu menu=items.get(holder.getAdapterPosition());
 
+
                 //전에 펼쳐졌던 레이아웃 접기
                 if (expandedPosition >= 0) {
                     RecyclerView.ViewHolder prevViewHolder = mRecyclerView.findViewHolderForAdapterPosition(expandedPosition);
+                    TextView textView=prevViewHolder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_name);
+                    TranslateAnimation animation=new TranslateAnimation(-250,0,0,0);
+                    animation.setFillAfter(true);
+                    animation.setFillEnabled(true);
+                    animation.setDuration(500);
+                    textView.startAnimation(animation);
+                    YoYo.with(Techniques.SlideInUp)
+                            .duration(400)
+                            .onEnd(new YoYo.AnimatorCallback() {
+                                @Override
+                                public void call(Animator animator) {
+                                    prevViewHolder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_picture).setVisibility(View.VISIBLE);
+                                }
+                            })
+                            .playOn(prevViewHolder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_picture));
                     prevViewHolder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.GONE);
+
                 }
                 //현재 클릭된 레이아웃 펼치기
                 onItemClickListener.onItemClick(holder,holder.itemView.getHeight(),holder.itemView.findViewById(R.id.menu_master_layout).getHeight());
                 expandedPosition = holder.getAdapterPosition();
                 holder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.VISIBLE);
 
+
+
+                //ani
+                TranslateAnimation animation=new TranslateAnimation(0,-250,0,0);
+                animation.setFillAfter(true);
+                animation.setFillEnabled(true);
+                animation.setDuration(500);
+                TextView textView=holder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_name);
+                textView.startAnimation(animation);
+                YoYo.with(Techniques.SlideOutDown)
+                        .duration(400)
+                        .onEnd(animator -> holder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_picture).setVisibility(View.GONE))
+                        .playOn(holder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_picture));
 
                 if(holder instanceof DoubleOptionViewHolder){
                     setFirstNecessaryOption(menu, holder);
@@ -134,9 +163,25 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }else if(holder instanceof ViewHolderWithPictureUnNecessary){
 
                 }
-
-
             }else{
+                TextView textView=holder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_name);
+                TranslateAnimation animation=new TranslateAnimation(-250,0,0,0);
+                animation.setFillAfter(true);
+                animation.setFillEnabled(true);
+                animation.setDuration(500);
+                textView.startAnimation(animation);
+
+
+                YoYo.with(Techniques.SlideInUp)
+                        .duration(400)
+                        .onEnd(new YoYo.AnimatorCallback() {
+                            @Override
+                            public void call(Animator animator) {
+                                holder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_picture).setVisibility(View.VISIBLE);
+                            }
+                        })
+                        .playOn(holder.itemView.findViewById(R.id.menu_master_layout).findViewById(R.id.menu_master_picture));
+
                 holder.itemView.findViewById(R.id.menu_detail_layout).setVisibility(View.GONE);
                 expandedPosition=-1;
             }

@@ -115,6 +115,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.8.1'
 
     //    compile 'com.tsengvn:typekit:1.0.1'
+    compile 'net.steamcrafted:materialiconlib:1.1.4'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
@@ -126,6 +127,8 @@ dependencies {
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'se.emilsjolander:StickyScrollViewItems:1.1.0'
     compile 'com.daimajia.androidanimations:library:2.3@aar'
+    compile 'net.danlew:android.joda:2.9.9.2'
+
 
 
     compile('com.wdullaer:materialdatetimepicker:3.3.0') {

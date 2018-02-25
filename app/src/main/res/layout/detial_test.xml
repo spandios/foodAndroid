@@ -30,7 +30,7 @@
                     android:layout_height="250dp">
 
                     <android.support.v4.view.ViewPager
-                        android:id="@+id/rest_detail_image_viewpager"
+                        android:id="@+id/vp_rest_detail_image"
                         android:layout_width="match_parent"
                         android:layout_height="250dp" />
 
@@ -216,7 +216,7 @@
 
 
     <FrameLayout
-        android:id="@+id/rest_main_tab"
+        android:id="@+id/frame_rest_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

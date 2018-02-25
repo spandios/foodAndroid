@@ -14,7 +14,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_intro.*
 
 
-
 class IntroActivity : BaseActivity(){
 
 
@@ -40,6 +39,7 @@ class IntroActivity : BaseActivity(){
                         finish()
                     }
                 }
+
     }
 
 

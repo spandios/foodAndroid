@@ -16,6 +16,8 @@ import com.kakao.auth.KakaoSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import retrofit2.Retrofit;
@@ -74,6 +76,7 @@ public class GlobalApplication extends Application {
         KakaoSDK.init(new KakaoSDKAdapter());
         locationManager=(LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         PrefUtil.Companion.setPref(this,"user");
+        JodaTimeAndroid.init(this);
 
     }
 

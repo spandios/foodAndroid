@@ -1,18 +1,19 @@
 package com.example.fooddeuk.activity
 
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewTreeObserver
 import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.R
 import com.example.fooddeuk.adapter.MenuListAdapter
 import com.example.fooddeuk.adapter.restaurantImageVPAdapter
-import com.example.fooddeuk.fragment.RestMenuCategoryFragment
+import com.example.fooddeuk.fragment.RestMenuFragment
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.model.menu.MenuCategory
 import com.example.fooddeuk.model.restaurant.Restaurant
@@ -21,6 +22,8 @@ import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.StartActivity
 import com.example.fooddeuk.util.addFragmentToActivity
 import com.example.fooddeuk.util.replaceFragmentToActivity
+import com.example.fooddeuk.util.toPx
+import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.orhanobut.logger.Logger
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import io.reactivex.functions.Consumer
@@ -30,13 +33,16 @@ import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 /**from NearRestaurantFragment */
 
 class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClickListener, MenuListAdapter.OnCartCountClickListener, View.OnClickListener {
-
-
+    var scrollFirstToolbar = 0
+    var scrollSecondToolbar = 0 //->menu scroll base
+    var menuItemHeight = 0
+    var nameHeight = 0
     lateinit var restaurant: Restaurant
-    lateinit var restMenuCategoryFragment: RestMenuCategoryFragment
+    lateinit var restMenuFragment: RestMenuFragment
     lateinit var homeFragment: HomeFragment
     lateinit var restaurantImageVPAdapter: restaurantImageVPAdapter
     lateinit var menuCategoryList: ArrayList<MenuCategory>
+    lateinit var fakeTab : SmartTabLayout
 
     private val cart by lazy {
         ContextCompat.getDrawable(this, R.drawable.ic_cart)?.apply { setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP) }
@@ -52,21 +58,45 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_restaurant)
-        RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData,this.javaClass, Consumer {
-            it->if(it is Restaurant){
-            restaurant=it
-            menuCategoryList=restaurant.menuCategory
-            setFragment()
-            viewSetting()
-        }
-        })
-        tab_rest_main.tabMode=TabLayout.MODE_FIXED
-        tab_rest_main.tabGravity = TabLayout.GRAVITY_FILL
-        tab_rest_main.addTab(tab_rest_main.newTab().setText("메뉴"),true)
-        tab_rest_main.addTab(tab_rest_main.newTab().setText("스토리"))
-        tab_rest_main.addTab(tab_rest_main.newTab().setText("후기"))
-        tab_rest_main.setSelectedTabIndicatorHeight(0)
+        fakeTab=findViewById(R.id.tab_rest_menu_fake)
 
+        val mGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                //TODO View가 다 그려진 뒤에 값 구하기
+                //리스너삭제
+                scroll_rest_detail.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                scrollFirstToolbar = vp_rest_detail_image.height - toolbar.height
+                nameHeight=rest_detail_name2.measuredHeight + 24.toPx +scrollFirstToolbar
+                scrollSecondToolbar = (frame_rest_main.y).toInt() - toolbar.height
+
+
+            }
+        }
+        scroll_rest_detail.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
+
+        menuItemHeight = resources.getDimensionPixelOffset(R.dimen.menu_item)
+        RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData, this.javaClass, Consumer { it ->
+            if (it is Restaurant) {
+                restaurant = it
+                menuCategoryList = restaurant.menuCategory
+                setFragment()
+                viewSetting()
+
+
+
+
+            }
+        })
+
+
+        with(tab_rest_main) {
+            tabMode = TabLayout.MODE_FIXED
+            tabGravity = TabLayout.GRAVITY_FILL
+            addTab(this.newTab().setText("메뉴"), true)
+            addTab(this.newTab().setText("스토리"))
+            addTab(this.newTab().setText("후기"))
+            setSelectedTabIndicatorHeight(0)
+        }
 
 
 
@@ -76,15 +106,15 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 //            override fun onTabSelected(tab: TabLayout.Tab) {
 //                when (tab.position) {
 //                    0 -> {
-//                        showFragmentToActivity(restMenuCategoryFragment)
+//                        showFragmentToActivity(restMenuFragment)
 ////                        hideFragmentToActivity(testFragment)
 //                    }
 //                    1 -> {
-//                        hideFragmentToActivity(restMenuCategoryFragment)
+//                        hideFragmentToActivity(restMenuFragment)
 ////                        showFragmentToActivity(testFragment)
 //                    }
 //                    2 -> {
-//                        hideFragmentToActivity(restMenuCategoryFragment)
+//                        hideFragmentToActivity(restMenuFragment)
 ////                        showFragmentToActivity(testFragment)
 //                    }
 //                }
@@ -97,14 +127,16 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 //        })
     }
 
-    fun setFragment(){
-        restMenuCategoryFragment = RestMenuCategoryFragment.newInstance(restaurant)
-        homeFragment= HomeFragment()
-        addFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
-        addFragmentToActivity(R.id.rest_main_tab,homeFragment)
-        replaceFragmentToActivity(R.id.rest_main_tab, restMenuCategoryFragment)
+    private fun setFragment() {
+        restMenuFragment = RestMenuFragment.newInstance(restaurant)
+        homeFragment = HomeFragment()
+        addFragmentToActivity(R.id.frame_rest_main, restMenuFragment)
+        addFragmentToActivity(R.id.frame_rest_main, homeFragment)
+        replaceFragmentToActivity(R.id.frame_rest_main, restMenuFragment)
 
     }
+
+
     //Implement CartAddClick -> 메뉴 추가 한 뒤 장바구니 개수 새로고침
     override fun onCartCount(cartSize: Int) {
         //        rest_detail_cart_count.setText(String.valueOf(cartSize));
@@ -144,73 +176,62 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
         //식당 대표 사진
         Single(GlobalApplication.httpService.getPicture(restaurant._id)).bindToLifecycle(this).subscribe({
             restaurantImageVPAdapter = restaurantImageVPAdapter(this@DetailRestaurantActivity, it)
-            rest_detail_image_viewpager.adapter = restaurantImageVPAdapter
-            rest_detail_image_viewpager_indicator.setViewPager(rest_detail_image_viewpager)
+            vp_rest_detail_image.adapter = restaurantImageVPAdapter
+            rest_detail_image_viewpager_indicator.setViewPager(vp_rest_detail_image)
         }, { it.printStackTrace() })
         rest_detail_name.text=restaurant.name
         rest_detail_name2.text = restaurant.name
-//        toolbar_layout.isTitleEnabled=true
-//        toolbar_layout.set
-//        toolbar_layout!!.title = restaurant.name
-//        toolbar_layout.expandedTitleMarginTop=200
-////        toolbar_layout!!.setExpandedTitleColor(Color.WHITE)
-////        val bottomPx = 180 // margin in dips
-////        val d = resources.displayMetrics.density
-////        val margin = (bottomPx * d).toInt()
-////        toolbar_layout!!.expandedTitleMarginBottom = margin
-//        toolbar_layout!!.setExpandedTitleTextAppearance(R.style.ExpandedAppBar)
-        rest_detail_name.setTextColor(ContextCompat.getColor(this,R.color.white))
-
+        rest_detail_rating!!.text = java.lang.Double.toString(restaurant.getRating().toDouble()) + "(${restaurant.reviewCnt})"
+        rest_detail_name.setTextColor(ContextCompat.getColor(this, R.color.white))
         rest_detail_back.setImageDrawable(backArrow)
         rest_detail_back.setOnClickListener { finish() }
-
         rest_detail_heart.setImageDrawable(heart)
         rest_detail_cart.setImageDrawable(cart)
         rest_detail_cart.setOnClickListener {
-            RxBus.intentPublish(3,restaurant)
+            RxBus.intentPublish(3, restaurant)
             StartActivity(SerachActivity::class.java)
         }
 
-        app_bar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            //collapse
-            if (Math.abs(verticalOffset) == appBarLayout.totalScrollRange) {
+        scroll_rest_detail.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+//            logger("Y", scrollY)
+
+            val toolbarIconAlpha = ((Math.min(1f, scrollY.toFloat() / scrollFirstToolbar)) * 255).toInt()
+            val nameAlpha = (Math.min(1f, scrollY.toFloat() / nameHeight)).toInt()
+            val tabAlpha = (Math.min(1f, scrollY.toFloat() / scrollSecondToolbar)).toInt()
+
+
+            //매장이름
+            if(nameAlpha==1){
                 rest_detail_name.visibility=View.VISIBLE
-                rest_detail_name.setTextColor(Color.BLACK)
             }else{
                 rest_detail_name.visibility=View.GONE
             }
 
-            var alpha = ((Math.min(1f, verticalOffset.toFloat() / ((appBarLayout.height - toolbar.height) * -1).toFloat())) * 255).toInt()
-            toolbar.background.alpha = alpha
-            when (alpha) {
+            //페이크 탭 레이아웃
+            if (tabAlpha==1) {
+                tab_rest_menu_fake.visibility = View.VISIBLE
+            } else {
+                tab_rest_menu_fake.visibility = View.INVISIBLE
+            }
+            //툴바 아이콘 칼러
+            when (toolbarIconAlpha) {
                 in 0..130 -> {
-//                    rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
                     setIconChangeColor(R.color.white)
                 }
                 in 130..160 -> {
-//                    rest_detail_name.visibility=View.GONE
                     rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white_1))
                     setIconChangeColor(R.color.white_1)
                 }
-
                 in 161..190 -> {
-
-//                    rest_detail_name.setTextColor(ContextCompat.getColor(applicationContext, R.color.white_2))
                     setIconChangeColor(R.color.white_2)
                 }
                 in 190..255 -> {
-//                    rest_detail_name.setTextColor(Color.BLACK)
                     setIconChangeColor(R.color.black)
                 }
             }
+
+            toolbar.background.alpha = toolbarIconAlpha
         }
-        rest_detail_rating!!.text = java.lang.Double.toString(restaurant.getRating().toDouble())+"(${restaurant.reviewCnt})"
-//        rest_detail_review_count!!.text = "평가(" + restaurant.reviewCnt + ")"
-//        rest_detail_dangol_count!!.text = "/  단골수 : " + restaurant.dangolCnt
-
-
-
-        //        rest_detail_back_btn.setOnClickListener(this);
 
 
     }
@@ -225,10 +246,6 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
         RxBus.intentUnregister(this.javaClass)
         super.onDestroy()
     }
-
-
-
-
 
 
 }

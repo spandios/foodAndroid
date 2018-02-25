@@ -13,8 +13,11 @@ import com.example.fooddeuk.fragment.UserFragment
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.util.NetworkUtil
 import com.example.fooddeuk.util.SettingActivityUtil
+import com.example.fooddeuk.util.logger
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : BaseActivity() {
     private var homeFragmentFlag = true
@@ -31,6 +34,10 @@ class MainActivity : BaseActivity() {
         fragments= arrayOf(HomeFragment(),DanGolFragment(), NearFragment(),OrderHistoryFragment(),UserFragment())
         setNavigation()
         setViewPager()
+
+
+
+
     }
 
     override fun onDestroy() {

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context="com.example.fooddeuk.activity.SerachActivity">
     <FrameLayout
 
@@ -30,13 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:background="@drawable/rv2">
-
         </ImageView>
-
-
-
-
-
 
 
         <com.ogaclejapan.smarttablayout.SmartTabLayout
