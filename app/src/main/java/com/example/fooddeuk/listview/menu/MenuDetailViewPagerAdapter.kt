@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter
+package com.example.fooddeuk.listview.menu
 
 import android.content.Context
 import android.support.v4.view.PagerAdapter
@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import com.example.fooddeuk.R
 import com.example.fooddeuk.listview.review.ReviewAdapter
 import com.example.fooddeuk.model.menu.Menu
@@ -20,7 +19,7 @@ import com.squareup.picasso.Picasso
  * Created by heo on 2018. 2. 22..
  */
 
-class MenuDetailVPAdapter(var context: Context,  val menu: Menu,val menuReivew : ArrayList<MenuReview>) : PagerAdapter() {
+class MenuDetailViewPagerAdapter(var context: Context, val menu: Menu, val menuReivew : ArrayList<MenuReview>) : PagerAdapter() {
     private var layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var vpCount = 0
 
@@ -42,9 +41,8 @@ class MenuDetailVPAdapter(var context: Context,  val menu: Menu,val menuReivew :
         } else {
             val reviewLayout = layoutInflater.inflate(R.layout.item_vp_menu_detail_review, container, false)
             val reviewRecyclerView = reviewLayout.findViewById<RecyclerView>(R.id.recycle_item_menu_detail_review)
-            val moreDetailReviewLayout = reviewLayout.findViewById<LinearLayout>(R.id.layout_more_review)
             LayoutUtil.RecyclerViewSetting(context, reviewRecyclerView)
-            reviewRecyclerView.adapter = ReviewAdapter(context, menuReivew, true,moreDetailReviewLayout)
+            reviewRecyclerView.adapter = ReviewAdapter(context, menuReivew, true)
 
             container.addView(reviewLayout)
             return reviewLayout

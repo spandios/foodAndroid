@@ -9,9 +9,10 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'realm-android'
 apply plugin: 'kotlin-android'
 apply plugin: "kotlin-android-extensions"
+apply plugin: 'realm-android'
+
 //apply plugin: 'me.tatarka.retrolambda' // ----- add
 
 android {
@@ -102,7 +103,9 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     compile 'com.afollestad.material-dialogs:core:0.9.6.0'
     compile 'org.parceler:parceler-api:1.1.9'
+
     compile 'com.google.dagger:dagger:2.13'
+
 
 
     compile 'com.amazonaws:aws-android-sdk-core:2.2.22'

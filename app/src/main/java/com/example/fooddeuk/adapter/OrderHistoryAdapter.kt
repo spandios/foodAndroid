@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.activity.OrderHistoryMapActivity
 import com.example.fooddeuk.model.order.OrderResponse
-import com.example.fooddeuk.order.list.viewholder.OrderingViewHolder
+import com.example.fooddeuk.listview.order.OrderingViewHolder
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -30,7 +30,7 @@ class OrderHistoryAdapter(private val context : Context, private val responses:A
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
 
         return if (viewType==orderIng){
-            OrderingViewHolder(context,parent).apply {
+            OrderingViewHolder(context, parent).apply {
                 itemView.order_list_static_map.setOnClickListener({
                     context.startActivity(Intent(context,OrderHistoryMapActivity::class.java).apply {
                         putExtra("latlng", LatLng(responses[adapterPosition].restaurant.lat, responses[adapterPosition].restaurant.lng))

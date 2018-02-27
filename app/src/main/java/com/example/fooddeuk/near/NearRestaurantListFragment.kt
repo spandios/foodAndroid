@@ -1,14 +1,13 @@
-package com.example.fooddeuk.fragment
+package com.example.fooddeuk.near
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.R
 import com.example.fooddeuk.activity.DetailRestaurantActivity
 import com.example.fooddeuk.adapter.RestaurantAdapter
-import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.restaurant.repository.RestaurantRepository.getNearRestaurantList
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.LayoutUtil
 import com.example.fooddeuk.util.StartActivity
@@ -23,13 +22,13 @@ import org.parceler.Parcels
  */
 
 
-class NearRestaurantFragment : android.support.v4.app.Fragment() {
+class NearRestaurantListFragment : android.support.v4.app.Fragment() {
     private lateinit var queryMap: HashMap<String, String>
 
 
     companion object {
-        fun newInstance(queryMap: HashMap<String, String>): NearRestaurantFragment {
-            return NearRestaurantFragment().apply {
+        fun newInstance(queryMap: HashMap<String, String>): NearRestaurantListFragment {
+            return NearRestaurantListFragment().apply {
                 arguments = Bundle().apply { putParcelable("queryMap", Parcels.wrap<HashMap<String, String>>(queryMap)) }
             }
         }
@@ -39,11 +38,12 @@ class NearRestaurantFragment : android.support.v4.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         arguments?.let {
             queryMap = Parcels.unwrap<HashMap<String, String>>(it.getParcelable("queryMap"))
 
             //매장 리사이클러뷰 셋팅
-            HTTP.Single(GlobalApplication.httpService.getCurrentLocationRestaurant(queryMap)).bindToLifecycle(this).subscribe(
+            getNearRestaurantList(queryMap).bindToLifecycle(this).subscribe(
                     { result ->
                         if (result.status == "SUCCESS") {
                             if (result.restaurants.size > 0) {

@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter;
+package com.example.fooddeuk.listview.menu;
 
 import android.animation.Animator;
 import android.content.Context;
@@ -19,6 +19,11 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.CartActivity;
+import com.example.fooddeuk.adapter.OptionCategoryAdapter;
+import com.example.fooddeuk.listview.menu.viewholder.DoubleOptionViewHolder;
+import com.example.fooddeuk.listview.menu.viewholder.NoPictureViewHolder;
+import com.example.fooddeuk.listview.menu.viewholder.PictureNecessaryViewHolder;
+import com.example.fooddeuk.listview.menu.viewholder.PictureUnNecessaryViewHolder;
 import com.example.fooddeuk.model.cart.CartItem;
 import com.example.fooddeuk.model.cart.CartMenu;
 import com.example.fooddeuk.model.menu.Menu;
@@ -29,10 +34,6 @@ import com.example.fooddeuk.util.IntentUtil;
 import com.example.fooddeuk.util.LayoutUtil;
 import com.example.fooddeuk.util.PriceUtil;
 import com.example.fooddeuk.util.RealmUtil;
-import com.example.fooddeuk.viewholder.DoubleOptionViewHolder;
-import com.example.fooddeuk.viewholder.ViewHolderNoPicture;
-import com.example.fooddeuk.viewholder.ViewHolderWithPictureNecessary;
-import com.example.fooddeuk.viewholder.ViewHolderWithPictureUnNecessary;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -158,9 +159,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if(holder instanceof DoubleOptionViewHolder){
                     setFirstNecessaryOption(menu, holder);
                     setDoubleOptionDialog(menu.option,(DoubleOptionViewHolder)holder);
-                }else if(holder instanceof ViewHolderWithPictureNecessary){
+                }else if(holder instanceof PictureNecessaryViewHolder){
 
-                }else if(holder instanceof ViewHolderWithPictureUnNecessary){
+                }else if(holder instanceof PictureUnNecessaryViewHolder){
 
                 }
             }else{
@@ -273,7 +274,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         //Picture X
         if (viewType == noPictureAndNoOption) {
             View parentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_not_have_picture, parent, false);
-            ViewHolderNoPicture vh = new ViewHolderNoPicture(parentView);
+            NoPictureViewHolder vh = new NoPictureViewHolder(parentView);
             vh.itemView.setOnClickListener(menuExpandLayoutListener);
             vh.itemView.findViewById(R.id.menu_detail_order).setOnClickListener(view -> checkCartAndInsertOrOrder(items.get(vh.getAdapterPosition()), "order"));
             return vh;
@@ -281,19 +282,18 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (viewType == pictureAndNecessary) {
             //Picture O
             View parentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_have_picture_necessary, parent, false);
-            ViewHolderWithPictureNecessary vh = new ViewHolderWithPictureNecessary(context, parentView);
+            PictureNecessaryViewHolder vh = new PictureNecessaryViewHolder(context, parentView);
             setItemViewClickListener(vh, "necessary");
             return vh;
         } else if (viewType == pictureAndUnNecessary) {
             View parentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_have_picture_unnecessary, parent, false);
-            ViewHolderWithPictureUnNecessary vh = new ViewHolderWithPictureUnNecessary(context, parentView);
+            PictureUnNecessaryViewHolder vh = new PictureUnNecessaryViewHolder(context, parentView);
             setItemViewClickListener(vh, "unnecessary");
             return vh;
         } else if (viewType == pictureAndDoubleOption) {
-            View parentView = LayoutInflater.from(parent.getContext())
+            View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_menu_have_picture, parent, false);
-            // set the view's size, margins, paddings and layout parameters
-            DoubleOptionViewHolder vh = new DoubleOptionViewHolder(context,parentView);
+            DoubleOptionViewHolder vh = new DoubleOptionViewHolder(context,itemView);
             setItemViewClickListener(vh, "double");
             return vh;
         }
@@ -307,12 +307,12 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final Menu menu = items.get(position);
 
         if (tmpHolder.getItemViewType() == noPictureAndNoOption) {
-            ViewHolderNoPicture holder = (ViewHolderNoPicture) tmpHolder;
+            NoPictureViewHolder holder = (NoPictureViewHolder) tmpHolder;
             holder.itemView.setTag(holder);
             holder.bind(menu, position);
 
         } else if (tmpHolder.getItemViewType() == pictureAndNecessary) {
-            ViewHolderWithPictureNecessary holder = (ViewHolderWithPictureNecessary) tmpHolder;
+            PictureNecessaryViewHolder holder = (PictureNecessaryViewHolder) tmpHolder;
             holder.itemView.setTag(holder);
             holder.bind(menu);
 
@@ -330,7 +330,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         } else if (tmpHolder.getItemViewType() == pictureAndUnNecessary) {
 
-            ViewHolderWithPictureUnNecessary holder = (ViewHolderWithPictureUnNecessary) tmpHolder;
+            PictureUnNecessaryViewHolder holder = (PictureUnNecessaryViewHolder) tmpHolder;
             holder.itemView.setTag(holder);
             holder.bind(menu);
 
@@ -390,8 +390,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         Button necessaryOptionConfirmButton = necessaryOptionDialogView.findViewById(R.id.optionConfirmButton);
         Button unNecessaryOptionConfirmButton = unNecessaryOptionDialogView.findViewById(R.id.optionConfirmButton);
-        setOptionRecyclerView(necessaryOptionDialogView.findViewById(R.id.dialog_menu_option_listview), viewHolder.menu_detail_order, necessaryOptionDialogView.findViewById(R.id.dialog_totalPrice), optionCategory, true);
-        setOptionRecyclerView(unNecessaryOptionDialogView.findViewById(R.id.dialog_menu_option_listview), viewHolder.menu_detail_order, unNecessaryOptionDialogView.findViewById(R.id.dialog_totalPrice), optionCategory, false);
+        setOptionRecyclerView(necessaryOptionDialogView.findViewById(R.id.dialog_menu_option_listview), viewHolder.getMenuOrder(), necessaryOptionDialogView.findViewById(R.id.dialog_totalPrice), optionCategory, true);
+        setOptionRecyclerView(unNecessaryOptionDialogView.findViewById(R.id.dialog_menu_option_listview), viewHolder.getMenuOrder(), unNecessaryOptionDialogView.findViewById(R.id.dialog_totalPrice), optionCategory, false);
         optionDialogArray[0] = necessaryOptionDialog;
         optionDialogArray[1] = unNecessaryOptionDialog;
 
@@ -401,18 +401,18 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             addSelectOptionToArray();
             if (v == necessaryOptionConfirmButton) {
-                viewHolder.menu_detail_option_necessary_content.setText(getSelectOption(necessaryArrayList));
+                viewHolder.getMenuOptionNecessaryContent().setText(getSelectOption(necessaryArrayList));
                 TextView dialogTotalPrice = optionDialogArray[0].findViewById(R.id.dialog_totalPrice);
                 ((TextView) optionDialogArray[0].findViewById(R.id.dialog_totalPrice)).setText(dialogTotalPrice.getText());
                 ((TextView) optionDialogArray[1].findViewById(R.id.dialog_totalPrice)).setText(dialogTotalPrice.getText());
-                viewHolder.menu_detail_order.setText(dialogTotalPrice.getText() + " 바로 주문");
+                viewHolder.getMenuOrder().setText(dialogTotalPrice.getText() + " 바로 주문");
                 optionDialogArray[0].dismiss();
             } else {
-                viewHolder.menu_detail_option_unnecessary_content.setText(getSelectOption(unNecessaryArrayList));
+                viewHolder.getMenuOptionUnnecessaryContent().setText(getSelectOption(unNecessaryArrayList));
                 TextView dialogTotalPrice = optionDialogArray[1].findViewById(R.id.dialog_totalPrice);
                 ((TextView) optionDialogArray[1].findViewById(R.id.dialog_totalPrice)).setText(dialogTotalPrice.getText());
                 ((TextView) optionDialogArray[0].findViewById(R.id.dialog_totalPrice)).setText(dialogTotalPrice.getText());
-                viewHolder.menu_detail_order.setText(dialogTotalPrice.getText() + " 바로 주문");
+                viewHolder.getMenuOrder().setText(dialogTotalPrice.getText() + " 바로 주문");
                 optionDialogArray[1].dismiss();
             }
         };
@@ -421,7 +421,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    void setNecessaryOptionDialog(Menu menu, ViewHolderWithPictureNecessary viewHolder) {
+    void setNecessaryOptionDialog(Menu menu, PictureNecessaryViewHolder viewHolder) {
         ArrayList<OptionCategory> optionCategory = menu.option;
         BottomSheetDialog necessaryOptionDialog = new BottomSheetDialog(context);
         View necessaryOptionDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_menu_option, null);
@@ -517,7 +517,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    void setUnNecessaryOptionDialog(ArrayList<OptionCategory> optionCategory, ViewHolderWithPictureUnNecessary holder) {
+    void setUnNecessaryOptionDialog(ArrayList<OptionCategory> optionCategory, PictureUnNecessaryViewHolder holder) {
         BottomSheetDialog unNecessaryOptionDialog = new BottomSheetDialog(context);
         View unNecessaryOptionDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_menu_option, null);
         unNecessaryOptionDialog.setContentView(unNecessaryOptionDialogView);

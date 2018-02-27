@@ -1,5 +1,6 @@
 package com.example.fooddeuk.network;
 
+import com.example.fooddeuk.model.home.HomeEventPictureResponse;
 import com.example.fooddeuk.model.order.OrderResponse;
 import com.example.fooddeuk.model.restaurant.RestaurantResponse;
 import com.example.fooddeuk.model.review.ReviewResponse;
@@ -37,6 +38,8 @@ public interface HttpService {
     @POST("/api/user/updateToken")
     Completable updateToken(@Field("provider_id")String provider_id, @Field("fcm_token")String fcm_token);
 
+    @GET("api/home/readHomeEvent")
+    Single<HomeEventPictureResponse> getHomeEvent();
 
     @GET("api/restaurant/readCurrentLocation")
     Single<RestaurantResponse> getCurrentLocationRestaurant(@QueryMap Map<String,String> queryMap);

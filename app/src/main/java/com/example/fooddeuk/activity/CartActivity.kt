@@ -26,14 +26,6 @@ class CartActivity : AppCompatActivity()  {
         setToolBar()
         setView()
         setCartAdapter()
-
-
-
-
-
-
-
-
     }
 
 
@@ -66,6 +58,7 @@ class CartActivity : AppCompatActivity()  {
         cartClear.setOnClickListener({
             RealmUtil.removeDataAll(CartItem::class.java)
             cartListView!!.adapter = null
+            finish()
         })
 
         cart_menu_order.setOnClickListener({

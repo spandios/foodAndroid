@@ -13,43 +13,50 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.afollestad.materialdialogs.MaterialDialog
-import com.example.fooddeuk.GlobalApplication.httpService
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.activity.LocationSettingByMapActivity
-import com.example.fooddeuk.activity.MainActivity
-import com.example.fooddeuk.network.HTTP.Single
-import com.example.fooddeuk.util.CustomFilterDialog
-import com.example.fooddeuk.util.StartActivity
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
+import com.example.fooddeuk.adapter.restaurantImageVPAdapter
+import com.example.fooddeuk.model.home.HomeEventPictureResponse
+import com.example.fooddeuk.util.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
 //, AppBarLayout.OnOffsetChangedListener
-class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener {
-    private lateinit var locationSettingDialog: MaterialDialog
-    private lateinit var customFilterDialog: CustomFilterDialog
-    private var mParallaxImageHeight: Int = 0
+class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeContract.View {
+    private lateinit var locationSettingDialog: CustomFilterDialog
+    private lateinit var homePresenter: HomePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mParallaxImageHeight = resources.getDimensionPixelSize(R.dimen.parallax_image_height)
-        setToolbar()
-        home_scroll.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
-        home_scroll.setOnScrollChangeListener(this)
-        locationSetting()
 
-
-//        initEventImagePage()
+        renderView()
     }
 
-    private fun initEventImagePage() {
-        val list: ArrayList<String> = ArrayList<String>()
-        list.add("https://fooddeuk.s3.ap-northeast-2.amazonaws.com/restpicture1515821529579_restpicture1514973793525_f34ead4bf3213a370d7ca6a685d1bb07.jpg")
-//        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = restaurantImageVPAdapter(context, list) })
+    override fun onResume() {
+        super.onResume()
+        setAddressText(Location.locationName)
+        homePresenter = HomePresenter().apply {
+            view = this@HomeFragment
+        }
+        homePresenter.setAddress()
+        homePresenter.setHomeEvent()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        homePresenter.clear()
+    }
+
+    private fun renderView() {
+        setToolbar()
+        with(home_scroll) {
+            setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+            setOnScrollChangeListener(this@HomeFragment)
+        }
+        setLocationDialog()
     }
 
 
@@ -66,42 +73,8 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener {
     }
 
 
-    private fun locationSetting() {
-        with(txt_home_location_name) {
-            text = Location.locationName
-            setOnClickListener({ customFilterDialog.show() })
-        }
-        val dialogContent = arrayListOf("현재 위치 재설정","vertical","현재 위치 재검색","지도에서 설정")
-        customFilterDialog=CustomFilterDialog.Builder(context!!).isClearText(false).contentTypeFace(Typeface.DEFAULT_BOLD).isFirstSelectColor(false).contentGravity(Gravity.CENTER).setFilter(dialogContent
-        ,{position, contentTextView ->
-            when(position){
-                0->{
-                    //현재위치에서 재 검색
-                    with((activity as MainActivity)){
-                        startLoading()
-                        Location.buzy = true
-                        Location.getLocation { lat, lng ->
-                            Location.buzy = false
-                            stopLoading()
-                            Single(httpService.getLocationNameByNaver(lng.toString() + "," + lat.toString())).bindToLifecycle(this).subscribe({
-                                txt_home_location_name.text = it.gudong
-                                Location.locationName = it.gudong
-                            }, { it.printStackTrace() })
-                        }
-                    }
-                    //MAP
-                }
-                1->{
-                    StartActivity(LocationSettingByMapActivity::class.java)
-                }
-            }
-            customFilterDialog.dismiss()
-        }).build()
-    }
-
     override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
-        val alpha = (Math.min(1f, scrollY.toFloat() / (mParallaxImageHeight - toolbar.height))) * 255
-        image.translationY = (scrollY / 2).toFloat()
+        val alpha = (Math.min(1f, scrollY.toFloat() / (250.toPx - toolbar.height))) * 255
         when (alpha) {
             in 0..70 -> {
                 txt_home_location_name.setTextColor(Color.WHITE)
@@ -121,15 +94,52 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener {
         toolbar.background.alpha = alpha.toInt()
     }
 
-    override fun onResume() {
-        txt_home_location_name.text=Location.locationName
-        super.onResume()
 
+    override fun setHomeEventAdapter(eventPictureList: HomeEventPictureResponse) {
+        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = restaurantImageVPAdapter(context, eventPictureList.eventPictureList) })
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun setAddressText(locationName: String) {
+        with(txt_home_location_name) {
+            text = locationName
+            setOnClickListener({ locationSettingDialog.show() })
+        }
+    }
+
+
+    private fun setLocationDialog() {
+        val dialogContent = arrayListOf("현재 위치 재설정", "vertical", "현재 위치 재검색", "지도에서 설정")
+        locationSettingDialog = CustomFilterDialog.Builder(context!!).isClearText(false).contentTypeFace(Typeface.DEFAULT_BOLD).isFirstSelectColor(false).contentGravity(Gravity.CENTER).setFilter(dialogContent
+                , { position, _ ->
+            when (position) {
+                0 -> {
+                    //현재위치에서 재 검색
+                    startLoading()
+                    Location.buzy = true
+                    Location.getLocation { lat, lng ->
+                        Location.buzy = false
+                        stopLoading()
+                        homePresenter.getLocation(lat, lng)
+                    }
+                }
+                1 -> {
+                    StartActivity(LocationSettingByMapActivity::class.java)
+                }
+            }
+            locationSettingDialog.dismiss()
+        }).build()
+    }
+
+    override fun showAddressError() {
+        toast("주소 정보를 얻을 수 없습니다.")
+    }
+
+    override fun showEventError() {
+        toast("이벤트를 불러 올 수 없습니다")
     }
 
 
 }
+
+
+

@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter
+package com.example.fooddeuk.listview.menu
 
 import android.content.Context
 import android.support.v4.view.PagerAdapter
@@ -18,7 +18,7 @@ import java.util.*
  * Created by heo on 2018. 2. 22..
  */
 
-class MenuListVPAdapter(var context: Context, var menuCategories: ArrayList<MenuCategory>, val restaurant: Restaurant, val clickItemHeight : (position: Int, menuItemHeight : Int)->Unit) : PagerAdapter() {
+class MenuListViewPagerAdapter(var context: Context, var menuCategories: ArrayList<MenuCategory>, val restaurant: Restaurant, val clickItemHeight : (position: Int, menuItemHeight : Int)->Unit) : PagerAdapter() {
     internal var layoutInflater: LayoutInflater
 
     init {

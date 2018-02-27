@@ -32,27 +32,18 @@
                 android:layout_height="250dp">
 
                 <!--TEMP-->
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rv2"
-                    android:foreground="@drawable/gradient_background" />
-
                 <android.support.v4.view.ViewPager
                     android:id="@+id/home_event_viewpager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/rv"
-                    android:visibility="gone" />
-
+                     />
                 <me.relex.circleindicator.CircleIndicator
                     android:id="@+id/home_event_viewpager_indicator"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="20dp"
-                    android:visibility="gone"
+
                     app:ci_gravity="center" />
             </RelativeLayout>
 

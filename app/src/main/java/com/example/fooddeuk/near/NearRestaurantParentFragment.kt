@@ -1,44 +1,38 @@
-package com.example.fooddeuk.fragment
+package com.example.fooddeuk.near
 
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.PagerAdapter
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import com.afollestad.materialdialogs.MaterialDialog
-import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.activity.LocationSettingByMapActivity
-import com.example.fooddeuk.activity.MainActivity
 import com.example.fooddeuk.activity.MapActivity
-import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.rx.RxBus
-import com.example.fooddeuk.util.CustomFilterDialog
-import com.example.fooddeuk.util.StartActivity
-import com.example.fooddeuk.util.SwipeViewPager
-import com.flyco.tablayout.listener.OnTabSelectListener
+import com.example.fooddeuk.util.*
 import com.orhanobut.logger.Logger
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import kotlinx.android.synthetic.main.fragment_near.*
 import java.util.ArrayList
 import kotlin.collections.HashMap
 
 
-class NearFragment : Fragment() {
-    private lateinit var locationSettingDialog: MaterialDialog
+class NearRestaurantParentFragment : Fragment(),NearRestaurantContract.View {
+    private lateinit var locationSettingDialog: CustomFilterDialog
     private var filter = distance
     private var maxDistance = distance3km
     private var restaurantMenuType: String = "아무거나"
     private var restaurantName = ""
     private lateinit var customFilterDialog: CustomFilterDialog
+    private lateinit var nearRestaurantPresenter: NearRestaurantPresenter
 
 
     companion object {
@@ -61,29 +55,40 @@ class NearFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setFilter()
-        setLocation()
-
+        renderView()
         setRestaurantListWithViewPager()
-        btn_near_map.setOnClickListener({
-            RxBus.intentPublish(RxBus.MapActivityData,queryMap(restaurantMenuType))
-            StartActivity(MapActivity::class.java)
-        })
-
     }
 
     override fun onResume() {
+        super.onResume()
+        nearRestaurantPresenter=NearRestaurantPresenter().apply {
+            view=this@NearRestaurantParentFragment
+        }
         btn_near_restaurant_search.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_search)?.apply {
             setColorFilter(ContextCompat.getColor(context!!, R.color.black), PorterDuff.Mode.SRC_ATOP)
         })
 
-        txt_near_location_name.setText(Location.locationName)
-        super.onResume()
+        setAddressText(Location.locationName)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Logger.d("clear")
+        nearRestaurantPresenter.clear()
+    }
+
+    private fun renderView(){
+        setFilter()
+        setLocationDialog()
+        btn_near_map.setOnClickListener({
+            RxBus.intentPublish(RxBus.MapActivityData,queryMap(restaurantMenuType))
+            StartActivity(MapActivity::class.java)
+        })
     }
 
     private fun setFilter() {
         btn_near_filter.setOnClickListener { customFilterDialog.show() }
-        val sortlist = ArrayList<String>().apply {
+        val sortList = ArrayList<String>().apply {
             add("정렬순")
             add("vertical")
             add(getString(R.string.filter_sort0))
@@ -95,16 +100,16 @@ class NearFragment : Fragment() {
 
         val sortListener = { position: Int, contentTextView: TextView ->
             filter=when(position){
-                distance-> distance
-                rating-> rating
-                discount-> discount
-                dangol-> dangol
-                review-> review
+                distance -> distance
+                rating -> rating
+                discount -> discount
+                dangol -> dangol
+                review -> review
                 else -> distance
             }
 
             Logger.d("filter"+filter)
-            updateViewPager()
+            nearRestaurantPresenter.refreshRestaurant()
             customFilterDialog.hide()
         }
 
@@ -124,17 +129,17 @@ class NearFragment : Fragment() {
                 else-> distance3km
             }
             Logger.d("distance " +maxDistance)
-            updateViewPager()
+            nearRestaurantPresenter.refreshRestaurant()
             customFilterDialog.hide()
         }
 
         customFilterDialog = CustomFilterDialog.Builder(context!!)
                 .isClearText(true)
-                .setFilter(sortlist, sortListener)
+                .setFilter(sortList, sortListener)
                 .setFilter(distanceList,distanceListener)
                 .SetClearCallback {
                     filter=0
-                    maxDistance=distance3km
+                    maxDistance= distance3km
                     customFilterDialog.hide()
                 }
                 .build()
@@ -143,67 +148,62 @@ class NearFragment : Fragment() {
 
     private fun setRestaurantListWithViewPager() {
         vp_rest_list.adapter = NearRestaurantStatePagerAdapter(childFragmentManager)
-        //ParentViewPager
-        val parentViewPager = (activity as MainActivity).findViewById<SwipeViewPager>(R.id.home_viewpager)
-        parentViewPager.setIsSlide(true)
-        tab_rest_list.setOnTabSelectListener(object : OnTabSelectListener {
-            override fun onTabSelect(position: Int) {
-                when (position) {
-                    0 -> restaurantMenuType = getString(R.string.restaurant_menu_type0)
-                    1 -> restaurantMenuType = getString(R.string.restaurant_menu_type1)
-                    2 -> restaurantMenuType = getString(R.string.restaurant_menu_type2)
-                    3 -> restaurantMenuType = getString(R.string.restaurant_menu_type3)
-                    4 -> restaurantMenuType = getString(R.string.restaurant_menu_type4)
-                    5 -> restaurantMenuType = getString(R.string.restaurant_menu_type5)
-                    6 -> restaurantMenuType = getString(R.string.restaurant_menu_type6)
-                }
-            }
-
-            override fun onTabReselect(position: Int) {
-                return
-            }
-        })
-
         tab_rest_list.setViewPager(vp_rest_list)
+//        tab_rest_list.setOnTabSelectListener(object : OnTabSelectListener {
+//            override fun onTabSelect(position: Int) {
+//                when (position) {
+//                    0 -> restaurantMenuType = getString(R.string.restaurant_menu_type0)
+//                    1 -> restaurantMenuType = getString(R.string.restaurant_menu_type1)
+//                    2 -> restaurantMenuType = getString(R.string.restaurant_menu_type2)
+//                    3 -> restaurantMenuType = getString(R.string.restaurant_menu_type3)
+//                    4 -> restaurantMenuType = getString(R.string.restaurant_menu_type4)
+//                    5 -> restaurantMenuType = getString(R.string.restaurant_menu_type5)
+//                    6 -> restaurantMenuType = getString(R.string.restaurant_menu_type6)
+//                }
+//            }
+//
+//            override fun onTabReselect(position: Int) {
+//                return
+//            }
+//        })
+
+
     }
 
 
     //위치 셋팅 다이아로그
-    private fun setLocation() {
-        txt_near_location_name.text = Location.locationName
-        locationSettingDialog = MaterialDialog.Builder(activity!!).customView(R.layout.dialog_current_location, true).build()
-        val dialogView = locationSettingDialog.view
-        val locationReloadButton = dialogView.findViewById<Button>(R.id.btn_set_location_by_gps)
-        val locationMapButton = dialogView.findViewById<Button>(R.id.btn_set_location_by_map)
-        val locationCancel = dialogView.findViewById<TextView>(R.id.btn_location_cancel)
-
-        val onClickListener = { v: View ->
-            when (v.id) {
-                R.id.txt_near_location_name -> locationSettingDialog.show()
-                R.id.btn_set_location_by_gps -> {
+    private fun setLocationDialog() {
+        txt_near_location_name.setOnClickListener{locationSettingDialog.show()}
+        val dialogContent = arrayListOf("현재 위치 재설정", "vertical", "현재 위치 재검색", "지도에서 설정")
+        locationSettingDialog = CustomFilterDialog.Builder(context!!).isClearText(false).contentTypeFace(Typeface.DEFAULT_BOLD).isFirstSelectColor(false).contentGravity(Gravity.CENTER).setFilter(dialogContent
+                , { position, _ ->
+            when (position) {
+                0 -> {
+                    //현재위치에서 재 검색
+                    startLoading()
+                    Location.buzy = true
                     Location.getLocation { lat, lng ->
                         Location.buzy = false
-                        HTTP.Single(GlobalApplication.httpService.getLocationNameByNaver(lng.toString() + "," + lat.toString())).bindToLifecycle(this).subscribe({
-                            txt_near_location_name.text = it.gudong
-                            Location.locationName = it.gudong
-                            locationSettingDialog.dismiss()
-                        }, { it.printStackTrace() })
+                        stopLoading()
+                        nearRestaurantPresenter.getLocation(lat, lng)
+                        nearRestaurantPresenter.refreshRestaurant()
                     }
                 }
-                R.id.btn_set_location_by_map -> {
-                    locationSettingDialog.dismiss()
+                1 -> {
                     StartActivity(LocationSettingByMapActivity::class.java)
                 }
-                R.id.btn_location_cancel -> locationSettingDialog.dismiss()
             }
-        }
-
-        txt_near_location_name!!.setOnClickListener(onClickListener)
-        locationReloadButton.setOnClickListener(onClickListener)
-        locationMapButton.setOnClickListener(onClickListener)
-        locationCancel.setOnClickListener(onClickListener)
+            locationSettingDialog.dismiss()
+        }).build()
     }
 
+    override fun setAddressText(gudong: String) {
+        txt_near_location_name.text=gudong
+    }
+
+    override fun showAddressError() {
+        toast("주소를 가져올수 없습니다.")
+    }
 
     /**
      * 식당 리스트 뷰 Param 위치(locationItem) 최대거리(maxDistance) 식당메뉴타입(menuType)
@@ -230,22 +230,27 @@ class NearFragment : Fragment() {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> NearRestaurantFragment.newInstance(queryMap(""))
+                0 -> NearRestaurantListFragment.newInstance(queryMap(""))
 
-                1 -> NearRestaurantFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type1)))
+                1 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type1)))
 
-                2 -> NearRestaurantFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type2)))
+                2 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type2)))
 
-                3 -> NearRestaurantFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type3)))
+                3 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type3)))
 
-                4 -> NearRestaurantFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type4)))
+                4 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type4)))
 
-                5 -> NearRestaurantFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type5)))
+                5 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type5)))
 
-                6 -> NearRestaurantFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type6)))
+                6 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type6)))
 
-                else -> NearRestaurantFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type0)))
+                else -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type0)))
             }
+
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+            super.destroyItem(container, position, `object`)
 
         }
 
@@ -264,9 +269,8 @@ class NearFragment : Fragment() {
         }
     }
 
-    fun updateViewPager() {
+    override fun updateViewPager() {
         vp_rest_list.adapter?.notifyDataSetChanged()
     }
-
 
 }

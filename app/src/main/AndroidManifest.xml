@@ -101,7 +101,8 @@
             android:name="io.fabric.ApiKey"
             android:value="986e4bbd6dc0c418fd293489d5b081c35f1f2a4a" />
 
-        <activity android:name=".activity.SerachActivity"></activity>
+        <activity android:name=".activity.SerachActivity" />
+        <activity android:name=".activity.ReviewActivity"></activity>
     </application>
 
 </manifest>

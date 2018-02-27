@@ -10,7 +10,6 @@
         android:id="@+id/img_restaurant_list"
         android:layout_width="110dp"
         android:layout_height="match_parent"
-        android:background="@drawable/rv2"
         android:layout_marginRight="12dp"
         />
 

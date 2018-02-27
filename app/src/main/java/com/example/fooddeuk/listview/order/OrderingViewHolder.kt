@@ -1,4 +1,4 @@
-package com.example.fooddeuk.order.list.viewholder
+package com.example.fooddeuk.listview.order
 
 /**
  * Created by heo on 2018. 1. 25..
@@ -59,6 +59,8 @@ class OrderingViewHolder(val context: Context, parent: ViewGroup?) : RecyclerVie
                         menuLayout.findViewById<TextView>(R.id.order_list_menu_price).text = it.menu.price + "원"
                         if(it.option!=null){
                             if(it.option.size>0){
+
+
                                 it.option.forEach({ option ->
                                     //ParentOptionLayout vertical
                                     menuLayout.findViewById<LinearLayout>(R.id.order_list_option_layout).apply {

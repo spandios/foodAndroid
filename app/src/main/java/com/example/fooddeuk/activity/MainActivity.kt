@@ -7,17 +7,14 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.example.fooddeuk.R
 import com.example.fooddeuk.fragment.DanGolFragment
-import com.example.fooddeuk.fragment.NearFragment
+import com.example.fooddeuk.near.NearRestaurantParentFragment
 import com.example.fooddeuk.fragment.OrderHistoryFragment
 import com.example.fooddeuk.fragment.UserFragment
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.util.NetworkUtil
 import com.example.fooddeuk.util.SettingActivityUtil
-import com.example.fooddeuk.util.logger
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : BaseActivity() {
     private var homeFragmentFlag = true
@@ -31,7 +28,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         stopLoading()
-        fragments= arrayOf(HomeFragment(),DanGolFragment(), NearFragment(),OrderHistoryFragment(),UserFragment())
+        fragments= arrayOf(HomeFragment(),DanGolFragment(), NearRestaurantParentFragment(),OrderHistoryFragment(),UserFragment())
         setNavigation()
         setViewPager()
 

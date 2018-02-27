@@ -3,8 +3,7 @@ package com.example.fooddeuk.model.restaurant;
 import com.example.fooddeuk.model.menu.MenuCategory;
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.realm.RealmObject;
@@ -14,8 +13,8 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by heo on 2018. 2. 4..
  */
-@Parcel
-public class Restaurant  extends RealmObject{
+public class Restaurant  extends RealmObject implements Serializable{
+
     @PrimaryKey
     int fixedPrimarykey=0;
     public String _id;

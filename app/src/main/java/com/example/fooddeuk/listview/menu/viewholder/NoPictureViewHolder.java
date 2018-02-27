@@ -1,4 +1,4 @@
-package com.example.fooddeuk.viewholder;
+package com.example.fooddeuk.listview.menu.viewholder;
 
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  * Created by heo on 2018. 1. 20..
  */
 
-public class ViewHolderNoPicture extends RecyclerView.ViewHolder {
+public class NoPictureViewHolder extends RecyclerView.ViewHolder {
     //Layout
     @BindView(R.id.menu_master_layout)
     public ConstraintLayout menu_master_layout;
@@ -51,7 +51,7 @@ public class ViewHolderNoPicture extends RecyclerView.ViewHolder {
     public Button menu_detail_order;
 
 
-    public ViewHolderNoPicture(View itemView) {
+    public NoPictureViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

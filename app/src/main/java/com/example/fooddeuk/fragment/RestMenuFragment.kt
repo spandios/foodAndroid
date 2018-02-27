@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.activity.DetailRestaurantActivity
 import com.example.fooddeuk.activity.MenuPager
-import com.example.fooddeuk.adapter.MenuListVPAdapter
+import com.example.fooddeuk.listview.menu.MenuListViewPagerAdapter
 import com.example.fooddeuk.model.menu.MenuCategory
 import com.example.fooddeuk.model.restaurant.Restaurant
 import com.southernbox.springscrollview.SpringScrollView
 import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 import kotlinx.android.synthetic.main.fragment_rest_menu_category.*
-import org.parceler.Parcels
 import java.util.*
 
 
@@ -23,22 +22,19 @@ import java.util.*
  */
 
 //메뉴카테고리 ->  tab layout  , 메뉴본문 -> viewpager
-class RestMenuFragment : Fragment() {
+class RestMenuFragment() : Fragment() {
 
     lateinit var menuCategory: ArrayList<MenuCategory>
     lateinit var restaurant: Restaurant
 
     lateinit var vp_menu_lsit : MenuPager
     lateinit var restaurantScrollView : SpringScrollView
-    lateinit var vpCreatedCallback: () -> Unit
     companion object {
         fun newInstance(restaurant: Restaurant): RestMenuFragment {
-            val restaurantParcel = Parcels.wrap(restaurant)
-            val extra = Bundle()
-            extra.putParcelable("restaurant", restaurantParcel)
             val restMenuCategoryFragment = RestMenuFragment()
-            restMenuCategoryFragment.arguments = extra
-            return restMenuCategoryFragment
+            return restMenuCategoryFragment.apply {
+                arguments=Bundle().apply { putSerializable("restaurant",restaurant) }
+            }
         }
     }
 
@@ -46,13 +42,12 @@ class RestMenuFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            restaurant = Parcels.unwrap<Restaurant>(arguments!!.getParcelable("restaurant"))
+            restaurant= arguments!!.getSerializable("restaurant") as Restaurant
             menuCategory = restaurant.menuCategory
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val root = inflater.inflate(R.layout.fragment_rest_menu_category, container, false)
         vp_menu_lsit=root.findViewById(R.id.vp_menu_list)
         restaurantScrollView=(this@RestMenuFragment.activity as DetailRestaurantActivity).scroll_rest_detail
@@ -63,8 +58,8 @@ class RestMenuFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         //액티비티쪽에서 base scrollview 포지션과 item의 포지션과 크기를 더해 아이템이 클릭됐을 시 스크롤 자동이동한다.
 
-        val menuListVPAdapter = MenuListVPAdapter(context!!, menuCategory, restaurant) { position, menuItemHeight ->
-            restaurantScrollView.scrollTo(0,(this@RestMenuFragment.activity as DetailRestaurantActivity).scrollSecondToolbar+position*menuItemHeight)
+        val menuListVPAdapter = MenuListViewPagerAdapter(context!!, menuCategory, restaurant) { position, menuItemHeight ->
+            restaurantScrollView.scrollTo(0, (this@RestMenuFragment.activity as DetailRestaurantActivity).scrollSecondToolbar + position * menuItemHeight)
         }
         vp_menu_list.adapter = menuListVPAdapter
         tab_rest_menu_real.setViewPager(vp_menu_list)

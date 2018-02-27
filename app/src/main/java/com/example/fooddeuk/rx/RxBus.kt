@@ -20,6 +20,7 @@ import io.reactivex.subjects.PublishSubject
 object RxBus {
     val MapActivityData = 0
     val DetailRestaurantActivityData = 1
+    val ReviewActivityData = 2
 
     private val sSubjectMap = SparseArray<PublishSubject<Any>>()
     private val sSubscriptionsMap = HashMap<Any,CompositeDisposable>()

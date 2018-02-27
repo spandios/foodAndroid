@@ -1,4 +1,4 @@
-package com.example.fooddeuk.viewholder;
+package com.example.fooddeuk.listview.menu.viewholder;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
@@ -23,7 +23,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
  * Created by heo on 2018. 1. 20..
  */
 
-public class ViewHolderWithPictureUnNecessary extends RecyclerView.ViewHolder {
+public class PictureUnNecessaryViewHolder extends RecyclerView.ViewHolder {
     public Context context;
     //Layout
     @BindView(R.id.menu_master_layout)
@@ -74,7 +74,7 @@ public class ViewHolderWithPictureUnNecessary extends RecyclerView.ViewHolder {
 //        @BindView(R.id.menu_master_basic_price)
 //        TextView menu_master_basic_price;
 
-    public ViewHolderWithPictureUnNecessary(Context context,View itemView) {
+    public PictureUnNecessaryViewHolder(Context context, View itemView) {
         super(itemView);
         this.context=context;
         ButterKnife.bind(this, itemView);

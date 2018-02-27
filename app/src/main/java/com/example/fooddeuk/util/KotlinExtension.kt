@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.Toast
 import com.orhanobut.logger.Logger
 
 /**
@@ -22,6 +23,13 @@ fun  RecyclerView.setLayout(context : Context){
 //    setHasFixedSize(true); 고정된 아이템일 때 성능 최적화
 }
 
+fun AppCompatActivity.toast(content : String){
+    Toast.makeText(this,content,Toast.LENGTH_LONG).show()
+}
+
+fun Fragment.toast(content : String){
+    Toast.makeText(this.activity,content,Toast.LENGTH_LONG).show()
+}
 
 
 val Int.toPx: Int
@@ -82,18 +90,6 @@ fun AppCompatActivity.StartActivity(t: Class<*>, extra: Bundle) {
     this.startActivity(Intent(this, t).apply { putExtras(extra) })
 }
 
-fun Fragment.StartActivity(t: Class<*>){
-    activity?.let{
-        it.startActivity(Intent(it,t))
-    }
-
-}
-
-fun Fragment.StartActivity(t: Class<*>,extra : Bundle){
-    activity?.let{
-        it.startActivity(Intent(it,t).putExtras(extra))
-    }
-}
 
 
 

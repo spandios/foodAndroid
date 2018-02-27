@@ -1,6 +1,5 @@
 package com.example.fooddeuk.util
 
-import com.orhanobut.logger.Logger
 import org.joda.time.*
 import java.util.*
 
@@ -17,20 +16,17 @@ object TimeUtil{
 
 
      fun currentBetweenTime(createdAt : String) : String{
-        Logger.d(DateTime().hourOfDay)
-         Logger.d(time(createdAt).hourOfDay)
          val period= Period(DateTime(Date()), time(createdAt))
-         Logger.d(period.hours)
          if(period.years!=0){
-             return "${period.years}년 전"
+             return "${-1*period.years}년 전"
          }else if(period.months!=0){
-             return "${period.months}달 전"
+             return "${-1*period.months}달 전"
          }else if(period.days!=0){
-             return "${period.days}일 전"
+             return "${-1*period.days}일 전"
          }else if(period.hours!=0){
-             return "${period.hours}시간 전"
+             return "${-1*period.hours}시간 전"
          }else{
-             return "${period.seconds}초 전"
+             return "${-1*period.seconds}초 전"
          }
 
      }

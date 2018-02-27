@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/menu_master_layout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="65dp"
         >
 
         <ImageView
@@ -71,9 +71,10 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/vp_menu_detail"
             android:layout_width="match_parent"
-            android:layout_height="230dp" />
+            android:layout_height="240dp" />
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/menu_detail_option_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

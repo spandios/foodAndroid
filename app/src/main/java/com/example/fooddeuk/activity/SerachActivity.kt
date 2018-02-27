@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import com.example.fooddeuk.R
-import com.example.fooddeuk.adapter.MenuListVPAdapter
+import com.example.fooddeuk.listview.menu.MenuListViewPagerAdapter
 import com.example.fooddeuk.model.menu.MenuCategory
 import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.rx.RxBus
@@ -45,9 +45,9 @@ class SerachActivity : AppCompatActivity() {
             if (it is Restaurant) {
                 restaurant = it
                 menuCategory = restaurant.menuCategory
-                val vpAdapter = MenuListVPAdapter(this, menuCategory, restaurant, { position: Int, menuItemHeight : Int->
+                val vpAdapter = MenuListViewPagerAdapter(this, menuCategory, restaurant, { position: Int, menuItemHeight: Int ->
                     Logger.d(menuItemHeight)
-                    logger("scroll",scrollBaseHeight+(position*menuItemHeight))
+                    logger("scroll", scrollBaseHeight + (position * menuItemHeight))
                     scroll.scrollTo(0, scrollBaseHeight + (position * menuItemHeight))
                 })
                 vp.adapter = vpAdapter

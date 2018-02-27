@@ -11,10 +11,10 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.R
-import com.example.fooddeuk.adapter.MenuListAdapter
 import com.example.fooddeuk.adapter.restaurantImageVPAdapter
 import com.example.fooddeuk.fragment.RestMenuFragment
 import com.example.fooddeuk.home.HomeFragment
+import com.example.fooddeuk.listview.menu.MenuListAdapter
 import com.example.fooddeuk.model.menu.MenuCategory
 import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.network.HTTP.Single
@@ -72,6 +72,7 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
 
             }
         }
+
         scroll_rest_detail.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
 
         menuItemHeight = resources.getDimensionPixelOffset(R.dimen.menu_item)
@@ -81,10 +82,6 @@ class DetailRestaurantActivity : AppCompatActivity(), MenuListAdapter.OnItemClic
                 menuCategoryList = restaurant.menuCategory
                 setFragment()
                 viewSetting()
-
-
-
-
             }
         })
 
