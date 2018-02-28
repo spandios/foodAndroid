@@ -2,8 +2,7 @@ package com.example.fooddeuk.model.menu;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.realm.annotations.Ignore;
@@ -11,8 +10,8 @@ import io.realm.annotations.Ignore;
 /**
  * Created by heojuyeong on 2017. 7. 31..
  */
-@Parcel
-public class Menu {
+
+public class Menu implements Serializable{
     @SerializedName("_id")
     public String menu_id;
     public String name;

@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import com.example.fooddeuk.R
-import com.example.fooddeuk.listview.menu.MenuListViewPagerAdapter
+import com.example.fooddeuk.menu.listview.MenuListViewPagerAdapter
 import com.example.fooddeuk.model.menu.MenuCategory
-import com.example.fooddeuk.model.restaurant.Restaurant
+import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.logger
 import com.orhanobut.logger.Logger

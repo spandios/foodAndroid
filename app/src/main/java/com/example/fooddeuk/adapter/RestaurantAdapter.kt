@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
-import com.example.fooddeuk.model.restaurant.Restaurant
+import com.example.fooddeuk.restaurant.model.Restaurant
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_restaurant.view.*
 import java.util.*

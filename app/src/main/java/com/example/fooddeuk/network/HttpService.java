@@ -1,8 +1,8 @@
 package com.example.fooddeuk.network;
 
-import com.example.fooddeuk.model.home.HomeEventPictureResponse;
+import com.example.fooddeuk.home.HomeEventPictureResponse;
 import com.example.fooddeuk.model.order.OrderResponse;
-import com.example.fooddeuk.model.restaurant.RestaurantResponse;
+import com.example.fooddeuk.restaurant.model.RestaurantResponse;
 import com.example.fooddeuk.model.review.ReviewResponse;
 import com.example.fooddeuk.model.user.LocationResult;
 import com.example.fooddeuk.model.user.User;

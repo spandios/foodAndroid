@@ -1,6 +1,6 @@
 package com.example.fooddeuk.restaurant.repository
 
-import com.example.fooddeuk.model.restaurant.RestaurantResponse
+import com.example.fooddeuk.restaurant.model.RestaurantResponse
 import io.reactivex.Single
 
 /**
@@ -10,4 +10,7 @@ interface RestaurantDataSource {
 
     fun getNearRestaurantList(queryMap: HashMap<String,String>) : Single<RestaurantResponse>
 
+    fun getRestaurantImage(_id : String) : Single<ArrayList<String>>?
+
 }
+

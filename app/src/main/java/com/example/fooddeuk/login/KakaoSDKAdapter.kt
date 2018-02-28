@@ -1,6 +1,6 @@
 package com.example.fooddeuk.login
 
-import com.example.fooddeuk.GlobalApplication.getInstance
+import com.example.fooddeuk.`object`.GlobalApplication.getInstance
 import com.kakao.auth.IApplicationConfig
 import com.kakao.auth.IPushConfig
 import com.kakao.auth.ISessionConfig

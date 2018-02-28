@@ -1,6 +1,6 @@
 package com.example.fooddeuk.`object`
 
-import com.example.fooddeuk.GlobalApplication
+import com.example.fooddeuk.`object`.GlobalApplication.httpService
 import com.example.fooddeuk.model.user.User
 import com.example.fooddeuk.model.user.UserResponse
 import com.example.fooddeuk.network.HTTP
@@ -94,7 +94,7 @@ object Login {
                         callback(true)
                     } else {
                         user.fcm_token = GlobalApplication.fcmToken
-                        HTTP.createUser(user).subscribe({
+                        HTTP.Completable(httpService.createUser(user)).subscribe({
                             insertUser(user)
                             insertUserPref(user)
                             callback(true)
@@ -104,6 +104,8 @@ object Login {
                             it.printStackTrace()
                             callback(false)
                         })
+
+
 
                     }
                 }
@@ -128,7 +130,7 @@ object Login {
     }
 
     fun getUser(provider_id: String, callback: (err: Throwable?, userResponse: UserResponse?) -> Unit) {
-        HTTP.getUser(provider_id).subscribe(
+        HTTP.Single(httpService.getUser(provider_id)).subscribe(
                 { userResponse ->
                     Logger.d(userResponse.user)
                     callback(null, userResponse) }, { throwable -> callback(throwable, null) })
@@ -143,7 +145,7 @@ object Login {
 
 
     fun updateFcmToken(user: User, fcm_token: String) {
-        HTTP.updateToken(user.provider_id, fcm_token).subscribe({
+        HTTP.Completable(httpService.updateToken(user.provider_id, fcm_token)).subscribe({
             Logger.d("fcm_token update!!")
             PrefUtil.setValue(PrefUtil.FCM_TOKEN, user.fcm_token)
         }, { it.printStackTrace() })

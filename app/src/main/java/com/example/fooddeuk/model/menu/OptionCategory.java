@@ -2,15 +2,14 @@ package com.example.fooddeuk.model.menu;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by heojuyeong on 2017. 9. 28..
  */
-@Parcel
-public class OptionCategory  {
+
+public class OptionCategory implements Serializable {
     @SerializedName("_id")
     public String menu_option_category_id;
     public String menu_option_category_name;

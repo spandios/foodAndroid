@@ -2,7 +2,7 @@ package com.example.fooddeuk.model.menu;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
+import java.io.Serializable;
 
 import io.realm.RealmObject;
 
@@ -10,8 +10,8 @@ import io.realm.RealmObject;
  * Created by heo on 2018. 2. 4..
  */
 
-@Parcel
-public class Option extends RealmObject{
+
+public class Option extends RealmObject implements Serializable{
     @SerializedName("_id")
     public String menu_option_id;
     public String menu_option_name;

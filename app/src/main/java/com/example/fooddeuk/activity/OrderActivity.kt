@@ -11,9 +11,9 @@ import com.example.fooddeuk.model.cart.CartItem
 import com.example.fooddeuk.model.order.OrderResponse
 import com.example.fooddeuk.model.order.RestaurantSide
 import com.example.fooddeuk.model.order.UserSide
-import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.model.user.User
 import com.example.fooddeuk.network.OrderService
+import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.util.LayoutUtil
 import com.example.fooddeuk.util.PriceUtil
 import com.example.fooddeuk.util.RealmUtil

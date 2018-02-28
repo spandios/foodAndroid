@@ -17,7 +17,6 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.activity.LocationSettingByMapActivity
 import com.example.fooddeuk.adapter.restaurantImageVPAdapter
-import com.example.fooddeuk.model.home.HomeEventPictureResponse
 import com.example.fooddeuk.util.*
 import kotlinx.android.synthetic.main.fragment_home.*
 

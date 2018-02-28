@@ -1,6 +1,6 @@
 package com.example.fooddeuk.model.order;
 
-import com.example.fooddeuk.model.restaurant.Restaurant;
+import com.example.fooddeuk.restaurant.model.Restaurant;
 
 /**
  * Created by heo on 2018. 1. 22..

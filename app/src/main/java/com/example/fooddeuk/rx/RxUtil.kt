@@ -1,6 +1,6 @@
 //package com.example.fooddeuk.restaurant.repository
 //
-//import com.example.fooddeuk.model.restaurant.RestaurantResponse
+//import com.example.fooddeuk.restaurant.model.RestaurantResponse
 //import com.orhanobut.logger.Logger
 //import io.reactivex.Single
 //

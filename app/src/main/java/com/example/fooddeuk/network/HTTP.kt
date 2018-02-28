@@ -1,9 +1,5 @@
 package com.example.fooddeuk.network
 
-import com.example.fooddeuk.GlobalApplication.httpService
-import com.example.fooddeuk.model.order.OrderResponse
-import com.example.fooddeuk.model.user.User
-import com.example.fooddeuk.model.user.UserResponse
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiPredicate
@@ -47,21 +43,7 @@ object HTTP {
         return FlowableTransformer { upstream -> upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) }
     }
 
-
-    //User
-    @JvmStatic
-    fun getUser(provider_id: String): Single<UserResponse> = Single(httpService.getUser(provider_id))
-
-    @JvmStatic
-    fun createUser(user: User): Completable = Completable(httpService.createUser(user))
-
-    @JvmStatic
-    fun updateToken(provider_id: String, fcm_token: String): Completable = Completable(httpService.updateToken(provider_id, fcm_token))
-
-
-
-    //ORDER
-    fun order(orderResponse: OrderResponse): Completable = HTTP.Completable(httpService.order(orderResponse))
+    
 
 
 

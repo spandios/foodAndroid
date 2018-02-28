@@ -13,14 +13,14 @@ import android.widget.RatingBar
 import android.widget.TextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.R
+import com.example.fooddeuk.`object`.GlobalApplication
 import com.example.fooddeuk.`object`.Location
-import com.example.fooddeuk.model.restaurant.Restaurant
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
+import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.rx.RxBus.intentSubscribe
-import com.example.fooddeuk.util.CustomBottomSheetDialog
 import com.example.fooddeuk.util.StartActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -109,7 +109,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     }
 
     private fun setBottomSheetDialog() {
-        mBottomSheetDialog = CustomBottomSheetDialog(this)
+        mBottomSheetDialog = BottomSheetDialog(this)
         bottomSheet = this.layoutInflater.inflate(R.layout.dialog_select_restaurant_box, null).apply {
             imageView= findViewById(R.id.img_restaurant_map_box)
             name = findViewById(R.id.txt_restaurant_map_box_name)

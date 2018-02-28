@@ -22,7 +22,7 @@
             android:layout_centerVertical="true" />
 
         <TextView
-            android:id="@+id/menu_master_name"
+            android:id="@+id/txt_menu_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
