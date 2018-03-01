@@ -1,4 +1,4 @@
-package com.example.fooddeuk.activity
+package com.example.fooddeuk.map
 
 import android.Manifest
 import android.animation.Animator
@@ -16,6 +16,7 @@ import com.daimajia.androidanimations.library.YoYo
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.GlobalApplication
 import com.example.fooddeuk.`object`.Location
+import com.example.fooddeuk.activity.BaseActivity
 import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.model.Restaurant

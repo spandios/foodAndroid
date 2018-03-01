@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter;
+package com.example.fooddeuk.menu.option;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +13,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
+import com.example.fooddeuk.model.cart.CartOption;
+import com.example.fooddeuk.model.cart.CartOptionCategory;
 import com.example.fooddeuk.model.menu.Option;
-import com.example.fooddeuk.model.menu.OptionCategory;
 import com.example.fooddeuk.util.LayoutUtil;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
  */
 
 public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAdapter.ViewHolder> {
-    private ArrayList<OptionCategory> optionCategory;
+    private ArrayList<CartOptionCategory> optionCategory;
     private Context context;
     private RadioPriceListener radioPricelistener;
     private SelectCLickListener selectCLickListener;
@@ -36,7 +37,7 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
 
 
 
-    public OptionCategoryAdapter(ArrayList<OptionCategory> optionCategory, Context context, OptionCategoryAdapter.SelectCLickListener selectCLickListener, RadioPriceListener radioPriceListener) {
+    public OptionCategoryAdapter(Context context, ArrayList<CartOptionCategory> optionCategory, OptionCategoryAdapter.SelectCLickListener selectCLickListener, RadioPriceListener radioPriceListener) {
         this.optionCategory = optionCategory;
         this.context = context;
         this.radioPricelistener=radioPriceListener;
@@ -59,74 +60,15 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
         // set the view's size, margins, paddings and layout parameters
         OptionCategoryAdapter.ViewHolder vh = new OptionCategoryAdapter.ViewHolder(v);
 
-//        radioClickListener = (position,plusPrice) -> {
-//
-//            //클릭 되어있는 라디오만 해제한뒤
-//            for (int childCount = vh.dialog_test.getChildCount(), j = 0; j < childCount; j++) {
-//                RadioButton radioButton = (RadioButton) vh.dialog_test.getChildAt(j);
-//                if(childCount==0) {
-//                    radioPricelistener.getRadioPrice(plusPrice,null);
-//                    return;
-//                }
-//
-//                if(j==position){
-//                    continue;
-//                }
-//
-//                //체크 되어 있을 경우
-//                if (radioButton.isChecked()) {
-//                    //해제
-//                    radioButton.setChecked(false);
-//                    TextView minPrice = (TextView) viewHolder.itemView.findViewById(R.id.dialog_menu_option_price);
-//                    radioPricelistener.getRadioPrice(plusPrice,minPrice);
-//                    //최종값에 가격 마이너스 함
-////                    dialog_totalPrice.setText(PriceUtil.minusPrice(PriceUtil.TextViewToString(dialog_totalPrice), PriceUtil.TextViewToString(optionPrice)));
-//                }
-//
-//            }
-//
-//        };
         return vh;
     }
-//    RelativeLayout optionContentLayout=new RelativeLayout(context);
-//    RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                    layoutParams.setMargins(0, LayoutUtil.convertDpToPixelInt(14,context),0,0);
-//                    optionContentLayout.setLayoutParams(layoutParams);
-//
-//
-//    RadioButton radioButton=new RadioButton(context);
-//    RelativeLayout.LayoutParams layoutParams1=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                    layoutParams1.setMargins(LayoutUtil.convertDpToPixelInt(15,context),LayoutUtil.convertDpToPixelInt(15,context),0,0);
-//
-//                    radioButton.setLayoutParams(layoutParams1);
-//                    radioButton.setText(optionItem.necessary.get(i).menu_option_name);
-//                    radioButton.setTextSize(20);
-//                    radioButton.setTag(optionItem.necessary.get(i));
-//
-//    RelativeLayout.LayoutParams layoutParams2=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                    layoutParams2.setMargins(0,LayoutUtil.convertDpToPixelInt(20,context),LayoutUtil.convertDpToPixelInt(15,context),0);
-//                    layoutParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//    TextView optionPrice=new TextView(context);
-//                    optionPrice.setLayoutParams(layoutParams2);
-//                    optionPrice.setTextSize(20);
-//                    optionPrice.setText(optionItem.necessary.get(i).menu_option_price);
-//
-//                    optionContentLayout.addView(radioButton);
-//                    optionContentLayout.addView(optionPrice);
-//                    optionContentLayout.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            Logger.d("ee");
-//        }
-//    });
 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        OptionCategory optionCategory = this.optionCategory.get(position);
+        CartOptionCategory optionCategory = this.optionCategory.get(position);
         holder.dialog_option_category_name.setText(optionCategory.menu_option_category_name);
-
 
                 //필수  -> RADIO
               if(!optionCategory.multiple){
@@ -161,7 +103,7 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
                 //Mutilple true == 선택옵션
             }else{
                   for(int i = 0; i< optionCategory.unnecessary.size(); i++){
-                      Option unNecessaryOption= optionCategory.unnecessary.get(i);
+                      CartOption unNecessaryOption= optionCategory.unnecessary.get(i);
                       LinearLayout.LayoutParams radioButtonLayOutParam=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,8);
                       radioButtonLayOutParam.setMargins(LayoutUtil.convertDpToPixelInt(12,context),LayoutUtil.convertDpToPixelInt(20,context),0,0);
                       CheckBox checkBox=new CheckBox(context);
@@ -236,7 +178,7 @@ public class OptionCategoryAdapter extends RecyclerView.Adapter<OptionCategoryAd
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dialog_option_category_name)
         TextView dialog_option_category_name;
-        @BindView(R.id.dialog_test)
+        @BindView(R.id.option_content_list)
         LinearLayout dialog_test;
 
 

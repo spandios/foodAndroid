@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter
+package com.example.fooddeuk.order
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -25,7 +25,7 @@ class OrderMenuAdapter(private val mContext: Context, private val modelList: Arr
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val cartItem: CartItem = modelList[position]
-        if (holder is OrderMenuAdapter.ViewHolder) {
+        if (holder is ViewHolder) {
             holder.orderMenuName.text = cartItem.menu.name
             holder.orderMenuCount.text = cartItem.menu_count
             holder.orderResultPrice.text = cartItem.totalPrice

@@ -15,8 +15,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location
-import com.example.fooddeuk.activity.LocationSettingByMapActivity
-import com.example.fooddeuk.adapter.restaurantImageVPAdapter
+import com.example.fooddeuk.map.LocationSettingByMapActivity
+import com.example.fooddeuk.restaurant.detail.restaurantImageVPAdapter
 import com.example.fooddeuk.util.*
 import kotlinx.android.synthetic.main.fragment_home.*
 

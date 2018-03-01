@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter
+package com.example.fooddeuk.map
 
 import android.content.Context
 import android.support.v4.view.PagerAdapter

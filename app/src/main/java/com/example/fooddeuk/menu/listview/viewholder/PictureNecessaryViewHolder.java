@@ -60,13 +60,13 @@ public class PictureNecessaryViewHolder extends RecyclerView.ViewHolder {
     public Button menu_detail_order;
 
 
-    @BindView(R.id.menu_detail_necessary_option_layout)
+    @BindView(R.id.layout_cart_menu_necessary_option)
     public RelativeLayout menu_detail_necessary_option_layout;
 
-    @BindView(R.id.menu_detail_option_necessary_title)
+    @BindView(R.id.cart_option_necessary_title)
     public TextView menu_detail_option_necessary_title;
 
-    @BindView(R.id.menu_detail_option_necessary_content)
+    @BindView(R.id.txt_cart_option_necessary_content)
     public TextView menu_detail_option_necessary_content;
 
 

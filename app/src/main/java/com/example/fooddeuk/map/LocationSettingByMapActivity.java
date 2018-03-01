@@ -1,4 +1,4 @@
-package com.example.fooddeuk.activity;
+package com.example.fooddeuk.map;
 
 
 import android.Manifest;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
+import com.example.fooddeuk.activity.BaseActivity;
 import com.example.fooddeuk.object.Location;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

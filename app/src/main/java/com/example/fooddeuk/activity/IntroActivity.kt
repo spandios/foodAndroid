@@ -34,6 +34,7 @@ class IntroActivity : BaseActivity(){
                         Login.checkUser({
                             getLocation({ _, _ ->  nextActivity()})
                         })
+
                     } else {
                         Toast.makeText(this@IntroActivity, "Permission Denied", Toast.LENGTH_SHORT).show()
                         finish()

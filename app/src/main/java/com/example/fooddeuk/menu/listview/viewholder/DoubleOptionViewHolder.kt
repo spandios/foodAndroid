@@ -24,9 +24,6 @@ class DoubleOptionViewHolder(var context: Context, itemView: View) : RecyclerVie
 
     var vpMenuDetail: ViewPager = itemView.vp_menu_detail
     var menuOrder: Button = itemView.menu_detail_order
-    var menuOptionNecessaryContent: TextView = itemView.menu_detail_option_necessary_content
-    var menuOptionUnnecessaryContent: TextView = itemView.menu_detail_option_unnecessary_content
-
 
     fun bind(menu: Menu) {
         val menuPrice = menu.price + "원"

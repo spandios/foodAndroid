@@ -221,7 +221,7 @@
 
         <LinearLayout
             android:layout_marginTop="10dp"
-            android:id="@+id/menu_detail_option_layout"
+            android:id="@+id/layout_parent_cart_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -234,7 +234,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:id="@+id/menu_detail_necessary_option_layout"
+                android:id="@+id/layout_cart_menu_necessary_option"
                 >
 
                 <RelativeLayout
@@ -260,7 +260,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/menu_detail_option_necessary_title"
+                    android:id="@+id/cart_option_necessary_title"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
 
@@ -286,7 +286,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/menu_detail_option_necessary_content"
+                    android:id="@+id/txt_cart_option_necessary_content"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"

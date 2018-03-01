@@ -1,6 +1,8 @@
 package com.example.fooddeuk.model.cart;
 
 
+import com.example.fooddeuk.model.menu.Option;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -18,6 +20,13 @@ public class CartOption extends RealmObject{
     public CartOption(){
 
     }
+
+    public CartOption(Option option){
+        this.menu_option_id=option.menu_option_id;
+        this.menu_option_name=option.menu_option_name;
+        this.menu_option_price=option.menu_option_price;
+    }
+
 
     public CartOption(String menu_option_id, String menu_option_name, String menu_option_price) {
         this.menu_option_id = menu_option_id;

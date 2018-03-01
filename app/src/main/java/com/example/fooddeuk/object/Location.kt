@@ -76,7 +76,10 @@ object Location {
                 }else{
                     callback(it.gudong)
                 }
-            },{it.printStackTrace()})
+            },{
+                it.printStackTrace()
+                callback("error")
+            })
 
 
         }

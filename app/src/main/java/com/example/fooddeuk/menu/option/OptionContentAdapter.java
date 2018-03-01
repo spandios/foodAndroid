@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter;
+package com.example.fooddeuk.menu.option;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

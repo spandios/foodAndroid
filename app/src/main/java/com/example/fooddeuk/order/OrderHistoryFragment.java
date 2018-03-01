@@ -1,4 +1,4 @@
-package com.example.fooddeuk.fragment;
+package com.example.fooddeuk.order;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.adapter.OrderHistoryAdapter;
 import com.example.fooddeuk.model.order.OrderResponse;
 import com.example.fooddeuk.network.OrderService;
 import com.example.fooddeuk.util.LayoutUtil;

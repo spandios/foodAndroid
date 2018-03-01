@@ -221,7 +221,7 @@
 
         <LinearLayout
             android:layout_marginTop="10dp"
-            android:id="@+id/menu_detail_option_layout"
+            android:id="@+id/layout_parent_cart_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -233,7 +233,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/menu_detail_unnecessary_option_layout">
+                android:id="@+id/menu_detail_option_unnecessary_content">
                 <TextView
                     android:id="@+id/menu_detail_option_unnecessary_title"
                     android:layout_width="100dp"

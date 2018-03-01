@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
-import com.example.fooddeuk.adapter.RestaurantAdapter
+import com.example.fooddeuk.restaurant.list.RestaurantAdapter
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.LayoutUtil

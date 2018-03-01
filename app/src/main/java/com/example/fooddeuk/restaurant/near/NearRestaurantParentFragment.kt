@@ -15,8 +15,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location
-import com.example.fooddeuk.activity.LocationSettingByMapActivity
-import com.example.fooddeuk.activity.MapActivity
+import com.example.fooddeuk.map.LocationSettingByMapActivity
+import com.example.fooddeuk.map.MapActivity
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.*
 import com.orhanobut.logger.Logger

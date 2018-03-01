@@ -60,7 +60,7 @@ public class PictureUnNecessaryViewHolder extends RecyclerView.ViewHolder {
     public Button menu_detail_order;
 
 
-    @BindView(R.id.menu_detail_unnecessary_option_layout)
+    @BindView(R.id.menu_detail_option_unnecessary_content)
     public RelativeLayout menu_detail_unnecessary_option_layout;
 
     @BindView(R.id.menu_detail_option_unnecessary_content)

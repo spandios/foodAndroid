@@ -12,17 +12,17 @@ public class CartItem extends RealmObject {
     @PrimaryKey
     public String id;
     public CartMenu menu;
-    public RealmList<CartOptionCategory> optionList;
+    public RealmList<CartOptionCategory> optionCategoryList;
     public String menu_count;
     public String totalPrice;
 
     public CartItem(){
 
     }
-    public CartItem(CartMenu menu,RealmList<CartOptionCategory> optionList) {
+    public CartItem(CartMenu menu,RealmList<CartOptionCategory> optionCategoryList) {
         this.id = menu.menu_id;
         this.menu = menu;
-        this.optionList=optionList;
+        this.optionCategoryList = optionCategoryList;
     }
 
 

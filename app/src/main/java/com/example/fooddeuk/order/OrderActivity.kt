@@ -1,4 +1,4 @@
-package com.example.fooddeuk.activity
+package com.example.fooddeuk.order
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import com.example.fooddeuk.R
-import com.example.fooddeuk.adapter.OrderMenuAdapter
+import com.example.fooddeuk.activity.MainActivity
 import com.example.fooddeuk.model.cart.CartItem
 import com.example.fooddeuk.model.order.OrderResponse
 import com.example.fooddeuk.model.order.RestaurantSide
@@ -127,7 +127,7 @@ class OrderActivity(private var cartItemList : ArrayList<CartItem> = ArrayList()
                 OrderService.order(orderItem).enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
 
-                        val intent = Intent(this@OrderActivity,MainActivity::class.java)
+                        val intent = Intent(this@OrderActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         intent.putExtra("isOrder",true)
                         startActivity(intent)

@@ -1,4 +1,4 @@
-package com.example.fooddeuk.listview.order
+package com.example.fooddeuk.order
 
 /**
  * Created by heo on 2018. 1. 25..

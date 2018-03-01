@@ -50,9 +50,9 @@
             <!-- &lt;!&ndash;<category android:name="android.intent.category.DEFAULT" />&ndash;&gt; -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".activity.LocationSettingByMapActivity" />
+        <activity android:name=".map.LocationSettingByMapActivity" />
         <activity
-            android:name=".activity.OrderActivity"
+            android:name=".order.OrderActivity"
             android:exported="true"
             android:label="@string/title_activity_maps" />
         <activity
@@ -92,7 +92,7 @@
         <activity
             android:name="com.nhn.android.naverlogin.ui.OAuthLoginInAppBrowserActivity"
             android:label="OAuth2.0 In-app" />
-        <activity android:name=".activity.MapActivity" />
+        <activity android:name=".map.MapActivity" />
         <activity android:name=".activity.CurrentOrderActivity" />
         <activity android:name=".activity.OrderHistoryMapActivity" />
         <activity android:name=".activity.LoginActivity" />

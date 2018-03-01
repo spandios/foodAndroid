@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter
+package com.example.fooddeuk.order
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.activity.OrderHistoryMapActivity
 import com.example.fooddeuk.model.order.OrderResponse
-import com.example.fooddeuk.listview.order.OrderingViewHolder
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -51,7 +50,7 @@ class OrderHistoryAdapter(private val context : Context, private val responses:A
 
         if(holder is OrderingViewHolder){
             holder.bind(orderItem)
-        }else if(holder is OrderHistoryAdapter.CompleteOrderViewHolder){
+        }else if(holder is CompleteOrderViewHolder){
             holder.bind(orderItem)
         }
     }

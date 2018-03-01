@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter
+package com.example.fooddeuk.restaurant.list
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -18,7 +18,7 @@ import java.util.*
 class RestaurantAdapter(private val context: Context, private var restaurantItem: ArrayList<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
     lateinit var restaurantItemClickListener: (restaurant : Restaurant)->Unit
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         // set the view's size, margins, paddings and layout parameters
         val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_restaurant, parent, false))

@@ -1,4 +1,4 @@
-package com.example.fooddeuk.fragment
+package com.example.fooddeuk.login
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

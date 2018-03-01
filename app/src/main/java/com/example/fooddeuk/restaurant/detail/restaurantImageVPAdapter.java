@@ -1,4 +1,4 @@
-package com.example.fooddeuk.adapter;
+package com.example.fooddeuk.restaurant.detail;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

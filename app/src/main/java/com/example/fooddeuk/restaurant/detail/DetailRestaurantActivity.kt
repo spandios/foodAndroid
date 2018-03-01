@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import com.example.fooddeuk.R
 import com.example.fooddeuk.cart.CartActivity
-import com.example.fooddeuk.adapter.restaurantImageVPAdapter
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.menu.RestMenuFragment
 import com.example.fooddeuk.model.menu.MenuCategory
