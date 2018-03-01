@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.fooddeuk.R
 import com.example.fooddeuk.model.cart.CartItem
 import kotlinx.android.synthetic.main.item_order_menu.view.*
@@ -33,11 +32,11 @@ class OrderMenuAdapter(private val mContext: Context, private val modelList: Arr
 
 
             //옵션 텍스트 뷰 생성
-            for (item in cartItem.option) {
-                var optionName = TextView(mContext)
-                optionName.text = item.menu_option_name
-                holder.orderMenuOptionLayout.addView(optionName)
-            }
+//            for (item in cartItem.option) {
+//                var optionName = TextView(mContext)
+//                optionName.text = item.menu_option_name
+//                holder.orderMenuOptionLayout.addView(optionName)
+//            }
         }
 
 

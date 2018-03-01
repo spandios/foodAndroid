@@ -13,33 +13,33 @@ import com.example.fooddeuk.util.LayoutUtil
 import java.util.*
 
 
-
 /**
  * Created by heo on 2018. 2. 22..
  * ViewPager For MenuList
  */
 
-class MenuListViewPagerAdapter(var context: Context, private var menuCategories: ArrayList<MenuCategory>, val restaurant: Restaurant, private val clickItemHeight : (position: Int, menuItemHeight : Int)->Unit) : PagerAdapter() {
+class MenuListViewPagerAdapter(var context: Context, private var menuCategories: ArrayList<MenuCategory>, val restaurant: Restaurant, private val clickItemHeight: (position: Int, menuItemHeight: Int) -> Unit) : PagerAdapter() {
     var layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val itemView = layoutInflater.inflate(R.layout.item_vp_menu_list, container, false)
         val menuRecyclerView = itemView.findViewById<RecyclerView>(R.id.recycle_menu)
-        LayoutUtil.RecyclerViewSetting(context,menuRecyclerView)
+        LayoutUtil.RecyclerViewSetting(context, menuRecyclerView)
         menuRecyclerView.isFocusable = false
         menuRecyclerView.isFocusableInTouchMode = false
-        menuRecyclerView.isNestedScrollingEnabled=false
+        menuRecyclerView.isNestedScrollingEnabled = false
 
         menuRecyclerView.adapter = MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
-            setOnItemClickListener { view, menuItemHeight ->
-                clickItemHeight(view.adapterPosition,menuItemHeight)
+            mItemClickListener={
+                position, height ->  clickItemHeight(position, height)
             }
         }
 
         container.addView(itemView)
         return itemView
     }
+
     override fun getCount(): Int = menuCategories.size
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`

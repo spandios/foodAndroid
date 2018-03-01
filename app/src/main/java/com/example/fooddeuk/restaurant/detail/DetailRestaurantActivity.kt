@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewTreeObserver
 import com.example.fooddeuk.R
-import com.example.fooddeuk.activity.CartActivity
+import com.example.fooddeuk.cart.CartActivity
 import com.example.fooddeuk.adapter.restaurantImageVPAdapter
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.menu.RestMenuFragment

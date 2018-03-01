@@ -7,15 +7,10 @@ package com.example.fooddeuk.listview.order
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
 import com.example.fooddeuk.R
-import com.example.fooddeuk.model.cart.CartItem
 import com.example.fooddeuk.model.order.OrderResponse
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -46,62 +41,62 @@ class OrderingViewHolder(val context: Context, parent: ViewGroup?) : RecyclerVie
         order_list_state.text="주문 상태 : ${orderResponse.status}"
         order_list_arrivedTime.text="도착 예정 시간 : ${orderResponse.user.arrivedTime}"
         order_list_result_price.text="총 주문 금액 : ${orderResponse.user.completePrice}"
-        createMenuLayout(orderResponse.cartItems)
+//        createMenuLayout(orderResponse.cartItems)
     }
 
-    private fun View.createMenuLayout(cartItems: ArrayList<CartItem>){
-        cartItems?.let{item->
-            if(item.size>0){
-                item.forEach({
-                    LayoutInflater.from(context).inflate(R.layout.item_order_history_menu_dynamic_layout, order_list_menu_parent_layout, false)?.let { menuLayout ->
-                        menuLayout.findViewById<TextView>(R.id.order_list_menu_name).text=it.menu.name
-                        menuLayout.findViewById<TextView>(R.id.order_list_menu_count).text = "x" + it.menu_count
-                        menuLayout.findViewById<TextView>(R.id.order_list_menu_price).text = it.menu.price + "원"
-                        if(it.option!=null){
-                            if(it.option.size>0){
-
-
-                                it.option.forEach({ option ->
-                                    //ParentOptionLayout vertical
-                                    menuLayout.findViewById<LinearLayout>(R.id.order_list_option_layout).apply {
-                                        visibility=View.VISIBLE
-                                        addView(RelativeLayout(context).apply {
-                                            //OptionContentLayout
-                                            layoutParams=RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-
-                                            //add name
-                                            addView(TextView(context).apply {
-                                                text = option.menu_option_name
-                                                setTextSize(TypedValue.COMPLEX_UNIT_PX,context.resources.getDimension(R.dimen.order_list_option_name_text))
-                                                layoutParams=RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                                                    marginStart= resources.getDimension(R.dimen.order_list_option_name_margin).toInt()
-                                                    addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-
-                                                }
-                                            })
-
-                                            //add price
-                                            addView(TextView(context).apply {
-                                                text = option.menu_option_price+"원"
-                                                setTextSize(TypedValue.COMPLEX_UNIT_PX,context.resources.getDimension(R.dimen.order_list_option_price_text))
-                                                layoutParams=RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                                                    addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                                                    marginEnd= resources.getDimensionPixelSize(R.dimen.order_list_option_price_margin)
-                                                }
-                                            })
-                                        })
-                                    }
-                                })
-                            }
-                        }
-
-                        order_list_menu_parent_layout.addView(menuLayout)
-                    }
-                })
-            }
-
-        }
-    }
+//    private fun View.createMenuLayout(cartItems: ArrayList<CartItem>){
+//        cartItems?.let{item->
+//            if(item.size>0){
+//                item.forEach({
+//                    LayoutInflater.from(context).inflate(R.layout.item_order_history_menu_dynamic_layout, order_list_menu_parent_layout, false)?.let { menuLayout ->
+//                        menuLayout.findViewById<TextView>(R.id.order_list_menu_name).text=it.menu.name
+//                        menuLayout.findViewById<TextView>(R.id.order_list_menu_count).text = "x" + it.menu_count
+//                        menuLayout.findViewById<TextView>(R.id.order_list_menu_price).text = it.menu.price + "원"
+//                        if(it.option!=null){
+//                            if(it.option.size>0){
+//
+//
+//                                it.option.forEach({ option ->
+//                                    //ParentOptionLayout vertical
+//                                    menuLayout.findViewById<LinearLayout>(R.id.order_list_option_layout).apply {
+//                                        visibility=View.VISIBLE
+//                                        addView(RelativeLayout(context).apply {
+//                                            //OptionContentLayout
+//                                            layoutParams=RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+//
+//                                            //add name
+//                                            addView(TextView(context).apply {
+//                                                text = option.menu_option_name
+//                                                setTextSize(TypedValue.COMPLEX_UNIT_PX,context.resources.getDimension(R.dimen.order_list_option_name_text))
+//                                                layoutParams=RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+//                                                    marginStart= resources.getDimension(R.dimen.order_list_option_name_margin).toInt()
+//                                                    addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+//
+//                                                }
+//                                            })
+//
+//                                            //add price
+//                                            addView(TextView(context).apply {
+//                                                text = option.menu_option_price+"원"
+//                                                setTextSize(TypedValue.COMPLEX_UNIT_PX,context.resources.getDimension(R.dimen.order_list_option_price_text))
+//                                                layoutParams=RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+//                                                    addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+//                                                    marginEnd= resources.getDimensionPixelSize(R.dimen.order_list_option_price_margin)
+//                                                }
+//                                            })
+//                                        })
+//                                    }
+//                                })
+//                            }
+//                        }
+//
+//                        order_list_menu_parent_layout.addView(menuLayout)
+//                    }
+//                })
+//            }
+//
+//        }
+//    }
 
 
 }

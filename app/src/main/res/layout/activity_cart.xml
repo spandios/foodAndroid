@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
+<android.support.constraint.ConstraintLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
         android:id="@+id/cartToolbar"
         >
 
@@ -36,18 +35,20 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:background="@color/silver"
+        android:padding="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/cartToolbar"
+        app:layout_constraintBottom_toTopOf="@+id/layout_cart_process"
         android:nestedScrollingEnabled="false"
-        android:layout_below="@id/cartToolbar"
         android:id="@+id/cartListView"
         >
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
+        android:id="@+id/layout_cart_process"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="5dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
         <Button
             android:layout_weight="3"
@@ -60,10 +61,9 @@
             android:layout_weight="7"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/cart_more_order"
             android:text="@string/order"
             android:id="@+id/cart_menu_order"/>
     </LinearLayout>
 
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -110,7 +110,7 @@ public class RealmUtil {
         return null;
     }
 
-    public static <T extends RealmObject> RealmResults<T> findDataById(Class<T> clazz, int id){
+    public static <T extends RealmObject> RealmResults<T> findDataById(Class<T> clazz, String id){
         RealmResults<T> item=realm.where(clazz).equalTo("id",id).findAll();
         return item;
     }
@@ -125,7 +125,7 @@ public class RealmUtil {
         });
     }
 
-    public static <T extends RealmObject>void removeDataById(Class<T> clazz, int id){
+    public static <T extends RealmObject>void removeDataById(Class<T> clazz, String id){
         final RealmResults<T> result = findDataById(clazz,id);
         realm.executeTransaction(new Realm.Transaction() {
             @Override

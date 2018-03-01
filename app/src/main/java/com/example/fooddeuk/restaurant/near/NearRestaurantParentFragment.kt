@@ -73,7 +73,6 @@ class NearRestaurantParentFragment : Fragment(), NearRestaurantContract.View {
 
     override fun onPause() {
         super.onPause()
-        Logger.d("clear")
         nearRestaurantPresenter.clear()
     }
 
