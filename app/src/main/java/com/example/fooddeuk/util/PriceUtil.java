@@ -16,9 +16,6 @@ public class PriceUtil {
         return textView.getText().toString();
     }
 
-    public static String TextViewToString(CharSequence charSequence) {
-        return charSequence.toString();
-    }
 
     public static String comma_won(int money) {
 
@@ -51,6 +48,14 @@ public class PriceUtil {
     static public String plusPrice(String price1, int price2) {
         return comma_won(getOriginalPrice(price1) + price2);
     }
+    static public String plusPrice(TextView price1, int price2) {
+        String price1String = price1.getText().toString();
+        return comma_won(getOriginalPrice(price1String) + price2);
+    }
+    static public String plusPrice(TextView price1, String price2) {
+        String price1String = price1.getText().toString();
+        return comma_won(getOriginalPrice(price1String) + getOriginalPrice(price2));
+    }
 
     static public String minusPrice(String price1, String price2) {
         if (getOriginalPrice(price1) > getOriginalPrice(price2)) {
@@ -59,6 +64,14 @@ public class PriceUtil {
             return comma_won(getOriginalPrice(price2) - getOriginalPrice(price1));
         }
 
+    }
+    static public String minusPrice(TextView price1, String price2) {
+        String priceString = price1.getText().toString();
+        if (getOriginalPrice(price1.getText().toString()) > getOriginalPrice(price2)) {
+            return comma_won(getOriginalPrice(priceString) - getOriginalPrice(price2));
+        } else {
+            return comma_won(getOriginalPrice(price2) - getOriginalPrice(priceString));
+        }
     }
 
     static public String minusPrice(String price1, int price2) {

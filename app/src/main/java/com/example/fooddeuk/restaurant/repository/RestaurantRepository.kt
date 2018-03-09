@@ -95,7 +95,6 @@ object RestaurantRepository : RestaurantDataSource {
     }
 
     fun getRestaurantAndCached(queryMap: HashMap<String, String>): Single<RestaurantResponse>? {
-        Logger.d("it is refresh")
         when (queryMap["foodType"]) {
 
             "" -> {

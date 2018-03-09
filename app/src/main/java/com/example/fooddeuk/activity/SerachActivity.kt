@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import com.example.fooddeuk.R
 import com.example.fooddeuk.menu.listview.MenuListViewPagerAdapter
-import com.example.fooddeuk.model.menu.MenuCategory
+import com.example.fooddeuk.menu.model.MenuCategory
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.logger

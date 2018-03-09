@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.menu.listview.MenuListViewPagerAdapter
-import com.example.fooddeuk.model.menu.MenuCategory
+import com.example.fooddeuk.menu.model.MenuCategory
 import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.util.WrapPager
@@ -29,6 +29,7 @@ class RestMenuFragment : Fragment() {
 
     lateinit var mMeuListViewPager: WrapPager
     lateinit var restaurantScrollView : SpringScrollView
+
     companion object {
         fun newInstance(restaurant: Restaurant): RestMenuFragment {
             val restMenuCategoryFragment = RestMenuFragment()
@@ -58,6 +59,7 @@ class RestMenuFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         //1.메뉴 컨텐츠 뷰페이저 설정 2.뷰페이저 안에 있는 메뉴 리스트를 클릭했을 시 스크롤 이동하는 스크롤리스너 설정
         val menuListVPAdapter = MenuListViewPagerAdapter(context!!, menuCategory, restaurant) { position, menuItemHeight ->
+
             restaurantScrollView.scrollTo(0, (this@RestMenuFragment.activity as DetailRestaurantActivity).scrollSecondToolbar + position * menuItemHeight)
         }
         vp_menu_list.adapter = menuListVPAdapter

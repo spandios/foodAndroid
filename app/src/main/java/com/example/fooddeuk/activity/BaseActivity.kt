@@ -29,7 +29,7 @@ open class BaseActivity : AppCompatActivity() {
     }
     fun stopLoading(){
         main_progressbar.visibility= View.GONE
-        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     fun startLoading(){

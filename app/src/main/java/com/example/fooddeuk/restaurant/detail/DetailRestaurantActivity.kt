@@ -12,7 +12,7 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.cart.CartActivity
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.menu.RestMenuFragment
-import com.example.fooddeuk.model.menu.MenuCategory
+import com.example.fooddeuk.menu.model.MenuCategory
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.*
@@ -62,9 +62,6 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
             }
         })
     }
-    override fun onResume() {
-        super.onResume()
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -98,7 +95,7 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
                 scroll_rest_detail.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                 scrollFirstToolbar = vp_rest_detail_image.height - toolbar.height
-                nameHeight = rest_detail_name2.measuredHeight + 24.toPx + scrollFirstToolbar
+                nameHeight = rest_detail_name_in_list.measuredHeight + 24.toPx + scrollFirstToolbar
                 scrollSecondToolbar = (frame_rest_main.y).toInt() - toolbar.height
             }
         }
@@ -107,7 +104,6 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
 
         setSupportActionBar(toolbar)
         fakeTab = tab_rest_menu_fake
-        menuItemHeight = resources.getDimensionPixelOffset(R.dimen.menu_item)
 
         //메인 탭설정
         with(tab_rest_main) {
@@ -134,12 +130,11 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
             setOnClickListener { StartActivity(CartActivity::class.java) }
         }
 
-        rest_detail_name2.text = restaurant.name
+        rest_detail_name_in_list.text = restaurant.name
         rest_detail_rating.text = java.lang.Double.toString(restaurant.getRating().toDouble()) + "(${restaurant.reviewCnt})"
         scroll_rest_detail.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             val toolbarIconAlpha = ((Math.min(1f, scrollY.toFloat() / scrollFirstToolbar)) * 255).toInt()
             val tabAlpha = (Math.min(1f, scrollY.toFloat() / scrollSecondToolbar)).toInt()
-
             //매장이름
             if (nameHeight > scrollY) {
                 rest_detail_name.visibility = View.GONE
@@ -148,11 +143,12 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
             }
 
             //페이크 탭 레이아웃
-            if (tabAlpha == 1) {
+            if (tabAlpha > 0.95) {
                 tab_rest_menu_fake.visibility = View.VISIBLE
             } else {
                 tab_rest_menu_fake.visibility = View.INVISIBLE
             }
+
             //툴바 아이콘 칼러
             when (toolbarIconAlpha) {
                 in 0..130 -> {

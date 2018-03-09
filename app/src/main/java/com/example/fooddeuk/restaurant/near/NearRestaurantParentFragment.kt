@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location
+import com.example.fooddeuk.custom.CustomFilterDialog
 import com.example.fooddeuk.map.LocationSettingByMapActivity
 import com.example.fooddeuk.map.MapActivity
 import com.example.fooddeuk.rx.RxBus

@@ -3,7 +3,7 @@ package com.example.fooddeuk.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.fooddeuk.R
-import com.example.fooddeuk.model.review.MenuReview
+import com.example.fooddeuk.review.MenuReview
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.rx.RxBus.intentSubscribe
 import com.example.fooddeuk.util.logger

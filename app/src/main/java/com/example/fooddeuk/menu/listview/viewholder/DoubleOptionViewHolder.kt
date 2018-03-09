@@ -1,14 +1,15 @@
-package com.example.fooddeuk.listview.menu.viewholder
+package com.example.fooddeuk.menu.listview.viewholder
 
 import android.content.Context
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
-import com.example.fooddeuk.`object`.GlobalApplication.httpService
+import com.example.fooddeuk.R
+import com.example.fooddeuk.GlobalApplication.httpService
+import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.menu.listview.MenuDetailViewPagerAdapter
-import com.example.fooddeuk.model.menu.Menu
+import com.example.fooddeuk.menu.model.Menu
 import com.example.fooddeuk.network.HTTP
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -32,16 +33,17 @@ class DoubleOptionViewHolder(var context: Context, itemView: View) : RecyclerVie
         }
         HTTP.Single(httpService.getReview(menu.menu_id)).subscribe({
             if(it.success){
-                var menuDetailViewPager = MenuDetailViewPagerAdapter(context, menu, it.result)
+                val menuDetailViewPager = MenuDetailViewPagerAdapter(context, menu, it.result)
                 vpMenuDetail.adapter=menuDetailViewPager
                 OverScrollDecoratorHelper.setUpOverScroll(vpMenuDetail)
+                itemView.menu_viewpager_indicator.setViewPager(vpMenuDetail)
             }
         },{it.printStackTrace()})
+
         Picasso.with(context).load(menu.picture[0]).fit().transform(CropCircleTransformation()).into(itemView.menu_master_picture)
         itemView.txt_menu_name.text = menu.name
         itemView.menu_master_price.text = menuPrice
-        menuOrder.text = menuPrice + " 바로 주문"
-
+        menuOrder.text = Util.stringFormat(context, R.string.menu_order,menuPrice)
 
     }
 }

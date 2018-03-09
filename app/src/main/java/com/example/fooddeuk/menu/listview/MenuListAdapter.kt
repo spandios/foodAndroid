@@ -13,18 +13,18 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.example.fooddeuk.R
+import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.cart.CartActivity
-import com.example.fooddeuk.listview.menu.viewholder.DoubleOptionViewHolder
+import com.example.fooddeuk.cart.model.CartItem
+import com.example.fooddeuk.cart.model.CartMenu
+import com.example.fooddeuk.cart.model.CartOption
+import com.example.fooddeuk.cart.model.CartOptionCategory
+import com.example.fooddeuk.menu.listview.viewholder.DoubleOptionViewHolder
 import com.example.fooddeuk.menu.listview.viewholder.NoPictureViewHolder
 import com.example.fooddeuk.menu.listview.viewholder.PictureNecessaryViewHolder
 import com.example.fooddeuk.menu.listview.viewholder.PictureUnNecessaryViewHolder
-import com.example.fooddeuk.model.cart.CartItem
-import com.example.fooddeuk.model.cart.CartMenu
-import com.example.fooddeuk.model.cart.CartOption
-import com.example.fooddeuk.model.cart.CartOptionCategory
-import com.example.fooddeuk.model.menu.Menu
+import com.example.fooddeuk.menu.model.Menu
 import com.example.fooddeuk.restaurant.model.Restaurant
-import com.example.fooddeuk.util.IntentUtil
 import com.example.fooddeuk.util.RealmUtil
 import io.realm.RealmList
 import java.util.*
@@ -37,9 +37,13 @@ import java.util.*
 
 
 class MenuListAdapter(private val context: Context, private val items: ArrayList<Menu>, private val restaurant: Restaurant) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var prevPosition = -1
     private var expandedPosition = -1
     lateinit var mItemClickListener : (position : Int, height : Int) -> Unit
     lateinit var mRecyclerView: RecyclerView
+    private var currentPage = 0
+
 
 
     //Expandable and Animation
@@ -49,9 +53,9 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
         val mMenuImage = holder.itemView.findViewById<ImageView>(R.id.menu_master_picture)
         val mDetailLayout = holder.itemView.findViewById<LinearLayout>(R.id.menu_detail_layout)
 
+
         //펼침
         if (expandedPosition != holder.adapterPosition) {
-
             //전에 펼쳐졌던 레이아웃 접기
             if (expandedPosition >= 0) {
                 val prevViewHolder = mRecyclerView.findViewHolderForAdapterPosition(expandedPosition)
@@ -73,32 +77,65 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
             expandedPosition = -1
         }
     }
+//    private val menuExpandLayoutListener = View.OnClickListener { v ->
+//        val holder = v.tag as RecyclerView.ViewHolder
+//        val mMenuName = holder.itemView.findViewById<TextView>(R.id.txt_menu_name)
+//        val mMenuImage = holder.itemView.findViewById<ImageView>(R.id.menu_master_picture)
+//        val mDetailLayout = holder.itemView.findViewById<LinearLayout>(R.id.menu_detail_layout)
+//
+//
+//        //펼침
+//        if (expandedPosition != holder.adapterPosition) {
+//            //전에 펼쳐졌던 레이아웃 접기
+//            prevPosition=expandedPosition
+//            if(prevPosition>=0){
+//                notifyItemChanged(prevPosition)
+//            }
+//            expandedPosition = holder.adapterPosition
+//            notifyItemChanged(expandedPosition)
+//            //현재 클릭된 레이아웃 펼치기
+//            //클릭시 포지션과 메뉴아이템의 높이를 알려줌으로써 스크롤 이동
+////            mItemClickListener(holder.adapterPosition,holder.itemView.findViewById<View>(R.id.menu_master_layout).height)
+////            expandedPosition = holder.adapterPosition
+////            setAnimation(mMenuName, mMenuImage, true)
+////            mDetailLayout.visibility = View.VISIBLE
+//        } else {
+//            expandedPosition=-1
+//            notifyItemChanged(holder.adapterPosition)
+//            //기존에 펼쳐져있던 아이템을 접을 시
+////            setAnimation(mMenuName, mMenuImage, false)
+////            mDetailLayout.visibility = View.GONE
+////            expandedPosition = -1
+//        }
+//    }
 
 
 
 
     private fun setAnimation(mMenuName: TextView, mMenuImage: ImageView, expand: Boolean) {
         if (expand) {
-            val animation = TranslateAnimation(0f, -250f, 0f, 0f)
-            animation.fillAfter = true
-            animation.isFillEnabled = true
-            animation.duration = 500
-            mMenuName.startAnimation(animation)
+            val nameAnimation = TranslateAnimation(0f, -200f, 0f, 0f).apply {
+                fillAfter = true
+                isFillEnabled = true
+                duration = 300
+            }
+            mMenuName.startAnimation(nameAnimation)
 
             YoYo.with(Techniques.SlideOutDown)
-                    .duration(400)
+                    .duration(300)
                     .onEnd { mMenuImage.visibility = View.GONE }
                     .playOn(mMenuImage)
         } else {
-            val animation = TranslateAnimation(-250f, 0f, 0f, 0f)
-            animation.fillAfter = true
-            animation.isFillEnabled = true
-            animation.duration = 500
-            mMenuName.startAnimation(animation)
+            val nameAnimation = TranslateAnimation(-200f, 0f, 0f, 0f).apply {
+                fillAfter = true
+                isFillEnabled = true
+                duration = 300
+            }
+            mMenuName.startAnimation(nameAnimation)
 
             YoYo.with(Techniques.SlideInUp)
-                    .duration(400)
-                    .onEnd { mMenuImage.visibility = View.VISIBLE }
+                    .duration(300)
+                    .onStart { mMenuImage.visibility = View.VISIBLE }
                     .playOn(mMenuImage)
 
 
@@ -171,18 +208,18 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
             //Picture O
             val parentView = LayoutInflater.from(parent.context).inflate(R.layout.item_menu_have_picture_necessary, parent, false)
             val vh = PictureNecessaryViewHolder(context, parentView)
-            setItemClick(vh, "necessary")
+            setItemClick(vh)
             return vh
         } else if (viewType == pictureAndUnNecessary) {
             val parentView = LayoutInflater.from(parent.context).inflate(R.layout.item_menu_have_picture_unnecessary, parent, false)
             val vh = PictureUnNecessaryViewHolder(context, parentView)
-            setItemClick(vh, "unnecessary")
+            setItemClick(vh)
             return vh
         } else if (viewType == pictureAndDoubleOption) {
             val itemView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_menu_have_picture, parent, false)
             val vh = DoubleOptionViewHolder(context, itemView)
-            setItemClick(vh, "double")
+            setItemClick(vh)
             return vh
         }
 
@@ -210,13 +247,23 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
 
         } else if (tmpHolder.itemViewType == pictureAndDoubleOption) {
             val holder = tmpHolder as DoubleOptionViewHolder
+
             holder.itemView.tag = holder
             holder.bind(menu)
+
+//            if(expandedPosition==holder.adapterPosition){
+//                mItemClickListener(holder.adapterPosition,holder.itemView.menu_master_layout.height)
+//                setAnimation(holder.itemView.txt_menu_name, holder.itemView.menu_master_picture, true)
+//                holder.itemView.menu_detail_layout.visibility = View.VISIBLE
+//            }else {
+//                    setAnimation(holder.itemView.txt_menu_name, holder.itemView.menu_master_picture, false)
+//                    holder.itemView.menu_detail_layout.visibility = View.GONE
+//            }
 
         }
     }
 
-    private fun setItemClick(vh: RecyclerView.ViewHolder, optionFLAG: String) {
+    private fun setItemClick(vh: RecyclerView.ViewHolder) {
         //EXPAND
         vh.itemView.setOnClickListener(menuExpandLayoutListener)
 
@@ -234,21 +281,12 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
     private fun getCartItem(menu: Menu): CartItem {
         val optionCategoryList = RealmList<CartOptionCategory>()
         for (optionCategory in menu.option) {
-            if (optionCategory.necessary.size > 0) {
-                val necessaryOptionList = RealmList<CartOption>()
-                for (necessaryOption in optionCategory.necessary) {
-                    necessaryOptionList.add(CartOption(necessaryOption.menu_option_id, necessaryOption.menu_option_name, necessaryOption.menu_option_price))
+            if (optionCategory.option_content.size > 0) {
+                val optionList = RealmList<CartOption>()
+                for (necessaryOption in optionCategory.option_content) {
+                    optionList.add(CartOption(necessaryOption.menu_option_id, necessaryOption.menu_option_name, necessaryOption.menu_option_price))
                 }
-                optionCategoryList.add(CartOptionCategory(optionCategory, necessaryOptionList, null))
-
-            } else {
-                val unNecessaryOptionList = RealmList<CartOption>()
-
-                for (unNecessaryOption in optionCategory.unnecessary) {
-                    unNecessaryOptionList.add(CartOption(unNecessaryOption.menu_option_id, unNecessaryOption.menu_option_name, unNecessaryOption.menu_option_price))
-                }
-
-                optionCategoryList.add(CartOptionCategory(optionCategory, null, unNecessaryOptionList))
+                optionCategoryList.add(CartOptionCategory(optionCategory, optionList))
             }
         }
         return CartItem(CartMenu(menu), optionCategoryList)
@@ -271,7 +309,7 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
                                     RealmUtil.removeDataAll(Restaurant::class.java)
                                     RealmUtil.insertData(restaurant)
                                     RealmUtil.insertData(getCartItem(menu))
-                                    IntentUtil.startActivity(context, CartActivity::class.java)
+                                    Util.startActivity(context,CartActivity::class.java)
                                     //                            onCartCountClickListener.onCartCount(RealmUtil.getDataSize(CartItem.class));
                                 }
                                 .onNegative { dialog, which -> dialog.dismiss() }
@@ -284,7 +322,7 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
 
         RealmUtil.insertData(restaurant)
         RealmUtil.insertData(getCartItem(menu))
-        IntentUtil.startActivity(context, CartActivity::class.java)
+        Util.startActivity(context,CartActivity::class.java)
     }
 
 

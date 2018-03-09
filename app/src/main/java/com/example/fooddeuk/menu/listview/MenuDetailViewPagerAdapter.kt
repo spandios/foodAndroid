@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.fooddeuk.R
-import com.example.fooddeuk.listview.review.ReviewAdapter
-import com.example.fooddeuk.model.menu.Menu
-import com.example.fooddeuk.model.review.MenuReview
+import com.example.fooddeuk.review.ReviewAdapter
+import com.example.fooddeuk.menu.model.Menu
+import com.example.fooddeuk.review.MenuReview
 import com.example.fooddeuk.util.LayoutUtil
 import com.squareup.picasso.Picasso
 

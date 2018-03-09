@@ -1,20 +1,20 @@
 package com.example.fooddeuk.util;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.MainActivity;
-import com.example.fooddeuk.model.order.OrderResponse;
+import com.example.fooddeuk.GlobalApplication;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.gson.Gson;
-
-import java.util.Random;
 
 /**
  * Created by heojuyeong on 2017. 10. 5..
@@ -50,39 +50,47 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            OrderResponse orderResponse = new Gson().fromJson(remoteMessage.getData().get("orderResponse"), OrderResponse.class);
-
+//            OrderResponse orderResponse = new Gson().fromJson(remoteMessage.getData().get("orderResponse"), OrderResponse.class);
         }
 
         if(remoteMessage.getNotification()!=null){
             title=remoteMessage.getNotification().getTitle();
             msg = remoteMessage.getNotification().getBody();
         }
-        // Check if message contains a notification payload.
 
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
 
-        // [END receive_message]
+        int NOTIFICATION_ID = 234;
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //여러 notification 생성
-        int requestCode=new Random().nextInt();
-        PendingIntent contentIntent = PendingIntent.getActivity(this,requestCode,intent, 0);
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "my_channel_01";
+            CharSequence name = "my_channel";
+            String Description = "This is my channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(mChannel);
+        }
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.mipmap.ic_launcher)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(GlobalApplication.getInstance(), "my_channel_01")
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
-                .setContentText(msg)
-                .setAutoCancel(true)
-                .setContentIntent(contentIntent)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{1, 1000});
+                .setContentText(msg);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(requestCode, mBuilder.build());
-        mBuilder.setContentIntent(contentIntent);
+        Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        builder.setContentIntent(resultPendingIntent);
+
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
 

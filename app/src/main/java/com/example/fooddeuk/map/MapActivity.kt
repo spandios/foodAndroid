@@ -14,7 +14,7 @@ import android.widget.TextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.example.fooddeuk.R
-import com.example.fooddeuk.`object`.GlobalApplication
+import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.activity.BaseActivity
 import com.example.fooddeuk.network.HTTP
@@ -164,7 +164,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 if (toolbarVisible) {
                     toolbarVisible = false
                     tool_restaurant_map.animate()
-                            .translationY(-tool_restaurant_map.getHeight().toFloat())
+                            .translationY(-tool_restaurant_map.height.toFloat())
                             .alpha(0.0f)
                             .setDuration(300)
                             .setListener(object : AnimatorListenerAdapter() {

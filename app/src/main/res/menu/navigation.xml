@@ -18,7 +18,7 @@
 
 
     <item
-        android:id="@+id/navigation_cart"
+        android:id="@+id/navigation_order"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/main_cart" />
 

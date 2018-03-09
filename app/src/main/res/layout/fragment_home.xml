@@ -67,9 +67,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:background="@color/colorPrimary"
-        android:padding="10dp"
+        android:padding="8dp"
         tools:background="#00000000">
 
         <TextView
@@ -85,8 +85,8 @@
 
         <ImageView
             android:id="@+id/header_search"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="right|center_vertical"
             tools:background="@drawable/ic_search" />
     </android.support.v7.widget.Toolbar>

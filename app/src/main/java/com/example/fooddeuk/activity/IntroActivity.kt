@@ -54,43 +54,10 @@ class IntroActivity : BaseActivity(){
     }
 
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
     }
-
-
-//        //facebook
-//        if (AccessToken.getCurrentAccessToken() != null) {
-//            Login.initUser(AccessToken.getCurrentAccessToken().userId)
-//            return
-//        }
-//        //KAKAO
-//        KAKAO.kakaoAccessTokenInfo()
-
-//        //NAVER
-//        val naverLoginModule = NAVER.getNaverLoginModule(this)
-//        if (naverLoginModule.getState(this).toString() == "OK") {
-//            Thread {
-//                val response = naverLoginModule.requestApi(this, naverLoginModule.getAccessToken(this), "https://openapi.naver.com/v1/nid/me")
-//                try {
-//                    val jsonResult = JSONObject(response).getJSONObject("response")
-//                    val provider_id = jsonResult.getString("enc_id")
-//                    Login.initUser(provider_id)
-//                    // 액티비티 이동 등 원하는 함수 호출
-//                }
-//                catch (e: JSONException) {
-//                    e.printStackTrace()
-//                }
-//            }.start()
-//        }
-
-
 }
 
 

@@ -233,7 +233,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/menu_detail_option_unnecessary_content">
+                >
                 <TextView
                     android:id="@+id/menu_detail_option_unnecessary_title"
                     android:layout_width="100dp"

@@ -9,7 +9,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.menu.Menu;
+import com.example.fooddeuk.menu.model.Menu;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

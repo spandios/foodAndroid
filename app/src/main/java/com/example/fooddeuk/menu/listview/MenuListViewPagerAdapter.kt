@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
-import com.example.fooddeuk.model.menu.MenuCategory
+import com.example.fooddeuk.menu.model.MenuCategory
 import com.example.fooddeuk.restaurant.model.Restaurant
-import com.example.fooddeuk.util.LayoutUtil
+import com.example.fooddeuk.util.setting
 import java.util.*
 
 
@@ -25,16 +25,21 @@ class MenuListViewPagerAdapter(var context: Context, private var menuCategories:
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val itemView = layoutInflater.inflate(R.layout.item_vp_menu_list, container, false)
         val menuRecyclerView = itemView.findViewById<RecyclerView>(R.id.recycle_menu)
-        LayoutUtil.RecyclerViewSetting(context, menuRecyclerView)
+
         menuRecyclerView.isFocusable = false
         menuRecyclerView.isFocusableInTouchMode = false
         menuRecyclerView.isNestedScrollingEnabled = false
 
-        menuRecyclerView.adapter = MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
+//        menuRecyclerView.adapter = MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
+//            mItemClickListener={
+//                position, height ->  clickItemHeight(position, height)
+//            }
+//        }
+        menuRecyclerView.setting(MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
             mItemClickListener={
                 position, height ->  clickItemHeight(position, height)
             }
-        }
+        },false,true)
 
         container.addView(itemView)
         return itemView

@@ -22,6 +22,10 @@ object RxBus {
     val DetailRestaurantActivityData = 1
     val ReviewActivityData = 2
 
+    val SelectedOptionPrice = 3
+    val CartResultPrice = 4
+    val CartFragmentSizeZero = 5
+
     private val sSubjectMap = SparseArray<PublishSubject<Any>>()
     private val sSubscriptionsMap = HashMap<Any,CompositeDisposable>()
 
@@ -41,23 +45,23 @@ object RxBus {
 
 
     @NonNull
-    private fun getCompositeSubscription(@NonNull `object`: Any): CompositeDisposable{
-        var compositeSubscription = sSubscriptionsMap[`object`]
+    private fun getCompositeSubscription(@NonNull lifecycle: Class<*>): CompositeDisposable{
+        var compositeSubscription = sSubscriptionsMap[lifecycle]
         if (compositeSubscription == null) {
             compositeSubscription = CompositeDisposable()
-            sSubscriptionsMap[`object`] = compositeSubscription
+            sSubscriptionsMap[lifecycle] = compositeSubscription
         }
         return compositeSubscription
     }
 
-    fun unregister(@NonNull lifecycle: Any) {
+    fun unregister(@NonNull lifecycle: Class<*>) {
         //We have to remove the composition from the map, because once you unsubscribe it can't be used anymore
         val compositeDisposable = sSubscriptionsMap.remove(lifecycle)
         compositeDisposable?.dispose()
     }
 
 
-    fun subscribe(subject: Int, @NonNull lifecycle: Any, @NonNull action: Consumer<Any>) {
+    fun subscribe(subject: Int, @NonNull lifecycle: Class<*>, @NonNull action: Consumer<Any>) {
         val subscription = getSubject(subject).subscribe(action)
         getCompositeSubscription(lifecycle).add(subscription)
     }
@@ -99,8 +103,6 @@ object RxBus {
         val compositeDisposable = sIntentDisposable.remove(lifecycle)
         compositeDisposable?.dispose()
     }
-
-
 
 
 

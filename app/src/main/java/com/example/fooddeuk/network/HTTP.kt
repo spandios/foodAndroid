@@ -26,7 +26,7 @@ object HTTP {
 
     //not emits value  ->  onComplete or onError
     fun Completable(completable: Completable): Completable {
-        return completable.retry(basic()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        return completable.retry(basic()).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
     }
 
     fun <T> Flowable(flowable: Flowable<T>): Flowable<T> {

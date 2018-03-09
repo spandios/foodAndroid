@@ -36,7 +36,7 @@
                     <me.relex.circleindicator.CircleIndicator
                         android:id="@+id/rest_detail_image_viewpager_indicator"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="45dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginRight="20dp"
                         app:ci_gravity="right" />
@@ -54,18 +54,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/rest_detail1"
-                        android:paddingLeft="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="24dp"
+                        android:padding="@dimen/margin_12"
                         >
                         <TextView
-                            android:id="@+id/rest_detail_name2"
+                            android:id="@+id/rest_detail_name_in_list"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
-                            android:text="매장이름"
+                            tools:text="매장이름"
                             android:textColor="@color/black"
-                            android:textSize="20sp"
+                            android:layout_marginStart="@dimen/margin_8"
+                            android:textSize="22sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -77,30 +75,34 @@
                             style="@style/CustomRatingBar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="13dp"
+                            android:layout_marginTop="8dp"
+                          android:layout_marginStart="@dimen/margin_8"
                             android:rating="5"
 
                             app:layout_constraintStart_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/rest_detail_name2" />
+                            app:layout_constraintTop_toBottomOf="@id/rest_detail_name_in_list" />
 
                         <TextView
                             android:id="@+id/rest_detail_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="@dimen/margin_8"
                             android:lineSpacingExtra="4.5sp"
-                            android:text="9.0(130)"
+                            tools:text="9.0(130)"
                             android:textColor="@color/tangerine"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@id/img_detail_rating"
-                            app:layout_constraintTop_toBottomOf="@id/rest_detail_name2" />
+                            app:layout_constraintTop_toBottomOf="@id/rest_detail_name_in_list" />
 
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:id="@+id/img_rest_detail_map"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginRight="@dimen/margin_16"
                             android:src="@drawable/ic_find_location_black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +130,7 @@
 
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp">
+                            android:padding="8dp">
 
 
                             <com.example.fooddeuk.activity.CustomImageTextVertical
@@ -186,21 +188,21 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
+                                android:layout_marginLeft="@dimen/margin_8"
                                 android:text="#포장 시 음료 무료제공"
-                                android:textSize="14sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 >
                                 <TextView
-
+                                    android:layout_marginLeft="@dimen/margin_8"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="#1000원 쿠폰도 받아버리기"
                                     android:gravity="center_vertical"
-                                    android:textSize="14sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <Button
@@ -225,7 +227,7 @@
                         <android.support.design.widget.TabLayout
                             android:id="@+id/tab_rest_main"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="50dp"
                             app:tabSelectedTextColor="@color/text_main"
                             app:tabTextAppearance="@style/MyCustomTabText"
                             app:tabTextColor="@color/text_sub" />
@@ -320,7 +322,7 @@
                 android:visibility="invisible"
                 android:id="@+id/tab_rest_menu_fake"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:background="#ffefe3"
                 app:stl_indicatorAlwaysInCenter="false"
                 app:stl_indicatorWithoutPadding="false"

@@ -1,12 +1,13 @@
 package com.example.fooddeuk.network;
 
 import com.example.fooddeuk.home.HomeEventPictureResponse;
-import com.example.fooddeuk.model.order.OrderResponse;
+import com.example.fooddeuk.login.LocationResult;
+import com.example.fooddeuk.login.User;
+import com.example.fooddeuk.login.UserResponse;
+import com.example.fooddeuk.order.model.OrderPost;
+import com.example.fooddeuk.order.model.OrderResponse;
+import com.example.fooddeuk.review.ReviewResponse;
 import com.example.fooddeuk.restaurant.model.RestaurantResponse;
-import com.example.fooddeuk.model.review.ReviewResponse;
-import com.example.fooddeuk.model.user.LocationResult;
-import com.example.fooddeuk.model.user.User;
-import com.example.fooddeuk.model.user.UserResponse;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -61,7 +62,7 @@ public interface HttpService {
 
     //Order
     @POST("api/order/")
-    Completable order(@Body OrderResponse orderResponse);
+    Completable order(@Body OrderPost orderPost);
 
     @GET("/api/order/getCurrentOrder")
     Single<ArrayList<OrderResponse>> getCurrentOrder(@Query("user_id") String user_id);

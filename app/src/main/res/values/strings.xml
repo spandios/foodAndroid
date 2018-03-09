@@ -1,67 +1,70 @@
 <resources>
 
-    <string name="app_name">foodAndroid</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="necessary">%1$s(필수)</string>
-    <string name="notnecessary">%1$s(선택)</string>
-    <string name="won">%1$s원</string>
-    <string name="review">리뷰</string>
-    <string name="cart_delete_check">기존 장바구니를 취소하고 새로운 음식점에서 주문하시겠어요?</string>
-    <string name="semi_clone">%1$s : %2$s</string>
-    <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="cart">장바구니</string>
-    <string name="resultPrice">총 결제금액 : </string>
-    <string name="cart_more_order">메뉴 추가</string>
-    <string name="order">주문하기</string>
-    <string name="action_settings">Settings</string>
-    <string name="reviewcnt">(%1$s)</string>
+  <string name="app_name">foodAndroid</string>
+  <string name="title_activity_maps">Map</string>
+  <string name="default_notification_channel_id">OrderChanel</string>
+  <string name="necessary">%1$s(필수)</string>
+  <string name="notnecessary">%1$s(선택)</string>
+  <string name="won">%1$s원</string>
+  <string name="review">리뷰</string>
+  <string name="cart_delete_check">기존 장바구니를 취소하고 새로운 음식점에서 주문하시겠어요?</string>
+  <string name="semi_clone">%1$s : %2$s</string>
+  <string name="title_activity_scrolling">ScrollingActivity</string>
+  <string name="cart">장바구니</string>
+  <string name="resultPrice">총 결제금액 : </string>
+  <string name="cart_more_order">메뉴 추가</string>
+  <string name="order">주문하기</string>
+  <string name="action_settings">Settings</string>
+  <string name="reviewcnt">(%1$s)</string>
+  <string name="cart_order">%1$s 주문하기</string>
+  <string name="menu_order">%1$s 바로 주문</string>
 
-    <!--할인율-->
-    <string name="sale5">-5%</string>
-    <string name="sale10">-10%</string>
-    <string name="sale15">-15%</string>
-    <string name="sale20">-20%</string>
-
-
-    <!--RESTAURANT MENU TYPE-->
-    <string name="restaurant_menu_type0">아무거나</string>
-    <string name="restaurant_menu_type1">일식</string>
-    <string name="restaurant_menu_type2">치킨</string>
-    <string name="restaurant_menu_type3">중식</string>
-    <string name="restaurant_menu_type4">한식</string>
-    <string name="restaurant_menu_type5">디저트</string>
-    <string name="restaurant_menu_type6">커피</string>
-    <string name="restaurant_admin_comment">사장님댓글</string>
-
-    <!--필터-->
-    <string name="filter_title">필터</string>
-    <string name="filter_sort_title">정렬순서</string>
+  <!--할인율-->
+  <string name="sale5">-5%</string>
+  <string name="sale10">-10%</string>
+  <string name="sale15">-15%</string>
+  <string name="sale20">-20%</string>
 
 
-    <string name="filter_sort0">가까운 순</string>
-    <string name="filter_sort1">평점 높은 순</string>
-    <string name="filter_sort2">할인율 순</string>
-    <string name="filter_sort3">단골 많은 순</string>
-    <string name="filter_sort4">리뷰 많은 순</string>
+  <!--RESTAURANT MENU TYPE-->
+  <string name="restaurant_menu_type0">아무거나</string>
+  <string name="restaurant_menu_type1">일식</string>
+  <string name="restaurant_menu_type2">치킨</string>
+  <string name="restaurant_menu_type3">중식</string>
+  <string name="restaurant_menu_type4">한식</string>
+  <string name="restaurant_menu_type5">디저트</string>
+  <string name="restaurant_menu_type6">커피</string>
+  <string name="restaurant_admin_comment">사장님댓글</string>
+
+  <!--필터-->
+  <string name="filter_title">필터</string>
+  <string name="filter_sort_title">정렬순서</string>
 
 
-    <string name="filter_distance_title">거리설정</string>
-    <string name="filter_distance_3km">~3km</string>
-    <string name="filter_distance_6km">~6km</string>
-    <string name="filter_distance_9km">~9km</string>
+  <string name="filter_sort0">가까운 순</string>
+  <string name="filter_sort1">평점 높은 순</string>
+  <string name="filter_sort2">할인율 순</string>
+  <string name="filter_sort3">단골 많은 순</string>
+  <string name="filter_sort4">리뷰 많은 순</string>
 
 
-    <!--KAKAO-->
-    <string name="kakao_app_key"> f0b0d4cebc2e3fd136521c7af53ed1b7</string>
-    <!--FACEBOOK-->
-    <string name="facebook_app_id">218313098690667</string>
-    <string name="fb_login_protocol_scheme">fb218313098690667</string>
-    <!--NAVER-->
-    <string name="naver_client_key">2vk8SF2rhIKXZFvesSw1</string>
-    <string name="naver_secret_key">AmSYVV56Q_</string>
+  <string name="filter_distance_title">거리설정</string>
+  <string name="filter_distance_3km">~3km</string>
+  <string name="filter_distance_6km">~6km</string>
+  <string name="filter_distance_9km">~9km</string>
 
 
-    <string name="large_text">
+  <!--KAKAO-->
+  <string name="kakao_app_key"> f0b0d4cebc2e3fd136521c7af53ed1b7</string>
+  <!--FACEBOOK-->
+  <string name="facebook_app_id">218313098690667</string>
+  <string name="fb_login_protocol_scheme">fb218313098690667</string>
+  <!--NAVER-->
+  <string name="naver_client_key">2vk8SF2rhIKXZFvesSw1</string>
+  <string name="naver_secret_key">AmSYVV56Q_</string>
+
+
+  <string name="large_text">
         "Bold, graphic, intentional.\n\n"
 
         "The foundational elements of print based design typography, grids, space, scale, color, "
@@ -92,31 +95,20 @@
 
         "Light and shadow.\n\n"
 
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
     </string>
 
 
-    <string name="main_home">푸드득</string>
-    <string name="main_dangol">단골</string>
-    <string name="main_cart">장바구니</string>
-    <string name="main_user">me</string>
-    <string name="main_near">내 주변</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+  <string name="main_home">푸드득</string>
+  <string name="main_dangol">단골</string>
+  <string name="main_cart">장바구니</string>
+  <string name="main_user">me</string>
+  <string name="main_near">내 주변</string>
+  <string name="title_home">Home</string>
+  <string name="title_dashboard">Dashboard</string>
+  <string name="title_notifications">Notifications</string>
 
 
-    <string name="rx_location_setting">LocationSettingByMap</string>
+  <string name="rx_location_setting">LocationSettingByMap</string>
 
 
 </resources>

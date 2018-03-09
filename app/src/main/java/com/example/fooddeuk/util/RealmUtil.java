@@ -1,6 +1,6 @@
 package com.example.fooddeuk.util;
 
-import com.example.fooddeuk.model.cart.CartOption;
+import com.example.fooddeuk.cart.model.CartOption;
 import com.orhanobut.logger.Logger;
 
 import io.realm.Realm;

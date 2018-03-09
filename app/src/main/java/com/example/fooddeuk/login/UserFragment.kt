@@ -9,6 +9,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.GlobalVariable
 import com.example.fooddeuk.activity.LoginActivity
+import com.example.fooddeuk.order_history.OrderHistoryActivity
 import com.example.fooddeuk.util.StartActivity
 import com.facebook.login.LoginManager
 import com.iwedding.app.helper.PrefUtil
@@ -21,14 +22,17 @@ import kotlinx.android.synthetic.main.fragment_user.*
 
 class UserFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_user, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_user, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         checkIsLogin()
         btn_login.setOnClickListener{StartActivity(LoginActivity::class.java)}
+        btn_current_order.setOnClickListener {
+            StartActivity(OrderHistoryActivity::class.java)
+        }
+
         btn_user_logout.setOnClickListener({
             MaterialDialog.Builder(activity!!)
                     .title("로그아웃")
@@ -56,13 +60,11 @@ class UserFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Logger.d("onResume")
         checkIsLogin()
     }
 
 
     private fun checkIsLogin() {
-        Logger.d(GlobalVariable.isLogin)
         if (!GlobalVariable.isLogin) {
             layout_user_not_login.visibility = View.VISIBLE
             layout_user_login.visibility = View.GONE
@@ -71,12 +73,6 @@ class UserFragment : Fragment() {
             layout_user_not_login.visibility = View.GONE
             layout_user_login.visibility = View.VISIBLE
         }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-
     }
 
 

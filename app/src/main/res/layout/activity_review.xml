@@ -39,7 +39,7 @@
         android:layout_weight="8"
         android:nestedScrollingEnabled="false"
         android:layout_below="@id/cartToolbar"
-        android:id="@+id/cartListView"
+        android:id="@+id/recycle_cart"
         >
     </android.support.v7.widget.RecyclerView>
 

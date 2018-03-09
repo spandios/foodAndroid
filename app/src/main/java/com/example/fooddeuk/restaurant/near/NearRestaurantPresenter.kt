@@ -1,6 +1,6 @@
 package com.example.fooddeuk.restaurant.near
 
-import com.example.fooddeuk.`object`.GlobalApplication.httpService
+import com.example.fooddeuk.GlobalApplication.httpService
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.restaurant.repository.RestaurantRepository

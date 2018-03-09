@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/layout_cart_activity"
+    android:background="@color/silver"
     >
 
 
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cartToolbar"
+        android:background="@color/white"
         >
 
         <TextView
@@ -27,45 +29,64 @@
             android:layout_height="wrap_content"
             android:text="초기화"
             android:layout_marginRight="10dp"
-            android:id="@+id/cartClear"
-            android:textSize="12sp"
+            android:id="@+id/cart_clear"
+            android:textSize="16sp"
             android:layout_gravity="end"/>
 
     </android.support.v7.widget.Toolbar>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/silver"
-        android:padding="@dimen/margin_8"
+    <FrameLayout
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cartToolbar"
         app:layout_constraintBottom_toTopOf="@+id/layout_cart_process"
-        android:nestedScrollingEnabled="false"
-        android:id="@+id/cartListView"
-        >
-    </android.support.v7.widget.RecyclerView>
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/recycle_cart"
+            >
+        </android.support.v7.widget.RecyclerView>
+
+    </FrameLayout>
 
     <LinearLayout
+        android:background="@color/white"
         android:id="@+id/layout_cart_process"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         >
-        <Button
+        <TextView
             android:layout_weight="3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="더 담기"
+            android:gravity="center"
             android:id="@+id/cart_more_order"/>
 
-        <Button
-            android:layout_weight="7"
+        <ImageView
+            android:layout_width="0.3dp"
+            android:layout_height="match_parent"
+            android:background="@color/text_sub"
+
+            />
+
+        <TextView
+            android:textSize="18sp"
+            android:textColor="@color/tangerine"
+            android:layout_weight="6.95"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/order"
+            android:gravity="center"
             android:id="@+id/cart_menu_order"/>
     </LinearLayout>
 

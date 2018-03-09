@@ -1,86 +1,243 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.southernbox.springscrollview.SpringScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+
+  >
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/silver"
+    >
+  <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/orderToolbar"
-        android:layout_width="match_parent"
+    <RelativeLayout
+      android:id="@+id/orderToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="40dp"
+      android:layout_alignParentTop="true"
+      android:background="@color/white"
+      >
+
+      <ImageView
+        android:id="@+id/order_back_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:src="@drawable/backbutton"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/margin_16"
         />
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/orderMenuList"
-        android:layout_width="match_parent"
+      <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderToolbar"
-
+        android:text="주문"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         />
+
+    </RelativeLayout>
+
     <LinearLayout
+      android:layout_marginTop="1dp"
+      android:id="@+id/layout_order_user_info"
+      android:background="@color/white"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_16"
+      android:paddingEnd="@dimen/margin_16"
+      android:layout_below="@id/orderToolbar"
+      android:orientation="vertical"
+      >
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+          android:id="@+id/order_user_name_info"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="수령인 이름 :"
+          android:textSize="12sp"
+          />
+
+        <EditText
+          android:id="@+id/order_user_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/margin_8"
+          android:hint="받으 실 분의 이름"
+          android:textSize="14sp"
+          android:focusable="false"
+          />
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+          android:id="@+id/order_user_phone_info"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="수령인 번호 :"
+          android:textSize="12sp"
+          />
+
+        <EditText
+          android:id="@+id/order_user_phone"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/margin_8"
+          android:focusable="false"
+          android:textSize="14sp"
+          />
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:background="@color/white"
+        android:layout_marginTop="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/orderMenuList"
+
         >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/orderResultPriceLayout"
-            android:layout_below="@+id/orderMenuList">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/resultPrice"
-                android:layout_centerInParent="true"
-                android:layout_alignParentLeft="true"
-                android:layout_margin="20sp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/orderResultPrice"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:textSize="20sp"
-                android:layout_marginRight="10dp"
-                />
-        </RelativeLayout>
-        <Button
-            android:layout_above="@+id/requestText"
-            android:id="@+id/orderArriveTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="예상 도착 시간"
-            />
-
         <EditText
-            android:id="@+id/requestText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="요청사항"
-            android:layout_above="@+id/orderComplete"
-            />
+          android:id="@+id/requestText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="요청사항"
+          android:gravity="center"
+          android:focusable="false"
 
-        <Button
-            android:layout_width="match_parent"
+          />
+        <TextView
+          android:layout_marginTop="@dimen/margin_8"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="픽업 시간 선택"
+          android:textSize="16sp"
+
+          />
+        <HorizontalScrollView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:scrollbars="none"
+          >
+          <LinearLayout
+            android:id="@+id/layout_arrived_time"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:id="@+id/orderComplete"
-            android:layout_alignParentBottom="true"
-            android:text="주문완료" />
+            android:orientation="horizontal"
+            />
+        </HorizontalScrollView>
+
+
+      </LinearLayout>
+
     </LinearLayout>
 
+    <LinearLayout
+      android:layout_marginTop="4dp"
+      android:id="@+id/layout_order_menu_info"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:background="@color/white"
+      android:layout_below="@+id/layout_order_user_info"
+      >
+    <android.support.v7.widget.RecyclerView
+
+      android:id="@+id/orderMenuList"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+
+      android:background="@color/white"
+      />
 
 
 
+    <android.support.constraint.ConstraintLayout
+      android:id="@+id/orderResultPriceLayout"
+      android:layout_marginTop="14dp"
+
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/white"
+
+      >
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:text="@string/resultPrice"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+      <TextView
+        android:id="@+id/orderResultPrice"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:text="1,000원"
+        android:textColor="@color/tangerine"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
-</RelativeLayout>
-</ScrollView>
+    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+    <android.support.constraint.ConstraintLayout
+      android:background="@color/white"
+      android:id="@+id/layout_order_way"
+      android:layout_below="@id/layout_order_menu_info"
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      >
+      <TextView
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="카드결제"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        />
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+      android:background="@color/white"
+      android:layout_below="@id/layout_order_way"
+      android:id="@+id/orderComplete"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="주문완료"
+      android:textSize="20sp"
+      android:layout_marginTop="4dp"
+      />
+
+  </RelativeLayout>
+  </FrameLayout>
+</com.southernbox.springscrollview.SpringScrollView>
 
 
 

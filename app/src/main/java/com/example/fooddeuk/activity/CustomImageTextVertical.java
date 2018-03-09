@@ -38,7 +38,7 @@ public class CustomImageTextVertical extends LinearLayout {
 
 
     private void initView() {
-        inflate(getContext(),R.layout.image_text_vertical,this);
+        inflate(getContext(),R.layout.custom_img_txt_vertical,this);
         imageView = findViewById(R.id.image);
         textView = findViewById(R.id.text);
 
@@ -57,7 +57,7 @@ public class CustomImageTextVertical extends LinearLayout {
     private void setTypeArray(TypedArray typedArray) {
         int bg_resID = typedArray.getResourceId(R.styleable.CustomImageTextVertical_image, 0);
         imageView.setBackgroundResource(bg_resID);
-        int textColor = typedArray.getColor(R.styleable.CustomImageTextVertical_textColor, getResources().getColor(R.color.text_sub));
+        int textColor = typedArray.getColor(R.styleable.CustomImageTextVertical_textColor, getResources().getColor(R.color.text_main));
         textView.setTextColor(textColor);
         String text_string = typedArray.getString(R.styleable.CustomImageTextVertical_text);
         textView.setText(text_string);

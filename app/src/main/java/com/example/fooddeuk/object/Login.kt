@@ -1,8 +1,9 @@
 package com.example.fooddeuk.`object`
 
-import com.example.fooddeuk.`object`.GlobalApplication.httpService
-import com.example.fooddeuk.model.user.User
-import com.example.fooddeuk.model.user.UserResponse
+import com.example.fooddeuk.GlobalApplication
+import com.example.fooddeuk.GlobalApplication.httpService
+import com.example.fooddeuk.login.User
+import com.example.fooddeuk.login.UserResponse
 import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.util.RealmUtil
 import com.iwedding.app.helper.PrefUtil
@@ -34,16 +35,19 @@ object Login {
                     } else {
                         userResponse?.let {
                             if (it.exist) {
+
                                 Logger.d("provider id : $providerId , fcm_token $fcm_token , name $name")
                                 val user = it.user
                                 if (user.fcm_token != GlobalApplication.fcmToken) {
                                     updateFcmToken(user, GlobalApplication.fcmToken)
                                     user.fcm_token = GlobalApplication.fcmToken
                                 }
+                                //Pref Fcm Token
                                 if (fcm_token != GlobalApplication.fcmToken) {
                                     PrefUtil.setValue("fcm_token", user.fcm_token)
                                     Logger.d("fcm token update $fcm_token")
                                 }
+
                                 if (name != user.user_name) {
                                     name = user.user_name
                                     PrefUtil.setValue("name", user.user_name)
@@ -80,7 +84,7 @@ object Login {
     }
 
 
-    fun registerUser(user: User,callback: (success:Boolean) -> Unit) {
+    fun registerUser(user: User, callback: (success:Boolean) -> Unit) {
         try {
             getUser(user.provider_id, { err, userResponse ->
                 if (err != null) err.printStackTrace()
@@ -91,6 +95,7 @@ object Login {
                     if (it.exist) {
                         Logger.d("기존 유저입니다.")
                         insertUserPref(it.user)
+                        insertUser(it.user)
                         callback(true)
                     } else {
                         user.fcm_token = GlobalApplication.fcmToken
@@ -130,9 +135,10 @@ object Login {
     }
 
     fun getUser(provider_id: String, callback: (err: Throwable?, userResponse: UserResponse?) -> Unit) {
+        Logger.d(provider_id)
         HTTP.Single(httpService.getUser(provider_id)).subscribe(
                 { userResponse ->
-                    Logger.d(userResponse.user)
+                    Logger.d(userResponse)
                     callback(null, userResponse) }, { throwable -> callback(throwable, null) })
 
     }

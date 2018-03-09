@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 /**
@@ -18,13 +17,6 @@ import android.widget.LinearLayout;
 
 public class LayoutUtil {
 
-    public static void setMargins (View v, int left, int top, int right, int bottom) {
-        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(left, top, right, bottom);
-            v.requestLayout();
-        }
-    }
 
     public static float convertSpToPixels(float sp, Context context) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());

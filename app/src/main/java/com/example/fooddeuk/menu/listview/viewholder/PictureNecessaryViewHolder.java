@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fooddeuk.R;
-import com.example.fooddeuk.model.menu.Menu;
+import com.example.fooddeuk.menu.model.Menu;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
