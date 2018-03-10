@@ -1,6 +1,6 @@
 package com.example.fooddeuk.order.model;
 
-import com.example.fooddeuk.login.User;
+import com.example.fooddeuk.user.User;
 
 /**
  * Created by heo on 2018. 1. 22..

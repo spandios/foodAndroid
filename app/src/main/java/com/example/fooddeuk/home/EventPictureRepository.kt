@@ -1,7 +1,7 @@
 package com.example.fooddeuk.home
 
-import com.example.fooddeuk.GlobalApplication.httpService
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.network.HTTP.httpService
 import io.reactivex.Single
 
 /**

@@ -9,11 +9,10 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.cart.CartFragment
 import com.example.fooddeuk.dangol.DanGolFragment
 import com.example.fooddeuk.home.HomeFragment
-import com.example.fooddeuk.login.UserFragment
 import com.example.fooddeuk.restaurant.near.NearRestaurantParentFragment
+import com.example.fooddeuk.user.UserFragment
 import com.example.fooddeuk.util.NetworkUtil
 import com.example.fooddeuk.util.SettingActivityUtil
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -90,7 +89,6 @@ class MainActivity : BaseActivity() {
         override fun getItemPosition(`object`: Any): Int {
 
             if(`object` is CartFragment){
-                Logger.d("cart")
                 `object`.setView()
             }
             return super.getItemPosition(`object`)

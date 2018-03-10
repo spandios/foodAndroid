@@ -1,7 +1,7 @@
 package com.example.fooddeuk.restaurant.repository
 
-import com.example.fooddeuk.GlobalApplication.httpService
 import com.example.fooddeuk.network.HTTP.Single
+import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.restaurant.model.RestaurantResponse
 import io.reactivex.Single
 

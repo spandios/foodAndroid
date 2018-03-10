@@ -149,7 +149,7 @@ class OrderActivity : AppCompatActivity(), OrderContract.View {
 
     private fun getRealmItem() {
         isSetArrivedTime = true
-        restaurant = RealmUtil.findData(Restaurant::class.java)
+        restaurant = RealmUtil.findData(Restaurant::class.java)!!
     }
 
 

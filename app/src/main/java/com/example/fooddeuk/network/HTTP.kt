@@ -1,5 +1,6 @@
 package com.example.fooddeuk.network
 
+import com.example.fooddeuk.GlobalApplication
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiPredicate
@@ -11,6 +12,7 @@ import java.net.SocketTimeoutException
  */
 object HTTP {
 
+    var httpService: HttpService =  GlobalApplication.getInstance().retrofit.create(HttpService::class.java)
 
     fun basic(): BiPredicate<Int, Throwable> {
         return BiPredicate { retryCount, throwable -> retryCount <= 1 && throwable is SocketTimeoutException }

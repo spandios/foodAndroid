@@ -1,10 +1,11 @@
 package com.example.fooddeuk.`object`
 
 import com.example.fooddeuk.GlobalApplication
-import com.example.fooddeuk.GlobalApplication.httpService
-import com.example.fooddeuk.login.User
-import com.example.fooddeuk.login.UserResponse
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.network.HTTP.Completable
+import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.user.User
+import com.example.fooddeuk.user.UserResponse
 import com.example.fooddeuk.util.RealmUtil
 import com.iwedding.app.helper.PrefUtil
 import com.orhanobut.logger.Logger
@@ -99,7 +100,7 @@ object Login {
                         callback(true)
                     } else {
                         user.fcm_token = GlobalApplication.fcmToken
-                        HTTP.Completable(httpService.createUser(user)).subscribe({
+                        Completable(httpService.createUser(user)).subscribe({
                             insertUser(user)
                             insertUserPref(user)
                             callback(true)

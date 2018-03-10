@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/layout_cart_activity"
-    android:background="@color/silver"
+
     >
 
 
@@ -36,6 +36,7 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
+      android:background="@color/silver"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cartToolbar"

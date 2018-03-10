@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import com.example.fooddeuk.GlobalApplication
-import com.example.fooddeuk.GlobalApplication.httpService
 import com.example.fooddeuk.network.HTTP.Single
+import com.example.fooddeuk.network.HTTP.httpService
 import com.google.android.gms.location.*
 import java.util.*
 

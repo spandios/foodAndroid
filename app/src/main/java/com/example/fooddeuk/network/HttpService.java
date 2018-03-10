@@ -1,19 +1,17 @@
 package com.example.fooddeuk.network;
 
 import com.example.fooddeuk.home.HomeEventPictureResponse;
-import com.example.fooddeuk.login.LocationResult;
-import com.example.fooddeuk.login.User;
-import com.example.fooddeuk.login.UserResponse;
+import com.example.fooddeuk.user.LocationResult;
+import com.example.fooddeuk.user.User;
+import com.example.fooddeuk.user.UserResponse;
 import com.example.fooddeuk.order.model.OrderPost;
 import com.example.fooddeuk.order.model.OrderResponse;
-import com.example.fooddeuk.review.ReviewResponse;
 import com.example.fooddeuk.restaurant.model.RestaurantResponse;
-
-import java.util.ArrayList;
-import java.util.Map;
-
+import com.example.fooddeuk.review.ReviewResponse;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import java.util.ArrayList;
+import java.util.Map;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -34,6 +32,14 @@ public interface HttpService {
 
     @POST("/api/user/createUser")
     Completable createUser(@Body User user);
+
+    @FormUrlEncoded
+    @POST("/api/user/createDangol")
+    Completable createDangol(@Field("user_id")String user_id,@Field("rest_id")String rest_id);
+
+    @FormUrlEncoded
+    @POST("/api/user/deleteDangol")
+    Completable deleteDangol(@Field("user_id")String user_id,@Field("rest_id")String rest_id);
 
     @FormUrlEncoded
     @POST("/api/user/updateToken")

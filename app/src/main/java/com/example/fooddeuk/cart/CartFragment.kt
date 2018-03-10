@@ -79,7 +79,7 @@ class CartFragment : android.support.v4.app.Fragment() {
         }
         cart_menu_order.text = Util.stringFormat(context!!, R.string.cart_order, price.toCommaWon())
     }
-    
+
     private fun getSelectedOption(parentLayout: LinearLayout): RealmList<SelectedOption>? {
         if (parentLayout.childCount != 0) {
             val selectedOptionList: RealmList<SelectedOption> = RealmList()

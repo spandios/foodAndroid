@@ -90,6 +90,18 @@ fun AppCompatActivity.logger(any : Any){
     Logger.d(any)
 }
 
+fun Fragment.logger(tag : String ="",obj : Any){
+    Logger.d(tag+":"+" "+obj)
+}
+
+fun Fragment.logger(str : String){
+    Logger.d(str)
+}
+
+fun Fragment.logger(any : Any){
+    Logger.d(any)
+}
+
 fun View.findId(id: Int) : View = this.findViewById(id)
 
 fun AppCompatActivity.addFragmentToActivity(frameId: Int, fragment: Fragment) {

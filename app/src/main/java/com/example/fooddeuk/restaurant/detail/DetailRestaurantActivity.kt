@@ -2,6 +2,7 @@ package com.example.fooddeuk.restaurant.detail
 
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
@@ -13,8 +14,12 @@ import com.example.fooddeuk.cart.CartActivity
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.menu.RestMenuFragment
 import com.example.fooddeuk.menu.model.MenuCategory
+import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.network.HTTP.Completable
+import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
+import com.example.fooddeuk.user.User
 import com.example.fooddeuk.util.*
 import com.ogaclejapan.smarttablayout.SmartTabLayout
 import io.reactivex.functions.Consumer
@@ -23,12 +28,17 @@ import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 
 /**from NearRestaurantFragment */
 
-class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.View {
+class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.View {
+    var lastHeartColor = 0
+    var dangolCnt = 0
+    var isDangol = false
     var scrollFirstToolbar = 0
     var scrollSecondToolbar = 0 //->menu scroll base
-    var menuItemHeight = 0
     var nameHeight = 0
+    var toolbarIconAlpha = 0
+
     lateinit var restaurant: Restaurant
+    var user: User? = null
     private lateinit var restMenuFragment: RestMenuFragment
     private lateinit var homeFragment: HomeFragment
     private lateinit var restaurantImageVPAdapter: restaurantImageVPAdapter
@@ -50,11 +60,14 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_restaurant)
+        user = RealmUtil.findData(User::class.java)
 
         RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData, this.javaClass, Consumer { it ->
             if (it is Restaurant) {
                 restaurant = it
-                presenter=DetailRestaurantPresenter().apply {view= this@DetailRestaurantActivity }
+                dangolCnt = restaurant.dangolCnt
+                isDangol()
+                presenter = DetailRestaurantPresenter().apply { view = this@DetailRestaurantActivity }
                 presenter.pictureViewPager(restaurant._id)
                 menuCategoryList = it.menuCategory
                 setMainTabFragment()
@@ -63,8 +76,38 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
         })
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        if (isDangol) {
+            user?.let {
+                if (!user?.rest_id?.contains(restaurant.rest_id)!!) {
+                    RealmUtil.beginTranscation {
+                        user?.rest_id?.add(restaurant.rest_id)
+                        true
+                    }
+                }
+
+                HTTP.Completable(httpService.createDangol(it.user_id, restaurant.rest_id)).subscribe({
+                }, { it.printStackTrace() })
+            }
+        } else {
+            user?.let {
+                if (user?.rest_id?.contains(restaurant.rest_id)!!) {
+                    RealmUtil.beginTranscation {
+                        user?.rest_id?.remove(restaurant.rest_id)
+                        true
+                    }
+                }
+                Completable(httpService.deleteDangol(it.user_id, restaurant.rest_id)).subscribe({}, { it.printStackTrace() })
+            }
+        }
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
+
         RxBus.intentUnregister(this.javaClass)
         presenter.clear()
     }
@@ -85,7 +128,17 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
         rest_detail_image_viewpager_indicator.setViewPager(vp_rest_detail_image)
     }
 
-
+    private fun isDangol() {
+        user.let {
+            it?.rest_id?.forEach {
+                if (it == restaurant.rest_id) {
+                    isDangol = true
+                    rest_detail_heart?.setColorFilter(ContextCompat.getColor(this@DetailRestaurantActivity, R.color.heart), PorterDuff.Mode.SRC_ATOP)
+                    return
+                }
+            }
+        }
+    }
 
     private fun viewSetting() {
         //뷰가 다 그려진 뒤 스크롤에 필요한 값 구하기
@@ -117,15 +170,54 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
 
         rest_detail_name.text = restaurant.name
 
+        //finish
         with(rest_detail_back) {
             setImageDrawable(backArrow)
             setOnClickListener { finish() }
         }
-        with(rest_detail_heart){
+
+        //좋아요
+        with(rest_detail_heart) {
             setImageDrawable(heart)
-//            setOnClickListener{//TODO 좋아요}
+            setOnClickListener {
+                user?.let {
+                    isDangol = !isDangol
+                    if (isDangol) {
+                        dangolCnt++
+                        Snackbar.make(layout_detail_restaurant, "단골등록", Snackbar.LENGTH_SHORT).show()
+                        rest_detail_heart?.setColorFilter(ContextCompat.getColor(this@DetailRestaurantActivity, R.color.heart), PorterDuff.Mode.SRC_ATOP)
+                    } else {
+                        dangolCnt--
+                        Snackbar.make(layout_detail_restaurant, "단골해제", Snackbar.LENGTH_SHORT).show()
+                        var color = 0
+                        when (toolbarIconAlpha) {
+                            in 0..130 -> {
+                                color = R.color.white
+                            }
+                            in 130..160 -> {
+                                color = (R.color.white_1)
+                            }
+                            in 161..190 -> {
+                                color = (R.color.white_2)
+                            }
+                            in 190..255 -> {
+                                color = (R.color.black)
+                            }
+                            else -> {
+                            }
+                        }
+
+                        rest_detail_heart?.setColorFilter(ContextCompat.getColor(this@DetailRestaurantActivity, color), PorterDuff.Mode.SRC_ATOP)
+                    }
+                }
+                        ?: Snackbar.make(layout_detail_restaurant, "로그인해주세요", Snackbar.LENGTH_SHORT).show()
+
+
+            }
         }
-        with(rest_detail_cart){
+
+        //장바구니
+        with(rest_detail_cart) {
             setImageDrawable(cart)
             setOnClickListener { StartActivity(CartActivity::class.java) }
         }
@@ -133,7 +225,7 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
         rest_detail_name_in_list.text = restaurant.name
         rest_detail_rating.text = java.lang.Double.toString(restaurant.getRating().toDouble()) + "(${restaurant.reviewCnt})"
         scroll_rest_detail.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            val toolbarIconAlpha = ((Math.min(1f, scrollY.toFloat() / scrollFirstToolbar)) * 255).toInt()
+            toolbarIconAlpha = ((Math.min(1f, scrollY.toFloat() / scrollFirstToolbar)) * 255).toInt()
             val tabAlpha = (Math.min(1f, scrollY.toFloat() / scrollSecondToolbar)).toInt()
             //매장이름
             if (nameHeight > scrollY) {
@@ -174,9 +266,10 @@ class DetailRestaurantActivity : AppCompatActivity(),  DetailRestaurantContract.
     private fun setIconChangeColor(colorResource: Int) {
         backArrow?.setColorFilter(ContextCompat.getColor(this, colorResource), PorterDuff.Mode.SRC_ATOP)
         cart?.setColorFilter(ContextCompat.getColor(this, colorResource), PorterDuff.Mode.SRC_ATOP)
-        heart?.setColorFilter(ContextCompat.getColor(this, colorResource), PorterDuff.Mode.SRC_ATOP)
+        if (!isDangol) {
+            heart?.setColorFilter(ContextCompat.getColor(this, colorResource), PorterDuff.Mode.SRC_ATOP)
+        }
     }
-
 
 
     override fun showTopPictureError() {

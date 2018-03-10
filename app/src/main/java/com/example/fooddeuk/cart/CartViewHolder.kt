@@ -10,12 +10,13 @@ import com.example.fooddeuk.cart.model.CartItem
 import com.example.fooddeuk.cart.model.CartOption
 import com.example.fooddeuk.option.CustomOptionList
 import com.example.fooddeuk.rx.RxBus
-import com.example.fooddeuk.util.*
+import com.example.fooddeuk.util.PriceUtil
+import com.example.fooddeuk.util.getOriginalPrice
+import com.example.fooddeuk.util.toCommaWon
+import com.example.fooddeuk.util.toJustWon
 import com.jakewharton.rxbinding2.view.RxView
-import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
 import io.reactivex.functions.Consumer
-import io.realm.RealmList
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_cart.*
 
@@ -68,8 +69,6 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
                             + getSelectedOptionPrice(layout_cart_menu_necessary_option)
                             + getSelectedOptionPrice(layout_cart_menu_unnecessary_option)
                             ).toCommaWon()
-
-            Logger.d(RealmUtil.findDataById(CartItem::class.java, cartItem.menu.menu_id)[0].totalPrice)
 
             RxBus.publish(RxBus.CartResultPrice, true)
         })
@@ -177,22 +176,6 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
 //
 //    }
 
-    private fun getSelectOption(optionArrayList: RealmList<CartOption>): String? {
-        if (optionArrayList.size == 1) {
-            return optionArrayList[0].menu_option_name
-        } else if (optionArrayList.size > 1) {
-            val s = StringBuffer()
-            for (i in optionArrayList.indices) {
-                if (i == optionArrayList.size - 1) {
-                    s.append(optionArrayList[i].menu_option_name)
-                    break
-                }
-                s.append(optionArrayList[i].menu_option_name + ",")
-
-            }
-            return s.toString()
-        }
-        return null
-    }
+    
 
 }

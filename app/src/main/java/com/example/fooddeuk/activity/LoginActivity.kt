@@ -10,7 +10,7 @@ import com.example.fooddeuk.`object`.GlobalVariable
 import com.example.fooddeuk.`object`.GlobalVariable.KAKAO
 import com.example.fooddeuk.`object`.GlobalVariable.NAVER
 import com.example.fooddeuk.`object`.Login
-import com.example.fooddeuk.login.User
+import com.example.fooddeuk.user.User
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException

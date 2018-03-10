@@ -1,4 +1,4 @@
-package com.example.fooddeuk.login
+package com.example.fooddeuk.user
 
 import com.example.fooddeuk.GlobalApplication.getInstance
 import com.kakao.auth.IApplicationConfig

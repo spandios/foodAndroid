@@ -1,4 +1,4 @@
-package com.example.fooddeuk.login
+package com.example.fooddeuk.user
 
 import android.annotation.SuppressLint
 import com.example.fooddeuk.util.RealmUtil

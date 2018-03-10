@@ -6,20 +6,16 @@ import android.app.Application;
 import android.content.Context;
 import android.location.LocationManager;
 import android.support.multidex.MultiDex;
-
-import com.example.fooddeuk.login.KakaoSDKAdapter;
-import com.example.fooddeuk.network.HttpService;
+import com.example.fooddeuk.user.KakaoSDKAdapter;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.iwedding.app.helper.PrefUtil;
 import com.kakao.auth.KakaoSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import net.danlew.android.joda.JodaTimeAndroid;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -34,7 +30,8 @@ public class GlobalApplication extends Application {
     public static final String LOCALHOST = "http://10.0.2.2:3000";
     public static double lat;
     public static double lng;
-    public static HttpService httpService;
+    public Retrofit retrofit;
+
     public static LocationManager locationManager;
     public static String fcmToken;
     public Realm realm;
@@ -85,12 +82,12 @@ public class GlobalApplication extends Application {
 
 
     private void initHTTP(){
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(LOCALHOST)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        httpService = retrofit.create(HttpService.class);
+
     }
 
     private void initRealm(){

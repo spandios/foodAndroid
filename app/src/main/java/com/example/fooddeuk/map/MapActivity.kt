@@ -14,10 +14,10 @@ import android.widget.TextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.example.fooddeuk.R
-import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.activity.BaseActivity
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
@@ -81,7 +81,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     private fun initData() {
         //restaurant
-        HTTP.Single(GlobalApplication.httpService.getCurrentLocationRestaurant(queryMap())).bindToLifecycle(this)
+        HTTP.Single(httpService.getCurrentLocationRestaurant(queryMap())).bindToLifecycle(this)
                 .subscribe({
                     if (it.status == "SUCCESS")
                         restaurantList = it.restaurants

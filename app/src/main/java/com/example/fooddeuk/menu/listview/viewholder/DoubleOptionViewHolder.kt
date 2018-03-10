@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
 import com.example.fooddeuk.R
-import com.example.fooddeuk.GlobalApplication.httpService
 import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.menu.listview.MenuDetailViewPagerAdapter
 import com.example.fooddeuk.menu.model.Menu
 import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.network.HTTP.httpService
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_menu_have_picture.view.*

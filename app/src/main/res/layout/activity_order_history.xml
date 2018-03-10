@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content">
+  android:layout_height="match_parent"
+  >
 
   <me.zhanghai.android.materialprogressbar.MaterialProgressBar
     android:id="@+id/order_history_loading_bar"
@@ -17,21 +18,42 @@
     app:layout_constraintTop_toTopOf="parent"
     app:mpb_progressStyle="circular"/>
 
-  <LinearLayout
+  <RelativeLayout
+    android:id="@+id/order_history_toolbar"
+    app:layout_constraintTop_toTopOf="parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/silver"
+    android:layout_height="40dp"
+    android:padding="@dimen/margin_8"
     >
 
+    <ImageView
+      android:id="@+id/order_history_back"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:src="@drawable/ic_back_black"
+      android:layout_centerVertical="true"
+      />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="현재 주문중"
+      android:layout_centerInParent="true"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      />
+
+  </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
+      app:layout_constraintTop_toBottomOf="@+id/order_history_toolbar"
       android:id="@+id/currentOrderRecyclerView"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:layoutManager="LinearLayoutManager"
+      android:background="@color/silver"
       />
-  </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

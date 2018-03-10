@@ -2,7 +2,7 @@ package com.example.fooddeuk.order
 
 import com.example.fooddeuk.cart.model.CartItem
 import com.example.fooddeuk.cart.model.CartItemLocalRepository
-import com.example.fooddeuk.login.UserRepository
+import com.example.fooddeuk.user.UserRepository
 import com.example.fooddeuk.order.model.OrderPost
 import com.example.fooddeuk.order.model.RestaurantSide
 import com.example.fooddeuk.order.model.UserSide
