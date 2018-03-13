@@ -15,7 +15,7 @@ interface EventPictureDataSource {
 
 object EventPictureRemote : EventPictureDataSource {
     override fun getEventPicture(): Single<HomeEventPictureResponse> =
-            HTTP.Single(httpService.homeEvent)
+            HTTP.single(httpService.homeEvent)
 
 }
 

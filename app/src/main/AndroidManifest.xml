@@ -109,6 +109,8 @@
     <activity android:name=".activity.ReviewActivity"/>
     <activity android:name=".order_history.OrderHistoryActivity">
     </activity>
+    <activity android:name=".pick.dangol.DangolListActivity">
+    </activity>
   </application>
 
 </manifest>

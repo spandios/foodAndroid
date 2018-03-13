@@ -49,6 +49,7 @@ object UserRepository : UserDataSource {
         }
         isDirty=false
         if(localRepository.getUser()!=null){
+            localRepository=
             return localRepository.getUser()
         }else{
             return null

@@ -22,7 +22,7 @@ class OrderHistoryActivity : AppCompatActivity() {
         if (userData != null) {
             user_id = RealmUtil.findData(User::class.java)!!.user_id
             if (user_id != null) {
-                HTTP.Single(httpService.getCurrentOrder(user_id)).subscribe({
+                HTTP.single(httpService.getCurrentOrder(user_id)).subscribe({
                     currentOrderRecyclerView.setting(OrderHistoryAdapter(this, it), true)
                     order_history_loading_bar.visibility = View.GONE
                 }, {

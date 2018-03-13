@@ -18,6 +18,7 @@
   <string name="reviewcnt">(%1$s)</string>
   <string name="cart_order">%1$s 주문하기</string>
   <string name="menu_order">%1$s 바로 주문</string>
+  <string name="rest_reviewcnt">리뷰(%1$s)</string>
 
   <!--할인율-->
   <string name="sale5">-5%</string>
@@ -99,7 +100,7 @@
 
 
   <string name="main_home">푸드득</string>
-  <string name="main_dangol">단골</string>
+  <string name="main_recommand">PICK!</string>
   <string name="main_cart">장바구니</string>
   <string name="main_user">me</string>
   <string name="main_near">내 주변</string>

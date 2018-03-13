@@ -81,7 +81,7 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     private fun initData() {
         //restaurant
-        HTTP.Single(httpService.getCurrentLocationRestaurant(queryMap())).bindToLifecycle(this)
+        HTTP.single(httpService.getCurrentLocationRestaurant(queryMap())).bindToLifecycle(this)
                 .subscribe({
                     if (it.status == "SUCCESS")
                         restaurantList = it.restaurants

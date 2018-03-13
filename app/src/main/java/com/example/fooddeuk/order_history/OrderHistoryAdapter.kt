@@ -1,14 +1,14 @@
 package com.example.fooddeuk.order_history
 
 import android.content.Context
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.order.model.OrderResponse
-import com.google.android.gms.maps.model.LatLng
+import com.example.fooddeuk.rx.RxBus
+import com.example.fooddeuk.util.StartActivity
 import kotlinx.android.synthetic.main.item_order_history_ing.view.*
 
 
@@ -28,12 +28,8 @@ class OrderHistoryAdapter(private val context : Context, private val responses:A
         return if (viewType==orderIng){
             OrderHistoryViewHolder(context, parent).apply {
                 itemView.order_list_static_map.setOnClickListener({
-                    context.startActivity(Intent(context, OrderHistoryMapActivity::class.java).apply {
-                        putExtra("latlng", LatLng(responses[adapterPosition].restaurant.lat, responses[adapterPosition].restaurant.lng))
-                        putExtra("rest_name", responses[adapterPosition].restaurant.rest_name)
-                        putExtra("address", responses[adapterPosition].restaurant.address)
-                    })
-
+                    RxBus.publish(RxBus.OneRestaurantMapData,responses[adapterPosition].restaurant._id)
+                    (context as OrderHistoryActivity).StartActivity(OrderHistoryMapActivity::class.java)
                 })
             }
         } else{

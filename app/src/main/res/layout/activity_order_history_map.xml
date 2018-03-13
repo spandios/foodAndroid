@@ -10,13 +10,14 @@
         android:padding="10dp">
 
         <Button
+          android:id="@+id/order_list_map_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@drawable/ic_back_black"
             android:layout_marginLeft="12dp"
             android:onClick="onClick"
-
             />
+
         <TextView
 
             android:layout_width="wrap_content"

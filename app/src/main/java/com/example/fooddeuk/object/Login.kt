@@ -2,7 +2,7 @@ package com.example.fooddeuk.`object`
 
 import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.network.HTTP
-import com.example.fooddeuk.network.HTTP.Completable
+import com.example.fooddeuk.network.HTTP.completable
 import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.user.UserResponse
@@ -100,7 +100,7 @@ object Login {
                         callback(true)
                     } else {
                         user.fcm_token = GlobalApplication.fcmToken
-                        Completable(httpService.createUser(user)).subscribe({
+                        completable(httpService.createUser(user)).subscribe({
                             insertUser(user)
                             insertUserPref(user)
                             callback(true)
@@ -137,7 +137,7 @@ object Login {
 
     fun getUser(provider_id: String, callback: (err: Throwable?, userResponse: UserResponse?) -> Unit) {
         Logger.d(provider_id)
-        HTTP.Single(httpService.getUser(provider_id)).subscribe(
+        HTTP.single(httpService.getUser(provider_id)).subscribe(
                 { userResponse ->
                     Logger.d(userResponse)
                     callback(null, userResponse) }, { throwable -> callback(throwable, null) })
@@ -152,7 +152,7 @@ object Login {
 
 
     fun updateFcmToken(user: User, fcm_token: String) {
-        HTTP.Completable(httpService.updateToken(user.provider_id, fcm_token)).subscribe({
+        HTTP.completable(httpService.updateToken(user.provider_id, fcm_token)).subscribe({
             Logger.d("fcm_token update!!")
             PrefUtil.setValue(PrefUtil.FCM_TOKEN, user.fcm_token)
         }, { it.printStackTrace() })

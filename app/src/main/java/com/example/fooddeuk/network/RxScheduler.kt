@@ -1,9 +1,7 @@
 package com.example.fooddeuk.network
 
-import io.reactivex.CompletableTransformer
 import io.reactivex.FlowableTransformer
 import io.reactivex.ObservableTransformer
-import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -20,12 +18,7 @@ object RxScheduler {
         }
     }
 
-    fun <T> applyObservableCompute(): ObservableTransformer<T, T> {
-        return ObservableTransformer { observable ->
-            observable.subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-        }
-    }
+
 
     fun <T> applyObservableMainThread(): ObservableTransformer<T, T> {
         return ObservableTransformer { observable -> observable.observeOn(AndroidSchedulers.mainThread()) }
@@ -43,13 +36,20 @@ object RxScheduler {
         return FlowableTransformer { flowable -> flowable.observeOn(AndroidSchedulers.mainThread()) }
     }
 
-    fun <T> applySingleAsync(): SingleTransformer<T, T> {
-        return SingleTransformer { single -> single.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) }
-    }
-
-    fun applyCompleteAsync(): CompletableTransformer {
-        return CompletableTransformer { completable -> completable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) }
-    }
+//    fun <T> single(): SingleTransformer<T, T> {
+//        return SingleTransformer { single -> single.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) }
+//    }
+//
+//    fun <T> observable(): ObservableTransformer<T, T> {
+//        return ObservableTransformer { observable ->
+//            observable.subscribeOn(Schedulers.computation())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//        }
+//    }
+//
+//    fun complete(): CompletableTransformer {
+//        return CompletableTransformer { completable -> completable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) }
+//    }
 
 }
 

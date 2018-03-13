@@ -31,7 +31,7 @@ class DoubleOptionViewHolder(var context: Context, itemView: View) : RecyclerVie
         if (menu.rating.length == 1) {
             menu.rating += ".0"
         }
-        HTTP.Single(httpService.getReview(menu.menu_id)).subscribe({
+        HTTP.single(httpService.getReview(menu.menu_id)).subscribe({
             if(it.success){
                 val menuDetailViewPager = MenuDetailViewPagerAdapter(context, menu, it.result)
                 vpMenuDetail.adapter=menuDetailViewPager

@@ -31,7 +31,7 @@ class NearRestaurantPresenter : NearRestaurantContract.Presenter {
 
 
     override fun getLocation(lat: Double, lng: Double) {
-        compositeDisposable.add(HTTP.Single(httpService.getLocationNameByNaver("$lng,$lat")).subscribe({
+        compositeDisposable.add(HTTP.single(httpService.getLocationNameByNaver("$lng,$lat")).subscribe({
             view.setAddressText(it.gudong)
             Location.locationName = it.gudong
             refreshRestaurant()

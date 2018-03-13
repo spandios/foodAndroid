@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import com.example.fooddeuk.GlobalApplication
-import com.example.fooddeuk.network.HTTP.Single
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.network.HTTP.single
 import com.google.android.gms.location.*
 import java.util.*
 
@@ -56,7 +56,7 @@ object Location {
     fun getLocationName(lat: Double = Location.lat, lng: Double = Location.lng,callback : (gudong : String)->Unit){
         try {
             //좌표->주소
-            Single(httpService.getLocationNameByNaver("$lng,$lat")).subscribe({
+            single(httpService.getLocationNameByNaver("$lng,$lat")).subscribe({
 
                 if(it.gudong == "error"){
                     val addresses: Address = geocoder.getFromLocation(lat, lng, 1)[0]

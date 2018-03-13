@@ -1,7 +1,7 @@
 package com.example.fooddeuk.restaurant.repository
 
-import com.example.fooddeuk.network.HTTP.Single
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.network.HTTP.single
 import com.example.fooddeuk.restaurant.model.RestaurantResponse
 import io.reactivex.Single
 
@@ -12,10 +12,10 @@ object RestaurantRemoteRepository : RestaurantDataSource {
 
 
     override fun getNearRestaurantList(queryMap: HashMap<String, String>) : Single<RestaurantResponse> {
-        return Single(httpService.getCurrentLocationRestaurant(queryMap))
+        return single(httpService.getCurrentLocationRestaurant(queryMap))
     }
 
     override fun getRestaurantImage(_id: String): Single<ArrayList<String>> {
-        return Single(httpService.getPicture(_id))
+        return single(httpService.getPicture(_id))
     }
 }

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.fooddeuk.R
 import com.example.fooddeuk.cart.CartFragment
-import com.example.fooddeuk.dangol.DanGolFragment
+import com.example.fooddeuk.pick.PickFragment
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.restaurant.near.NearRestaurantParentFragment
 import com.example.fooddeuk.user.UserFragment
@@ -42,7 +42,7 @@ class MainActivity : BaseActivity() {
 
     private fun setFragment(){
         fragments.add(HomeFragment())
-        fragments.add(DanGolFragment())
+        fragments.add(PickFragment())
         fragments.add(NearRestaurantParentFragment())
         fragments.add(CartFragment())
         fragments.add(UserFragment())

@@ -14,9 +14,9 @@ import com.example.fooddeuk.cart.CartActivity
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.menu.RestMenuFragment
 import com.example.fooddeuk.menu.model.MenuCategory
-import com.example.fooddeuk.network.HTTP
-import com.example.fooddeuk.network.HTTP.Completable
+import com.example.fooddeuk.network.HTTP.completable
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.order_history.OrderHistoryMapActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.user.User
@@ -29,13 +29,13 @@ import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 /**from NearRestaurantFragment */
 
 class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.View {
-    var lastHeartColor = 0
+
     var dangolCnt = 0
     var isDangol = false
     var scrollFirstToolbar = 0
     var scrollSecondToolbar = 0 //->menu scroll base
     var nameHeight = 0
-    var toolbarIconAlpha = 0
+    private var toolbarIconAlpha = 0
 
     lateinit var restaurant: Restaurant
     var user: User? = null
@@ -61,7 +61,6 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_restaurant)
         user = RealmUtil.findData(User::class.java)
-
         RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData, this.javaClass, Consumer { it ->
             if (it is Restaurant) {
                 restaurant = it
@@ -82,13 +81,15 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         if (isDangol) {
             user?.let {
                 if (!user?.rest_id?.contains(restaurant.rest_id)!!) {
+
                     RealmUtil.beginTranscation {
                         user?.rest_id?.add(restaurant.rest_id)
                         true
                     }
                 }
 
-                HTTP.Completable(httpService.createDangol(it.user_id, restaurant.rest_id)).subscribe({
+                completable(httpService.createDangol(it.user_id, restaurant.rest_id)).subscribe({
+
                 }, { it.printStackTrace() })
             }
         } else {
@@ -99,7 +100,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                         true
                     }
                 }
-                Completable(httpService.deleteDangol(it.user_id, restaurant.rest_id)).subscribe({}, { it.printStackTrace() })
+                completable(httpService.deleteDangol(it.user_id, restaurant.rest_id)).subscribe({}, { it.printStackTrace() })
             }
         }
     }
@@ -129,8 +130,8 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
     }
 
     private fun isDangol() {
-        user.let {
-            it?.rest_id?.forEach {
+        user?.let {
+            it.rest_id.forEach {
                 if (it == restaurant.rest_id) {
                     isDangol = true
                     rest_detail_heart?.setColorFilter(ContextCompat.getColor(this@DetailRestaurantActivity, R.color.heart), PorterDuff.Mode.SRC_ATOP)
@@ -220,6 +221,12 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         with(rest_detail_cart) {
             setImageDrawable(cart)
             setOnClickListener { StartActivity(CartActivity::class.java) }
+        }
+
+        //MapIcon
+        img_rest_detail_map.setOnClickListener {
+            RxBus.intentPublish(RxBus.OneRestaurantMapData,restaurant._id)
+            StartActivity(OrderHistoryMapActivity::class.java)
         }
 
         rest_detail_name_in_list.text = restaurant.name

@@ -25,6 +25,9 @@ object RxBus {
     val SelectedOptionPrice = 3
     val CartResultPrice = 4
     val CartFragmentSizeZero = 5
+    val OneRestaurantMapData = 6
+
+    val DangolListData = 7
 
     private val sSubjectMap = SparseArray<PublishSubject<Any>>()
     private val sSubscriptionsMap = HashMap<Any,CompositeDisposable>()

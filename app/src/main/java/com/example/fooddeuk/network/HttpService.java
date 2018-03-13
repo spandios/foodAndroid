@@ -1,16 +1,18 @@
 package com.example.fooddeuk.network;
 
 import com.example.fooddeuk.home.HomeEventPictureResponse;
+import com.example.fooddeuk.order.model.OrderPost;
+import com.example.fooddeuk.order.model.OrderResponse;
+import com.example.fooddeuk.restaurant.model.Restaurant;
+import com.example.fooddeuk.restaurant.model.RestaurantResponse;
+import com.example.fooddeuk.review.ReviewResponse;
 import com.example.fooddeuk.user.LocationResult;
 import com.example.fooddeuk.user.User;
 import com.example.fooddeuk.user.UserResponse;
-import com.example.fooddeuk.order.model.OrderPost;
-import com.example.fooddeuk.order.model.OrderResponse;
-import com.example.fooddeuk.restaurant.model.RestaurantResponse;
-import com.example.fooddeuk.review.ReviewResponse;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -45,8 +47,13 @@ public interface HttpService {
     @POST("/api/user/updateToken")
     Completable updateToken(@Field("provider_id")String provider_id, @Field("fcm_token")String fcm_token);
 
+    //HOME
+
     @GET("api/home/readHomeEvent")
     Single<HomeEventPictureResponse> getHomeEvent();
+
+
+    //Restaurant
 
     @GET("api/restaurant/readCurrentLocation")
     Single<RestaurantResponse> getCurrentLocationRestaurant(@QueryMap Map<String,String> queryMap);
@@ -54,12 +61,23 @@ public interface HttpService {
     @GET("api/restaurant/readRestaurant")
     Single<RestaurantResponse> getRestaurantByRestId(@Query("rest_id")String rest_id);
 
+    @GET("api/restaurant/readRestaurant")
+    Single<RestaurantResponse> getRestaurantById(@Query("restaurant_id")String _id);
+
+    @FormUrlEncoded
+    @POST("api/restaurant/getDangolRestaurant")
+    Single<List<Restaurant>> getDangolRestaurant(@Field("rest_id[]") ArrayList<String> rest_id);
+
+    @GET("api/restaurant/getHotRestaurant")
+    Single<List<Restaurant>> getHotRestaurant(@Query("lat")Double lat,@Query("lng")Double lng);
+
     @GET("api/restaurant/getPicture")
     Single<ArrayList<String>> getPicture(@Query("_id")String _id);
 
 
     @GET("api/restaurant/getLocationName")
     Single<LocationResult> getLocationNameByNaver(@Query("query")String lnglat);
+
 
     //Review
     @GET("api/review/readReview")

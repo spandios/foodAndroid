@@ -86,6 +86,7 @@ fun AppCompatActivity.logger(str : String){
     Logger.d(str)
 }
 
+
 fun AppCompatActivity.logger(any : Any){
     Logger.d(any)
 }
@@ -134,6 +135,17 @@ fun AppCompatActivity.StartActivity(t: Class<*>) {
 
 fun AppCompatActivity.StartActivity(t: Class<*>, extra: Bundle) {
     this.startActivity(Intent(this, t).apply { putExtras(extra) })
+}
+
+fun View.gone(){
+    this.visibility=View.GONE
+}
+fun View.visible(){
+    this.visibility=View.VISIBLE
+}
+
+fun View.invisible(){
+    this.visibility=View.INVISIBLE
 }
 
 fun TextView.textToString() : String = this.text.toString()

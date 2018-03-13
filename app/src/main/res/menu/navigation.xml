@@ -9,7 +9,7 @@
     <item
         android:id="@+id/navigation_dangol"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/main_dangol" />
+        android:title="@string/main_recommand" />
 
     <item
         android:id="@+id/navigation_near"
