@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,24 +17,32 @@ import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.custom.CustomFilterDialog
+import com.example.fooddeuk.custom.ImageVPAdapter
 import com.example.fooddeuk.map.LocationSettingByMapActivity
-import com.example.fooddeuk.restaurant.detail.restaurantImageVPAdapter
+import com.example.fooddeuk.pick.PickAdapter
+import com.example.fooddeuk.restaurant.home.HomeRestaurantActivity
+import com.example.fooddeuk.restaurant.model.Restaurant
+import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home_content.*
 
 
 //, AppBarLayout.OnOffsetChangedListener
-class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeContract.View {
+class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeContract.View, View.OnClickListener {
     private lateinit var locationSettingDialog: CustomFilterDialog
     private lateinit var homePresenter: HomePresenter
 
+    companion object {
+        val menu_anything = 0
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         renderView()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -43,6 +52,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         }
         homePresenter.setAddress()
         homePresenter.setHomeEvent()
+        homePresenter.getDangolRestaurant()
     }
 
     override fun onPause() {
@@ -50,22 +60,45 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         homePresenter.clear()
     }
 
+    override fun setDangolRestaurant(dangolRestaurants: ArrayList<Restaurant>) {
+        dangol_rest_recycle.layoutManager = GridLayoutManager(context, 2)
+        dangol_rest_recycle.adapter = PickAdapter(context!!, dangolRestaurants)
+    }
+
+    override fun dangolError() {
+        toast("dangol error")
+    }
+
+
     private fun renderView() {
         setToolbar()
         with(home_scroll) {
-            setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+            setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
             setOnScrollChangeListener(this@HomeFragment)
         }
         setLocationDialog()
+        setClickHomeMenu()
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.home_menu_anything -> {
+                context!!.StatAcitivity(RxBus.HomeMenuActivityData, HomeFragment.menu_anything, HomeRestaurantActivity::class.java)
+            }
+        }
+    }
+
+    private fun setClickHomeMenu() {
+        home_menu_anything.setOnClickListener(this)
     }
 
 
     private fun setToolbar() {
         with(activity as AppCompatActivity) {
-            setSupportActionBar(toolbar)
+            setSupportActionBar(header)
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
-        toolbar.background.alpha = 0
+        header.background.alpha = 0
         //검색 이미지 -> 색깔 흰색
         header_search.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_search)?.apply {
             setColorFilter(ContextCompat.getColor(context!!, R.color.white), PorterDuff.Mode.SRC_ATOP)
@@ -74,7 +107,8 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
 
     override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
-        val alpha = (Math.min(1f, scrollY.toFloat() / (250.toPx - toolbar.height))) * 255
+        home_event_viewpager.y = (scrollY / 2).toFloat()
+        val alpha = (Math.min(1f, scrollY.toFloat() / (250.toPx - header.height))) * 255
         when (alpha) {
             in 0..70 -> {
                 txt_home_location_name.setTextColor(Color.WHITE)
@@ -91,12 +125,15 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
                 header_search.setColorFilter(R.color.black, PorterDuff.Mode.SRC_ATOP)
             }
         }
-        toolbar.background.alpha = alpha.toInt()
+        header.background.alpha = alpha.toInt()
     }
 
 
     override fun setHomeEventAdapter(eventPictureList: HomeEventPictureResponse) {
-        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = restaurantImageVPAdapter(context, eventPictureList.eventPictureList) })
+
+        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = ImageVPAdapter(context, eventPictureList.eventPictureList) })
+        home_event_viewpager.startAutoScroll(4500)
+        home_event_viewpager.interval = 4500
     }
 
     override fun setAddressText(locationName: String) {

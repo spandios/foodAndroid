@@ -12,7 +12,7 @@
   <application
     android:allowBackup="true"
     android:label="@string/app_name"
-    android:name=".GlobalApplication"
+    android:name=".object.GlobalApplication"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
     <uses-library android:name="com.google.android.maps"/>
@@ -97,7 +97,6 @@
       android:label="OAuth2.0 In-app"
       android:name="com.nhn.android.naverlogin.ui.OAuthLoginInAppBrowserActivity"/>
     <activity android:name=".map.MapActivity"/>
-    <activity android:name=".activity.CurrentOrderActivity"/>
     <activity android:name=".order_history.OrderHistoryMapActivity"/>
     <activity android:name=".activity.LoginActivity"/>
 
@@ -111,6 +110,9 @@
     </activity>
     <activity android:name=".pick.dangol.DangolListActivity">
     </activity>
+    <activity android:name=".menu.DetailMenuActivity"/>
+    <activity android:name=".restaurant.home.HomeRestaurantActivity"/>
+
   </application>
 
 </manifest>

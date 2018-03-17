@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewTreeObserver
 import com.example.fooddeuk.R
+import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.cart.CartActivity
+import com.example.fooddeuk.custom.ImageVPAdapter
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.menu.RestMenuFragment
 import com.example.fooddeuk.menu.model.MenuCategory
@@ -41,7 +43,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
     var user: User? = null
     private lateinit var restMenuFragment: RestMenuFragment
     private lateinit var homeFragment: HomeFragment
-    private lateinit var restaurantImageVPAdapter: restaurantImageVPAdapter
+    private lateinit var ImageVPAdapter: ImageVPAdapter
     private lateinit var menuCategoryList: ArrayList<MenuCategory>
     lateinit var fakeTab: SmartTabLayout
     private lateinit var presenter: DetailRestaurantPresenter
@@ -114,7 +116,11 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
     }
 
     private fun setMainTabFragment() {
-        restMenuFragment = RestMenuFragment.newInstance(restaurant)
+        //Restaurant Menu Fragment
+        RxBus.intentPublish(RxBus.RestMenuFragmentData, restaurant)
+        restMenuFragment = RestMenuFragment.newInstance()
+
+
         homeFragment = HomeFragment()
         addFragmentToActivity(R.id.frame_rest_main, restMenuFragment)
         addFragmentToActivity(R.id.frame_rest_main, homeFragment)
@@ -124,8 +130,8 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
 
     //식당 상단 사진 뷰페이저
     override fun setPictureViewPager(pictureList: ArrayList<String>) {
-        restaurantImageVPAdapter = restaurantImageVPAdapter(this@DetailRestaurantActivity, pictureList)
-        vp_rest_detail_image.adapter = restaurantImageVPAdapter
+        ImageVPAdapter = ImageVPAdapter(this@DetailRestaurantActivity, pictureList)
+        vp_rest_detail_image.adapter = ImageVPAdapter
         rest_detail_image_viewpager_indicator.setViewPager(vp_rest_detail_image)
     }
 
@@ -148,15 +154,15 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                 //리스너삭제
                 scroll_rest_detail.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                scrollFirstToolbar = vp_rest_detail_image.height - toolbar.height
+                scrollFirstToolbar = vp_rest_detail_image.height - header.height
                 nameHeight = rest_detail_name_in_list.measuredHeight + 24.toPx + scrollFirstToolbar
-                scrollSecondToolbar = (frame_rest_main.y).toInt() - toolbar.height
+                scrollSecondToolbar = (frame_rest_main.y).toInt() - header.height
             }
         }
 
         scroll_rest_detail.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(header)
         fakeTab = tab_rest_menu_fake
 
         //메인 탭설정
@@ -230,8 +236,9 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         }
 
         rest_detail_name_in_list.text = restaurant.name
-        rest_detail_rating.text = java.lang.Double.toString(restaurant.getRating().toDouble()) + "(${restaurant.reviewCnt})"
+        rest_detail_rating.text = Util.stringFormat(this, R.string.rest_rating_and_review_cnt, restaurant.rating.toString(), restaurant.reviewCnt.toString())
         scroll_rest_detail.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            vp_rest_detail_image.translationY = (scrollY / 2).toFloat()
             toolbarIconAlpha = ((Math.min(1f, scrollY.toFloat() / scrollFirstToolbar)) * 255).toInt()
             val tabAlpha = (Math.min(1f, scrollY.toFloat() / scrollSecondToolbar)).toInt()
             //매장이름
@@ -265,7 +272,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                 }
             }
 
-            toolbar.background.alpha = toolbarIconAlpha
+            header.background.alpha = toolbarIconAlpha
         }
 
     }

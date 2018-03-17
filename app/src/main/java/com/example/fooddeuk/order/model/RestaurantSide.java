@@ -23,7 +23,7 @@ public class RestaurantSide{
         this.rest_id = restaurant.rest_id;
         this.owner_id = restaurant.owner_id;
         this.rest_name = restaurant.name;
-        this.picture=restaurant.picture;
+      this.picture = restaurant.picture.get(0);
         this.lat = restaurant.lat;
         this.lng = restaurant.lng;
         this.tel=restaurant.tel;

@@ -18,16 +18,19 @@ import io.reactivex.subjects.PublishSubject
 
 
 object RxBus {
-    val MapActivityData = 0
-    val DetailRestaurantActivityData = 1
-    val ReviewActivityData = 2
+    const val MapActivityData = 0
+    const val DetailRestaurantActivityData = 1
+    const val ReviewActivityData = 2
 
-    val SelectedOptionPrice = 3
-    val CartResultPrice = 4
-    val CartFragmentSizeZero = 5
-    val OneRestaurantMapData = 6
+    const val SelectedOptionPrice = 3
+    const val CartResultPrice = 4
+    const val CartFragmentSizeZero = 5
+    const val OneRestaurantMapData = 6
 
-    val DangolListData = 7
+    const val DangolListData = 7
+    const val RestMenuFragmentData = 8
+    const val DetailMenuActivityData = 9
+    const val HomeMenuActivityData = 10
 
     private val sSubjectMap = SparseArray<PublishSubject<Any>>()
     private val sSubscriptionsMap = HashMap<Any,CompositeDisposable>()

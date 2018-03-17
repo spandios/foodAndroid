@@ -1,5 +1,6 @@
 package com.example.fooddeuk.util
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import android.widget.Toast
+import com.example.fooddeuk.rx.RxBus
 import com.orhanobut.logger.Logger
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import java.text.DecimalFormat
@@ -65,6 +67,9 @@ fun Fragment.toast(content : String){
     Toast.makeText(this.activity,content,Toast.LENGTH_LONG).show()
 }
 
+fun TextView.textString(): String {
+    return this.text.toString()
+}
 
 val Int.toPx: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
@@ -129,12 +134,26 @@ fun AppCompatActivity.hideFragmentToActivity(fragment: Fragment) {
     transaction.commit()
 }
 
+fun Context.StatAcitivity(t: Class<*>) {
+    this.startActivity(Intent(this, t))
+}
+
+fun Context.StatAcitivity(version: Int, data: Any, t: Class<*>) {
+    RxBus.intentPublish(version, data)
+    this.startActivity(Intent(this, t))
+}
+
 fun AppCompatActivity.StartActivity(t: Class<*>) {
     this.startActivity(Intent(this, t))
 }
 
 fun AppCompatActivity.StartActivity(t: Class<*>, extra: Bundle) {
     this.startActivity(Intent(this, t).apply { putExtras(extra) })
+}
+
+fun AppCompatActivity.StatAcitivity(version: Int, data: Any, t: Class<*>) {
+    RxBus.intentPublish(version, data)
+    this.startActivity(Intent(this, t))
 }
 
 fun View.gone(){

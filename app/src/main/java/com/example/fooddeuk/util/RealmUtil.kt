@@ -1,5 +1,6 @@
 package com.example.fooddeuk.util
 
+import com.example.fooddeuk.`object`.GlobalApplication
 import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.RealmResults
@@ -9,9 +10,11 @@ import io.realm.RealmResults
  */
 
 object RealmUtil {
+    val realm: Realm = GlobalApplication.getInstance().realm
+    val inRealm: Realm = GlobalApplication.getInstance().inRealm
 
     fun beginTranscation(callback : () -> Boolean){
-        val realm = Realm.getDefaultInstance()
+
         try {
             realm.beginTransaction()
             if(callback()){
@@ -28,7 +31,7 @@ object RealmUtil {
     
 
     fun <T : RealmObject> getRealmObject(data: T): T? {
-        val realm = Realm.getDefaultInstance()
+
         try {
 
             realm.beginTransaction()
@@ -47,7 +50,7 @@ object RealmUtil {
     }
 
     fun <T : RealmObject> getDataSize(clazz: Class<T>): Int {
-        val realm = Realm.getDefaultInstance()
+
         try {
 
             realm.beginTransaction()
@@ -66,13 +69,19 @@ object RealmUtil {
     }
 
     fun <T : RealmObject> insertData(data: T) {
-        val realm = Realm.getDefaultInstance()
+
         realm.executeTransaction { realm -> realm.copyToRealmOrUpdate(data) }
     }
 
 
+    fun <T : RealmObject> insertInData(data: T) {
+
+        inRealm.executeTransaction { realm -> realm.copyToRealmOrUpdate(data) }
+    }
+
+
     fun <T : RealmObject> findDataAll(clazz: Class<T>): RealmResults<T>? {
-        val realm = Realm.getDefaultInstance()
+
         try {
             realm.beginTransaction()
             val item = realm.where(clazz).findAll()
@@ -90,7 +99,7 @@ object RealmUtil {
     }
 
     fun <T : RealmObject> findData(clazz: Class<T>): T? {
-        val realm = Realm.getDefaultInstance()
+
         try {
             realm.beginTransaction()
             val item = realm.where(clazz).findFirst()
@@ -108,18 +117,18 @@ object RealmUtil {
     }
 
     fun <T : RealmObject> findDataById(clazz: Class<T>, id: String): RealmResults<T> {
-        val realm = Realm.getDefaultInstance()
+
         return realm.where(clazz).equalTo("id", id).findAll()
     }
 
     fun <T : RealmObject> removeDataAll(clazz: Class<T>) {
-        val realm = Realm.getDefaultInstance()
+
         val result = findDataAll(clazz)
         realm.executeTransaction { result!!.deleteAllFromRealm() }
     }
 
     fun <T : RealmObject> removeDataById(clazz: Class<T>, id: String) {
-        val realm = Realm.getDefaultInstance()
+
         val result = findDataById(clazz, id)
         realm.executeTransaction { result.deleteAllFromRealm() }
     }
@@ -127,7 +136,7 @@ object RealmUtil {
 
     //Auto Increment id
     fun <T : RealmObject> getAutoIncrementId(clazz: Class<T>): Int {
-        val realm = Realm.getDefaultInstance()
+
         try {
             val id = realm.where(clazz).max("id")
             return if (id != null) {

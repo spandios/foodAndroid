@@ -12,7 +12,6 @@ import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.StartActivity
-import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_dangol.view.*
 
@@ -21,12 +20,10 @@ class PickAdapter(val context: Context, var dangols : List<Restaurant>) : Recycl
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(context).inflate(R.layout.item_dangol,parent,false)
-        Logger.d(dangols.size)
         return DangolViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        Logger.d(position)
         val restaurant = dangols[position]
         if(holder is DangolViewHolder){
             holder.bind(restaurant)
@@ -46,12 +43,11 @@ class PickAdapter(val context: Context, var dangols : List<Restaurant>) : Recycl
 class DangolViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
     fun bind(restaurant: Restaurant){
         with(itemView){
-            Logger.d(restaurant.rest_id)
             setOnClickListener {
                 RxBus.intentPublish(RxBus.DetailRestaurantActivityData,restaurant)
                 (context as MainActivity).StartActivity(DetailRestaurantActivity::class.java)
             }
-            Picasso.with(context).load(restaurant.picture).fit().into(dangol_item_image)
+            Picasso.with(context).load(restaurant.picture[0]).fit().into(dangol_item_image)
             dangol_item_name.text=restaurant.name
             dangol_item_rating_start.rating=restaurant.rating
             dangol_item_review_cnt.text= Util.stringFormat(context,R.string.reviewcnt,restaurant.reviewCnt.toString())

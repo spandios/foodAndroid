@@ -16,10 +16,15 @@ object GlobalVariable {
 
 
     //FILTER
+    const val distance = 0
+    const val rating = 1
+    const val discount = 2
+    const val dangol = 3
+    const val review = 4
+    const val distance3km = 3000
+    const val distance6km = 6000
+    const val distance9km = 9000
 
-
-
-    //menuCategory
 
     //location
 

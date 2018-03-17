@@ -19,6 +19,7 @@
   <string name="cart_order">%1$s 주문하기</string>
   <string name="menu_order">%1$s 바로 주문</string>
   <string name="rest_reviewcnt">리뷰(%1$s)</string>
+  <string name="rest_rating_and_review_cnt">%1$s(%2$s)</string>
 
   <!--할인율-->
   <string name="sale5">-5%</string>
@@ -110,6 +111,9 @@
 
 
   <string name="rx_location_setting">LocationSettingByMap</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

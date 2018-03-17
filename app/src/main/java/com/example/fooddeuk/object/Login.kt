@@ -1,6 +1,5 @@
 package com.example.fooddeuk.`object`
 
-import com.example.fooddeuk.GlobalApplication
 import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.network.HTTP.completable
 import com.example.fooddeuk.network.HTTP.httpService

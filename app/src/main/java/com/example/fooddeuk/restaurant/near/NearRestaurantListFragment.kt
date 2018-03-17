@@ -9,9 +9,7 @@ import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.list.RestaurantAdapter
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
-import com.example.fooddeuk.user.User
 import com.example.fooddeuk.util.LayoutUtil
-import com.example.fooddeuk.util.RealmUtil
 import com.example.fooddeuk.util.StartActivity
 import com.example.fooddeuk.util.toast
 import kotlinx.android.synthetic.main.fragment_rest_list.*
@@ -41,7 +39,7 @@ class NearRestaurantListFragment : android.support.v4.app.Fragment(), NearRestau
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         queryMap = arguments?.getSerializable("queryMap") as HashMap<String, String>
-        var user = RealmUtil.findData(User::class.java)
+//        var user = RealmUtil.findData(User::class.java)
 
     }
 

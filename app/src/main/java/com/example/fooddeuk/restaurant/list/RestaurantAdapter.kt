@@ -45,7 +45,7 @@ class RestaurantAdapter(private val context: Context, private var restaurantItem
 
         fun bind(restaurant: Restaurant) {
             with(itemView) {
-                Picasso.with(context).load(restaurant.picture).fit().into(img_restaurant_list)
+                Picasso.with(context).load(restaurant.picture[0]).fit().into(img_restaurant_list)
                 txt_restaurant_name_list.text = restaurant.name
                 star_restaurant_list.rating = restaurant.rating
                 txt_restaurant_reviewCnt_list.text = "리뷰(${restaurant.reviewCnt})"

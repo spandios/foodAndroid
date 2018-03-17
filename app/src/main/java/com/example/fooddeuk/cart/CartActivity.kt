@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.example.fooddeuk.`object`.GlobalApplication
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.cart.model.CartItem
@@ -17,14 +18,12 @@ import com.example.fooddeuk.order.OrderActivity
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.*
 import io.reactivex.functions.Consumer
-import io.realm.Realm
 import io.realm.RealmList
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.item_cart.view.*
 
 
 class CartActivity : AppCompatActivity() {
-    val realm: Realm = Realm.getDefaultInstance()
     private val cartItemList = ArrayList<CartItem>()
     lateinit var adapter: CartAdapter
     var totalPrice = 0
@@ -76,10 +75,13 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun setCartAdapter() {
-        val cartItem = realm.where(CartItem::class.java).findAll()
-        cartItemList.addAll(realm.copyFromRealm(cartItem))
+        val cartItem = RealmUtil.findDataAll(CartItem::class.java)
+        cartItem?.let {
+            cartItemList.addAll(GlobalApplication.getInstance().realm.copyFromRealm(it))
+        }
         if (cartItemList.size > 0) {
             adapter = CartAdapter(this, cartItemList)
+
             recycle_cart.setting(adapter,overscroll = true, verticalPadding = true)
 
         }

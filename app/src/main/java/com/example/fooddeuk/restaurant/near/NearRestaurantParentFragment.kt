@@ -14,12 +14,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.fooddeuk.R
+import com.example.fooddeuk.R.string.review
+import com.example.fooddeuk.`object`.GlobalVariable.dangol
+import com.example.fooddeuk.`object`.GlobalVariable.discount
+import com.example.fooddeuk.`object`.GlobalVariable.distance
+import com.example.fooddeuk.`object`.GlobalVariable.distance3km
+import com.example.fooddeuk.`object`.GlobalVariable.distance6km
+import com.example.fooddeuk.`object`.GlobalVariable.distance9km
+import com.example.fooddeuk.`object`.GlobalVariable.rating
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.custom.CustomFilterDialog
 import com.example.fooddeuk.map.LocationSettingByMapActivity
 import com.example.fooddeuk.map.MapActivity
 import com.example.fooddeuk.rx.RxBus
-import com.example.fooddeuk.util.*
+import com.example.fooddeuk.util.StartActivity
+import com.example.fooddeuk.util.startLoading
+import com.example.fooddeuk.util.stopLoading
+import com.example.fooddeuk.util.toast
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_near.*
 import java.util.ArrayList
@@ -36,16 +47,6 @@ class NearRestaurantParentFragment : Fragment(), NearRestaurantContract.View {
     private lateinit var nearRestaurantPresenter: NearRestaurantPresenter
 
 
-    companion object {
-        private const val distance = 0
-        private const val rating = 1
-        private const val discount = 2
-        private const val dangol = 3
-        private const val review =4
-        private const val distance3km = 3000
-        private const val distance6km = 6000
-        private const val distance9km = 9000
-    }
 
     /**
      * 음식 종류에 따른 식당목록리스트 가져오기
@@ -100,12 +101,14 @@ class NearRestaurantParentFragment : Fragment(), NearRestaurantContract.View {
 
         val sortListener = { position: Int, contentTextView: TextView ->
             filter=when(position){
+
                 distance -> distance
                 rating -> rating
                 discount -> discount
                 dangol -> dangol
                 review -> review
                 else -> distance
+
             }
 
             Logger.d("filter"+filter)

@@ -20,4 +20,9 @@ class DangolListActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.intentUnregister(this.javaClass)
+    }
 }

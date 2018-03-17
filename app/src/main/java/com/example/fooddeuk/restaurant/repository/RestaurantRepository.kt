@@ -1,5 +1,7 @@
 package com.example.fooddeuk.restaurant.repository
 
+import com.example.fooddeuk.pick.DangolRepository
+import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.restaurant.model.RestaurantResponse
 import com.orhanobut.logger.Logger
 import io.reactivex.Single
@@ -9,6 +11,7 @@ import io.reactivex.Single
  */
 object RestaurantRepository : RestaurantDataSource {
     private var isMenuDirty = Array(7, { i -> true })
+    private var isDangolDirty = true
     private var isImageDirty = true
     private var cachedAllMenu: Single<RestaurantResponse>? = null
     private var cachedJapaneseMenu: Single<RestaurantResponse>? = null
@@ -17,14 +20,30 @@ object RestaurantRepository : RestaurantDataSource {
     private var cachedKoreanMenu: Single<RestaurantResponse>? = null
     private var cachedDessertMenu: Single<RestaurantResponse>? = null
     private var cachedCoffeeMenu: Single<RestaurantResponse>? = null
-    private var restaurantImage = HashMap<String,Single<ArrayList<String>>>()
+    private var restaurantImage = HashMap<String, Single<ArrayList<String>>>()
+    private var cachedHotRestaurant: Single<ArrayList<Restaurant>>? = null
+    var cachedDangolList: Single<ArrayList<Restaurant>>? = null
+
+    override fun getDangolRestaurant(): Single<ArrayList<Restaurant>>? {
+
+        if (cachedDangolList != null && !DangolRepository.isDirty) {
+            return cachedDangolList!!
+        } else {
+            val dangolRestaurant = RestaurantRemoteRepository.getDangolRestaurant()
+            DangolRepository.isDirty = false
+            cachedDangolList = dangolRestaurant
+            return dangolRestaurant
+
+        }
+
+    }
 
     override fun getRestaurantImage(_id: String): Single<ArrayList<String>>? {
-        if(!isImageDirty&& restaurantImage[_id]!=null){
+        if (!isImageDirty && restaurantImage[_id] != null) {
             return restaurantImage[_id]
         }
         return RestaurantRemoteRepository.getRestaurantImage(_id).apply {
-            isImageDirty=false
+            isImageDirty = false
             restaurantImage[_id] = this
         }
     }
@@ -85,13 +104,17 @@ object RestaurantRepository : RestaurantDataSource {
     }
 
     fun refresh() {
-        for(i in isMenuDirty.indices){
-            isMenuDirty[i]=true
+        for (i in isMenuDirty.indices) {
+            isMenuDirty[i] = true
         }
     }
 
-    fun imageRefresh(){
-        isImageDirty=true
+    fun imageRefresh() {
+        isImageDirty = true
+    }
+
+    fun dangolRefresh() {
+        isDangolDirty = true
     }
 
     fun getRestaurantAndCached(queryMap: HashMap<String, String>): Single<RestaurantResponse>? {
@@ -142,7 +165,6 @@ object RestaurantRepository : RestaurantDataSource {
         }
         return null
     }
-
 
 
 }

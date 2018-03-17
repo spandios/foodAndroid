@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import com.example.fooddeuk.R
 import com.example.fooddeuk.util.toPx
 
+
 /**
  * Created by heo on 2018. 3. 5..
  */

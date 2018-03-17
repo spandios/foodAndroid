@@ -132,6 +132,7 @@ dependencies {
     compile 'se.emilsjolander:StickyScrollViewItems:1.1.0'
     compile 'com.daimajia.androidanimations:library:2.3@aar'
     compile 'net.danlew:android.joda:2.9.9.2'
+    compile 'com.github.frank-zhu:pullzoomview:1.0.0'
     compile('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }

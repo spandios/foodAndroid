@@ -1,6 +1,7 @@
 package com.example.fooddeuk.network;
 
 import com.example.fooddeuk.home.HomeEventPictureResponse;
+import com.example.fooddeuk.menu.model.Menu;
 import com.example.fooddeuk.order.model.OrderPost;
 import com.example.fooddeuk.order.model.OrderResponse;
 import com.example.fooddeuk.restaurant.model.Restaurant;
@@ -66,7 +67,8 @@ public interface HttpService {
 
     @FormUrlEncoded
     @POST("api/restaurant/getDangolRestaurant")
-    Single<List<Restaurant>> getDangolRestaurant(@Field("rest_id[]") ArrayList<String> rest_id);
+    Single<ArrayList<Restaurant>> getDangolRestaurant(
+        @Field("rest_id[]") ArrayList<String> rest_id);
 
     @GET("api/restaurant/getHotRestaurant")
     Single<List<Restaurant>> getHotRestaurant(@Query("lat")Double lat,@Query("lng")Double lng);
@@ -78,11 +80,12 @@ public interface HttpService {
     @GET("api/restaurant/getLocationName")
     Single<LocationResult> getLocationNameByNaver(@Query("query")String lnglat);
 
+  @GET("api/menu/getHotMenu")
+  Single<List<Menu>> getHotMenu(@Query("lat") Double lat, @Query("lng") Double lng);
 
     //Review
     @GET("api/review/readReview")
     Single<ReviewResponse> getReview(@Query("menu_id") String menu_id);
-
 
     //Order
     @POST("api/order/")

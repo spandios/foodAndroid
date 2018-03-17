@@ -33,8 +33,8 @@ class SerachActivity : AppCompatActivity() {
         val mGlobalLayoutListener = object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 //TODO View가 다 그려진 뒤에 값 구하기
-                totalScrollHeight = (tab.y).toInt() -toolbar.height
-                scrollBaseHeight = (vp.y).toInt() - (toolbar.height * 2)
+                totalScrollHeight = (tab.y).toInt() - header.height
+                scrollBaseHeight = (vp.y).toInt() - (header.height * 2)
                 //리스너삭제
                 scroll.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
@@ -64,7 +64,7 @@ class SerachActivity : AppCompatActivity() {
                     } else {
                         tab2.visibility = View.INVISIBLE
                     }
-                    toolbar.background.alpha = alpha.toInt()
+                    header.background.alpha = alpha.toInt()
                 }
             }
         })

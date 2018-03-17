@@ -3,6 +3,8 @@ package com.example.fooddeuk.home
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.restaurant.model.Restaurant
+import com.example.fooddeuk.restaurant.repository.RestaurantRepository
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -14,9 +16,10 @@ interface HomeContract {
     interface View {
         fun setAddressText(locationName: String)
         fun setHomeEventAdapter(eventPictureList : HomeEventPictureResponse)
-
+        fun setDangolRestaurant(dangolRestaurants: ArrayList<Restaurant>)
         fun showAddressError()
         fun showEventError()
+        fun dangolError()
     }
 
     interface Presenter {
@@ -24,6 +27,7 @@ interface HomeContract {
         fun setAddress()
         fun getLocation(lat: Double, lng: Double)
         fun setHomeEvent()
+        fun getDangolRestaurant()
         fun clear()
     }
 }
@@ -31,8 +35,17 @@ interface HomeContract {
 
 class HomePresenter : HomeContract.Presenter {
     override lateinit var view: HomeContract.View
+    var restaurantRepository = RestaurantRepository
     var compositeDisposable = CompositeDisposable()
 
+    override fun getDangolRestaurant() {
+        restaurantRepository.getDangolRestaurant()?.subscribe({
+            view.setDangolRestaurant(it)
+        }, {
+            view.dangolError()
+            it.printStackTrace()
+        })
+    }
 
     override fun setAddress() {
         view.setAddressText(Location.locationName)

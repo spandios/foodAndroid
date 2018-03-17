@@ -19,6 +19,9 @@ object Util {
     fun stringFormat(context: Context,resource : Int , origin : String) : String =
             String.format(context.getString(resource),origin)
 
+    fun stringFormat(context: Context, resource: Int, origin: String, origin2: String): String =
+            String.format(context.getString(resource), origin, origin2)
+
     fun logger(tag : String ="", obj : Any){
         Logger.d(tag+":"+" "+obj)
     }

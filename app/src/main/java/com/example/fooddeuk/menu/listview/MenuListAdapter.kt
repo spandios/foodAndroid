@@ -26,6 +26,7 @@ import com.example.fooddeuk.menu.listview.viewholder.PictureUnNecessaryViewHolde
 import com.example.fooddeuk.menu.model.Menu
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.util.RealmUtil
+import com.orhanobut.logger.Logger
 import io.realm.RealmList
 import java.util.*
 
@@ -77,39 +78,6 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
             expandedPosition = -1
         }
     }
-//    private val menuExpandLayoutListener = View.OnClickListener { v ->
-//        val holder = v.tag as RecyclerView.ViewHolder
-//        val mMenuName = holder.itemView.findViewById<TextView>(R.id.txt_menu_name)
-//        val mMenuImage = holder.itemView.findViewById<ImageView>(R.id.menu_master_picture)
-//        val mDetailLayout = holder.itemView.findViewById<LinearLayout>(R.id.menu_detail_layout)
-//
-//
-//        //펼침
-//        if (expandedPosition != holder.adapterPosition) {
-//            //전에 펼쳐졌던 레이아웃 접기
-//            prevPosition=expandedPosition
-//            if(prevPosition>=0){
-//                notifyItemChanged(prevPosition)
-//            }
-//            expandedPosition = holder.adapterPosition
-//            notifyItemChanged(expandedPosition)
-//            //현재 클릭된 레이아웃 펼치기
-//            //클릭시 포지션과 메뉴아이템의 높이를 알려줌으로써 스크롤 이동
-////            mItemClickListener(holder.adapterPosition,holder.itemView.findViewById<View>(R.id.menu_master_layout).height)
-////            expandedPosition = holder.adapterPosition
-////            setAnimation(mMenuName, mMenuImage, true)
-////            mDetailLayout.visibility = View.VISIBLE
-//        } else {
-//            expandedPosition=-1
-//            notifyItemChanged(holder.adapterPosition)
-//            //기존에 펼쳐져있던 아이템을 접을 시
-////            setAnimation(mMenuName, mMenuImage, false)
-////            mDetailLayout.visibility = View.GONE
-////            expandedPosition = -1
-//        }
-//    }
-
-
 
 
     private fun setAnimation(mMenuName: TextView, mMenuImage: ImageView, expand: Boolean) {
@@ -322,6 +290,7 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
 
         RealmUtil.insertData(restaurant)
         RealmUtil.insertData(getCartItem(menu))
+        Logger.d(RealmUtil.findData(CartItem::class.java))
         Util.startActivity(context,CartActivity::class.java)
     }
 

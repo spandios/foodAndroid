@@ -82,8 +82,10 @@ public class PictureNecessaryViewHolder extends RecyclerView.ViewHolder {
 
 
     public void bind(Menu menu) {
-        Picasso.with(context).load(menu.picture[0]).transform(new CropCircleTransformation()).into(menu_master_picture);
-        Picasso.with(context).load(menu.picture[0]).transform(new CropCircleTransformation()).into(detailHotMenuPicture);
+      Picasso.with(context).load(menu.picture.get(0)).transform(new CropCircleTransformation())
+          .into(menu_master_picture);
+      Picasso.with(context).load(menu.picture.get(0)).transform(new CropCircleTransformation())
+          .into(detailHotMenuPicture);
         String reviewCount = "(" + menu.reviewCnt + ")";
         String menuPrice = menu.price+"원";
         if (menu.rating.length() == 1) {

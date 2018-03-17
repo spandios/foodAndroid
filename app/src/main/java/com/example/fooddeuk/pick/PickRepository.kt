@@ -2,13 +2,13 @@ package com.example.fooddeuk.pick
 
 import com.example.fooddeuk.BaseRepository
 import com.example.fooddeuk.`object`.Location
+import com.example.fooddeuk.menu.model.Menu
 import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.util.RealmUtil
 import io.reactivex.Single
-import java.util.*
 
 
 /**
@@ -21,14 +21,14 @@ abstract class BasePickRepository : BaseRepository() {
 
 
 object DangolRepository : BasePickRepository() {
-    var cachedDangolList: Single<List<Restaurant>>? = null
+    var cachedDangolList: Single<ArrayList<Restaurant>>? = null
 
-
-    fun getDangol(callback: (dangolList: Single<List<Restaurant>>) -> Unit) {
+    fun getDangol(callback: (dangolList: Single<ArrayList<Restaurant>>) -> Unit) {
         user = RealmUtil.findData(User::class.java)
         if (cachedDangolList != null && !isDirty) {
             callback(cachedDangolList!!)
         }
+
         user?.let {
             val restList = ArrayList<String>().apply { addAll(it.rest_id) }
             val dangolListRx = HTTP.single(httpService.getDangolRestaurant(restList))
@@ -37,22 +37,36 @@ object DangolRepository : BasePickRepository() {
             callback(dangolListRx)
         }
     }
-
 }
 
+object HotMenuRepository : BaseRepository() {
+    var cachedHotMenuList: Single<List<Menu>>? = null
 
-object HotRepository : BaseRepository(){
+    fun getHotMenu(callback: (hotList: Single<List<Menu>>) -> Unit) {
+        if (cachedHotMenuList != null && !isDirty) {
+            callback(cachedHotMenuList!!)
+        }
 
-    var cachedHotList : Single<List<Restaurant>>?=null
+        HTTP.single(httpService.getHotMenu(Location.lat, Location.lng)).let {
+            isDirty = false
+            cachedHotMenuList = it
+            callback(it)
+        }
+    }
+}
 
-    fun getHot(callback: (hotList: Single<List<Restaurant>>) -> Unit){
-        if(cachedHotList!=null&&!isDirty){
-            callback(cachedHotList!!)
+object HotRestaurantRepository : BaseRepository() {
+
+    var cachedHotRestaurantList: Single<List<Restaurant>>? = null
+
+    fun getHotRestaurant(callback: (hotList: Single<List<Restaurant>>) -> Unit) {
+        if (cachedHotRestaurantList != null && !isDirty) {
+            callback(cachedHotRestaurantList!!)
         }
 
         HTTP.single(httpService.getHotRestaurant(Location.lat,Location.lng)).let{
             isDirty=false
-            cachedHotList=it
+            cachedHotRestaurantList = it
             callback(it)
         }
     }

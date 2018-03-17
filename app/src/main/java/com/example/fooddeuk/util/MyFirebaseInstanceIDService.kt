@@ -1,6 +1,6 @@
 package com.example.fooddeuk.util
 
-import com.example.fooddeuk.GlobalApplication
+import com.example.fooddeuk.`object`.GlobalApplication
 import com.example.fooddeuk.`object`.Login
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService

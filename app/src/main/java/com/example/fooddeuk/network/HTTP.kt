@@ -1,6 +1,6 @@
 package com.example.fooddeuk.network
 
-import com.example.fooddeuk.GlobalApplication
+import com.example.fooddeuk.`object`.GlobalApplication
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiPredicate

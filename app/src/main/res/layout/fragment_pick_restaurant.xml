@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  >
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+
+    <LinearLayout
+      android:id="@+id/layout_recommand"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/margin_16"
+      android:orientation="vertical"
+      >
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:text="추천 매장"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        />
+      <LinearLayout
+        android:id="@+id/recommand_item_nothing"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="없음 미등록"
+          android:textSize="18sp"
+          />
+      </LinearLayout>
+      <android.support.v7.widget.RecyclerView
+        android:id="@+id/recommend_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:nestedScrollingEnabled="false"
+        />
+
+      <Button
+        android:id="@+id/recommand_item_more"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="총 5개의 추천매장 모두보기"
+        android:textSize="12sp"
+        android:visibility="gone"
+        />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/layout_hot"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_16"
+      android:paddingEnd="@dimen/margin_16"
+      android:orientation="vertical"
+      >
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:text="인기매장"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        />
+
+      <android.support.v7.widget.RecyclerView
+        android:id="@+id/hot_rest_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:nestedScrollingEnabled="false"
+        />
+
+      <Button
+        android:id="@+id/hot_item_more"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="총 5개의 인기매장 모두보기"
+        android:textSize="12sp"
+        android:visibility="gone"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/layout_dangol"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/margin_16"
+      android:orientation="vertical"
+      >
+
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:text="단골 매장"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        />
+
+      <LinearLayout
+        android:id="@+id/dangol_item_nothing"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="매장 미등록"
+          android:textSize="18sp"
+          />
+
+      </LinearLayout>
+      <!--안에서 margin 8dp-->
+      <android.support.v7.widget.RecyclerView
+        android:id="@+id/dangol_rest_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/margin_8"
+
+        android:layout_marginEnd="@dimen/margin_8"/>
+
+      <Button
+        android:id="@+id/dangol_item_more"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="총 5개의단골 모두보기"
+        android:textSize="12sp"
+        android:visibility="gone"
+        />
+
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

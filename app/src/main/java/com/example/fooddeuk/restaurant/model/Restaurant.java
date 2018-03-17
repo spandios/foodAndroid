@@ -2,28 +2,24 @@ package com.example.fooddeuk.restaurant.model;
 
 import com.example.fooddeuk.menu.model.MenuCategory;
 import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
+import java.util.ArrayList;
 
 /**
  * Created by heo on 2018. 2. 4..
  */
-public class Restaurant  extends RealmObject implements Serializable{
+public class Restaurant extends RealmObject {
 
-    @PrimaryKey
-    int fixedPrimarykey=0;
     public String _id;
     public String rest_id;
     public String name;
     public String tel;
     public String address;
     @SerializedName("picture")
-    public String picture;
+    public RealmList<String> picture;
     public String openTime;
     public String closeTime;
     public String holiday;
@@ -42,6 +38,8 @@ public class Restaurant  extends RealmObject implements Serializable{
     @Ignore
     @SerializedName("menu")
     public ArrayList<MenuCategory> menuCategory;
+  @PrimaryKey
+  int fixedPrimarykey = 0;
 
 
 
@@ -49,7 +47,11 @@ public class Restaurant  extends RealmObject implements Serializable{
 
     }
 
-    public Restaurant(String rest_id, String name, String tel, String address, String picture, String openTime, String closeTime, String holiday, float rating, String description, int dangolCnt, int likeCnt, int reviewCnt, String avg_cooking_time, String discount, int owner_id, String distance, int orderCnt, double lat, double lng, ArrayList<MenuCategory> menuCategory) {
+  public Restaurant(String rest_id, String name, String tel, String address,
+      RealmList<String> picture, String openTime, String closeTime, String holiday, float rating,
+      String description, int dangolCnt, int likeCnt, int reviewCnt, String avg_cooking_time,
+      String discount, int owner_id, String distance, int orderCnt, double lat, double lng,
+      ArrayList<MenuCategory> menuCategory) {
         this.rest_id = rest_id;
         this.name = name;
         this.tel = tel;
@@ -73,6 +75,14 @@ public class Restaurant  extends RealmObject implements Serializable{
         this.menuCategory = menuCategory;
     }
 
+  public int getFixedPrimarykey() {
+    return fixedPrimarykey;
+  }
+
+  public void setFixedPrimarykey(int fixedPrimarykey) {
+    this.fixedPrimarykey = fixedPrimarykey;
+  }
+
     public String get_id() {
         return _id;
     }
@@ -80,6 +90,14 @@ public class Restaurant  extends RealmObject implements Serializable{
     public void set_id(String _id) {
         this._id = _id;
     }
+
+  public String getRest_id() {
+    return rest_id;
+  }
+
+  public void setRest_id(String rest_id) {
+    this.rest_id = rest_id;
+  }
 
     public String getName() {
         return name;
@@ -105,14 +123,29 @@ public class Restaurant  extends RealmObject implements Serializable{
         this.address = address;
     }
 
-    public String getPicture() {
+  public RealmList<String> getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+  public void setPicture(RealmList<String> picture) {
         this.picture = picture;
     }
 
+  public String getOpenTime() {
+    return openTime;
+  }
+
+  public void setOpenTime(String openTime) {
+    this.openTime = openTime;
+  }
+
+  public String getCloseTime() {
+    return closeTime;
+  }
+
+  public void setCloseTime(String closeTime) {
+    this.closeTime = closeTime;
+  }
 
     public String getHoliday() {
         return holiday;
@@ -222,7 +255,8 @@ public class Restaurant  extends RealmObject implements Serializable{
         return menuCategory;
     }
 
-    public void setMenuCategory(ArrayList<MenuCategory> menuCategory) {
+  public void setMenuCategory(
+      ArrayList<MenuCategory> menuCategory) {
         this.menuCategory = menuCategory;
     }
 }

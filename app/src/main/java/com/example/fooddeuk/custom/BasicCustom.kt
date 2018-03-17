@@ -16,7 +16,9 @@ open class CustomButton @JvmOverloads constructor(
 ) : Button(context, attrs, defStyleAttr) {
 
 }
-open class CustomLinearLayout @JvmOverloads constructor(
+
+
+class CustomLinearLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0

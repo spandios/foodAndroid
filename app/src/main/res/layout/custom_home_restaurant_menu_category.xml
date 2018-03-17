@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="horizontal"
+  >
+
+  <TextView
+    style="@style/HomeRestaurantHeaderOptionForMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:tag="아무거나"
+    android:text="#아무거나"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderOptionForMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:tag="일식"
+    android:text="#일식"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderOptionForMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:tag="치킨"
+    android:text="#치킨"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderOptionForMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:tag="중식"
+    android:text="#중식"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderOptionForMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:tag="한식"
+    android:text="#한식"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderOptionForMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:tag="디저트"
+    android:text="#디저트"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderOptionForMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:tag="커피"
+    android:text="#커피"
+    />
+
+</LinearLayout>

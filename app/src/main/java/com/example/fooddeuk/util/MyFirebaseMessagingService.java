@@ -12,7 +12,7 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.example.fooddeuk.R;
 import com.example.fooddeuk.activity.MainActivity;
-import com.example.fooddeuk.GlobalApplication;
+import com.example.fooddeuk.object.GlobalApplication;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

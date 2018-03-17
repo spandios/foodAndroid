@@ -1,4 +1,4 @@
-package com.example.fooddeuk.restaurant.detail;
+package com.example.fooddeuk.custom;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -18,14 +18,14 @@ import java.util.ArrayList;
  * Created by heo on 2018. 1. 3..
  */
 
-public class restaurantImageVPAdapter extends PagerAdapter{
+public class ImageVPAdapter extends PagerAdapter {
 
     Context context;
     ArrayList<String> images;
     LayoutInflater layoutInflater;
 
 
-    public restaurantImageVPAdapter(Context context, ArrayList<String> images) {
+  public ImageVPAdapter(Context context, ArrayList<String> images) {
         this.context = context;
         this.images = images;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -46,7 +46,6 @@ public class restaurantImageVPAdapter extends PagerAdapter{
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         View itemView = layoutInflater.inflate(R.layout.item_rest_detail_image_viewpager, container, false);
         ImageView imageView = itemView.findViewById(R.id.rest_detail_image);
-
         Picasso.with(context).load(images.get(position)).fit().into(imageView);
         container.addView(itemView);
 

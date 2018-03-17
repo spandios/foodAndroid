@@ -10,8 +10,10 @@ import com.example.fooddeuk.menu.listview.MenuListViewPagerAdapter
 import com.example.fooddeuk.menu.model.MenuCategory
 import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
+import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.WrapPager
 import com.southernbox.springscrollview.SpringScrollView
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 import kotlinx.android.synthetic.main.fragment_rest_menu_category.*
 import java.util.*
@@ -24,28 +26,31 @@ import java.util.*
 //메뉴카테고리 ->  tab layout  , 메뉴본문 -> viewpager
 class RestMenuFragment : Fragment() {
 
-    lateinit var menuCategory: ArrayList<MenuCategory>
-    lateinit var restaurant: Restaurant
+    private lateinit var menuCategory: ArrayList<MenuCategory>
+    private lateinit var restaurant: Restaurant
 
-    lateinit var mMeuListViewPager: WrapPager
-    lateinit var restaurantScrollView : SpringScrollView
+    private lateinit var mMeuListViewPager: WrapPager
+    private lateinit var restaurantScrollView: SpringScrollView
 
     companion object {
-        fun newInstance(restaurant: Restaurant): RestMenuFragment {
-            val restMenuCategoryFragment = RestMenuFragment()
-            return restMenuCategoryFragment.apply {
-                arguments=Bundle().apply { putSerializable("restaurant",restaurant) }
-            }
+        fun newInstance(): RestMenuFragment {
+//            val restMenuCategoryFragment = RestMenuFragment()
+//            return restMenuCategoryFragment.apply {
+//                arguments=Bundle().apply { putSerializable("restaurant",restaurant) }
+//            }
+            return RestMenuFragment()
         }
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            restaurant= arguments!!.getSerializable("restaurant") as Restaurant
-            menuCategory = restaurant.menuCategory
-        }
+        RxBus.intentSubscribe(RxBus.RestMenuFragmentData, RestMenuFragment::class.java, Consumer {
+            if (it is Restaurant) {
+                restaurant = it
+                menuCategory = restaurant.menuCategory
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,6 +72,11 @@ class RestMenuFragment : Fragment() {
         //DetailRestaurant Activity 페이크 탭 설정
         (this@RestMenuFragment.activity as DetailRestaurantActivity).fakeTab.setViewPager(mMeuListViewPager)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.intentUnregister(RestMenuFragment::class.java)
     }
 
 }

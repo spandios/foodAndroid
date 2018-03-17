@@ -22,6 +22,7 @@ import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.rx.RxBus.intentSubscribe
+import com.example.fooddeuk.util.RealmUtil
 import com.example.fooddeuk.util.StartActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -139,9 +140,11 @@ class MapActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         val restaurant = restaurantList!![tag - 1]
 
         bottomSheet.setOnClickListener {
+            RealmUtil.insertData(restaurant)
             RxBus.intentPublish(RxBus.DetailRestaurantActivityData,restaurant)
-            StartActivity(DetailRestaurantActivity::class.java) }
-        Picasso.with(this).load(restaurant.picture).fit().into(bottomSheet.findViewById<ImageView>(R.id.img_restaurant_map_box))
+            StartActivity(DetailRestaurantActivity::class.java)
+        }
+        Picasso.with(this).load(restaurant.picture[0]).fit().into(bottomSheet.findViewById<ImageView>(R.id.img_restaurant_map_box))
         name.text = restaurant.name
         ratingBar.rating = restaurant.rating
         reviewCnt.text = String.format(getString(R.string.reviewcnt), restaurant.reviewCnt.toString())
