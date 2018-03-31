@@ -1,124 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="com.example.fooddeuk.restaurant.home.HomeRestaurantActivity">
+  android:animateLayoutChanges="true"
+  android:orientation="vertical"
+  tools:context="com.example.fooddeuk.restaurant.home.HomeRestaurantByMenuActivity"
+  >
 
-  <LinearLayout
+
+  <android.support.constraint.ConstraintLayout
+    android:id="@+id/header"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_8"
     >
 
-    <RelativeLayout
-      android:id="@+id/header"
-      android:layout_width="match_parent"
+    <ImageView
+      android:id="@+id/home_restaurant_back"
+      android:layout_width="32dp"
+      android:layout_height="32dp"
+      android:src="@drawable/backbutton"
+      app:layout_constraintBottom_toBottomOf="parent"
+
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+      android:id="@+id/home_restaurant_menu_category"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="1dp"
-      android:padding="@dimen/margin_16"
-      android:gravity="center_vertical"
-      >
+      android:background="@drawable/custom_home_restaurant_top_menu_category_title"
+      tools:text="#아무거나"
+      android:textColor="@color/white"
+      android:textSize="13.5sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/home_restaurant_address"
+      app:layout_constraintHorizontal_bias="0.1"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toEndOf="@id/home_restaurant_back"
+      app:layout_constraintTop_toTopOf="parent"/>
 
-      <ImageView
-        android:id="@+id/home_restaurant_back"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="@dimen/margin_8"
-        android:src="@drawable/backbutton"
-        />
 
-      <TextView
-        android:id="@+id/home_restaurant_menu_category"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_24"
-        android:layout_toRightOf="@id/home_restaurant_back"
-        android:background="@drawable/custom_home_restaurant_top_menu_category"
-        android:text="#아무거나"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        />
+    <TextView
+      android:id="@+id/home_restaurant_address"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
 
-      <TextView
-        android:id="@+id/home_restaurant_address"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_toRightOf="@id/home_restaurant_menu_category"
-        android:background="@drawable/custom_home_restaurant_top_address"
-        android:text="#논현동"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        />
+      android:layout_marginStart="8dp"
+      android:layout_centerVertical="true"
+      android:background="@drawable/custom_home_restaurant_top_address_title"
+      tools:text="#논현동"
+      android:textColor="@color/white"
+      android:textSize="13.5sp"
 
-      <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_16"
-        android:layout_toLeftOf="@+id/home_restaurant_map"
-        android:src="@drawable/ic_filter"
-        />
-
-      <ImageView
-        android:id="@+id/home_restaurant_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_8"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_find_location_black"
-        />
-
-    </RelativeLayout>
-
-    <com.example.fooddeuk.custom.Divider
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:layout_marginBottom="8dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/home_restaurant_filter_text"
+      app:layout_constraintStart_toEndOf="@id/home_restaurant_menu_category"
+      app:layout_constraintTop_toTopOf="parent"
       />
 
-    <HorizontalScrollView
-      android:id="@+id/header_option"
-      android:layout_width="match_parent"
+
+    <TextView
+
+      android:id="@+id/home_restaurant_filter_text"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="4dp"
-      android:scrollbars="none"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_centerVertical="true"
+      android:background="@drawable/custom_home_restaurant_top_filter_title"
+      android:text="#추천순"
+      android:textColor="@color/white"
+      android:textSize="13.5sp"
       android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/home_restaurant_map"
+      app:layout_constraintStart_toEndOf="@id/home_restaurant_address"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+      android:id="@+id/home_restaurant_filter"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="@dimen/margin_16"
+      android:src="@drawable/ic_filter"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/home_restaurant_map"
+      app:layout_constraintTop_toTopOf="parent"
+
+
+      />
+
+    <ImageView
+      android:id="@+id/home_restaurant_map"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="@dimen/margin_8"
+      android:src="@drawable/ic_find_location_black"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+
+  </android.support.constraint.ConstraintLayout>
+
+  <com.example.fooddeuk.custom.Divider
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    />
+
+  <HorizontalScrollView
+    android:id="@+id/header_option"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:scrollbars="none"
+    android:visibility="gone"
+    >
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       >
 
-      <LinearLayout
+      <com.example.fooddeuk.custom.CustomHomeRestaurantMenuCategory
+        android:id="@+id/header_option_menu_category"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
 
-        <com.example.fooddeuk.custom.CustomHomeRestaurantMenuCategory
-          android:id="@+id/header_option_menu_category"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:visibility="gone">
+      <com.example.fooddeuk.custom.CustomHomeRestaurantAddress
+        android:id="@+id/header_option_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
 
-        </com.example.fooddeuk.custom.CustomHomeRestaurantMenuCategory>
 
-        <com.example.fooddeuk.custom.CustomHomeRestaurantAddress
-          android:id="@+id/header_option_address"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:visibility="gone">
-        </com.example.fooddeuk.custom.CustomHomeRestaurantAddress>
-      </LinearLayout>
+    </FrameLayout>
 
-    </HorizontalScrollView>
+  </HorizontalScrollView>
 
-    <LinearLayout
-      android:id="@+id/content"
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+      android:id="@+id/home_restaurant_loading"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"/>
+
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/home_restaurant_list"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:nestedScrollingEnabled="false"
 
-    </LinearLayout>
+      >
 
-  </LinearLayout>
-</FrameLayout>
+    </android.support.v7.widget.RecyclerView>
+  </RelativeLayout>
+</LinearLayout>
+

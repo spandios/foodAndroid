@@ -5,116 +5,111 @@
   android:layout_below="@id/anchor"
   >
 
-  <android.support.constraint.ConstraintLayout
+  <LinearLayout
     android:id="@+id/home_menu_layout"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     app:layout_constraintTop_toTopOf="parent">
 
-    <android.support.constraint.Guideline
-      android:id="@+id/guideline"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      app:layout_constraintGuide_percent="0.33"/>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="85dp">
 
-    <android.support.constraint.Guideline
-      android:id="@+id/guideline2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      app:layout_constraintGuide_percent="0.66"/>
+      <Button
+        android:id="@+id/home_menu_anything"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="아무거나"
+        />
 
-    <android.support.constraint.Guideline
-      android:id="@+id/guideline3"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      app:layout_constraintGuide_percent="0.99"/>
+      <Button
+        android:id="@+id/home_menu_japan"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="일식"
+        />
 
-    <android.support.constraint.Guideline
-      android:id="@+id/guideline4"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.5"/>
+      <Button
+        android:id="@+id/home_menu_chicken"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="치킨"
+        />
 
-    <Button
-      android:id="@+id/home_menu_anything"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:text="아무거나"
-      app:layout_constraintBottom_toBottomOf="@id/guideline4"
-      app:layout_constraintEnd_toEndOf="@id/guideline"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
+    </LinearLayout>
 
-    <Button
-      android:id="@+id/home_menu_cafe"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:text="까페"
-      app:layout_constraintBottom_toTopOf="@id/guideline4"
-      app:layout_constraintEnd_toStartOf="@id/guideline2"
-      app:layout_constraintStart_toEndOf="@+id/guideline"
-      app:layout_constraintTop_toTopOf="parent"
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="85dp"
+      >
+      <Button
+        android:id="@+id/home_menu_chinese"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="중식"
+        />
 
-      />
+      <Button
+        android:id="@+id/home_menu_korean"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="한식"
+        />
 
-    <Button
-      android:id="@+id/home_menu_chicken"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:text="치킨"
-      app:layout_constraintBottom_toTopOf="@id/guideline4"
-      app:layout_constraintEnd_toEndOf="@id/guideline3"
-      app:layout_constraintStart_toStartOf="@+id/guideline2"
-      app:layout_constraintTop_toTopOf="parent"/>
+      <Button
+        android:id="@+id/home_menu_cafe"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="까페"
+        />
 
-    <Button
-      android:id="@+id/item4"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:text="타이"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/guideline"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/guideline4"/>
+    </LinearLayout>
 
-    <Button
-      android:id="@+id/home_menu_korean"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:text="한식"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/guideline2"
-      app:layout_constraintStart_toStartOf="@id/guideline"
-      app:layout_constraintTop_toBottomOf="@id/guideline4"/>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="85dp"
+      >
+      <Button
+        android:id="@+id/home_menu_thai"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="타이"
+        />
 
-    <Button
-      android:id="@+id/home_menu_chinese"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:text="중식"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/guideline3"
-      app:layout_constraintStart_toStartOf="@id/guideline2"
-      app:layout_constraintTop_toBottomOf="@id/guideline4"/>
+      <Button
+        android:id="@+id/home_menu_franchise"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="프랜차이즈"
+        />
 
-  </android.support.constraint.ConstraintLayout>
+      <Button
+        android:id="@+id/home_menu_dessert"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="디저트"
+        />
 
-  <android.support.constraint.ConstraintLayout
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <LinearLayout
     android:id="@+id/home_location_layout"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     app:layout_constraintTop_toBottomOf="@id/home_menu_layout">
-
-    <android.support.constraint.Guideline
-      android:id="@+id/guideline5"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.3"/>
 
     <TextView
       android:textStyle="bold"
@@ -125,47 +120,37 @@
       android:text="장소로 찾기"
       android:textColor="@color/text_main"
       android:textSize="18sp"
-      app:layout_constraintBottom_toBottomOf="@id/guideline5"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
       />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="90dp">
+      <Button
+        android:id="@+id/home_location_map"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="지도"
 
-    <Button
-      android:id="@+id/home_select_location"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_marginTop="@dimen/margin_8"
-      android:text="지정장소"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/home_menu_metro"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/guideline5"
-      />
+        />
 
-    <Button
-      android:id="@+id/home_menu_metro"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_marginTop="@dimen/margin_8"
-      android:text="지하철"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@+id/home_univ"
-      app:layout_constraintStart_toEndOf="@id/home_select_location"
-      app:layout_constraintTop_toBottomOf="@id/guideline5"/>
+      <Button
+        android:id="@+id/home_location_metro"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="지하철"
+        />
 
-    <Button
-      android:id="@+id/home_univ"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_marginTop="@dimen/margin_8"
-      android:text="대학교"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/home_menu_metro"
-      app:layout_constraintTop_toBottomOf="@id/guideline5"/>
+      <Button
+        android:id="@+id/home_location_univ"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="대학교"
+        />
+    </LinearLayout>
 
-
-  </android.support.constraint.ConstraintLayout>
+  </LinearLayout>
 
 
   <LinearLayout

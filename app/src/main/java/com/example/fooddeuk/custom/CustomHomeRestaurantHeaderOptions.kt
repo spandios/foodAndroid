@@ -27,7 +27,7 @@ class CustomHomeRestaurantAddress @JvmOverloads constructor(
         defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
     init {
-        View.inflate(context, R.layout.custom_home_restaurant_menu_category, this)
+        View.inflate(context, R.layout.custom_home_restaurant_address, this)
 
     }
 }

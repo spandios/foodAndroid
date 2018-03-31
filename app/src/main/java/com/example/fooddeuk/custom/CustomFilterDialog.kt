@@ -51,7 +51,7 @@ class CustomFilterDialog internal constructor(internal var builder: Builder) {
         private var filterSelectColor: Int = 0
         private var filterUnSelectColor: Int = 0
         private var contentTextSize = 16f
-        private var titleTextSize = 22f
+        private var titleTextSize = 18f
         private var verticalTextGravity = Gravity.LEFT
         private var contentLeftMargin = 24
         private var contentTopMargin = 24

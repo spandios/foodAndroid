@@ -111,8 +111,9 @@
     <activity android:name=".pick.dangol.DangolListActivity">
     </activity>
     <activity android:name=".menu.DetailMenuActivity"/>
-    <activity android:name=".restaurant.home.HomeRestaurantActivity"/>
-
+    <activity android:name=".restaurant.home.HomeRestaurantByMenuActivity"/>
+    <activity android:name=".restaurant.home.HomeRestaurantByLocation">
+    </activity>
   </application>
 
 </manifest>

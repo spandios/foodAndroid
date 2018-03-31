@@ -32,7 +32,7 @@ class IntroActivity : BaseActivity(){
                 .subscribe { granted ->
                     if (granted) {
                         Login.checkUser({
-                            getLocation({ _, _ ->  nextActivity()})
+                            getLocation({ _, _,_ ->  nextActivity()})
                         })
 
                     } else {
@@ -40,7 +40,6 @@ class IntroActivity : BaseActivity(){
                         finish()
                     }
                 }
-
     }
 
 

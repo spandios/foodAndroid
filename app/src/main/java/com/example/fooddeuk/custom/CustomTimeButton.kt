@@ -23,7 +23,6 @@ class CustomTimeButton(context: Context,timePair: Pair<Int,Int>,clickListener : 
         val hour=timePair.first
         val minute=timePair.second
         setOnClickListener {
-
             clickListener(this)
         }
         val startHourString : String = if(hour<10){

@@ -1,7 +1,7 @@
 package com.example.fooddeuk.home
 
-import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.network.HTTP.singleAsync
 import io.reactivex.Single
 
 /**
@@ -15,7 +15,7 @@ interface EventPictureDataSource {
 
 object EventPictureRemote : EventPictureDataSource {
     override fun getEventPicture(): Single<HomeEventPictureResponse> =
-            HTTP.single(httpService.homeEvent)
+            httpService.homeEvent.compose(singleAsync())
 
 }
 

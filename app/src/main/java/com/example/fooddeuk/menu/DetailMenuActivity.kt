@@ -13,13 +13,13 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.custom.ImageVPAdapter
 import com.example.fooddeuk.menu.model.Menu
-import com.example.fooddeuk.network.HTTP
+import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.network.HTTP.singleAsync
 import com.example.fooddeuk.review.ReviewAdapter
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.setting
 import com.example.fooddeuk.util.toJustWon
 import com.example.fooddeuk.util.toPx
-import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_detail_menu.*
 
@@ -45,41 +45,13 @@ class DetailMenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_menu)
-        mGestureDetector = GestureDetector(this, object : GestureDetector.OnGestureListener {
-            override fun onShowPress(e: MotionEvent?) {
-
-            }
-
-            override fun onSingleTapUp(e: MotionEvent?): Boolean {
-                return true
-            }
-
-            override fun onDown(e: MotionEvent?): Boolean {
-                return true
-            }
-
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-                return true
-            }
-
-            override fun onLongPress(e: MotionEvent?) {
-
-            }
-
-            override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-//                parentlinear.translationY=(-1*distanceY)
-                Logger.d(e1?.y)
-                Logger.d(e2?.y)
-                return true
-            }
-        })
 
         mGestureListener = View.OnTouchListener { v, event ->
             if (mGestureDetector.onTouchEvent(event)) {
                 return@OnTouchListener false
             }
             if (event.action == MotionEvent.ACTION_UP) {
-                Logger.d(event.y)
+
             }
             false
         }
@@ -110,7 +82,7 @@ class DetailMenuActivity : AppCompatActivity() {
 
 //        menu_detail_rating.text= Util.stringFormat(this,R.string.rest_rating_and_review_cnt,menu.rating.toString(),menu.reviewCnt.toString())
 
-        HTTP.single(HTTP.httpService.getReview(menu.menu_id)).subscribe({
+        httpService.getReview(menu.menu_id).compose(singleAsync()).subscribe({
             menu_detail_review.setting(ReviewAdapter(this, it.result, true), false, false, true)
 
         }, {

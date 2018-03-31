@@ -1,5 +1,6 @@
 package com.example.fooddeuk.restaurant.model;
 
+import com.example.fooddeuk.map.RestaurantClusterModel;
 import com.example.fooddeuk.menu.model.MenuCategory;
 import com.google.gson.annotations.SerializedName;
 import io.realm.RealmList;
@@ -43,7 +44,35 @@ public class Restaurant extends RealmObject {
 
 
 
+
+
     public Restaurant(){
+
+    }
+    public Restaurant(RestaurantClusterModel restaurantClusterModel){
+      _id=restaurantClusterModel._id;
+      rest_id=restaurantClusterModel.rest_id;
+      name=restaurantClusterModel.name;
+      tel=restaurantClusterModel.tel;
+      address=restaurantClusterModel.address;
+      picture=new RealmList<>();
+      picture.addAll(restaurantClusterModel.picture);
+      openTime=restaurantClusterModel.openTime;
+      closeTime=restaurantClusterModel.closeTime;
+      holiday=restaurantClusterModel.holiday;
+      rating=restaurantClusterModel.rating;
+      description=restaurantClusterModel.description;
+      dangolCnt=restaurantClusterModel.dangolCnt;
+      likeCnt=restaurantClusterModel.likeCnt;
+      reviewCnt=restaurantClusterModel.reviewCnt;
+      avg_cooking_time=restaurantClusterModel.avg_cooking_time;
+      discount=restaurantClusterModel.discount;
+      owner_id=restaurantClusterModel.owner_id;
+      distance=restaurantClusterModel.distance;
+      orderCnt=restaurantClusterModel.orderCnt;
+      lat=restaurantClusterModel.lat;
+      lng=restaurantClusterModel.lng;
+      menuCategory=restaurantClusterModel.menuCategory;
 
     }
 
@@ -259,4 +288,33 @@ public class Restaurant extends RealmObject {
       ArrayList<MenuCategory> menuCategory) {
         this.menuCategory = menuCategory;
     }
+
+  @Override
+  public String toString() {
+    return "Restaurant{" +
+        "_id='" + _id + '\'' +
+        ", rest_id='" + rest_id + '\'' +
+        ", name='" + name + '\'' +
+        ", tel='" + tel + '\'' +
+        ", address='" + address + '\'' +
+        ", picture=" + picture +
+        ", openTime='" + openTime + '\'' +
+        ", closeTime='" + closeTime + '\'' +
+        ", holiday='" + holiday + '\'' +
+        ", rating=" + rating +
+        ", description='" + description + '\'' +
+        ", dangolCnt=" + dangolCnt +
+        ", likeCnt=" + likeCnt +
+        ", reviewCnt=" + reviewCnt +
+        ", avg_cooking_time='" + avg_cooking_time + '\'' +
+        ", discount='" + discount + '\'' +
+        ", owner_id=" + owner_id +
+        ", distance='" + distance + '\'' +
+        ", orderCnt=" + orderCnt +
+        ", lat=" + lat +
+        ", lng=" + lng +
+        ", menuCategory=" + menuCategory +
+        ", fixedPrimarykey=" + fixedPrimarykey +
+        '}';
+  }
 }

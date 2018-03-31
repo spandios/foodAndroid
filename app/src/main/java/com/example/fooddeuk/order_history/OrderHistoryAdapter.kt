@@ -28,8 +28,7 @@ class OrderHistoryAdapter(private val context : Context, private val responses:A
         return if (viewType==orderIng){
             OrderHistoryViewHolder(context, parent).apply {
                 itemView.order_list_static_map.setOnClickListener({
-                    RxBus.publish(RxBus.OneRestaurantMapData,responses[adapterPosition].restaurant._id)
-                    (context as OrderHistoryActivity).StartActivity(OrderHistoryMapActivity::class.java)
+                    context.StartActivity(RxBus.OneRestaurantMapData,responses[adapterPosition].restaurant._id,OrderHistoryMapActivity::class.java)
                 })
             }
         } else{

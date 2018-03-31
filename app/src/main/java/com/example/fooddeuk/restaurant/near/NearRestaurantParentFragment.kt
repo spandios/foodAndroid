@@ -117,7 +117,7 @@ class NearRestaurantParentFragment : Fragment(), NearRestaurantContract.View {
         }
 
         val distanceList = ArrayList<String>().apply {
-            add("거리순")
+            add("최대거리")
             add("horizontal")
             add(getString(R.string.filter_distance_3km))
             add(getString(R.string.filter_distance_6km))
@@ -185,11 +185,10 @@ class NearRestaurantParentFragment : Fragment(), NearRestaurantContract.View {
                     //현재위치에서 재 검색
                     startLoading()
                     Location.buzy = true
-                    Location.getLocation { lat, lng ->
+                    Location.getLocation { lat, lng,locationName ->
                         Location.buzy = false
                         stopLoading()
-                        nearRestaurantPresenter.getLocation(lat, lng)
-                        nearRestaurantPresenter.refreshRestaurant()
+                        nearRestaurantPresenter.updateRestaurantByLocation(locationName)
                     }
                 }
                 1 -> {
@@ -234,22 +233,16 @@ class NearRestaurantParentFragment : Fragment(), NearRestaurantContract.View {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> NearRestaurantListFragment.newInstance(queryMap(""))
-
                 1 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type1)))
-
                 2 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type2)))
-
                 3 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type3)))
-
                 4 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type4)))
-
                 5 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type5)))
-
                 6 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type6)))
-
-                else -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type0)))
+                7 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type7)))
+                8 -> NearRestaurantListFragment.newInstance(queryMap(getString(R.string.restaurant_menu_type8)))
+                else -> NearRestaurantListFragment.newInstance(queryMap(""))
             }
-
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -267,7 +260,9 @@ class NearRestaurantParentFragment : Fragment(), NearRestaurantContract.View {
                 4 -> getString(R.string.restaurant_menu_type4)
                 5 -> getString(R.string.restaurant_menu_type5)
                 6 -> getString(R.string.restaurant_menu_type6)
-                else -> null
+                7-> getString(R.string.restaurant_menu_type7)
+                8->getString(R.string.restaurant_menu_type8)
+                else -> getString(R.string.restaurant_menu_type0)
             }
         }
     }

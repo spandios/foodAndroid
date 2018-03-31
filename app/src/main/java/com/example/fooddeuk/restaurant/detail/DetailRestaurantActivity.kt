@@ -175,6 +175,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
             setSelectedTabIndicatorHeight(0)
         }
 
+
         rest_detail_name.text = restaurant.name
 
         //finish

@@ -7,18 +7,21 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.fooddeuk.R
 import com.example.fooddeuk.cart.CartFragment
-import com.example.fooddeuk.pick.PickFragment
 import com.example.fooddeuk.home.HomeFragment
+import com.example.fooddeuk.pick.PickFragment
 import com.example.fooddeuk.restaurant.near.NearRestaurantParentFragment
 import com.example.fooddeuk.user.UserFragment
 import com.example.fooddeuk.util.NetworkUtil
 import com.example.fooddeuk.util.SettingActivityUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
+
+
 class MainActivity : BaseActivity() {
     private var homeFragmentFlag = true
     private var fragments: ArrayList<Fragment> = ArrayList()
     lateinit var fragmentPager : FragmentStatePagerAdapter
+
     companion object {
         private const val GpsSettingActivityRequestCode = 0
     }

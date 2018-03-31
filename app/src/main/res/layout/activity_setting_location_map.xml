@@ -6,18 +6,17 @@
     android:id="@+id/basic"
     android:layout_height="match_parent"
     >
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.7">
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="X"
-            android:id="@+id/currentLocationSettingByMapCancel"
+
+            android:id="@+id/back"
             android:layout_alignTop="@+id/currentLocationSettingByMapTitle"
-            android:textSize="20dp"
+            android:src="@drawable/backbutton"
             android:layout_marginLeft="18dp"
             android:layout_marginStart="18dp" />
         <TextView
@@ -25,21 +24,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="20dp"
+            android:textSize="18sp"
             android:text="위치선정"
             android:id="@+id/currentLocationSettingByMapTitle" />
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_weight="0.3">
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:id="@+id/currentLocationSettingByMapTitleLocation"
+            android:id="@+id/location_title"
+          android:textSize="14sp"
+          android:textColor="@color/text_main"
+          android:textStyle="bold"
             android:text=""/>
 
     </RelativeLayout>
@@ -55,9 +57,10 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_centerInParent="true"
+
             android:background="@drawable/ic_drop_down" />
     </RelativeLayout>
 
@@ -69,7 +72,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/currentLocationSettingByMapConfirmButton"
+            android:id="@+id/confirm"
             android:text="이곳을 현재 위치로 설정"/>
 
     </LinearLayout>

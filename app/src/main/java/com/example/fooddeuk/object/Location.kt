@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import com.example.fooddeuk.network.HTTP.httpService
-import com.example.fooddeuk.network.HTTP.single
+import com.example.fooddeuk.network.HTTP.singleAsync
 import com.google.android.gms.location.*
 import java.util.*
 
@@ -33,7 +33,7 @@ object Location {
     }
 
     @SuppressLint("MissingPermission")
-    fun getLocation(callback : (lat : Double, lng : Double)->Unit) {
+    fun getLocation(callback : (lat : Double, lng : Double, locationName : String)->Unit) {
         val getLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
@@ -42,7 +42,7 @@ object Location {
                 getLocationName(lat, lng,{
                     mFusedLocationClient.removeLocationUpdates(this)
                     locationName=it
-                    callback(lat, lng)
+                    callback(lat, lng, locationName)
                 })
 
             }
@@ -55,9 +55,10 @@ object Location {
     fun getLocationName(lat: Double = Location.lat, lng: Double = Location.lng,callback : (gudong : String)->Unit){
         try {
             //좌표->주소
-            single(httpService.getLocationNameByNaver("$lng,$lat")).subscribe({
+            httpService.getLocationNameByNaver("$lng,$lat").compose(singleAsync()).subscribe({
 
                 if(it.gudong == "error"){
+
                     val addresses: Address = geocoder.getFromLocation(lat, lng, 1)[0]
                     //구 없으면 시
                     val subLocality = if (addresses.subLocality != null) addresses.subLocality else addresses.locality
@@ -71,17 +72,18 @@ object Location {
                         callback(addresses.getAddressLine(0).substring(12))
                     }
                 }else{
+
                     callback(it.gudong)
                 }
             },{
                 it.printStackTrace()
-                callback("error")
+                callback("주소를 불러올 수 없습니다")
             })
 
 
         }
         catch (e: Exception) {
-            callback("주소 오류")
+            callback("주소를 불러올 수 없습니다")
             e.printStackTrace()
         }
     }

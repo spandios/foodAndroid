@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_order_history_map.*
 
@@ -35,19 +36,14 @@ import kotlinx.android.synthetic.main.activity_order_history_map.*
  * Created by heo on 2018. 1. 27..
  */
 
-class OrderHistoryMapActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListener {
+class OrderHistoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var _id: String
     private lateinit var restaurant: Restaurant
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_history_map)
-
-        RxBus.intentSubscribe(RxBus.OneRestaurantMapData, this@OrderHistoryMapActivity.javaClass, Consumer {
-            if (it is String) {
-                _id = it
-            }
-        })
-
+        order_list_map_back.setOnClickListener { finish() }
         (supportFragmentManager.findFragmentById(R.id.order_history_map) as SupportMapFragment).apply { getMapAsync(this@OrderHistoryMapActivity) }
     }
 
@@ -55,15 +51,19 @@ class OrderHistoryMapActivity : AppCompatActivity(), OnMapReadyCallback, View.On
         super.onDestroy()
         RxBus.intentUnregister(this@OrderHistoryMapActivity.javaClass)
     }
-    override fun onClick(p0: View?) {
-        finish()
-    }
+
 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.apply {
+            RxBus.intentSubscribe(RxBus.OneRestaurantMapData, this@OrderHistoryMapActivity.javaClass, Consumer {
+                if (it is String) {
+                    Logger.d(it)
+                    _id = it
+                }
 
             httpService.getRestaurantById(_id).compose(singleAsync()).subscribe({
                 if (it.status == "SUCCESS") {
+                    Logger.d(it.restaurants[0])
                     restaurant = it.restaurants[0]
                     order_list_map_title.text = restaurant.name
                     val latLng = LatLng(restaurant.lat, restaurant.lng)
@@ -126,7 +126,7 @@ class OrderHistoryMapActivity : AppCompatActivity(), OnMapReadyCallback, View.On
                 it.printStackTrace()
             })
 
-
+        })
         }
 
 

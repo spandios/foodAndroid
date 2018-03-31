@@ -6,10 +6,10 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by heo on 2018. 3. 12..
  */
+
 interface BasePresenter {
 
-    var compositeDisposable: CompositeDisposable
-
+    var compositeDisposable : CompositeDisposable
     fun addDisposable(disposable: Disposable) {
         compositeDisposable.add(disposable)
     }
@@ -17,8 +17,6 @@ interface BasePresenter {
     fun clearDisposable() {
         compositeDisposable.clear()
     }
-
-
 }
 
 

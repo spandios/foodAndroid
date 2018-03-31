@@ -34,8 +34,11 @@
   <string name="restaurant_menu_type2">치킨</string>
   <string name="restaurant_menu_type3">중식</string>
   <string name="restaurant_menu_type4">한식</string>
-  <string name="restaurant_menu_type5">디저트</string>
-  <string name="restaurant_menu_type6">커피</string>
+  <string name="restaurant_menu_type5">까페</string>
+  <string name="restaurant_menu_type6">타이</string>
+  <string name="restaurant_menu_type7">프랜차이즈</string>
+  <string name="restaurant_menu_type8">디저트</string>
+
   <string name="restaurant_admin_comment">사장님댓글</string>
 
   <!--필터-->

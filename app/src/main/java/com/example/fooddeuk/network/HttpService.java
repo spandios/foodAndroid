@@ -80,6 +80,9 @@ public interface HttpService {
     @GET("api/restaurant/getLocationName")
     Single<LocationResult> getLocationNameByNaver(@Query("query")String lnglat);
 
+  @GET("api/restaurant/getLocationName")
+  Single<LocationResult> getLocationNameByNaver(@Query("query")String lnglat,@Query("dong")Boolean dong);
+
   @GET("api/menu/getHotMenu")
   Single<List<Menu>> getHotMenu(@Query("lat") Double lat, @Query("lng") Double lng);
 

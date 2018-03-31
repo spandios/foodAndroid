@@ -61,9 +61,11 @@ class RestaurantAdapter(private val context: Context, private var restaurantItem
 
 
 
-    fun updateRestaurant(restaurant: ArrayList<Restaurant>) {
+    fun updateRestaurant(restaurant: ArrayList<Restaurant>?) {
         restaurantItem.clear()
-        restaurantItem.addAll(restaurant)
+        restaurant?.let {
+            restaurantItem.addAll(it)
+        }
         notifyDataSetChanged()
     }
 }

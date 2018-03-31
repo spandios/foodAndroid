@@ -85,7 +85,14 @@ dependencies {
     compile 'com.google.android.gms:play-services-basement:11.4.2'
     compile 'com.google.android.gms:play-services-maps:11.4.2'
     compile 'com.google.android.gms:play-services-location:11.4.2'
+    compile 'com.google.maps.android:android-maps-utils:0.4+'
 
+    compile 'com.google.dagger:dagger:2.14.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    compile 'com.google.dagger:dagger-android:2.12'
+    compile 'com.google.dagger:dagger-android-support:2.11'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.12'
+    kapt "com.google.dagger:dagger-compiler:2.14.1"
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -105,7 +112,6 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     compile 'com.afollestad.material-dialogs:core:0.9.6.0'
 
-    compile 'com.google.dagger:dagger:2.13'
 
 
 
@@ -136,6 +142,7 @@ dependencies {
     compile('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
+    compile 'me.grantland:autofittextview:0.2+'
 
 
 
@@ -148,7 +155,6 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support:support-annotations:27.0.2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true

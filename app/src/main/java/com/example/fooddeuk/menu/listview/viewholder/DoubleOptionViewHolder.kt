@@ -9,8 +9,8 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.menu.listview.MenuDetailViewPagerAdapter
 import com.example.fooddeuk.menu.model.Menu
-import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.network.HTTP.singleAsync
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_menu_have_picture.view.*
@@ -31,7 +31,7 @@ class DoubleOptionViewHolder(var context: Context, itemView: View) : RecyclerVie
         if (menu.rating.length == 1) {
             menu.rating += ".0"
         }
-        HTTP.single(httpService.getReview(menu.menu_id)).subscribe({
+        httpService.getReview(menu.menu_id).compose(singleAsync()).subscribe({
             if(it.success){
                 val menuDetailViewPager = MenuDetailViewPagerAdapter(context, menu, it.result)
                 vpMenuDetail.adapter=menuDetailViewPager

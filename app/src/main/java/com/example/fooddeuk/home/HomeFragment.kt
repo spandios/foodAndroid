@@ -15,12 +15,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
+import com.example.fooddeuk.`object`.GlobalVariable
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.custom.CustomFilterDialog
 import com.example.fooddeuk.custom.ImageVPAdapter
 import com.example.fooddeuk.map.LocationSettingByMapActivity
+import com.example.fooddeuk.map.MapActivity
 import com.example.fooddeuk.pick.PickAdapter
-import com.example.fooddeuk.restaurant.home.HomeRestaurantActivity
+import com.example.fooddeuk.restaurant.home.HomeRestaurantByMenuActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.*
@@ -30,12 +32,11 @@ import kotlinx.android.synthetic.main.fragment_home_content.*
 
 //, AppBarLayout.OnOffsetChangedListener
 class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeContract.View, View.OnClickListener {
+
+
     private lateinit var locationSettingDialog: CustomFilterDialog
     private lateinit var homePresenter: HomePresenter
 
-    companion object {
-        val menu_anything = 0
-    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -43,13 +44,10 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         renderView()
     }
 
-
     override fun onResume() {
         super.onResume()
         setAddressText(Location.locationName)
-        homePresenter = HomePresenter().apply {
-            view = this@HomeFragment
-        }
+        homePresenter = HomePresenter().apply { view=this@HomeFragment }
         homePresenter.setAddress()
         homePresenter.setHomeEvent()
         homePresenter.getDangolRestaurant()
@@ -78,18 +76,55 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         }
         setLocationDialog()
         setClickHomeMenu()
+        setClickHomeLocation()
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.home_menu_anything -> {
-                context!!.StatAcitivity(RxBus.HomeMenuActivityData, HomeFragment.menu_anything, HomeRestaurantActivity::class.java)
-            }
+            R.id.home_menu_anything -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.ANYTHING, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_japan -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.JAPAN, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_chicken -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.CHICKEN, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_chinese -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.CHINESE, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_korean -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.KOREAN, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_cafe -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.CAFE, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_thai -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.THAI, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_franchise -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.FRANCHISE, HomeRestaurantByMenuActivity::class.java)
+            R.id.home_menu_dessert -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.DESSERT, HomeRestaurantByMenuActivity::class.java)
+
+            R.id.home_location_map -> context?.StartActivity(RxBus.MapActivityData,queryMap(),MapActivity::class.java)
+//            R.id.home_location_metro ->context?.StartActivity(RxBus.MapActivityData,"",MapActivity::class.java)
+//            R.id.home_location_univ ->context?.StartActivity(RxBus.MapActivityData,"",MapActivity::class.java)
+
+        }
+    }
+
+    fun queryMap(): HashMap<String, String> {
+        return HashMap<String, String>().apply {
+            put("curLat", Location.lat.toString())
+            put("curLng", Location.lng.toString())
+            put("foodType", "")
+            put("filter", "")
+            put("restaurantName", "")
         }
     }
 
     private fun setClickHomeMenu() {
         home_menu_anything.setOnClickListener(this)
+        home_menu_japan.setOnClickListener(this)
+        home_menu_chicken.setOnClickListener(this)
+        home_menu_chinese.setOnClickListener(this)
+        home_menu_korean.setOnClickListener(this)
+        home_menu_cafe.setOnClickListener(this)
+        home_menu_thai.setOnClickListener(this)
+        home_menu_franchise.setOnClickListener(this)
+        home_menu_dessert.setOnClickListener(this)
+
+    }
+
+    private fun setClickHomeLocation(){
+        home_location_map.setOnClickListener(this)
+        home_location_metro.setOnClickListener(this)
+        home_location_univ.setOnClickListener(this)
     }
 
 
@@ -153,10 +188,10 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
                     //현재위치에서 재 검색
                     startLoading()
                     Location.buzy = true
-                    Location.getLocation { lat, lng ->
+                    Location.getLocation { _, _, locationName ->
                         Location.buzy = false
                         stopLoading()
-                        homePresenter.getLocation(lat, lng)
+                        homePresenter.setLocationName(locationName)
                     }
                 }
                 1 -> {

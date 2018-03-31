@@ -40,14 +40,14 @@ object HTTP {
         return SingleTransformer { single -> single.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) }
     }
 
-    fun <T> observable(): ObservableTransformer<T, T> {
+    fun <T> observableAsync(): ObservableTransformer<T, T> {
         return ObservableTransformer { observable ->
             observable.subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
         }
     }
 
-    fun complete(): CompletableTransformer {
+    fun completeAsync(): CompletableTransformer {
         return CompletableTransformer { completable -> completable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) }
     }
 

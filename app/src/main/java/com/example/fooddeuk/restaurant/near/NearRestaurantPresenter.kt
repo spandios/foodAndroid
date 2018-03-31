@@ -1,8 +1,5 @@
 package com.example.fooddeuk.restaurant.near
 
-import com.example.fooddeuk.`object`.Location
-import com.example.fooddeuk.network.HTTP
-import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.restaurant.repository.RestaurantRepository
 import io.reactivex.disposables.CompositeDisposable
 
@@ -19,7 +16,7 @@ interface NearRestaurantContract{
     }
     interface Presenter{
         var view : View
-        fun getLocation(lat: Double, lng: Double)
+        fun updateRestaurantByLocation(locationName : String)
         fun refreshRestaurant()
         fun clear()
     }
@@ -30,15 +27,10 @@ class NearRestaurantPresenter : NearRestaurantContract.Presenter {
     private var compositeDisposable = CompositeDisposable()
 
 
-    override fun getLocation(lat: Double, lng: Double) {
-        compositeDisposable.add(HTTP.single(httpService.getLocationNameByNaver("$lng,$lat")).subscribe({
-            view.setAddressText(it.gudong)
-            Location.locationName = it.gudong
+    override fun updateRestaurantByLocation(locationName: String) {
+            view.setAddressText(locationName)
             refreshRestaurant()
-        }, {
-            view.showAddressError()
-            it.printStackTrace()
-        }))
+
     }
 
     override fun refreshRestaurant() {

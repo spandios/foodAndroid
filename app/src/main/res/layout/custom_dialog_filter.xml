@@ -25,7 +25,7 @@
             android:id="@+id/txt_filter_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textColor="@color/text_main"
             android:text="초기화"
             app:layout_constraintTop_toTopOf="parent"

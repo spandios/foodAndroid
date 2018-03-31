@@ -138,10 +138,11 @@ fun Context.StatAcitivity(t: Class<*>) {
     this.startActivity(Intent(this, t))
 }
 
-fun Context.StatAcitivity(version: Int, data: Any, t: Class<*>) {
+fun Context.StartActivity(version: Int, data: Any, t: Class<*>) {
     RxBus.intentPublish(version, data)
     this.startActivity(Intent(this, t))
 }
+
 
 fun AppCompatActivity.StartActivity(t: Class<*>) {
     this.startActivity(Intent(this, t))
@@ -155,6 +156,7 @@ fun AppCompatActivity.StatAcitivity(version: Int, data: Any, t: Class<*>) {
     RxBus.intentPublish(version, data)
     this.startActivity(Intent(this, t))
 }
+
 
 fun View.gone(){
     this.visibility=View.GONE

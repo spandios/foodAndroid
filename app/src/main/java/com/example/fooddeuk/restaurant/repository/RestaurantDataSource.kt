@@ -10,7 +10,7 @@ import io.reactivex.Single
 interface RestaurantDataSource {
 
 
-    fun getNearRestaurantList(queryMap: HashMap<String,String>) : Single<RestaurantResponse>
+    fun getRestaurantList(queryMap: HashMap<String,String>) : Single<RestaurantResponse>
 
     fun getDangolRestaurant(): Single<ArrayList<Restaurant>>?
 

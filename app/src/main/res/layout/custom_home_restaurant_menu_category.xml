@@ -2,7 +2,7 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   android:orientation="horizontal"
   >
 
@@ -10,8 +10,9 @@
     style="@style/HomeRestaurantHeaderOptionForMenu"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:tag="아무거나"
+    android:tag=""
     android:text="#아무거나"
+
     />
 
   <TextView

@@ -21,8 +21,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class GlobalApplication extends Application {
-    public static final String AWSURL = "http://13.124.159.166";
+public class GlobalApplication extends Application{
+
+  public static final String AWSURL = "http://13.124.159.166";
     public static final String LOCALHOST = "http://10.0.2.2:3000";
     public static double lat;
     public static double lng;
@@ -57,6 +58,7 @@ public class GlobalApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
 //        Fabric.with(this, new Crashlytics());
         instance=this;
         FirebaseApp.initializeApp(this);

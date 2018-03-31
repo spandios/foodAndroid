@@ -3,6 +3,7 @@ package com.example.fooddeuk.`object`
 import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.network.HTTP.completable
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.network.HTTP.singleAsync
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.user.UserResponse
 import com.example.fooddeuk.util.RealmUtil
@@ -136,7 +137,7 @@ object Login {
 
     fun getUser(provider_id: String, callback: (err: Throwable?, userResponse: UserResponse?) -> Unit) {
         Logger.d(provider_id)
-        HTTP.single(httpService.getUser(provider_id)).subscribe(
+        httpService.getUser(provider_id).compose(singleAsync()).subscribe(
                 { userResponse ->
                     Logger.d(userResponse)
                     callback(null, userResponse) }, { throwable -> callback(throwable, null) })

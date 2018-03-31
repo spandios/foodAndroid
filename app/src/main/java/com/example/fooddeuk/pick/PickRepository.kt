@@ -3,8 +3,8 @@ package com.example.fooddeuk.pick
 import com.example.fooddeuk.BaseRepository
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.menu.model.Menu
-import com.example.fooddeuk.network.HTTP
 import com.example.fooddeuk.network.HTTP.httpService
+import com.example.fooddeuk.network.HTTP.singleAsync
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.util.RealmUtil
@@ -31,7 +31,7 @@ object DangolRepository : BasePickRepository() {
 
         user?.let {
             val restList = ArrayList<String>().apply { addAll(it.rest_id) }
-            val dangolListRx = HTTP.single(httpService.getDangolRestaurant(restList))
+            val dangolListRx = httpService.getDangolRestaurant(restList).compose(singleAsync())
             isDirty = false
             cachedDangolList = dangolListRx
             callback(dangolListRx)
@@ -47,7 +47,7 @@ object HotMenuRepository : BaseRepository() {
             callback(cachedHotMenuList!!)
         }
 
-        HTTP.single(httpService.getHotMenu(Location.lat, Location.lng)).let {
+        httpService.getHotMenu(Location.lat, Location.lng).compose(singleAsync()).let {
             isDirty = false
             cachedHotMenuList = it
             callback(it)
@@ -64,7 +64,7 @@ object HotRestaurantRepository : BaseRepository() {
             callback(cachedHotRestaurantList!!)
         }
 
-        HTTP.single(httpService.getHotRestaurant(Location.lat,Location.lng)).let{
+        httpService.getHotRestaurant(Location.lat,Location.lng).compose(singleAsync()).let{
             isDirty=false
             cachedHotRestaurantList = it
             callback(it)

@@ -10,7 +10,7 @@ import io.reactivex.Single
  * Created by heo on 2018. 2. 17..
  */
 object RestaurantRepository : RestaurantDataSource {
-    private var isMenuDirty = Array(7, { i -> true })
+    private var isMenuDirty = Array(9, { i -> true })
     private var isDangolDirty = true
     private var isImageDirty = true
     private var cachedAllMenu: Single<RestaurantResponse>? = null
@@ -18,8 +18,10 @@ object RestaurantRepository : RestaurantDataSource {
     private var cachedChickenMenu: Single<RestaurantResponse>? = null
     private var cachedChineseMenu: Single<RestaurantResponse>? = null
     private var cachedKoreanMenu: Single<RestaurantResponse>? = null
-    private var cachedDessertMenu: Single<RestaurantResponse>? = null
     private var cachedCoffeeMenu: Single<RestaurantResponse>? = null
+    private var cachedThaiMenu: Single<RestaurantResponse>? = null
+    private var cachedFranChaiseMenu: Single<RestaurantResponse>? = null
+    private var cachedDessertMenu: Single<RestaurantResponse>? = null
     private var restaurantImage = HashMap<String, Single<ArrayList<String>>>()
     private var cachedHotRestaurant: Single<ArrayList<Restaurant>>? = null
     var cachedDangolList: Single<ArrayList<Restaurant>>? = null
@@ -48,7 +50,7 @@ object RestaurantRepository : RestaurantDataSource {
         }
     }
 
-    override fun getNearRestaurantList(queryMap: HashMap<String, String>): Single<RestaurantResponse> {
+    override fun getRestaurantList(queryMap: HashMap<String, String>): Single<RestaurantResponse> {
         when (queryMap["foodType"]) {
             "" -> {
                 if (!isMenuDirty[0] && cachedAllMenu != null) {
@@ -64,36 +66,49 @@ object RestaurantRepository : RestaurantDataSource {
             }
             "치킨" -> {
                 if (!isMenuDirty[2] && cachedChickenMenu != null) {
-                    Logger.d("is cached Japaness")
+                    Logger.d("is cached chicken")
                     return cachedChickenMenu as Single<RestaurantResponse>
                 }
 
             }
             "중식" -> {
                 if (!isMenuDirty[3] && cachedChineseMenu != null) {
-                    Logger.d("is cached Japaness")
+                    Logger.d("is cached chinse")
                     return cachedChineseMenu as Single<RestaurantResponse>
                 }
 
             }
             "한식" -> {
                 if (!isMenuDirty[4] && cachedKoreanMenu != null) {
-                    Logger.d("is cached Japaness")
+                    Logger.d("is cached korean")
                     return cachedKoreanMenu as Single<RestaurantResponse>
                 }
 
             }
-            "디저트" -> {
-                if (!isMenuDirty[5] && cachedDessertMenu != null) {
-                    Logger.d("is cached Japaness")
+            "까페" -> {
+                if (!isMenuDirty[5] && cachedCoffeeMenu != null) {
+                    Logger.d("is cached coffe")
                     return cachedCoffeeMenu as Single<RestaurantResponse>
                 }
 
             }
-            "커피" -> {
-                if (!isMenuDirty[6] && cachedCoffeeMenu != null) {
-                    Logger.d("is cached Japaness")
-                    return cachedCoffeeMenu as Single<RestaurantResponse>
+            "타이" -> {
+                if (!isMenuDirty[6] && cachedThaiMenu != null) {
+                    Logger.d("is cached thai")
+                    return cachedThaiMenu as Single<RestaurantResponse>
+                }
+            }
+            "프랜차이즈" -> {
+                if (!isMenuDirty[7] && cachedFranChaiseMenu != null) {
+                    Logger.d("is cached franchise")
+                    return cachedFranChaiseMenu as Single<RestaurantResponse>
+                }
+
+            }
+            "디저트" -> {
+                if (!isMenuDirty[8] && cachedDessertMenu != null) {
+                    Logger.d("is cached dessert")
+                    return cachedDessertMenu as Single<RestaurantResponse>
                 }
 
             }
@@ -121,45 +136,57 @@ object RestaurantRepository : RestaurantDataSource {
         when (queryMap["foodType"]) {
 
             "" -> {
-                return RestaurantRemoteRepository.getNearRestaurantList(queryMap).apply {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
                     cachedAllMenu = this
                     isMenuDirty[0] = false
                 }
             }
             "일식" -> {
-                return RestaurantRemoteRepository.getNearRestaurantList(queryMap).apply {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
                     cachedJapaneseMenu = this
                     isMenuDirty[1] = false
                 }
             }
             "치킨" -> {
-                return RestaurantRemoteRepository.getNearRestaurantList(queryMap).apply {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
                     cachedChickenMenu = this
                     isMenuDirty[2] = false
                 }
             }
             "중식" -> {
-                return RestaurantRemoteRepository.getNearRestaurantList(queryMap).apply {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
                     cachedChineseMenu = this
                     isMenuDirty[3] = false
                 }
             }
             "한식" -> {
-                return RestaurantRemoteRepository.getNearRestaurantList(queryMap).apply {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
                     cachedKoreanMenu = this
                     isMenuDirty[4] = false
                 }
             }
-            "디저트" -> {
-                return RestaurantRemoteRepository.getNearRestaurantList(queryMap).apply {
-                    cachedDessertMenu = this
+            "까페" -> {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
+                    cachedCoffeeMenu = this
                     isMenuDirty[5] = false
                 }
             }
-            "커피" -> {
-                return RestaurantRemoteRepository.getNearRestaurantList(queryMap).apply {
-                    cachedCoffeeMenu = this
+            "타이" -> {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
+                    cachedThaiMenu = this
                     isMenuDirty[6] = false
+                }
+            }
+            "프랜차이즈" -> {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
+                    cachedFranChaiseMenu = this
+                    isMenuDirty[7] = false
+                }
+            }
+            "디저트" -> {
+                return RestaurantRemoteRepository.getRestaurantList(queryMap).apply {
+                    cachedDessertMenu = this
+                    isMenuDirty[8] = false
                 }
             }
         }

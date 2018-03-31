@@ -2,7 +2,7 @@ package com.example.fooddeuk.restaurant.repository
 
 import com.example.fooddeuk.`object`.GlobalApplication
 import com.example.fooddeuk.network.HTTP.httpService
-import com.example.fooddeuk.network.HTTP.single
+import com.example.fooddeuk.network.HTTP.singleAsync
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.restaurant.model.RestaurantResponse
 import com.example.fooddeuk.user.User
@@ -23,7 +23,7 @@ object RestaurantRemoteRepository : RestaurantDataSource {
             }
 
             return if (dangolList.isNotEmpty()) {
-                single(httpService.getDangolRestaurant(dangolList))
+                httpService.getDangolRestaurant(dangolList).compose(singleAsync())
             } else {
                 null
             }
@@ -31,11 +31,11 @@ object RestaurantRemoteRepository : RestaurantDataSource {
         } ?: return null
     }
 
-    override fun getNearRestaurantList(queryMap: HashMap<String, String>) : Single<RestaurantResponse> {
-        return single(httpService.getCurrentLocationRestaurant(queryMap))
+    override fun getRestaurantList(queryMap: HashMap<String, String>) : Single<RestaurantResponse> {
+        return httpService.getCurrentLocationRestaurant(queryMap).compose(singleAsync())
     }
 
     override fun getRestaurantImage(_id: String): Single<ArrayList<String>> {
-        return single(httpService.getPicture(_id))
+        return httpService.getPicture(_id).compose(singleAsync())
     }
 }

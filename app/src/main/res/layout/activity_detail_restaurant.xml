@@ -100,11 +100,20 @@
               app:layout_constraintTop_toBottomOf="@id/rest_detail_name_in_list"
               tools:text="9.0(130)"/>
 
-
+            <ImageView
+              android:id="@+id/img_rest_detail_call"
+              android:layout_width="26dp"
+              android:layout_height="26dp"
+              android:src="@drawable/ic_call_black_24dp"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintRight_toLeftOf="@+id/img_rest_detail_map"
+              android:layout_marginRight="@dimen/margin_16"
+              app:layout_constraintTop_toTopOf="parent"
+              />
             <ImageView
               android:id="@+id/img_rest_detail_map"
-              android:layout_width="28dp"
-              android:layout_height="28dp"
+              android:layout_width="26dp"
+              android:layout_height="26dp"
               android:layout_marginRight="@dimen/margin_16"
               android:src="@drawable/ic_find_location_black"
               app:layout_constraintBottom_toBottomOf="parent"
