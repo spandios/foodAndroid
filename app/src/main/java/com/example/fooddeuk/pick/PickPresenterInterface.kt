@@ -33,7 +33,7 @@ interface PickContract {
 
     }
 
-    interface Presenter : BasePresenter {
+    interface PresenterInterface : BasePresenter {
         var view: View
         fun getDangol()
         fun getHotMenu()
@@ -43,7 +43,7 @@ interface PickContract {
 }
 
 
-class PickPresenter : PickContract.Presenter {
+class PickPresenterInterface : PickContract.PresenterInterface {
     private val DANGOL = 1
     private val RECOMMAND = 2
 

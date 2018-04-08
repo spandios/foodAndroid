@@ -18,6 +18,16 @@ class CartAdapter(private val mContext: Context, private var cartItemList: Array
 //        notifyDataSetChanged()
 //    }
 
+    private val havePicture = 0
+    private val noPicture = 1
+
+    override fun getItemViewType(position: Int): Int {
+        return if(cartItemList[position].menu.picture!=null){
+            return havePicture
+        }else{
+            noPicture
+        }
+    }
 
     private fun removeList(position: Int) {
         RealmUtil.removeDataById(CartItem::class.java, cartItemList[position].id)
@@ -31,12 +41,17 @@ class CartAdapter(private val mContext: Context, private var cartItemList: Array
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        val itemView = LayoutInflater.from(mContext).inflate(R.layout.item_cart, parent, false)
-        val vh = CartViewHolder(mContext, itemView)
-        vh.itemView.findViewById<TextView>(R.id.cart_delete_button).setOnClickListener { removeList(vh.adapterPosition) }
-        return vh
-
+        if(viewType==havePicture){
+            val itemView = LayoutInflater.from(mContext).inflate(R.layout.item_cart, parent, false)
+            val vh = CartViewHolder(mContext, itemView)
+            vh.itemView.findViewById<TextView>(R.id.cart_delete_button).setOnClickListener { removeList(vh.adapterPosition) }
+            return vh
+        }else{
+            val itemView = LayoutInflater.from(mContext).inflate(R.layout.item_cart_no_picture, parent, false)
+            val vh = CartViewHolder(mContext, itemView)
+            vh.itemView.findViewById<TextView>(R.id.cart_delete_button).setOnClickListener { removeList(vh.adapterPosition) }
+            return vh
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

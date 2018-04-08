@@ -19,7 +19,7 @@
     >
 
     <ImageView
-      android:id="@+id/home_restaurant_back"
+      android:id="@+id/home_back"
       android:layout_width="32dp"
       android:layout_height="32dp"
       android:src="@drawable/backbutton"
@@ -41,7 +41,7 @@
       app:layout_constraintEnd_toStartOf="@+id/home_restaurant_address"
       app:layout_constraintHorizontal_bias="0.1"
       app:layout_constraintHorizontal_chainStyle="packed"
-      app:layout_constraintStart_toEndOf="@id/home_restaurant_back"
+      app:layout_constraintStart_toEndOf="@id/home_back"
       app:layout_constraintTop_toTopOf="parent"/>
 
 
@@ -79,6 +79,7 @@
       android:textColor="@color/white"
       android:textSize="13.5sp"
       android:visibility="gone"
+      tools:visibility="visible"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@+id/home_restaurant_map"
       app:layout_constraintStart_toEndOf="@id/home_restaurant_address"
@@ -143,6 +144,15 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         />
+
+      <com.example.fooddeuk.custom.CustomHomeRestaurantFilter
+        android:id="@+id/header_option_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+
+
 
 
     </FrameLayout>

@@ -24,7 +24,12 @@ public class CartMenu extends RealmObject {
         this.menu_id = menu.menu_id;
         this.name = menu.name;
         this.price = menu.price;
-      this.picture = menu.picture.get(0);
+        if(menu.picture.size()!=0){
+            this.picture = menu.picture.get(0);
+        }else{
+            this.picture=null;
+        }
+
         this.avgtime = menu.avgtime;
     }
 

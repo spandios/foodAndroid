@@ -22,14 +22,14 @@ import kotlinx.android.synthetic.main.fragment_pick.*
 
 class PickFragment : Fragment(), PickContract.View {
 
-    private lateinit var pickPresenter: PickPresenter
+    private lateinit var pickPresenter: PickPresenterInterface
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_pick, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         pick_parent.setBackgroundColor(Color.WHITE)
-        pickPresenter= PickPresenter().apply { view=this@PickFragment }
+        pickPresenter= PickPresenterInterface().apply { view=this@PickFragment }
     }
 
 

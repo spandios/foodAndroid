@@ -15,8 +15,8 @@ import java.util.*
  * Created by heojuyeong on 2017. 10. 9..
  */
 
-class RestaurantAdapter(private val context: Context, private var restaurantItem: ArrayList<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
-    lateinit var restaurantItemClickListener: (restaurant : Restaurant)->Unit
+class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayList<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
+    lateinit var restaurantItemClickListener: (restaurant: Restaurant) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -30,12 +30,6 @@ class RestaurantAdapter(private val context: Context, private var restaurantItem
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = restaurantItem[position]
         holder.bind(item)
-
-        //        holder.star_restaurant_list.setNumStars(item.rating);
-
-        //        setStarView(item.rating, holder.restaurantRatingStarInList);
-
-
     }
 
     override fun getItemCount(): Int = restaurantItem.size
@@ -58,7 +52,6 @@ class RestaurantAdapter(private val context: Context, private var restaurantItem
         }
 
     }
-
 
 
     fun updateRestaurant(restaurant: ArrayList<Restaurant>?) {

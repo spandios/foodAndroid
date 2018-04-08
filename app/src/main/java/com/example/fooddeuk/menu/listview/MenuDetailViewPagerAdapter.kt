@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.fooddeuk.R
-import com.example.fooddeuk.review.ReviewAdapter
 import com.example.fooddeuk.menu.model.Menu
 import com.example.fooddeuk.review.MenuReview
+import com.example.fooddeuk.review.ReviewAdapter
 import com.example.fooddeuk.util.LayoutUtil
 import com.squareup.picasso.Picasso
 
@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso
  * Created by heo on 2018. 2. 22..
  */
 
-class MenuDetailViewPagerAdapter(var context: Context, val menu: Menu, val menuReivew : ArrayList<MenuReview>) : PagerAdapter() {
+class MenuDetailViewPagerAdapter(var context: Context, val menu: Menu, val menuReivew : ArrayList<MenuReview>,val noPicture : Boolean = false) : PagerAdapter() {
     private var layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var vpCount = 0
 
@@ -32,8 +32,17 @@ class MenuDetailViewPagerAdapter(var context: Context, val menu: Menu, val menuR
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        if (position < vpCount - 1) {
+        if(noPicture){
+            val reviewLayout = layoutInflater.inflate(R.layout.item_vp_menu_detail_review, container, false)
+            val reviewRecyclerView = reviewLayout.findViewById<RecyclerView>(R.id.recycle_item_menu_detail_review)
+            LayoutUtil.RecyclerViewSetting(context, reviewRecyclerView)
+            reviewRecyclerView.adapter = ReviewAdapter(context, menuReivew, true)
+            container.addView(reviewLayout)
+            return reviewLayout
 
+        }
+
+        if (position < vpCount - 1) {
             val imageViewLayout = layoutInflater.inflate(R.layout.item_vp_menu_detail_image, container, false)
             Picasso.with(context).load(menu.picture[position]).fit().into(imageViewLayout.findViewById<ImageView>(R.id.layout_item_menu_detail_imageview))
             container.addView(imageViewLayout)
@@ -43,7 +52,6 @@ class MenuDetailViewPagerAdapter(var context: Context, val menu: Menu, val menuR
             val reviewRecyclerView = reviewLayout.findViewById<RecyclerView>(R.id.recycle_item_menu_detail_review)
             LayoutUtil.RecyclerViewSetting(context, reviewRecyclerView)
             reviewRecyclerView.adapter = ReviewAdapter(context, menuReivew, true)
-
             container.addView(reviewLayout)
             return reviewLayout
         }

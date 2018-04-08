@@ -24,7 +24,10 @@ class DetailRestaurantPresenter : DetailRestaurantContract.Presenter{
     override lateinit var view : DetailRestaurantContract.View
     private var compositeDisposable = CompositeDisposable()
     override fun pictureViewPager(_id : String){
-        RestaurantRepository.getRestaurantImage(_id)?.subscribe({view.setPictureViewPager(it)},{
+
+        RestaurantRepository.getRestaurantImage(_id)?.subscribe({
+            view.setPictureViewPager(it)
+        },{
             view.showTopPictureError()
             it.printStackTrace()
         })?.let { compositeDisposable.add(it) }

@@ -10,7 +10,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/menu_master_layout"
         android:layout_width="match_parent"
-        android:layout_height="90dp">
+        android:layout_height="70dp">
 
         <ImageView
             android:id="@+id/menu_master_picture"

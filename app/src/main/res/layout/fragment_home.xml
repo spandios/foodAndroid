@@ -1,93 +1,93 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:addStatesFromChildren="false"
-    android:background="@color/silver"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:addStatesFromChildren="false"
+  android:background="@color/silver"
 
+  >
+
+  <com.southernbox.springscrollview.SpringScrollView
+    android:id="@+id/home_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:duplicateParentState="false"
+    android:fillViewport="true"
+    android:overScrollMode="never"
     >
 
-    <com.southernbox.springscrollview.SpringScrollView
-        android:id="@+id/home_scroll"
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/white"
+      >
+
+      <!--ImageViewpager-->
+      <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/home_event"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:duplicateParentState="false"
-      android:fillViewport="true"
-      android:overScrollMode="never"
-        >
+        android:layout_height="230dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            >
+        <!--TEMP-->
+        <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+          android:id="@+id/home_event_viewpager"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
+        <me.relex.circleindicator.CircleIndicator
+          android:id="@+id/home_event_viewpager_indicator"
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:layout_marginRight="20dp"
+          android:layout_alignParentBottom="true"
 
-            <!--ImageViewpager-->
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/home_event"
-                android:layout_width="match_parent"
-              android:layout_height="230dp">
-
-                <!--TEMP-->
-              <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
-                    android:id="@+id/home_event_viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                     />
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/home_event_viewpager_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginRight="20dp"
-                  android:layout_alignParentBottom="true"
-
-                    app:ci_gravity="center" />
-            </RelativeLayout>
+          app:ci_gravity="center"/>
+      </RelativeLayout>
 
 
-            <View
-                android:id="@+id/anchor"
-                android:layout_width="match_parent"
-              android:layout_height="230dp"
-              android:minHeight="230dp"/>
-
-            <!--Content-->
-            <include layout="@layout/fragment_home_content" />
-
-
-        </RelativeLayout>
-
-    </com.southernbox.springscrollview.SpringScrollView>
-
-    <include layout="@layout/gradient_header" />
-
-    <android.support.v7.widget.Toolbar
-      android:id="@+id/header"
+      <View
+        android:id="@+id/anchor"
         android:layout_width="match_parent"
-      android:layout_height="40dp"
-        android:background="@color/colorPrimary"
-        tools:background="#00000000">
-        <TextView
-            android:id="@+id/txt_home_location_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-          tools:text="강남구 논현동"
+        android:layout_height="230dp"
+        android:minHeight="230dp"/>
 
-            />
+      <!--Content-->
+      <include layout="@layout/fragment_home_content"/>
 
-        <ImageView
-            android:id="@+id/header_search"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-          android:layout_marginRight="8dp"
-          android:layout_gravity="right|center_vertical"
-            tools:background="@drawable/ic_search" />
-    </android.support.v7.widget.Toolbar>
+
+    </RelativeLayout>
+
+  </com.southernbox.springscrollview.SpringScrollView>
+
+  <include layout="@layout/gradient_header"/>
+
+  <android.support.v7.widget.Toolbar
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/colorPrimary"
+    >
+    <TextView
+      android:id="@+id/txt_home_location_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:textColor="@color/white"
+      android:textSize="18sp"
+      tools:text="강남구 논현동"
+
+      />
+
+    <ImageView
+      android:id="@+id/header_search"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:layout_marginRight="8dp"
+      android:layout_gravity="right|center_vertical"
+      tools:background="@drawable/ic_search"/>
+  </android.support.v7.widget.Toolbar>
 
 </android.support.constraint.ConstraintLayout>

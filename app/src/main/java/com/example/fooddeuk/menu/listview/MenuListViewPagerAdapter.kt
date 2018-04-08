@@ -30,16 +30,11 @@ class MenuListViewPagerAdapter(var context: Context, private var menuCategories:
         menuRecyclerView.isFocusableInTouchMode = false
         menuRecyclerView.isNestedScrollingEnabled = false
 
-//        menuRecyclerView.adapter = MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
-//            mItemClickListener={
-//                position, height ->  clickItemHeight(position, height)
-//            }
-//        }
         menuRecyclerView.setting(MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
             mItemClickListener={
                 position, height ->  clickItemHeight(position, height)
             }
-        },false,true)
+        },false,false)
 
         container.addView(itemView)
         return itemView

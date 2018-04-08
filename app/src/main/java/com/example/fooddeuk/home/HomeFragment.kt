@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.GlobalVariable
 import com.example.fooddeuk.`object`.Location
@@ -25,6 +26,7 @@ import com.example.fooddeuk.pick.PickAdapter
 import com.example.fooddeuk.restaurant.home.HomeRestaurantByMenuActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
+import com.example.fooddeuk.search.SearchActivity
 import com.example.fooddeuk.util.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_content.*
@@ -32,22 +34,24 @@ import kotlinx.android.synthetic.main.fragment_home_content.*
 
 //, AppBarLayout.OnOffsetChangedListener
 class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeContract.View, View.OnClickListener {
-
-
     private lateinit var locationSettingDialog: CustomFilterDialog
-    private lateinit var homePresenter: HomePresenter
+    private lateinit var homePresenter: HomePresenterInterface
+    private lateinit var searchDialog : MaterialDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         renderView()
+
     }
 
     override fun onResume() {
         super.onResume()
+        header.background.alpha = 0
+        home_scroll.scrollTo(0,0)
         setAddressText(Location.locationName)
-        homePresenter = HomePresenter().apply { view=this@HomeFragment }
+        homePresenter = HomePresenterInterface().apply { view=this@HomeFragment }
         homePresenter.setAddress()
         homePresenter.setHomeEvent()
         homePresenter.getDangolRestaurant()
@@ -81,6 +85,10 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.header_search->{
+                StartActivity(SearchActivity::class.java)
+            }
+
             R.id.home_menu_anything -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.ANYTHING, HomeRestaurantByMenuActivity::class.java)
             R.id.home_menu_japan -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.JAPAN, HomeRestaurantByMenuActivity::class.java)
             R.id.home_menu_chicken -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.CHICKEN, HomeRestaurantByMenuActivity::class.java)
@@ -118,7 +126,6 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         home_menu_thai.setOnClickListener(this)
         home_menu_franchise.setOnClickListener(this)
         home_menu_dessert.setOnClickListener(this)
-
     }
 
     private fun setClickHomeLocation(){
@@ -129,6 +136,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
 
     private fun setToolbar() {
+        header_search.setOnClickListener(this)
         with(activity as AppCompatActivity) {
             setSupportActionBar(header)
             supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -165,7 +173,6 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
 
     override fun setHomeEventAdapter(eventPictureList: HomeEventPictureResponse) {
-
         home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = ImageVPAdapter(context, eventPictureList.eventPictureList) })
         home_event_viewpager.startAutoScroll(4500)
         home_event_viewpager.interval = 4500

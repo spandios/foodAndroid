@@ -58,7 +58,7 @@ public class RestaurantClusterModel implements ClusterItem{
     distance=restaurant.distance;
     orderCnt=restaurant.orderCnt;
     lat=restaurant.lat;
-    lat=restaurant.lng;
+    lng=restaurant.lng;
     menuCategory=restaurant.menuCategory;
   }
   @Override

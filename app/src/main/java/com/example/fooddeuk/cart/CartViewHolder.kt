@@ -50,16 +50,12 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
 
 
     fun bind(cartItem: CartItem) {
-
-
         cart_menu_name.text = cartItem.menu.name
         cart_menu_price.text = cartItem.menu.price + "원"
         cart_menu_quantity.text = cart_menu_quantity_val.toString()
 
         if (cartItem.menu.picture != null) {
             Picasso.with(context).load(cartItem.menu.picture).fit().into(cart_menu_picture)
-        } else {
-            cart_menu_picture.visibility = View.GONE
         }
 
         RxBus.subscribe(RxBus.SelectedOptionPrice, this.javaClass, Consumer {
@@ -75,6 +71,7 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
 
         //옵션 리사이클러뷰 셋팅
         for (categoryList in cartItem.optionCategoryList) {
+
             val optionRecyclerView = CustomOptionList(context,
                     categoryList.menu_option_category_name, //MenuCategory Name
                     categoryList.option_content, //RealmList -> ArrayList CartOption
@@ -97,7 +94,6 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
         //기본총 가격
         cart_menu_result_price.text = cartItem.menu.price.toJustWon()
 
-
         //수량 -
         RxView.clicks(cart_menu_minus)
                 .map { Integer.parseInt(cart_menu_quantity.text.toString()) }
@@ -119,8 +115,6 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
                     cart_menu_result_price.text = PriceUtil.plusPrice(cart_menu_result_price, cartItem.menu.price)
                     RxBus.publish(RxBus.CartResultPrice, true)
                 }
-
-
     }
 
 

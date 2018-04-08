@@ -1,7 +1,7 @@
 package com.example.fooddeuk.inject.component
 
 import com.example.fooddeuk.home.HomeContract
-import com.example.fooddeuk.home.HomePresenter
+import com.example.fooddeuk.home.HomePresenterInterface
 import dagger.Binds
 import dagger.Module
 
@@ -13,5 +13,5 @@ import dagger.Module
 @Module
 abstract class MainModule {
     @Binds
-    abstract fun bindPresenter(mainPresenter: HomePresenter): HomeContract.Presenter
+    abstract fun bindPresenter(mainPresenter: HomePresenterInterface): HomeContract.PresenterInterface
 }

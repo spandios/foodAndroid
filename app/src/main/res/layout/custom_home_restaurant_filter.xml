@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/header_parent"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  >
+
+  <TextView
+    style="@style/HomeRestaurantHeaderFilter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="#거리"
+    android:tag="0"
+
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderFilter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="#평점"
+    android:tag="1"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderFilter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="#할인"
+    android:tag="2"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderFilter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="#단골"
+    android:tag="3"
+    />
+
+  <TextView
+    style="@style/HomeRestaurantHeaderFilter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="#리뷰"
+    android:tag="4"
+    />
+
+
+</LinearLayout>

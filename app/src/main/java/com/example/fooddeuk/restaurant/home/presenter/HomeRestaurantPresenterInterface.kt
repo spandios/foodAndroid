@@ -23,7 +23,7 @@ interface HomeRestaurantContract {
         fun restaurantNull()
     }
 
-    interface Presenter : BasePresenter {
+    interface PresenterInterface : BasePresenter {
         var view: View
         fun setRecyclerView(queryMap: HashMap<String, String>)
         fun updateRestaurantByCurrentLocation(queryMap: HashMap<String, String>, locationName : String)
@@ -35,7 +35,7 @@ interface HomeRestaurantContract {
 }
 
 
-class HomeRestaurantPresenter : HomeRestaurantContract.Presenter {
+class HomeRestaurantPresenterInterface : HomeRestaurantContract.PresenterInterface {
 
     override var compositeDisposable: CompositeDisposable = CompositeDisposable()
     override lateinit var view: HomeRestaurantContract.View

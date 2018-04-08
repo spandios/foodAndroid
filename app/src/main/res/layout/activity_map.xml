@@ -1,39 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
   >
-
-
-  <android.support.v7.widget.Toolbar
-    android:id="@+id/tool_restaurant_map"
-    android:layout_width="match_parent"
-    android:layout_height="46dp"
-    android:animateLayoutChanges="true"
-    android:background="@color/test"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <TextView
-      android:id="@+id/txt_restaurant_map_address"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:gravity="center"
-      android:textSize="18sp"
-      tools:text="강남구 논현동"/>
-
-    <ImageView
-      android:layout_width="24dp"
-      android:layout_height="24dp"
-      android:layout_marginRight="@dimen/margin_8"
-      android:layout_gravity="right"
-      android:src="@drawable/ic_filter"
-      />
-  </android.support.v7.widget.Toolbar>
-
 
   <!--맵 이동을 완료할 때만 주소와 매장 새로고침-->
   <com.example.fooddeuk.custom.TouchableWrapper
@@ -47,98 +19,266 @@
       android:name="com.google.android.gms.maps.SupportMapFragment"/>
   </com.example.fooddeuk.custom.TouchableWrapper>
 
+  <LinearLayout
+    android:id="@+id/header_restaurant_map"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/margin_8"
+      android:gravity="center_vertical"
+      >
+
+      <ImageView
+        android:id="@+id/map_back"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_centerVertical="true"
+        android:src="@drawable/backbutton"
+
+        />
+
+      <TextView
+        android:id="@+id/map_restaurant_menu_category"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/map_back"
+        android:background="@drawable/custom_home_restaurant_top_menu_category_title"
+        android:textColor="@color/white"
+        android:textSize="13.5sp"
+        tools:text="#아무거나"
+        />
+
+
+      <TextView
+        android:id="@+id/map_restaurant_address"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/map_restaurant_menu_category"
+        android:background="@drawable/custom_home_restaurant_top_address_title"
+        android:textColor="@color/white"
+        android:textSize="13.5sp"
+        tools:text="#논현동"
+        />
+
+
+      <TextView
+        android:id="@+id/map_restaurant_filter_text"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/map_restaurant_address"
+        android:background="@drawable/custom_home_restaurant_top_filter_title"
+        android:text="#추천순"
+        android:textColor="@color/white"
+        android:textSize="13.5sp"
+        android:visibility="gone"
+        />
+
+
+      <ImageView
+        android:id="@+id/map_restaurant_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_filter"
+        />
+
+
+    </RelativeLayout>
+
+
+    <HorizontalScrollView
+      android:id="@+id/header_option"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="4dp"
+      android:scrollbars="none"
+      android:visibility="gone"
+      >
+
+      <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <com.example.fooddeuk.custom.CustomHomeRestaurantMenuCategory
+          android:id="@+id/header_option_menu_category"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:visibility="gone"
+
+          />
+
+        <com.example.fooddeuk.custom.CustomHomeRestaurantAddress
+          android:id="@+id/header_option_address"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:visibility="gone"
+          />
+
+
+      </FrameLayout>
+
+    </HorizontalScrollView>
+  </LinearLayout>
+
+
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map_all_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:padding="8dp"
+    android:animateLayoutChanges="true"
+    android:background="@color/test"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+      android:id="@+id/layout_bottom_peek"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_4">
+
+      <TextView
+        android:id="@+id/bottom_all_restaurant_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_centerVertical="true"
+        android:text="모든 매장 보기"
+        android:textColor="@color/tangerine"
+        android:textSize="16sp"
+
+        />
+
+      <LinearLayout
+        android:id="@+id/layout_bottom_all_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+        <TextView
+          android:id="@+id/bottom_all_restaurant_size"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/margin_8"
+          android:textColor="@color/tangerine"
+          android:textSize="16sp"
+          tools:text="3개"/>
+
+        <TextView
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="의 매장"
+          android:textSize="16sp"/>
+      </LinearLayout>
+
+      <ImageView
+        android:id="@+id/bottom_up"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_keyboard_arrow_up_black_24dp"
+        />
+
+      <ImageView
+        android:id="@+id/bottom_down"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_keyboard_arrow_down_black_24dp"
+        android:visibility="gone"
+        />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/map_bottom_restaurant_all_list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      />
+  </LinearLayout>
 
   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map_bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="350dp"
+    android:padding="8dp"
     android:animateLayoutChanges="true"
     android:background="@color/test"
     android:elevation="2dp"
     android:orientation="vertical"
-    android:padding="16dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
     app:layout_behavior="@string/bottom_sheet_behavior"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="40dp"
     >
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
+      <TextView
+        android:id="@+id/bottom_cluster_restaurant_size"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:textColor="@color/tangerine"
+        android:textSize="16sp"
+        tools:text="총 3개"
+        />
+      <TextView
+        android:layout_toRightOf="@id/bottom_cluster_restaurant_size"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="개의 매장"
+        android:textSize="16sp"
+        />
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="pick"
-      />
+      <ImageView
+        android:id="@+id/bottom_cluster_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_8"
+        />
+    </RelativeLayout>
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="content"
-      />
-
-
+    <android.support.v7.widget.RecyclerView
+      android:layout_marginTop="@dimen/margin_8"
+      android:id="@+id/rv_cluster"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
 
   </LinearLayout>
-
-
-
-
-
-
-  <!--<android.support.constraint.ConstraintLayout-->
-  <!--android:id="@+id/layout_map_filter"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="50dp"-->
-  <!--android:background="@color/test"-->
-  <!--android:padding="8dp"-->
-  <!--app:layout_constraintBottom_toBottomOf="parent"-->
-  <!--tools:visibility="gone">-->
-
-  <!--<TextView-->
-  <!--android:id="@+id/txt_restaurant_map_menutype"-->
-  <!--android:layout_width="wrap_content"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:layout_marginStart="24dp"-->
-  <!--android:text="타이"-->
-  <!--android:textSize="15sp"-->
-  <!--android:textStyle="bold"-->
-  <!--app:layout_constraintBottom_toBottomOf="parent"-->
-  <!--app:layout_constraintStart_toStartOf="parent"-->
-  <!--app:layout_constraintTop_toTopOf="parent"-->
-
-
-  <!--/>-->
-
-  <!--<TextView-->
-  <!--android:id="@+id/txt_restaurant_map_filter"-->
-  <!--android:layout_width="wrap_content"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:text="정렬 : 거리 순"-->
-  <!--android:textSize="15sp"-->
-  <!--android:textStyle="bold"-->
-  <!--app:layout_constraintBottom_toBottomOf="parent"-->
-  <!--app:layout_constraintEnd_toEndOf="parent"-->
-  <!--app:layout_constraintStart_toStartOf="parent"-->
-  <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-  <!--<TextView-->
-  <!--android:id="@+id/txt_restaurarnt_map_maxdistance"-->
-  <!--android:layout_width="wrap_content"-->
-  <!--android:layout_height="wrap_content"-->
-  <!--android:layout_marginEnd="24dp"-->
-  <!--android:text="최대: 3km"-->
-  <!--android:textSize="14sp"-->
-  <!--android:textStyle="bold"-->
-  <!--app:layout_constraintBottom_toBottomOf="parent"-->
-  <!--app:layout_constraintEnd_toEndOf="parent"-->
-  <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-
-  <!--</android.support.constraint.ConstraintLayout>-->
-
-
-  <!--//TODO ViewPager image, review, menu-->
 
 
 </android.support.design.widget.CoordinatorLayout>

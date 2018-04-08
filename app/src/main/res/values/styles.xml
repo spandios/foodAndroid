@@ -97,5 +97,15 @@
 
   </style>
 
+  <style name="HomeRestaurantHeaderFilter" parent="@android:style/TextAppearance.Widget.TextView">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:layout_marginStart">8dp</item>
+    <item name="android:layout_marginEnd">8dp</item>
+    <item name="android:background">@drawable/custom_home_restaurant_top_filter_title</item>
+  </style>
+
 
 </resources>

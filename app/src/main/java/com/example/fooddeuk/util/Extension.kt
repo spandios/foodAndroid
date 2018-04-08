@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import android.widget.Toast
@@ -23,31 +25,33 @@ import java.text.DecimalFormat
  */
 
 
-fun RecyclerView.setting(adapter : RecyclerView.Adapter<*> ,overscroll : Boolean = false, verticalPadding : Boolean =false ,hasFixed : Boolean =false) {
+fun RecyclerView.setting(adapter: RecyclerView.Adapter<*>, overscroll: Boolean = false, verticalPadding: Boolean = false, hasFixed: Boolean = false) {
 
     val nmLayoutManager = LinearLayoutManager(context)
     this.layoutManager = nmLayoutManager
     this.itemAnimator = DefaultItemAnimator()
 
-    this.adapter=adapter
-    if(overscroll){
+    this.adapter = adapter
+    if (overscroll) {
         OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
     }
 
-    if(hasFixed){
+    if (hasFixed) {
         this.setHasFixedSize(true)
     }
-    if(verticalPadding){
+
+    if (verticalPadding) {
         this.addItemDecoration(VerticalSpaceItemDecoration(12.toPx))
     }
 }
 
-fun String.getTime() : Pair<Int,Int>{
+fun String.getTime(): Pair<Int, Int> {
     val endHour = this.substring(0, 2).toInt()
     val endMinutes = this.substring(3, 5).toInt()
-    return Pair(endHour,endMinutes)
+    return Pair(endHour, endMinutes)
 }
-fun View.afterView(callback : ()->Unit){
+
+fun View.afterView(callback: () -> Unit) {
     val mGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
 
@@ -59,12 +63,12 @@ fun View.afterView(callback : ()->Unit){
     this.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
 }
 
-fun AppCompatActivity.toast(content : String){
-    Toast.makeText(this,content,Toast.LENGTH_LONG).show()
+fun AppCompatActivity.toast(content: String) {
+    Toast.makeText(this, content, Toast.LENGTH_LONG).show()
 }
 
-fun Fragment.toast(content : String){
-    Toast.makeText(this.activity,content,Toast.LENGTH_LONG).show()
+fun Fragment.toast(content: String) {
+    Toast.makeText(this.activity, content, Toast.LENGTH_LONG).show()
 }
 
 fun TextView.textString(): String {
@@ -77,38 +81,38 @@ val Int.toPx: Int
 val Int.toDp: Int
     get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
-val Float.toPx : Float
-    get()=(this*Resources.getSystem().displayMetrics.density)
+val Float.toPx: Float
+    get() = (this * Resources.getSystem().displayMetrics.density)
 
-val Float.toDP : Float
-    get()=(this/Resources.getSystem().displayMetrics.density)
+val Float.toDP: Float
+    get() = (this / Resources.getSystem().displayMetrics.density)
 
-fun AppCompatActivity.logger(tag : String ="",obj : Any){
-    Logger.d(tag+":"+" "+obj)
+fun AppCompatActivity.logger(tag: String = "", obj: Any) {
+    Logger.d(tag + ":" + " " + obj)
 }
 
-fun AppCompatActivity.logger(str : String){
+fun AppCompatActivity.logger(str: String) {
     Logger.d(str)
 }
 
 
-fun AppCompatActivity.logger(any : Any){
+fun AppCompatActivity.logger(any: Any) {
     Logger.d(any)
 }
 
-fun Fragment.logger(tag : String ="",obj : Any){
-    Logger.d(tag+":"+" "+obj)
+fun Fragment.logger(tag: String = "", obj: Any) {
+    Logger.d(tag + ":" + " " + obj)
 }
 
-fun Fragment.logger(str : String){
+fun Fragment.logger(str: String) {
     Logger.d(str)
 }
 
-fun Fragment.logger(any : Any){
+fun Fragment.logger(any: Any) {
     Logger.d(any)
 }
 
-fun View.findId(id: Int) : View = this.findViewById(id)
+fun View.findId(id: Int): View = this.findViewById(id)
 
 fun AppCompatActivity.addFragmentToActivity(frameId: Int, fragment: Fragment) {
     val transaction = this.supportFragmentManager.beginTransaction()
@@ -143,6 +147,8 @@ fun Context.StartActivity(version: Int, data: Any, t: Class<*>) {
     this.startActivity(Intent(this, t))
 }
 
+fun Context.LayoutInflator(layout: Int, parentView : ViewGroup,attchToRoot: Boolean = false) : View =
+        LayoutInflater.from(this).inflate(layout, parentView , false)
 
 fun AppCompatActivity.StartActivity(t: Class<*>) {
     this.startActivity(Intent(this, t))
@@ -158,20 +164,21 @@ fun AppCompatActivity.StatAcitivity(version: Int, data: Any, t: Class<*>) {
 }
 
 
-fun View.gone(){
-    this.visibility=View.GONE
-}
-fun View.visible(){
-    this.visibility=View.VISIBLE
+fun View.gone() {
+    this.visibility = View.GONE
 }
 
-fun View.invisible(){
-    this.visibility=View.INVISIBLE
+fun View.visible() {
+    this.visibility = View.VISIBLE
 }
 
-fun TextView.textToString() : String = this.text.toString()
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
 
-fun Int.toCommaWon() : String{
+fun TextView.textToString(): String = this.text.toString()
+
+fun Int.toCommaWon(): String {
     val Commas = DecimalFormat("#,###")
     val result_int = Commas.format(this.toLong())
     return result_int + "원"
@@ -183,16 +190,16 @@ fun String.toCommaWon(): String {
     return result_int + "원"
 }
 
-fun String.toJustWon() : String{
+fun String.toJustWon(): String {
     return this + "원"
 }
 
-fun Int.toJustWon() : String{
+fun Int.toJustWon(): String {
     return "{$this}원"
 }
 
 
-fun String.addPlus() : String{
+fun String.addPlus(): String {
     return this.getOriginalPrice().toOptionWon()
 }
 
@@ -201,11 +208,13 @@ fun Int.toOptionWon(): String {
     val result_int = Commas.format(this.toLong())
     return "+" + result_int + "원"
 }
+
 fun String.toOptionWon(): String {
     val Commas = DecimalFormat("#,###")
     val result_int = Commas.format(this.toLong())
     return "+" + result_int + "원"
 }
+
 fun CharSequence.getOriginalPrice(): Int {
     val resultPrice = StringBuilder(this)
 
@@ -256,7 +265,7 @@ fun String.getOriginalPrice(): Int {
     return Integer.parseInt(resultPrice.toString())
 }
 
-fun TextView.text() : String = this.text.toString()
+fun TextView.text(): String = this.text.toString()
 
 
 

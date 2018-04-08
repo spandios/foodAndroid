@@ -10,6 +10,7 @@ import io.reactivex.disposables.Disposable
 interface BasePresenter {
 
     var compositeDisposable : CompositeDisposable
+
     fun addDisposable(disposable: Disposable) {
         compositeDisposable.add(disposable)
     }
@@ -18,6 +19,7 @@ interface BasePresenter {
         compositeDisposable.clear()
     }
 }
+
 
 
 abstract class BaseRepository {

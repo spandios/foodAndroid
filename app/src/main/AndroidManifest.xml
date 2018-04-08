@@ -114,6 +114,8 @@
     <activity android:name=".restaurant.home.HomeRestaurantByMenuActivity"/>
     <activity android:name=".restaurant.home.HomeRestaurantByLocation">
     </activity>
+    <activity android:name=".search.SearchActivity">
+    </activity>
   </application>
 
 </manifest>

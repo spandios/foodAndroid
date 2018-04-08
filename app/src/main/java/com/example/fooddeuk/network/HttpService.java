@@ -73,6 +73,9 @@ public interface HttpService {
     @GET("api/restaurant/getHotRestaurant")
     Single<List<Restaurant>> getHotRestaurant(@Query("lat")Double lat,@Query("lng")Double lng);
 
+    @GET("api/restaurant/searchRestaurant")
+    Single<RestaurantResponse> searchRestaurant(@Query("lat")Double lat, @Query("lng")Double lng, @Query("searchText")String searchText);
+
     @GET("api/restaurant/getPicture")
     Single<ArrayList<String>> getPicture(@Query("_id")String _id);
 

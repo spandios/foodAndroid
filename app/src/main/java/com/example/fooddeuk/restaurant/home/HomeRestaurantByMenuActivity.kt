@@ -16,7 +16,7 @@ import com.example.fooddeuk.custom.CustomFilterDialog
 import com.example.fooddeuk.map.MapActivity
 import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.home.presenter.HomeRestaurantContract
-import com.example.fooddeuk.restaurant.home.presenter.HomeRestaurantPresenter
+import com.example.fooddeuk.restaurant.home.presenter.HomeRestaurantPresenterInterface
 import com.example.fooddeuk.restaurant.list.RestaurantAdapter
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
@@ -27,13 +27,14 @@ import kotlinx.android.synthetic.main.activity_home_restaurant.*
 
 
 class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, HomeRestaurantContract.View {
-    private var isMenuCategoryOptionClicked = false
-    private var isAddressOptionClicked = false
+    private var isMenuCategoryOptionExpand = false
+    private var isAddressOptionExpand = false
+    private var isFilterOptionExpand = false
     private var menu_category = "" // Default == 아무거나
     private var filter = distance //Default Filter == Distance
     private var restaurantName = ""
     private var maxDistance = 9000
-    private lateinit var presenter: HomeRestaurantPresenter
+    private lateinit var presenter: HomeRestaurantPresenterInterface
     private lateinit var adapter: RestaurantAdapter
     private lateinit var customFilterDialog: CustomFilterDialog
 
@@ -41,45 +42,45 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_restaurant)
         renderView()
-        presenter = HomeRestaurantPresenter().apply { view = this@HomeRestaurantByMenuActivity }
+        presenter = HomeRestaurantPresenterInterface().apply { view = this@HomeRestaurantByMenuActivity }
         RxBus.intentSubscribe(RxBus.HomeRestaurantActivityData, this::class.java, Consumer {
             if (it is GlobalVariable.MENU) {
-                when(it){
-                    GlobalVariable.MENU.ANYTHING ->{
+                when (it) {
+                    GlobalVariable.MENU.ANYTHING -> {
                         menu_category = ""
                         home_restaurant_menu_category.text = "#아무거나"
                         Logger.d("anything")
                         Logger.d(home_restaurant_menu_category.text.toString())
                     }
-                    GlobalVariable.MENU.JAPAN ->{
+                    GlobalVariable.MENU.JAPAN -> {
                         menu_category = getString(R.string.restaurant_menu_type1)
                         home_restaurant_menu_category.text = "#일식"
                     }
-                    GlobalVariable.MENU.CHICKEN ->{
+                    GlobalVariable.MENU.CHICKEN -> {
                         menu_category = getString(R.string.restaurant_menu_type2)
                         home_restaurant_menu_category.text = "#치킨"
                     }
-                    GlobalVariable.MENU.CHINESE ->{
+                    GlobalVariable.MENU.CHINESE -> {
                         menu_category = getString(R.string.restaurant_menu_type3)
                         home_restaurant_menu_category.text = "#중식"
                     }
-                    GlobalVariable.MENU.KOREAN ->{
+                    GlobalVariable.MENU.KOREAN -> {
                         menu_category = getString(R.string.restaurant_menu_type4)
                         home_restaurant_menu_category.text = "#한식"
                     }
-                    GlobalVariable.MENU.CAFE ->{
+                    GlobalVariable.MENU.CAFE -> {
                         menu_category = getString(R.string.restaurant_menu_type5)
                         home_restaurant_menu_category.text = "#까페"
                     }
-                    GlobalVariable.MENU.THAI ->{
+                    GlobalVariable.MENU.THAI -> {
                         menu_category = getString(R.string.restaurant_menu_type6)
                         home_restaurant_menu_category.text = "#타이"
                     }
-                    GlobalVariable.MENU.FRANCHISE ->{
+                    GlobalVariable.MENU.FRANCHISE -> {
                         menu_category = getString(R.string.restaurant_menu_type7)
                         home_restaurant_menu_category.text = "#프랜차이즈"
                     }
-                    GlobalVariable.MENU.DESSERT ->{
+                    GlobalVariable.MENU.DESSERT -> {
                         menu_category = getString(R.string.restaurant_menu_type8)
                         home_restaurant_menu_category.text = "#디저트"
                     }
@@ -101,7 +102,6 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
 
     //Init First RecyclerView
     override fun setRestaurantRecyclerView(restaurantList: ArrayList<Restaurant>?) {
-        Logger.d(restaurantList)
         restaurantList?.let {
             adapter = RestaurantAdapter(this, restaurantList).apply {
                 restaurantItemClickListener = {
@@ -109,8 +109,8 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                     StartActivity(DetailRestaurantActivity::class.java)
                 }
             }
-            home_restaurant_list.setting(adapter, false, true, true)
-        }?:restaurantNull()
+            home_restaurant_list.setting(adapter, true, true, true)
+        } ?: restaurantNull()
 
         stopLoading()
     }
@@ -154,46 +154,73 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.home_restaurant_back -> finish()
+            R.id.home_back -> finish()
 
             R.id.home_restaurant_menu_category -> {
-                isMenuCategoryOptionClicked = !isMenuCategoryOptionClicked
+                isAddressOptionExpand = false
+                isFilterOptionExpand = false
+                header_option_address.gone()
+                header_option_filter.gone()
 
-                if (isMenuCategoryOptionClicked) {
-                    header_option_address.gone()
-
-                    YoYo.with(Techniques.FadeInDown).duration(150).onStart {
-                        header_option_menu_category.visible()
-                        header_option.visible()
-                    }.playOn(header_option)
-
-                } else {
+                //접음
+                if (isMenuCategoryOptionExpand) {
                     YoYo.with(Techniques.FadeOutUp).duration(150).onEnd {
                         header_option_menu_category.gone()
                         header_option.gone()
                     }.playOn(header_option)
+                } else {
+                    YoYo.with(Techniques.FadeInDown).duration(150).onStart {
+                        header_option_menu_category.visible()
+                        header_option.visible()
+                    }.playOn(header_option)
                 }
+
+                isMenuCategoryOptionExpand = !isMenuCategoryOptionExpand
             }
 
             R.id.home_restaurant_address -> {
-                isAddressOptionClicked = !isAddressOptionClicked
+                isMenuCategoryOptionExpand = false
+                isFilterOptionExpand = false
+                header_option_menu_category.gone()
+                header_option_filter.gone()
 
-
-                if (isAddressOptionClicked) {
-                    header_option_menu_category.gone()
-
+                //접음
+                if (isAddressOptionExpand) {
+                    YoYo.with(Techniques.FadeOutUp).duration(150).onEnd {
+                        header_option_address.gone()
+                        header_option.gone()
+                    }.playOn(header_option)
+                } else {
                     YoYo.with(Techniques.FadeInDown).duration(150).onStart {
                         header_option_address.visible()
                         header_option.visible()
                     }.playOn(header_option)
 
-                } else {
-                    YoYo.with(Techniques.FadeOutUp).duration(150).onEnd {
-                        header_option_address.gone()
-                        header_option.gone()
-                    }.playOn(header_option)
 
                 }
+                isAddressOptionExpand = !isAddressOptionExpand
+            }
+
+            R.id.home_restaurant_filter_text -> {
+                isMenuCategoryOptionExpand = false
+                isAddressOptionExpand = false
+                header_option_menu_category.gone()
+                header_option_address.gone()
+
+                //접음
+                if (isFilterOptionExpand) {
+                    YoYo.with(Techniques.FadeOutUp).duration(150).onEnd {
+                        header_option_filter.gone()
+                        header_option.gone()
+                    }.playOn(header_option)
+                } else {
+                    YoYo.with(Techniques.FadeInDown).duration(150).onStart {
+                        header_option_filter.visible()
+                        header_option.visible()
+                    }.playOn(header_option)
+                }
+
+                isFilterOptionExpand = !isFilterOptionExpand
             }
 
 
@@ -231,14 +258,33 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
         }
 
         val sortListener = { position: Int, contentTextView: TextView ->
-            filter = when (position) {
-                distance -> distance
-                GlobalVariable.rating -> GlobalVariable.rating
-                GlobalVariable.discount -> GlobalVariable.discount
-                GlobalVariable.dangol -> GlobalVariable.dangol
-                R.string.review -> R.string.review
-                else -> distance
+
+            when (position) {
+                distance -> {
+                    filter = distance
+                    home_restaurant_filter_text.text = "#거리"
+                }
+                GlobalVariable.rating -> {
+                    filter = GlobalVariable.rating
+                    home_restaurant_filter_text.text = "#평점"
+                }
+                GlobalVariable.discount -> {
+                    filter = GlobalVariable.discount
+                    home_restaurant_filter_text.text = "#할인"
+                }
+                GlobalVariable.dangol -> {
+                    filter = GlobalVariable.dangol
+                    home_restaurant_filter_text.text = "#단골"
+
+                }
+                GlobalVariable.review -> {
+                    filter = GlobalVariable.review
+                    home_restaurant_filter_text.text = "#리뷰"
+                }
+                else -> filter = distance
             }
+
+            home_restaurant_filter_text.visible()
             presenter.updateRestaurant(queryMap(menu_category))
             customFilterDialog.hide()
         }
@@ -276,13 +322,50 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
 
 
     private fun setClickListener() {
-        home_restaurant_back.setOnClickListener(this)
+        home_back.setOnClickListener(this)
         home_restaurant_menu_category.setOnClickListener(this)
         home_restaurant_address.setOnClickListener(this)
         home_restaurant_map.setOnClickListener(this)
         home_restaurant_filter.setOnClickListener(this)
+        home_restaurant_filter_text.setOnClickListener(this)
         clickHeaderOptionForMenu()
         clickHeaderOptionForAddress()
+        header_option_filter.setAllClickListener(View.OnClickListener {
+            val position = (it.tag as String).toInt()
+            when (position) {
+                distance -> {
+                    filter = distance
+                    home_restaurant_filter_text.text = "#거리"
+                }
+                GlobalVariable.rating -> {
+                    filter = GlobalVariable.rating
+                    home_restaurant_filter_text.text = "#평점"
+                }
+                GlobalVariable.discount -> {
+                    filter = GlobalVariable.discount
+                    home_restaurant_filter_text.text = "#할인"
+                }
+                GlobalVariable.dangol -> {
+                    filter = GlobalVariable.dangol
+                    home_restaurant_filter_text.text = "#단골"
+
+                }
+                GlobalVariable.review -> {
+                    filter = GlobalVariable.review
+                    home_restaurant_filter_text.text = "#리뷰"
+                }
+                else -> filter = distance
+            }
+
+            presenter.updateRestaurant(queryMap(menu_category))
+            isFilterOptionExpand=false
+            YoYo.with(Techniques.FadeOutUp).duration(150).onEnd {
+                header_option_filter.gone()
+                header_option.gone()
+            }.playOn(header_option)
+
+
+        })
     }
 
 
@@ -332,6 +415,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
             }
         }
     }
+
 
     private fun justDong(gudong: String) {
         var index = gudong.indexOf("구")

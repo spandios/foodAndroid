@@ -6,7 +6,6 @@ import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.network.HTTP.single
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.restaurant.repository.RestaurantRepository
-import com.orhanobut.logger.Logger
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -24,7 +23,7 @@ interface HomeContract {
         fun dangolError()
     }
 
-    interface Presenter : BasePresenter{
+    interface PresenterInterface : BasePresenter{
         var view : View
         fun setAddress()
         fun setLocationName(locationName: String)
@@ -35,7 +34,7 @@ interface HomeContract {
 }
 
 
-class HomePresenter : HomeContract.Presenter {
+class HomePresenterInterface : HomeContract.PresenterInterface {
     override lateinit var view : HomeContract.View
     override var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -54,6 +53,7 @@ class HomePresenter : HomeContract.Presenter {
         view.setAddressText(Location.locationName)
     }
 
+
     override fun setLocationName(locationName: String) {
         view.setAddressText(locationName)
 
@@ -61,7 +61,6 @@ class HomePresenter : HomeContract.Presenter {
 
     override fun setHomeEvent() {
         single(httpService.homeEvent).subscribe({
-            Logger.d(it.eventPictureList)
         },{it.printStackTrace()})
         compositeDisposable.add(EventPictureRepository.getEventPicture().subscribe({
             view.setHomeEventAdapter(it)

@@ -24,6 +24,7 @@ import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.util.*
 import com.ogaclejapan.smarttablayout.SmartTabLayout
+import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 
@@ -130,6 +131,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
 
     //식당 상단 사진 뷰페이저
     override fun setPictureViewPager(pictureList: ArrayList<String>) {
+        Logger.d(pictureList)
         ImageVPAdapter = ImageVPAdapter(this@DetailRestaurantActivity, pictureList)
         vp_rest_detail_image.adapter = ImageVPAdapter
         rest_detail_image_viewpager_indicator.setViewPager(vp_rest_detail_image)

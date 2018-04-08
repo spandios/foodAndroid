@@ -20,6 +20,12 @@ class CustomOptionList(context: Context, categoryTitle: String, optionList: Real
     init {
         LayoutInflater.from(context).inflate(R.layout.item_parent_option_list, this, true)
         txt_option_category.text=categoryTitle
+
+        if(necessary){
+            txt_option_category_necessary.text="(필수)"
+        }else{
+            txt_option_category_necessary.text="(선택)"
+        }
         if(isOrder){
             txt_option_category.visibility= View.GONE
         }
