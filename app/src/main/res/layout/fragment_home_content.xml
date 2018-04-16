@@ -116,7 +116,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
-      android:layout_marginStart="8dp"
+      android:layout_marginStart="16dp"
       android:text="장소로 찾기"
       android:textColor="@color/text_main"
       android:textSize="18sp"
@@ -233,15 +233,32 @@
     android:orientation="vertical"
     app:layout_constraintTop_toBottomOf="@id/layout_dangol"
     >
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:text="최근 본 매장"
-      android:textColor="@color/text_main"
-      android:textSize="18sp"
-      />
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true"
+        android:text="최근 본 매장"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        />
+
+      <TextView
+        android:id="@+id/recent_all_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:text="전체보기"
+        />
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
       android:id="@+id/recent_rest_recycle"
@@ -254,4 +271,77 @@
 
   </LinearLayout>
 
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_16"
+    android:layout_marginBottom="@dimen/margin_8"
+    android:background="@color/silver"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@id/layout_recent_restaurant"
+    >
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_8"
+      android:layout_marginStart="@dimen/margin_16"
+      android:layout_marginEnd="@dimen/margin_16">
+
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(주)푸드득"
+        android:textColor="@color/text_sub"
+        android:textSize="14dp"
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/enterprise_detail_button"
+        android:text="사업자 상세"
+        android:textColor="@color/text_sub"
+        android:textSize="10dp"
+        />
+
+      <ImageView
+        android:id="@+id/enterprise_detail_button"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+        />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+      android:id="@+id/layout_enterprise_detail"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:visibility="gone"
+      >
+
+
+    </LinearLayout>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_4"
+      android:layout_marginBottom="@dimen/margin_4"
+      android:layout_marginStart="@dimen/margin_16"
+      android:layout_marginEnd="@dimen/margin_16"
+      android:text="푸드득은 통신판매중개자이며 통신판매의 당사자가 아닙니다.
+           따라서 푸드득은 상품거래정보 및 거래에 대한 책임을 지지 않습니다."
+      android:textColor="@color/text_sub"
+      android:textSize="11dp"
+      />
+
+
+  </LinearLayout>
 </android.support.constraint.ConstraintLayout>

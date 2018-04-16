@@ -1,6 +1,7 @@
 package com.example.fooddeuk.home
 
 import com.example.fooddeuk.BasePresenter
+import com.example.fooddeuk.`object`.GlobalVariable.recentRestaurant
 import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.network.HTTP.single
@@ -17,10 +18,12 @@ interface HomeContract {
     interface View {
         fun setAddressText(locationName: String)
         fun setHomeEventAdapter(eventPictureList : HomeEventPictureResponse)
-        fun setDangolRestaurant(dangolRestaurants: ArrayList<Restaurant>)
+        fun setRecentRestaurantRV(recentRestaurants : ArrayList<Restaurant>)
+        fun setDangolRestaurantRV(dangolRestaurants: ArrayList<Restaurant>)
         fun showAddressError()
         fun showEventError()
         fun dangolError()
+
     }
 
     interface PresenterInterface : BasePresenter{
@@ -28,8 +31,10 @@ interface HomeContract {
         fun setAddress()
         fun setLocationName(locationName: String)
         fun setHomeEvent()
-        fun getDangolRestaurant()
+        fun getDangolRestaurants()
+
         fun clear()
+        fun getRecentResgaurants()
     }
 }
 
@@ -40,13 +45,19 @@ class HomePresenterInterface : HomeContract.PresenterInterface {
 
     var restaurantRepository = RestaurantRepository
 
-    override fun getDangolRestaurant() {
+    override fun getDangolRestaurants() {
         restaurantRepository.getDangolRestaurant()?.subscribe({
-            view.setDangolRestaurant(it)
+            view.setDangolRestaurantRV(it)
         }, {
             view.dangolError()
             it.printStackTrace()
         })
+    }
+
+    override fun getRecentResgaurants() {
+        if(recentRestaurant.size>0){
+            view.setRecentRestaurantRV(recentRestaurant)
+        }
     }
 
     override fun setAddress() {

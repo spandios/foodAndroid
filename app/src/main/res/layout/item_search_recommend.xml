@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="46dp"
+  android:padding="@dimen/margin_4"
+  >
+
+  <ImageView
+    android:id="@+id/img_search"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginStart="@dimen/margin_8"
+    tools:src="@drawable/ic_school_black_24dp"
+    />
+
+  <TextView
+    android:id="@+id/txt_search_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toEndOf="@id/img_search"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginStart="@dimen/margin_16"
+    android:textSize="14sp"
+    android:textColor="@color/text_main"
+    tools:text="한국산업기술대 근처"
+    />
+
+  <TextView
+    android:id="@+id/txt_search_subway_num"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginEnd="@dimen/margin_8"
+    android:layout_width="17dp"
+    android:layout_height="25dp"
+    android:visibility="gone"
+    android:padding="@dimen/margin_4"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="1"
+    android:textSize="14sp"
+    android:textColor="@color/white"
+    android:background="@drawable/custom_subway_num"
+    />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -16,15 +16,16 @@ import com.example.fooddeuk.R;
  * Created by heo on 2018. 4. 6..
  */
 
-public class ClearEditText extends AppCompatEditText implements TextWatcher, View.OnTouchListener,
+public class CustomSearchWithClearTextView extends AppCompatEditText implements TextWatcher, View.OnTouchListener,
 View.OnFocusChangeListener {
 
     private Drawable clearDrawable;
+    private Drawable searchDrawable;
     private OnFocusChangeListener onFocusChangeListener;
     private OnTouchListener onTouchListener;
     TextChangeListener textChangeListener;
 
-    public ClearEditText(final Context context) {
+    public CustomSearchWithClearTextView(final Context context) {
         super(context);
         init();
     }
@@ -32,12 +33,12 @@ View.OnFocusChangeListener {
         this.textChangeListener=textChangeListener;
     }
 
-    public ClearEditText(final Context context, final AttributeSet attrs) {
+    public CustomSearchWithClearTextView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ClearEditText(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public CustomSearchWithClearTextView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -55,9 +56,15 @@ View.OnFocusChangeListener {
     private void init() {
         Drawable tempDrawable = ContextCompat
                 .getDrawable(getContext(), R.drawable.ic_clear_black_24dp);
+        Drawable tempDrawable2 = ContextCompat
+            .getDrawable(getContext(), R.drawable.ic_search_black_24dp);
         clearDrawable = DrawableCompat.wrap(tempDrawable);
+        searchDrawable=DrawableCompat.wrap(tempDrawable2);
         DrawableCompat.setTintList(clearDrawable, getHintTextColors());
+        DrawableCompat.setTintList(searchDrawable, getHintTextColors());
         clearDrawable.setBounds(0, 0, clearDrawable.getIntrinsicWidth(), clearDrawable.getIntrinsicHeight());
+        searchDrawable.setBounds(0,0,searchDrawable.getIntrinsicWidth(),searchDrawable.getIntrinsicHeight());
+
         setClearIconVisible(false);
         super.setOnTouchListener(this);
         super.setOnFocusChangeListener(this);
@@ -117,7 +124,7 @@ View.OnFocusChangeListener {
 
     private void setClearIconVisible(boolean visible) {
         clearDrawable.setVisible(visible, false);
-        setCompoundDrawables(null, null, visible ? clearDrawable : null, null);
+        setCompoundDrawables(searchDrawable, null, visible ? clearDrawable : null, null);
     }
 
     interface TextChangeListener {

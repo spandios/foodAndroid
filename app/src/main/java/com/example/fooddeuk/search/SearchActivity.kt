@@ -17,7 +17,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity(), SearchContract.View {
-
     private lateinit var imm: InputMethodManager
     private val compositeDisposable = CompositeDisposable()
     private lateinit var presenter: SearchPresenter
@@ -30,7 +29,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         presenter = SearchPresenter().apply { view = this@SearchActivity }
         initSearch()
         backbutton.setOnClickListener { finish() }
-
     }
 
     override fun onPause() {
@@ -53,7 +51,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         search_text.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
-
                     imm.hideSoftInputFromWindow(search_text.windowToken, 0)
                 }
                 else ->
@@ -66,8 +63,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
             }// 검색 동작
             true
         })
-
-
     }
 
 
@@ -77,7 +72,6 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
     }
 
     override fun setSearchRV(restaurants: ArrayList<Restaurant>) {
-
         if (isFirstSearch) {
             rv_search.setting(RestaurantAdapter(this, restaurants), true, false, true)
             isFirstSearch = false

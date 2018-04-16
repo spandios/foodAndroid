@@ -12,7 +12,7 @@ import com.example.fooddeuk.activity.LoginActivity
 import com.example.fooddeuk.order_history.OrderHistoryActivity
 import com.example.fooddeuk.util.StartActivity
 import com.facebook.login.LoginManager
-import com.iwedding.app.helper.PrefUtil
+import com.iwedding.app.helper.UserPrefUtil
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.nhn.android.naverlogin.OAuthLogin
@@ -41,7 +41,7 @@ class UserFragment : Fragment() {
                     .onPositive { dialog, which ->
                         GlobalVariable.provider=""
                         GlobalVariable.isLogin=false
-                        PrefUtil.setValue(PrefUtil.EXIST, false)
+                        UserPrefUtil.setValue(UserPrefUtil.EXIST, false)
                         when(GlobalVariable.provider){
                             GlobalVariable.NAVER->OAuthLogin.getInstance().logout(activity!!)
                             GlobalVariable.KAKAO->UserManagement.requestLogout(object : LogoutResponseCallback() {
@@ -51,7 +51,7 @@ class UserFragment : Fragment() {
                             })
                             GlobalVariable.FACEBOOK->LoginManager.getInstance().logOut()
                         }
-                        PrefUtil.deleteData()
+                        UserPrefUtil.deleteData()
                         checkIsLogin()
                     }.show()
         })

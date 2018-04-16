@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fooddeuk.R
+import com.example.fooddeuk.`object`.GlobalVariable.recentRestaurant
+import com.example.fooddeuk.`object`.GlobalVariable.tempRecentRestaurant
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_restaurant.view.*
@@ -20,9 +22,16 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        // set the view's size, margins, paddings and layout parameters
         val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_restaurant, parent, false))
-        viewHolder.itemView.setOnClickListener({ restaurantItemClickListener(restaurantItem[viewHolder.adapterPosition]) })
+
+        //Restaurant Detail Activity
+        viewHolder.itemView.setOnClickListener({
+            val restaurant = restaurantItem[viewHolder.adapterPosition]
+            addRecentRestaurant(restaurant)
+            restaurantItemClickListener(restaurant)
+
+        })
+
         return viewHolder
     }
 
@@ -56,9 +65,22 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
 
     fun updateRestaurant(restaurant: ArrayList<Restaurant>?) {
         restaurantItem.clear()
-        restaurant?.let {
-            restaurantItem.addAll(it)
-        }
+        restaurant?.let { restaurantItem.addAll(it) }
         notifyDataSetChanged()
+    }
+
+    private fun addRecentRestaurant(restaurant: Restaurant) {
+        if (recentRestaurant.size > 4) {
+            tempRecentRestaurant[4] = recentRestaurant[3]
+            tempRecentRestaurant[3] = recentRestaurant[2]
+            tempRecentRestaurant[2] = recentRestaurant[1]
+            tempRecentRestaurant[1] = recentRestaurant[0]
+            tempRecentRestaurant[0] = restaurant
+            recentRestaurant = tempRecentRestaurant
+            return
+        }
+
+        recentRestaurant.add(restaurant)
+
     }
 }

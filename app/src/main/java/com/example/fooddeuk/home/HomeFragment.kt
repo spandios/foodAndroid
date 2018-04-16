@@ -10,11 +10,11 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.afollestad.materialdialogs.MaterialDialog
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.GlobalVariable
 import com.example.fooddeuk.`object`.Location
@@ -23,6 +23,7 @@ import com.example.fooddeuk.custom.ImageVPAdapter
 import com.example.fooddeuk.map.LocationSettingByMapActivity
 import com.example.fooddeuk.map.MapActivity
 import com.example.fooddeuk.pick.PickAdapter
+import com.example.fooddeuk.pick.RecentAdapter
 import com.example.fooddeuk.restaurant.home.HomeRestaurantByMenuActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
@@ -36,25 +37,25 @@ import kotlinx.android.synthetic.main.fragment_home_content.*
 class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeContract.View, View.OnClickListener {
     private lateinit var locationSettingDialog: CustomFilterDialog
     private lateinit var homePresenter: HomePresenterInterface
-    private lateinit var searchDialog : MaterialDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         renderView()
-
     }
+
 
     override fun onResume() {
         super.onResume()
         header.background.alpha = 0
-        home_scroll.scrollTo(0,0)
+        home_scroll.scrollTo(0, 0)
         setAddressText(Location.locationName)
-        homePresenter = HomePresenterInterface().apply { view=this@HomeFragment }
+        homePresenter = HomePresenterInterface().apply { view = this@HomeFragment }
         homePresenter.setAddress()
         homePresenter.setHomeEvent()
-        homePresenter.getDangolRestaurant()
+        homePresenter.getDangolRestaurants()
+        homePresenter.getRecentResgaurants()
     }
 
     override fun onPause() {
@@ -62,7 +63,18 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         homePresenter.clear()
     }
 
-    override fun setDangolRestaurant(dangolRestaurants: ArrayList<Restaurant>) {
+    override fun setRecentRestaurantRV(recentRestaurants: ArrayList<Restaurant>) {
+        //최근 본 매장 전체보기
+        if (recentRestaurants.size > 4) {
+            recent_all_button.visible()
+            recent_all_button.setOnClickListener {
+            }
+        }
+        recent_rest_recycle.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recent_rest_recycle.adapter = RecentAdapter(context!!, recentRestaurants)
+    }
+
+    override fun setDangolRestaurantRV(dangolRestaurants: ArrayList<Restaurant>) {
         dangol_rest_recycle.layoutManager = GridLayoutManager(context, 2)
         dangol_rest_recycle.adapter = PickAdapter(context!!, dangolRestaurants)
     }
@@ -85,7 +97,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.header_search->{
+            R.id.header_search -> {
                 StartActivity(SearchActivity::class.java)
             }
 
@@ -99,7 +111,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
             R.id.home_menu_franchise -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.FRANCHISE, HomeRestaurantByMenuActivity::class.java)
             R.id.home_menu_dessert -> context?.StartActivity(RxBus.HomeRestaurantActivityData, GlobalVariable.MENU.DESSERT, HomeRestaurantByMenuActivity::class.java)
 
-            R.id.home_location_map -> context?.StartActivity(RxBus.MapActivityData,queryMap(),MapActivity::class.java)
+            R.id.home_location_map -> context?.StartActivity(RxBus.MapActivityData, queryMap(), MapActivity::class.java)
 //            R.id.home_location_metro ->context?.StartActivity(RxBus.MapActivityData,"",MapActivity::class.java)
 //            R.id.home_location_univ ->context?.StartActivity(RxBus.MapActivityData,"",MapActivity::class.java)
 
@@ -128,7 +140,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         home_menu_dessert.setOnClickListener(this)
     }
 
-    private fun setClickHomeLocation(){
+    private fun setClickHomeLocation() {
         home_location_map.setOnClickListener(this)
         home_location_metro.setOnClickListener(this)
         home_location_univ.setOnClickListener(this)
@@ -151,7 +163,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
     override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
         home_event_viewpager.y = (scrollY / 2).toFloat()
-        val alpha = (Math.min(1f, scrollY.toFloat() / (250.toPx - header.height))) * 255
+        val alpha = (Math.min(1f, scrollY.toFloat() / (210.toPx - header.height))) * 255
         when (alpha) {
             in 0..70 -> {
                 txt_home_location_name.setTextColor(Color.WHITE)

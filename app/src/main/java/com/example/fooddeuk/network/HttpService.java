@@ -66,7 +66,7 @@ public interface HttpService {
     Single<RestaurantResponse> getRestaurantById(@Query("restaurant_id")String _id);
 
     @FormUrlEncoded
-    @POST("api/restaurant/getDangolRestaurant")
+    @POST("api/restaurant/getDangolRestaurants")
     Single<ArrayList<Restaurant>> getDangolRestaurant(
         @Field("rest_id[]") ArrayList<String> rest_id);
 

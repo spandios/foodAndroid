@@ -4,7 +4,7 @@ import com.example.fooddeuk.`object`.GlobalApplication
 import com.example.fooddeuk.`object`.Login
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService
-import com.iwedding.app.helper.PrefUtil
+import com.iwedding.app.helper.UserPrefUtil
 import com.kakao.util.helper.log.Logger
 
 /**
@@ -41,7 +41,7 @@ class MyFirebaseInstanceIDService : FirebaseInstanceIdService() {
      */
     private fun sendRegistrationToServer(token: String?) {
         token?.let {
-            val providerId: String? = PrefUtil.getValue(PrefUtil.PROVIDER_ID, "")
+            val providerId: String? = UserPrefUtil.getValue(UserPrefUtil.PROVIDER_ID, "")
             if(!providerId.isNullOrEmpty()){
                 with(Login) {
                     getUser(providerId!!,{err, userResponse ->

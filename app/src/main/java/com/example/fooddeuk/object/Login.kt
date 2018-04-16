@@ -7,7 +7,7 @@ import com.example.fooddeuk.network.HTTP.singleAsync
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.user.UserResponse
 import com.example.fooddeuk.util.RealmUtil
-import com.iwedding.app.helper.PrefUtil
+import com.iwedding.app.helper.UserPrefUtil
 import com.orhanobut.logger.Logger
 
 /**
@@ -16,12 +16,12 @@ import com.orhanobut.logger.Logger
 
 object Login {
     fun checkUser(callback: () -> Unit) {
-        var exist: Boolean? = PrefUtil.getValue(PrefUtil.EXIST, false)
-        val providerId: String? = PrefUtil.getValue(PrefUtil.PROVIDER_ID, "")
-        var fcm_token: String? = PrefUtil.getValue(PrefUtil.FCM_TOKEN, "")
-        var phone: String? = PrefUtil.getValue(PrefUtil.PHONE, "")
-        var name: String? = PrefUtil.getValue(PrefUtil.NAME, "")
-        var provider : String? = PrefUtil.getValue(PrefUtil.PROVIDER,"")
+        var exist: Boolean? = UserPrefUtil.getValue(UserPrefUtil.EXIST, false)
+        val providerId: String? = UserPrefUtil.getValue(UserPrefUtil.PROVIDER_ID, "")
+        var fcm_token: String? = UserPrefUtil.getValue(UserPrefUtil.FCM_TOKEN, "")
+        var phone: String? = UserPrefUtil.getValue(UserPrefUtil.PHONE, "")
+        var name: String? = UserPrefUtil.getValue(UserPrefUtil.NAME, "")
+        var provider : String? = UserPrefUtil.getValue(UserPrefUtil.PROVIDER,"")
         GlobalVariable.provider= provider.toString()
 
         if (exist!!) {
@@ -45,17 +45,17 @@ object Login {
                                 }
                                 //Pref Fcm Token
                                 if (fcm_token != GlobalApplication.fcmToken) {
-                                    PrefUtil.setValue("fcm_token", user.fcm_token)
+                                    UserPrefUtil.setValue("fcm_token", user.fcm_token)
                                     Logger.d("fcm token update $fcm_token")
                                 }
 
                                 if (name != user.user_name) {
                                     name = user.user_name
-                                    PrefUtil.setValue("name", user.user_name)
+                                    UserPrefUtil.setValue("name", user.user_name)
                                 }
 //                                if (user.phone != phone) {
 //                                    Logger.d("phone fail")
-//                                    PrefUtil.setValue("phone", user.phone)
+//                                    UserPrefUtil.setValue("phone", user.phone)
 //                                }//TODO UPDATE PHONE
                                 GlobalVariable.provider = user.provider
                                 GlobalVariable.isLogin = true
@@ -125,7 +125,7 @@ object Login {
     }
 
     private fun insertUserPref(user: User) {
-        PrefUtil.apply {
+        UserPrefUtil.apply {
             setValue(PROVIDER_ID, user.provider_id)
             setValue(EMAIL, user.email)
             setValue(FCM_TOKEN, user.fcm_token)
@@ -154,7 +154,7 @@ object Login {
     fun updateFcmToken(user: User, fcm_token: String) {
         HTTP.completable(httpService.updateToken(user.provider_id, fcm_token)).subscribe({
             Logger.d("fcm_token update!!")
-            PrefUtil.setValue(PrefUtil.FCM_TOKEN, user.fcm_token)
+            UserPrefUtil.setValue(UserPrefUtil.FCM_TOKEN, user.fcm_token)
         }, { it.printStackTrace() })
     }
 
