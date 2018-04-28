@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,7 +21,6 @@ import com.example.fooddeuk.custom.CustomFilterDialog
 import com.example.fooddeuk.custom.ImageVPAdapter
 import com.example.fooddeuk.map.LocationSettingByMapActivity
 import com.example.fooddeuk.map.MapActivity
-import com.example.fooddeuk.pick.PickAdapter
 import com.example.fooddeuk.pick.RecentAdapter
 import com.example.fooddeuk.restaurant.home.HomeRestaurantByMenuActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
@@ -31,6 +29,7 @@ import com.example.fooddeuk.search.SearchActivity
 import com.example.fooddeuk.util.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_content.*
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 
 
 //, AppBarLayout.OnOffsetChangedListener
@@ -43,19 +42,24 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         renderView()
+
     }
 
 
     override fun onResume() {
         super.onResume()
+
         header.background.alpha = 0
         home_scroll.scrollTo(0, 0)
-        setAddressText(Location.locationName)
-        homePresenter = HomePresenterInterface().apply { view = this@HomeFragment }
-        homePresenter.setAddress()
-        homePresenter.setHomeEvent()
-        homePresenter.getDangolRestaurants()
-        homePresenter.getRecentResgaurants()
+
+        homePresenter=HomePresenterInterface().apply {
+            view=this@HomeFragment
+            setHomeEvent()
+            setAddress()
+            getDangolRestaurants()
+            getRecentResgaurants()
+            setAddressText(Location.locationName)
+        }
     }
 
     override fun onPause() {
@@ -65,18 +69,26 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
     override fun setRecentRestaurantRV(recentRestaurants: ArrayList<Restaurant>) {
         //최근 본 매장 전체보기
-        if (recentRestaurants.size > 4) {
+        if (recentRestaurants.size > 2) {
             recent_all_button.visible()
             recent_all_button.setOnClickListener {
             }
         }
         recent_rest_recycle.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recent_rest_recycle.adapter = RecentAdapter(context!!, recentRestaurants)
+        OverScrollDecoratorHelper.setUpOverScroll(recent_rest_recycle, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
     }
 
     override fun setDangolRestaurantRV(dangolRestaurants: ArrayList<Restaurant>) {
-        dangol_rest_recycle.layoutManager = GridLayoutManager(context, 2)
-        dangol_rest_recycle.adapter = PickAdapter(context!!, dangolRestaurants)
+        if(dangolRestaurants.size>2){
+            dangol_all_button.visible()
+        }
+        dangol_rest_recycle.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        dangol_rest_recycle.adapter = RecentAdapter(context!!, dangolRestaurants)
+        OverScrollDecoratorHelper.setUpOverScroll(dangol_rest_recycle, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+
+//        dangol_rest_recycle.layoutManager = GridLayoutManager(context, 2)
+//        dangol_rest_recycle.adapter = PickAdapter(context!!, dangolRestaurants)
     }
 
     override fun dangolError() {
@@ -163,7 +175,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
     override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
         home_event_viewpager.y = (scrollY / 2).toFloat()
-        val alpha = (Math.min(1f, scrollY.toFloat() / (210.toPx - header.height))) * 255
+        val alpha = (Math.min(1f, scrollY.toFloat() / (home_event.height - header.height))) * 255
         when (alpha) {
             in 0..70 -> {
                 txt_home_location_name.setTextColor(Color.WHITE)
@@ -185,9 +197,14 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
 
     override fun setHomeEventAdapter(eventPictureList: HomeEventPictureResponse) {
-        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = ImageVPAdapter(context, eventPictureList.eventPictureList) })
-        home_event_viewpager.startAutoScroll(4500)
-        home_event_viewpager.interval = 4500
+//        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = ImageVPAdapter(context, eventPictureList.eventPictureList) })
+//        home_event_viewpager.startAutoScroll(4500)
+//        home_event_viewpager.interval = 4500
+
+
+        home_event_viewpager_indicator2.setViewPager(home_event_viewpager2.apply { adapter = ImageVPAdapter(context, eventPictureList.eventPictureList) })
+        home_event_viewpager2.startAutoScroll(4500)
+        home_event_viewpager2.interval = 4500
     }
 
     override fun setAddressText(locationName: String) {

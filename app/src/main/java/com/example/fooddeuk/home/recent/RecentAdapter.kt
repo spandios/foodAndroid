@@ -11,7 +11,6 @@ import com.example.fooddeuk.restaurant.detail.DetailRestaurantActivity
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.StartActivity
-import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_recent_restaurant.view.*
 
@@ -25,11 +24,9 @@ class RecentAdapter(val context: Context, var recentViewRestaurants : ArrayList<
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         val restaurant = recentViewRestaurants[position]
-        Logger.d(restaurant)
         if(holder is RecentViewHolder){
             holder.bind(restaurant)
         }
-
     }
 
     override fun getItemCount() : Int{

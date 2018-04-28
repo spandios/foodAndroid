@@ -37,7 +37,6 @@ object RestaurantRepository : RestaurantDataSource {
             return dangolRestaurant
 
         }
-
     }
 
     override fun getRestaurantImage(_id: String): Single<ArrayList<String>>? {

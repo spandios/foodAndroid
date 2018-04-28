@@ -63,8 +63,23 @@ fun View.afterView(callback: () -> Unit) {
     this.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
 }
 
+
+fun View.realY() : Int{
+    val position = intArrayOf(0,0)
+    this.getLocationOnScreen(position)
+    return position[1] - getStatusBarHeight(this.context)
+}
 fun AppCompatActivity.toast(content: String) {
     Toast.makeText(this, content, Toast.LENGTH_LONG).show()
+}
+
+fun getStatusBarHeight(context: Context): Int {
+    var result = 0
+    val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+    if (resourceId > 0) {
+        result = context.resources.getDimensionPixelSize(resourceId)
+    }
+    return result
 }
 
 fun Fragment.toast(content: String) {

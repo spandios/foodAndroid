@@ -11,6 +11,7 @@ interface DetailRestaurantContract{
     interface View{
         fun setPictureViewPager(pictureList : ArrayList<String>)
         fun showTopPictureError()
+
     }
     interface Presenter{
         var view : View
@@ -22,6 +23,8 @@ interface DetailRestaurantContract{
 
 class DetailRestaurantPresenter : DetailRestaurantContract.Presenter{
     override lateinit var view : DetailRestaurantContract.View
+
+
     private var compositeDisposable = CompositeDisposable()
     override fun pictureViewPager(_id : String){
 

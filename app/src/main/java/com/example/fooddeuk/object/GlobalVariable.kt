@@ -23,7 +23,7 @@ object GlobalVariable {
     }
 
     var recentRestaurant = ArrayList<Restaurant>()
-    var tempRecentRestaurant = ArrayList<Restaurant>()
+    var tempRecentRestaurant = ArrayList<Restaurant>(4)
 
     const val distance = 0
     const val rating = 1

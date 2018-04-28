@@ -31,6 +31,8 @@ object RxBus {
     const val RestMenuFragmentData = 8
     const val DetailMenuActivityData = 9
     const val HomeRestaurantActivityData = 10
+    const val RestaurantMoreDetail = 11
+
 
     private val sSubjectMap = SparseArray<PublishSubject<Any>>()
     private val sSubscriptionsMap = HashMap<Any,CompositeDisposable>()

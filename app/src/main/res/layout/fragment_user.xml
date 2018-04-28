@@ -18,7 +18,6 @@
       android:id="@+id/img_not_login"
       android:layout_width="match_parent"
       android:layout_height="130dp"
-      android:background="@drawable/rv2"
       />
     <Button
       android:id="@+id/btn_login"
@@ -40,7 +39,6 @@
       android:layout_height="80dp"
       android:layout_marginTop="16dp"
       android:layout_marginStart="16dp"
-      android:background="@drawable/rv2"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       />

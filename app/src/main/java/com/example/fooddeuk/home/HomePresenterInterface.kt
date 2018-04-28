@@ -7,6 +7,7 @@ import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.network.HTTP.single
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.restaurant.repository.RestaurantRepository
+import com.orhanobut.logger.Logger
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -47,6 +48,7 @@ class HomePresenterInterface : HomeContract.PresenterInterface {
 
     override fun getDangolRestaurants() {
         restaurantRepository.getDangolRestaurant()?.subscribe({
+            Logger.d(it)
             view.setDangolRestaurantRV(it)
         }, {
             view.dangolError()

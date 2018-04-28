@@ -18,7 +18,9 @@ import com.example.fooddeuk.util.SettingActivityUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.iwedding.app.helper.RecentPref
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 
 class MainActivity : BaseActivity() {
@@ -49,9 +51,8 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         setRecentRestaurant()
-
+        super.onDestroy()
     }
 
     private fun setFragment() {
@@ -120,13 +121,22 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun getRecentRestaurant() {
-        recentRestaurant = Gson().fromJson(RecentPref.getValue("recentRestaurant", ""), object : TypeToken<ArrayList<Restaurant>>() {}.type)
+    private fun getRecentRestaurant() {
+
+        val recentRestaurantString = RecentPref.getValue("recentRestaurant","")
+        Logger.d(recentRestaurantString)
+
+        if(recentRestaurantString!=""){
+            recentRestaurant = Gson().fromJson(recentRestaurantString, object : TypeToken<ArrayList<Restaurant>>() {}.type)
+        }
     }
 
-    fun setRecentRestaurant() {
-        val recentRestaurantGson = Gson().toJson(recentRestaurant)
-        RecentPref.setValue("recentRestaurant", recentRestaurantGson)
+    private fun setRecentRestaurant() {
+
+        if(recentRestaurant.size>0){
+            val recentRestaurantGson = Gson().toJson(recentRestaurant)
+            RecentPref.setValue("recentRestaurant", recentRestaurantGson)
+        }
     }
 
 }

@@ -59,9 +59,7 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
             }
 
         }
-
     }
-
 
     fun updateRestaurant(restaurant: ArrayList<Restaurant>?) {
         restaurantItem.clear()
@@ -70,17 +68,32 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
     }
 
     private fun addRecentRestaurant(restaurant: Restaurant) {
-        if (recentRestaurant.size > 4) {
-            tempRecentRestaurant[4] = recentRestaurant[3]
-            tempRecentRestaurant[3] = recentRestaurant[2]
-            tempRecentRestaurant[2] = recentRestaurant[1]
-            tempRecentRestaurant[1] = recentRestaurant[0]
-            tempRecentRestaurant[0] = restaurant
-            recentRestaurant = tempRecentRestaurant
-            return
+//        var isDuplication = true
+
+//        recentRestaurant.forEach {
+//            if (it._id == restaurant._id) {
+//                isDuplication = true
+//                Logger.d("중복이 있는 최근 레스토")
+//            }
+//        }
+
+//        if (isDuplication) {
+            if (recentRestaurant.size > 4) {
+
+                if(tempRecentRestaurant.size<4){
+                    tempRecentRestaurant= recentRestaurant
+                }
+
+                tempRecentRestaurant[4] = recentRestaurant[3]
+                tempRecentRestaurant[3] = recentRestaurant[2]
+                tempRecentRestaurant[2] = recentRestaurant[1]
+                tempRecentRestaurant[1] = recentRestaurant[0]
+                tempRecentRestaurant[0] = restaurant
+                recentRestaurant = tempRecentRestaurant
+                return
+            }
+
+            recentRestaurant.add(restaurant)
         }
-
-        recentRestaurant.add(restaurant)
-
-    }
+//    }
 }

@@ -152,6 +152,30 @@
 
   </LinearLayout>
 
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_event2"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:layout_marginTop="@dimen/margin_8"
+    android:layout_marginBottom="@dimen/margin_8"
+    app:layout_constraintTop_toBottomOf="@id/home_location_layout">
+
+    <!--TEMP-->
+    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+      android:id="@+id/home_event_viewpager2"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+    <me.relex.circleindicator.CircleIndicator
+      android:id="@+id/home_event_viewpager_indicator2"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:layout_marginRight="20dp"
+      android:layout_alignParentBottom="true"
+
+      app:ci_gravity="center"/>
+  </RelativeLayout>
 
   <LinearLayout
     android:id="@+id/home_event_list"
@@ -160,12 +184,13 @@
     android:layout_margin="8dp"
     android:gravity="center"
     android:orientation="vertical"
+    android:visibility="gone"
     app:layout_constraintTop_toBottomOf="@id/home_location_layout"
     >
 
     <TextView
       android:layout_width="match_parent"
-      android:layout_height="80dp"
+      android:layout_height="60dp"
       android:background="@color/colorPrimary"
       android:gravity="center"
       android:text="기획1"
@@ -173,7 +198,7 @@
       />
     <TextView
       android:layout_width="match_parent"
-      android:layout_height="80dp"
+      android:layout_height="60dp"
       android:background="@color/silver"
       android:gravity="center"
       android:text="기획2"
@@ -181,7 +206,7 @@
       />
     <TextView
       android:layout_width="match_parent"
-      android:layout_height="80dp"
+      android:layout_height="60dp"
       android:background="@color/tangerine"
       android:gravity="center"
       android:text="기획3"
@@ -189,36 +214,56 @@
       />
     <TextView
       android:layout_width="match_parent"
-      android:layout_height="80dp"
+      android:layout_height="60dp"
       android:gravity="center"
       android:text="기획4"
       android:textSize="24sp"
       />
 
   </LinearLayout>
+
   <LinearLayout
     android:id="@+id/layout_dangol"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="16dp"
     android:orientation="vertical"
-    app:layout_constraintTop_toBottomOf="@id/home_event_list"
+    app:layout_constraintTop_toBottomOf="@id/home_event2"
     >
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:text="단골매장"
-      android:textColor="@color/text_main"
-      android:textSize="18sp"
-      />
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true"
+        android:text="단골매장"
+        android:textColor="@color/text_main"
+        android:textSize="18sp"
+        />
+
+      <TextView
+        android:id="@+id/dangol_all_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="전체보기"
+        android:visibility="gone"
+        />
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
       android:id="@+id/dangol_rest_recycle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="4dp"
+      android:layout_marginTop="8dp"
       android:focusable="false"
       android:nestedScrollingEnabled="false"
       />
@@ -229,7 +274,7 @@
     android:id="@+id/layout_recent_restaurant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="16dp"
     android:orientation="vertical"
     app:layout_constraintTop_toBottomOf="@id/layout_dangol"
     >
@@ -238,6 +283,7 @@
       android:layout_height="wrap_content">
 
       <TextView
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -254,8 +300,8 @@
         android:layout_marginEnd="@dimen/margin_16"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:visibility="gone"
         android:text="전체보기"
+        android:visibility="gone"
         />
 
     </RelativeLayout>
@@ -264,7 +310,7 @@
       android:id="@+id/recent_rest_recycle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="4dp"
+      android:layout_marginTop="8dp"
       android:focusable="false"
       android:nestedScrollingEnabled="false"
       />

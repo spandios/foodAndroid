@@ -37,7 +37,6 @@ import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.activity_search.*
 
 
 class MapActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnCameraMoveListener, ClusterManager.OnClusterItemClickListener<RestaurantClusterModel>, ClusterManager.OnClusterClickListener<RestaurantClusterModel> {
@@ -95,7 +94,6 @@ class MapActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, Go
 
     private fun init() {
         //restaurant
-
         map_back.setOnClickListener { finish() }
         lat = Location.lat
         lng = Location.lng

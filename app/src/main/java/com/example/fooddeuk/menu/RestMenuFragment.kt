@@ -62,13 +62,15 @@ class RestMenuFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         //1.메뉴 컨텐츠 뷰페이저 설정 2.뷰페이저 안에 있는 메뉴 리스트를 클릭했을 시 스크롤 이동하는 스크롤리스너 설정
         val menuListVPAdapter = MenuListViewPagerAdapter(context!!, menuCategory, restaurant) { position, menuItemHeight ->
-
-            restaurantScrollView.scrollTo(0, (this@RestMenuFragment.activity as DetailRestaurantActivity).scrollSecondToolbar + position * menuItemHeight)
+            restaurantScrollView.scrollTo(0, (this@RestMenuFragment.activity as DetailRestaurantActivity).scrollMenuTabLayout + position * menuItemHeight)
         }
+
         vp_menu_list.adapter = menuListVPAdapter
         tab_rest_menu_real.setViewPager(vp_menu_list)
+
         //DetailRestaurant Activity 페이크 탭 설정
         (this@RestMenuFragment.activity as DetailRestaurantActivity).fakeTab.setViewPager(mMeuListViewPager)
 

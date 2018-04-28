@@ -23,6 +23,7 @@ class MenuListViewPagerAdapter(var context: Context, private var menuCategories:
 
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
+
         val itemView = layoutInflater.inflate(R.layout.item_vp_menu_list, container, false)
         val menuRecyclerView = itemView.findViewById<RecyclerView>(R.id.recycle_menu)
 

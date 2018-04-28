@@ -71,12 +71,13 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
                 expandedPosition = holder.adapterPosition
                 setAnimation(mMenuName, mMenuImage, true)
                 mDetailLayout.visibility = View.VISIBLE
-
+                mRecyclerView.invalidate()
             } else {
                 //기존에 펼쳐져있던 아이템을 접을 시
                 setAnimation(mMenuName, mMenuImage, false)
                 mDetailLayout.visibility = View.GONE
                 expandedPosition = -1
+                mRecyclerView.invalidate()
             }
         } else if (holder is NoPictureViewHolder) {
             val mDetailLayout = holder.itemView.findViewById<LinearLayout>(R.id.menu_detail_layout)
@@ -97,11 +98,12 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
                 mItemClickListener(holder.adapterPosition, holder.itemView.findViewById<View>(R.id.menu_master_layout).height)
                 expandedPosition = holder.adapterPosition
                 mDetailLayout.visibility = View.VISIBLE
-
+                mRecyclerView.invalidate()
             } else {
                 //기존에 펼쳐져있던 아이템을 접을 시
                 mDetailLayout.visibility = View.GONE
                 expandedPosition = -1
+                mRecyclerView.invalidate()
             }
 
 

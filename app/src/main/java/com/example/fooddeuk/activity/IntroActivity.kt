@@ -9,9 +9,7 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Location.getLocation
 import com.example.fooddeuk.`object`.Login
 import com.example.fooddeuk.util.NetworkUtil
-import com.squareup.picasso.Picasso
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.activity_intro.*
 
 
 class IntroActivity : BaseActivity(){
@@ -24,7 +22,7 @@ class IntroActivity : BaseActivity(){
     }
 
     private fun basicInit() {
-        Picasso.with(this).load(R.drawable.rv2).into(introImageView)
+//        Picasso.with(this).load(R.drawable.rv2).into(introImageView)
         NetworkUtil.CheckNetGps(this)
         val rxPermissions = RxPermissions(this)
         rxPermissions

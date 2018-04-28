@@ -283,7 +283,9 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                 }
                 else -> filter = distance
             }
-
+            if(home_restaurant_filter.visibility==View.VISIBLE){
+                home_restaurant_filter.gone()
+            }
             home_restaurant_filter_text.visible()
             presenter.updateRestaurant(queryMap(menu_category))
             customFilterDialog.hide()

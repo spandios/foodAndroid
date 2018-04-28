@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  tools:context="com.example.fooddeuk.restaurant.detail.review.DetailRestaurantReviewFragment"
+  android:padding="@dimen/margin_8"
+  android:descendantFocusability="blocksDescendants"
+  android:focusable="false"
+  android:focusableInTouchMode="false"
+  >
+  <Button
+  android:visibility="gone"
+    android:id="@+id/write_review"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawableEnd="@drawable/ic_mode_edit_black_24dp"
+    android:drawablePadding="@dimen/margin_8"
+    android:text="@string/write_review"
+    android:textColor="@color/text_main"
+    android:textSize="16sp"
+    android:layout_gravity="center_horizontal"
+    />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/review_rv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    />
+
+
+</LinearLayout>

@@ -16,7 +16,7 @@ object Location {
     var buzy = false
     var lat: Double = 0.toDouble()
     var lng: Double = 0.toDouble()
-    lateinit var locationName : String
+    var locationName : String =""
     val baseInterval: Long = 100
     val baseFastestInterval: Long = 100
     val basePriority = LocationRequest.PRIORITY_HIGH_ACCURACY

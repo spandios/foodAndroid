@@ -7,6 +7,7 @@ import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.restaurant.model.RestaurantResponse
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.util.RealmUtil
+import com.orhanobut.logger.Logger
 import io.reactivex.Single
 
 /**
@@ -18,13 +19,14 @@ object RestaurantRemoteRepository : RestaurantDataSource {
 
         user?.let {
             val userObject = GlobalApplication.getInstance().realm.copyFromRealm(it)
-            val dangolList = ArrayList<String>().apply {
+            val dangolRestId = ArrayList<String>().apply {
                 addAll(userObject.rest_id)
             }
-
-            return if (dangolList.isNotEmpty()) {
-                httpService.getDangolRestaurant(dangolList).compose(singleAsync())
+            Logger.d(dangolRestId)
+            return if (dangolRestId.isNotEmpty()) {
+                httpService.getDangolRestaurant(dangolRestId).compose(singleAsync())
             } else {
+
                 null
             }
 

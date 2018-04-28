@@ -7,47 +7,65 @@ import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
-import android.view.View
+import android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS
 import android.view.ViewTreeObserver
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.cart.CartActivity
 import com.example.fooddeuk.custom.ImageVPAdapter
-import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.menu.RestMenuFragment
 import com.example.fooddeuk.menu.model.MenuCategory
 import com.example.fooddeuk.network.HTTP.completable
+import com.example.fooddeuk.network.HTTP.completeAsync
 import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.order_history.OrderHistoryMapActivity
+import com.example.fooddeuk.restaurant.detail.detail.DetailRestaurantMoreDetailFragment
+import com.example.fooddeuk.restaurant.detail.review.DetailRestaurantReviewFragment
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.user.User
 import com.example.fooddeuk.util.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.orhanobut.logger.Logger
+import com.southernbox.springscrollview.SpringScrollView
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 
 
 /**from NearRestaurantFragment */
 
-class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.View {
+class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.View, OnMapReadyCallback {
 
     var dangolCnt = 0
     var isDangol = false
     var scrollFirstToolbar = 0
-    var scrollSecondToolbar = 0 //->menu scroll base
+    var scrollMenuTabLayout = 0 //->menu scroll base
+    var scrollTablayout = 0
     var nameHeight = 0
+    var menuTablayout = 0.0
+    var otherTabLayout = 0
     private var toolbarIconAlpha = 0
+    var isTabFake = false
+    var isMenuTab = true
 
+    private lateinit var googleMap: GoogleMap
     lateinit var restaurant: Restaurant
     var user: User? = null
     private lateinit var restMenuFragment: RestMenuFragment
-    private lateinit var homeFragment: HomeFragment
+    private lateinit var detailRestaurantReviewFragment: DetailRestaurantReviewFragment
+    private lateinit var moreDetailFragment: DetailRestaurantMoreDetailFragment
     private lateinit var ImageVPAdapter: ImageVPAdapter
     private lateinit var menuCategoryList: ArrayList<MenuCategory>
     lateinit var fakeTab: SmartTabLayout
     private lateinit var presenter: DetailRestaurantPresenter
+    lateinit var scrollView: SpringScrollView
 
     private val cart by lazy {
         ContextCompat.getDrawable(this, R.drawable.ic_cart)?.apply { setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP) }
@@ -59,10 +77,22 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         ContextCompat.getDrawable(this, R.drawable.ic_back_black)?.apply { setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_ATOP) }
     }
 
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.googleMap = googleMap.apply {
+            setLatLngBoundsForCameraTarget(LatLngBounds(LatLng(35.0, 126.0), LatLng(38.0, 128.0)))
+            moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(restaurant.lat, restaurant.lng), 17f)) //현재위치
+            googleMap.addMarker(MarkerOptions().position(LatLng(restaurant.lat, restaurant.lng)).title(restaurant.name).snippet(restaurant.address)).showInfoWindow()
+            setMinZoomPreference(17f)
+            setMaxZoomPreference(18f)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_restaurant)
+        header.background.alpha = 0
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.rest_detail_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
         user = RealmUtil.findData(User::class.java)
         RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData, this.javaClass, Consumer { it ->
             if (it is Restaurant) {
@@ -72,8 +102,16 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                 presenter = DetailRestaurantPresenter().apply { view = this@DetailRestaurantActivity }
                 presenter.pictureViewPager(restaurant._id)
                 menuCategoryList = it.menuCategory
-                setMainTabFragment()
+                scrollView = scroll_rest_detail
+                scrollView.isFocusable=false
+                scrollView.isFocusableInTouchMode=false
+                scrollView.descendantFocusability=FOCUS_BLOCK_DESCENDANTS
+                frame_rest_main.isFocusable=false
+                frame_rest_main.isFocusableInTouchMode=false
+                frame_rest_main.descendantFocusability= FOCUS_BLOCK_DESCENDANTS
+
                 viewSetting()
+                setMainTabFragment()
             }
         })
     }
@@ -90,8 +128,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                         true
                     }
                 }
-
-                completable(httpService.createDangol(it.user_id, restaurant.rest_id)).subscribe({
+                httpService.createDangol(it.user_id, restaurant.rest_id).compose(completeAsync()).subscribe({
 
                 }, { it.printStackTrace() })
             }
@@ -111,27 +148,30 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
 
     override fun onDestroy() {
         super.onDestroy()
-
         RxBus.intentUnregister(this.javaClass)
         presenter.clear()
     }
 
     private fun setMainTabFragment() {
         //Restaurant Menu Fragment
+        scrollView = scroll_rest_detail
         RxBus.intentPublish(RxBus.RestMenuFragmentData, restaurant)
+        RxBus.intentPublish(RxBus.RestaurantMoreDetail, restaurant)
         restMenuFragment = RestMenuFragment.newInstance()
-
-
-        homeFragment = HomeFragment()
+        moreDetailFragment = DetailRestaurantMoreDetailFragment.newInstance()
+        detailRestaurantReviewFragment = DetailRestaurantReviewFragment.newInstance(restaurant._id)
         addFragmentToActivity(R.id.frame_rest_main, restMenuFragment)
-        addFragmentToActivity(R.id.frame_rest_main, homeFragment)
-        replaceFragmentToActivity(R.id.frame_rest_main, restMenuFragment)
+        addFragmentToActivity(R.id.frame_rest_main, moreDetailFragment)
+        addFragmentToActivity(R.id.frame_rest_main, detailRestaurantReviewFragment)
+
+        showFragmentToActivity(restMenuFragment)
+        hideFragmentToActivity(moreDetailFragment)
+        hideFragmentToActivity(detailRestaurantReviewFragment)
 
     }
 
     //식당 상단 사진 뷰페이저
     override fun setPictureViewPager(pictureList: ArrayList<String>) {
-        Logger.d(pictureList)
         ImageVPAdapter = ImageVPAdapter(this@DetailRestaurantActivity, pictureList)
         vp_rest_detail_image.adapter = ImageVPAdapter
         rest_detail_image_viewpager_indicator.setViewPager(vp_rest_detail_image)
@@ -149,35 +189,138 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         }
     }
 
+    private fun setTabLayout() {
+        //탭설정
+        fakeTab = tab_rest_menu_fake
+        with(tab_rest_main) {
+            tabMode = TabLayout.MODE_FIXED
+            tabGravity = TabLayout.GRAVITY_FILL
+            addTab(this.newTab().setText("메뉴"), true)
+            addTab(this.newTab().setText("상세정보"))
+            addTab(this.newTab().setText("후기"))
+
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+                    if (!isTabFake) {
+                        when {
+                            tab.position == 0 -> hideFragmentToActivity(restMenuFragment)
+                            tab.position == 1 -> hideFragmentToActivity(moreDetailFragment)
+                            tab.position == 2 -> hideFragmentToActivity(detailRestaurantReviewFragment)
+                        }
+                    }
+
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    if (!isTabFake) {
+                        when {
+                            tab.position == 0 -> {
+                                isMenuTab = true
+                                rest_map_parent.visible()
+                                showFragmentToActivity(restMenuFragment)
+                                tab_rest_main_fake.getTabAt(0)?.select()
+                            }
+                            tab.position == 1 -> {
+                                isMenuTab = false
+                                rest_map_parent.visible()
+                                showFragmentToActivity(moreDetailFragment)
+                                tab_rest_main_fake.getTabAt(1)?.select()
+                            }
+                            tab.position == 2 -> {
+                                isMenuTab = false
+                                rest_map_parent.gone()
+                                showFragmentToActivity(detailRestaurantReviewFragment)
+                                tab_rest_main_fake.getTabAt(2)?.select()
+
+                            }
+                        }
+                    }
+
+                }
+            })
+
+            setSelectedTabIndicatorHeight(0)
+        }
+
+        with(tab_rest_main_fake) {
+            tabMode = TabLayout.MODE_FIXED
+            tabGravity = TabLayout.GRAVITY_FILL
+            addTab(this.newTab().setText("메뉴"), true)
+            addTab(this.newTab().setText("상세정보"))
+            addTab(this.newTab().setText("후기"))
+
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+                    if (isTabFake) {
+                        when {
+                            tab.position == 0 -> hideFragmentToActivity(restMenuFragment)
+                            tab.position == 1 -> hideFragmentToActivity(moreDetailFragment)
+                            tab.position == 2 -> hideFragmentToActivity(detailRestaurantReviewFragment)
+                        }
+                    }
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    if (isTabFake) {
+                        when {
+                            tab.position == 0 -> {
+                                isMenuTab = true
+                                rest_map_parent.visible()
+                                showFragmentToActivity(restMenuFragment)
+                                tab_rest_main.getTabAt(0)?.select()
+                                scroll_rest_detail.scrollTo(0, scrollTablayout)
+                            }
+                            tab.position == 1 -> {
+                                isMenuTab = false
+                                rest_map_parent.visible()
+                                showFragmentToActivity(moreDetailFragment)
+                                tab_rest_main.getTabAt(1)?.select()
+                                scroll_rest_detail.scrollTo(0, scrollTablayout)
+                            }
+                            tab.position == 2 -> {
+                                isMenuTab = false
+                                tab_rest_main.getTabAt(2)?.select()
+                                rest_map_parent.gone()
+                                showFragmentToActivity(detailRestaurantReviewFragment)
+                                scroll_rest_detail.scrollTo(0, scrollTablayout)
+                            }
+
+                        }
+                    }
+
+                }
+            })
+            setSelectedTabIndicatorHeight(0)
+        }
+    }
+
+
     private fun viewSetting() {
+        setTabLayout()
+
         //뷰가 다 그려진 뒤 스크롤에 필요한 값 구하기
         val mGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 //리스너삭제
                 scroll_rest_detail.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
                 scrollFirstToolbar = vp_rest_detail_image.height - header.height
                 nameHeight = rest_detail_name_in_list.measuredHeight + 24.toPx + scrollFirstToolbar
-                scrollSecondToolbar = (frame_rest_main.y).toInt() - header.height
+                scrollMenuTabLayout = (frame_rest_main.y).toInt() - header.height
+                scrollTablayout = tab_rest_main.realY() - header.height
             }
         }
 
-        scroll_rest_detail.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
+
 
         setSupportActionBar(header)
-        fakeTab = tab_rest_menu_fake
-
-        //메인 탭설정
-        with(tab_rest_main) {
-            tabMode = TabLayout.MODE_FIXED
-            tabGravity = TabLayout.GRAVITY_FILL
-            addTab(this.newTab().setText("메뉴"), true)
-            addTab(this.newTab().setText("스토리"))
-            addTab(this.newTab().setText("후기"))
-            setSelectedTabIndicatorHeight(0)
-        }
-
-
         rest_detail_name.text = restaurant.name
 
         //finish
@@ -221,8 +364,6 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                     }
                 }
                         ?: Snackbar.make(layout_detail_restaurant, "로그인해주세요", Snackbar.LENGTH_SHORT).show()
-
-
             }
         }
 
@@ -234,7 +375,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
 
         //MapIcon
         img_rest_detail_map.setOnClickListener {
-            RxBus.intentPublish(RxBus.OneRestaurantMapData,restaurant._id)
+            RxBus.intentPublish(RxBus.OneRestaurantMapData, restaurant._id)
             StartActivity(OrderHistoryMapActivity::class.java)
         }
 
@@ -243,19 +384,33 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         scroll_rest_detail.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             vp_rest_detail_image.translationY = (scrollY / 2).toFloat()
             toolbarIconAlpha = ((Math.min(1f, scrollY.toFloat() / scrollFirstToolbar)) * 255).toInt()
-            val tabAlpha = (Math.min(1f, scrollY.toFloat() / scrollSecondToolbar)).toInt()
+            menuTablayout = (scrollY.toDouble() / scrollMenuTabLayout)
+            otherTabLayout = ((Math.min(1f, scrollY.toFloat() / scrollTablayout)) * 255).toInt()
+            Logger.d(scrollY)
             //매장이름
             if (nameHeight > scrollY) {
-                rest_detail_name.visibility = View.GONE
+                rest_detail_name.gone()
             } else {
-                rest_detail_name.visibility = View.VISIBLE
+                rest_detail_name.visible()
             }
 
-            //페이크 탭 레이아웃
-            if (tabAlpha > 0.95) {
-                tab_rest_menu_fake.visibility = View.VISIBLE
+            //페이크 메뉴 탭 레이아웃
+            if (menuTablayout > 0.99) {
+                if (isMenuTab) {
+                    tab_rest_menu_fake.visible()
+                }
             } else {
-                tab_rest_menu_fake.visibility = View.INVISIBLE
+                tab_rest_menu_fake.gone()
+            }
+
+            if (otherTabLayout > 254) {
+                if (!isMenuTab) {
+                    isTabFake = true
+                    layout_tab_rest_main_fake.visible()
+                }
+            } else {
+                isTabFake = false
+                layout_tab_rest_main_fake.gone()
             }
 
             //툴바 아이콘 칼러
@@ -264,7 +419,6 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                     setIconChangeColor(R.color.white)
                 }
                 in 130..160 -> {
-
                     setIconChangeColor(R.color.white_1)
                 }
                 in 161..190 -> {
@@ -277,6 +431,8 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
 
             header.background.alpha = toolbarIconAlpha
         }
+
+        scroll_rest_detail.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
 
     }
 
@@ -294,28 +450,3 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
     }
 }
 
-
-//
-//        tab_rest_main.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab) {
-//                when (tab.position) {
-//                    0 -> {
-//                        showFragmentToActivity(restMenuFragment)
-////                        hideFragmentToActivity(testFragment)
-//                    }
-//                    1 -> {
-//                        hideFragmentToActivity(restMenuFragment)
-////                        showFragmentToActivity(testFragment)
-//                    }
-//                    2 -> {
-//                        hideFragmentToActivity(restMenuFragment)
-////                        showFragmentToActivity(testFragment)
-//                    }
-//                }
-//
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab) {}
-//
-//            override fun onTabReselected(tab: TabLayout.Tab) {}
-//        })
