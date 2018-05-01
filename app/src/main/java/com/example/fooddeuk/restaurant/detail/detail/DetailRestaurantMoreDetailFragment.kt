@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.fooddeuk.R
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
+import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 
 /**
@@ -25,7 +26,6 @@ class DetailRestaurantMoreDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +39,13 @@ class DetailRestaurantMoreDetailFragment : Fragment() {
         RxBus.intentSubscribe(RxBus.RestaurantMoreDetail, DetailRestaurantMoreDetailFragment::class.java, Consumer {
             if (it is Restaurant) {
                 restaurant = it
-
             }
         })
+    }
 
+    override fun onResume() {
+        super.onResume()
+        Logger.d("resume")
     }
 
     companion object {

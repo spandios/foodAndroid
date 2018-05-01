@@ -19,7 +19,7 @@ import java.util.*
  */
 
 class MenuListViewPagerAdapter(var context: Context, private var menuCategories: ArrayList<MenuCategory>, val restaurant: Restaurant, private val clickItemHeight: (position: Int, menuItemHeight: Int) -> Unit) : PagerAdapter() {
-    var layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private var layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {

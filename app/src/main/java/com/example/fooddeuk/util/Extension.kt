@@ -28,10 +28,11 @@ import java.text.DecimalFormat
 fun RecyclerView.setting(adapter: RecyclerView.Adapter<*>, overscroll: Boolean = false, verticalPadding: Boolean = false, hasFixed: Boolean = false) {
 
     val nmLayoutManager = LinearLayoutManager(context)
+//    nmLayoutManager.isAutoMeasureEnabled=true
     this.layoutManager = nmLayoutManager
     this.itemAnimator = DefaultItemAnimator()
-
     this.adapter = adapter
+
     if (overscroll) {
         OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
     }
@@ -43,6 +44,7 @@ fun RecyclerView.setting(adapter: RecyclerView.Adapter<*>, overscroll: Boolean =
     if (verticalPadding) {
         this.addItemDecoration(VerticalSpaceItemDecoration(12.toPx))
     }
+
 }
 
 fun String.getTime(): Pair<Int, Int> {

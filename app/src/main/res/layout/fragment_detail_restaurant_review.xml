@@ -6,12 +6,135 @@
   android:orientation="vertical"
   tools:context="com.example.fooddeuk.restaurant.detail.review.DetailRestaurantReviewFragment"
   android:padding="@dimen/margin_8"
-  android:descendantFocusability="blocksDescendants"
-  android:focusable="false"
-  android:focusableInTouchMode="false"
   >
+
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/margin_8"
+    android:background="@color/silver"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/margin_8"
+      android:background="@color/colorPrimary"
+
+      >
+
+      <ImageView
+        android:id="@+id/rest_admin_picture"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:background="@drawable/fm"
+        />
+
+
+      <TextView
+        android:id="@+id/rest_admin_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_toRightOf="@id/rest_admin_picture"
+        android:text="@string/small_text"
+        android:textColor="@color/text_main"
+        />
+
+      <TextView
+        android:id="@+id/rest_admin_name"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_below="@id/rest_admin_introduce"
+        android:layout_toRightOf="@id/rest_admin_picture"
+        android:text="팟타이마스터"
+        android:textColor="@color/text_sub"
+        />
+
+      <TextView
+        android:id="@+id/rest_admin_introduce_date"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_alignBaseline="@id/rest_admin_name"
+        android:layout_toRightOf="@id/rest_admin_name"
+        android:text="1개월 전"
+        android:textColor="@color/text_sub"
+        />
+
+    </RelativeLayout>
+
+    <LinearLayout
+
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:background="@color/silver"
+      android:visibility="gone"
+
+      >
+
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="원산지 표기"
+        android:textColor="@color/text_main"
+        android:textSize="12dp"
+
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="소고기(미국산),돼지고기(미국산), 김치(국내산), 고춧가루(태국산)"
+        android:textColor="@color/text_sub"
+        android:textSize="11dp"
+
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="메뉴이미지는 상품의 종류에 따라 제공되는 이미지로 실제 음식과 다를 수 있습니다."
+        android:textColor="@color/text_sub"
+        android:textSize="11dp"
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="상단 메뉴 및 가격은 업소에서 제공한 정보를 기준으로 작성되었으며 변동될 수 있습니다."
+        android:textColor="@color/text_sub"
+        android:textSize="11dp"
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="(주)푸드득은 상품거래에 대한 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 , (주)푸드득은 상품 거래정보 및 거래에 대하여 책임을 지지 않습니다."
+        android:textColor="@color/text_sub"
+        android:textSize="11dp"
+        />
+
+    </LinearLayout>
+
+  </LinearLayout>
   <Button
-  android:visibility="gone"
+    android:visibility="gone"
     android:id="@+id/write_review"
     android:textStyle="bold"
     android:layout_width="wrap_content"
@@ -28,10 +151,9 @@
     android:id="@+id/review_rv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
+    android:nestedScrollingEnabled="false"
     />
+
 
 
 </LinearLayout>

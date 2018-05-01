@@ -1,482 +1,422 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/layout_detail_restaurant"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
-  >
-  <FrameLayout
+  android:descendantFocusability="blocksDescendants">
 
+  <com.southernbox.springscrollview.SpringScrollView
+    android:id="@+id/scroll_rest_detail"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
 
-    <com.southernbox.springscrollview.SpringScrollView
-      android:id="@+id/scroll_rest_detail"
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
+      android:descendantFocusability="blocksDescendants"
+      android:focusable="false"
+      android:focusableInTouchMode="false"
+      android:orientation="vertical"
+      android:id="@+id/scroll_content"
+      tools:context="com.example.fooddeuk.activity.SerachActivity">
 
-      >
 
-      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+      <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:descendantFocusability="blocksDescendants"
-        tools:context="com.example.fooddeuk.activity.SerachActivity">
+        android:layout_height="230dp">
 
-
-        <RelativeLayout
+        <android.support.v4.view.ViewPager
+          android:id="@+id/vp_rest_detail_image"
           android:layout_width="match_parent"
-          android:layout_height="200dp">
+          android:layout_height="230dp"/>
 
-          <android.support.v4.view.ViewPager
-            android:id="@+id/vp_rest_detail_image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"/>
-
-          <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/rest_detail_image_viewpager_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentBottom="true"
-            app:ci_gravity="right"/>
+        <me.relex.circleindicator.CircleIndicator
+          android:id="@+id/rest_detail_image_viewpager_indicator"
+          android:layout_width="match_parent"
+          android:layout_height="45dp"
+          android:layout_marginRight="20dp"
+          android:layout_alignParentBottom="true"
+          app:ci_gravity="right"/>
 
 
-        </RelativeLayout>
+      </RelativeLayout>
+
+      <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <android.support.constraint.ConstraintLayout
-          android:id="@+id/constraintLayout"
+          android:id="@+id/rest_detail1"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          android:padding="8dp"
+          >
+          <TextView
+            android:id="@+id/rest_detail_name_in_list"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="매장이름"
+            />
+
+          <RatingBar
+            android:id="@+id/img_detail_rating"
+            style="@style/CustomRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:rating="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rest_detail_name_in_list"/>
+
+          <TextView
+            android:id="@+id/rest_detail_rating"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:layout_marginStart="4dp"
+            android:lineSpacingExtra="4.5sp"
+            android:textColor="@color/tangerine"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_detail_rating"
+            app:layout_constraintTop_toBottomOf="@id/rest_detail_name_in_list"
+            tools:text="9.0(130)"/>
+
+          <ImageView
+            android:id="@+id/img_rest_detail_call"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginRight="@dimen/margin_16"
+            android:src="@drawable/ic_call_black_24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/img_rest_detail_map"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+          <ImageView
+            android:id="@+id/img_rest_detail_map"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginRight="@dimen/margin_8"
+            android:src="@drawable/ic_find_location_black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+          android:id="@+id/rest_detail_good"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+
+          android:orientation="vertical"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/rest_detail1">
+
+          <!--<View-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="1dp"-->
+          <!--android:background="@color/divider"/>-->
 
           <android.support.constraint.ConstraintLayout
-            android:id="@+id/rest_detail1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            >
-            <TextView
-              android:id="@+id/rest_detail_name_in_list"
-              android:textStyle="bold"
+            android:padding="8dp">
+
+
+            <com.example.fooddeuk.activity.CustomImageTextVertical
+              android:id="@+id/linearLayout2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/margin_16"
-              android:textColor="@color/black"
-              android:textSize="22sp"
+              app:image="@drawable/ic_verified_user_black_24dp"
+              app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
+              app:layout_constraintHorizontal_bias="0.5"
               app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              tools:text="매장이름"
-              />
+              app:text="푸드득 우수">
 
-            <RatingBar
-              android:id="@+id/img_detail_rating"
-              style="@style/CustomRatingBar"
+            </com.example.fooddeuk.activity.CustomImageTextVertical>
+
+            <com.example.fooddeuk.activity.CustomImageTextVertical
+
+              android:id="@+id/linearLayout4"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/margin_16"
-              android:rating="5"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@id/rest_detail_name_in_list"/>
+              app:image="@drawable/ic_verified_user_black_24dp"
+              app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
+              app:layout_constraintHorizontal_bias="0.5"
+              app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+              app:text="1%적립">
 
-            <TextView
-              android:id="@+id/rest_detail_rating"
-              android:textStyle="bold"
+            </com.example.fooddeuk.activity.CustomImageTextVertical>
+
+            <com.example.fooddeuk.activity.CustomImageTextVertical
+              android:id="@+id/linearLayout5"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginTop="3dp"
-              android:layout_marginBottom="@dimen/margin_8"
-              android:layout_marginStart="4dp"
-              android:lineSpacingExtra="4.5sp"
-              android:textColor="@color/tangerine"
-              android:textSize="16sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toEndOf="@id/img_detail_rating"
-              app:layout_constraintTop_toBottomOf="@id/rest_detail_name_in_list"
-              tools:text="9.0(130)"/>
-
-            <ImageView
-              android:id="@+id/img_rest_detail_call"
-              android:layout_width="26dp"
-              android:layout_height="26dp"
-              android:layout_marginRight="@dimen/margin_16"
-              android:src="@drawable/ic_call_black_24dp"
-              android:visibility="gone"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintRight_toLeftOf="@+id/img_rest_detail_map"
-              app:layout_constraintTop_toTopOf="parent"
-              />
-
-            <ImageView
-              android:id="@+id/img_rest_detail_map"
-              android:layout_width="26dp"
-              android:layout_height="26dp"
-              android:layout_marginRight="@dimen/margin_8"
-              android:src="@drawable/ic_find_location_black"
-              android:visibility="gone"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintRight_toRightOf="parent"
-              app:layout_constraintTop_toTopOf="parent"/>
+              app:image="@drawable/ic_verified_user_black_24dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toEndOf="@id/linearLayout4"
+              app:text="현장주문"/>
 
 
           </android.support.constraint.ConstraintLayout>
 
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/divider"/>
+
+
           <LinearLayout
-            android:id="@+id/rest_detail_good"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:paddingEnd="@dimen/margin_12"
+            android:paddingLeft="@dimen/margin_12"
+            android:orientation="vertical">
 
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rest_detail1">
 
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="@color/divider"/>-->
-
-            <android.support.constraint.ConstraintLayout
-              android:layout_width="match_parent"
+            <TextView
+              android:textStyle="bold"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:padding="8dp">
-
-
-              <com.example.fooddeuk.activity.CustomImageTextVertical
-                android:id="@+id/linearLayout2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:image="@drawable/ic_verified_user_black_24dp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:text="푸드득 우수">
-
-              </com.example.fooddeuk.activity.CustomImageTextVertical>
-
-              <com.example.fooddeuk.activity.CustomImageTextVertical
-
-                android:id="@+id/linearLayout4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:image="@drawable/ic_verified_user_black_24dp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-                app:text="1%적립">
-
-              </com.example.fooddeuk.activity.CustomImageTextVertical>
-
-              <com.example.fooddeuk.activity.CustomImageTextVertical
-                android:id="@+id/linearLayout5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:image="@drawable/ic_verified_user_black_24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/linearLayout4"
-                app:text="현장주문"/>
-
-
-            </android.support.constraint.ConstraintLayout>
-
-            <View
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_marginTop="4dp"
-              android:background="@color/divider"/>
-
-
+              android:layout_marginLeft="@dimen/margin_8"
+              android:text="#포장 시 음료 무료제공"
+              android:textSize="16sp"/>
             <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/margin_12"
-              android:paddingEnd="@dimen/margin_12"
-              android:paddingLeft="@dimen/margin_12"
-              android:orientation="vertical">
-
-
+              >
               <TextView
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8"
-                android:text="#포장 시 음료 무료제공"
+                android:gravity="center_vertical"
+                android:text="#1000원 쿠폰도 받아버리기"
                 android:textSize="16sp"/>
-              <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <TextView
-                  android:textStyle="bold"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginLeft="@dimen/margin_8"
-                  android:gravity="center_vertical"
-                  android:text="#1000원 쿠폰도 받아버리기"
-                  android:textSize="16sp"/>
 
-                <Button
-                  android:layout_width="wrap_content"
-                  android:layout_height="38dp"
-                  android:layout_marginStart="16dp"
-                  android:gravity="center_vertical"
-                  android:text="쿠폰 받기"
+              <Button
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical"
+                android:text="쿠폰 받기"
 
-                  />
-              </LinearLayout>
-
+                />
             </LinearLayout>
 
-
-            <View
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_marginTop="4dp"
-              android:background="@color/divider"/>
-
-            <android.support.design.widget.TabLayout
-              android:id="@+id/tab_rest_main"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/colorPrimary"
-              app:tabSelectedTextColor="@color/text_main"
-              app:tabTextAppearance="@style/MyCustomTabText"
-              app:tabTextColor="@color/text_sub"/>
-
-            <View
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:background="@color/divider"/>
-
           </LinearLayout>
 
-        </android.support.constraint.ConstraintLayout>
-
-
-        <FrameLayout
-          android:id="@+id/frame_rest_main"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:focusable="false"
-          android:focusableInTouchMode="false"
-          android:descendantFocusability="blocksDescendants"
-          />
-
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="@dimen/margin_8"
-          android:background="@color/silver"
-          android:orientation="vertical"
-
-          >
-
-          <FrameLayout
-            android:id="@+id/rest_map_parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            >
-            <fragment
-              android:id="@+id/rest_detail_map"
-              android:layout_width="match_parent"
-              android:layout_height="200dp"
-              android:name="com.google.android.gms.maps.SupportMapFragment"/>
-          </FrameLayout>
-
-
-          <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical"
-            >
-            <TextView
-              android:textStyle="bold"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/margin_16"
-              android:text="원산지 표기"
-              android:textColor="@color/text_main"
-              android:textSize="12dp"
-
-              />
-
-            <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/margin_8"
-              android:text="소고기(미국산),돼지고기(미국산), 김치(국내산), 고춧가루(태국산)"
-              android:textColor="@color/text_sub"
-              android:textSize="11dp"
-              />
-
-            <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/margin_8"
-              android:text="메뉴이미지는 상품의 종류에 따라 제공되는 이미지로 실제 음식과 다를 수 있습니다."
-              android:textColor="@color/text_sub"
-              android:textSize="11dp"
-              />
-
-            <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/margin_8"
-              android:text="상단 메뉴 및 가격은 업소에서 제공한 정보를 기준으로 작성되었으며 변동될 수 있습니다."
-              android:textColor="@color/text_sub"
-              android:textSize="11dp"
-              />
-
-            <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/margin_8"
-              android:text="(주)푸드득은 상품거래에 대한 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 , (주)푸드득은 상품 거래정보 및 거래에 대하여 책임을 지지 않습니다."
-              android:textColor="@color/text_sub"
-              android:textSize="11dp"
-              />
-
-          </LinearLayout>
-
-        </LinearLayout>
-
-
-      </LinearLayout>
-
-    </com.southernbox.springscrollview.SpringScrollView>
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
-
-      <android.support.v7.widget.Toolbar
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:padding="8dp"
-        android:background="@color/colorPrimary">
-
-        <RelativeLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-
-          <ImageView
-            android:id="@+id/rest_detail_back"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_centerVertical="true"/>
-
-          <TextView
-            android:id="@+id/rest_detail_name"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/rest_detail_back"
-            android:textColor="@color/black"
-            android:textSize="19sp"
-            android:visibility="gone"
-            tools:text="매장이름"
-            tools:textColor="@color/black"
-            />
-
-          <ImageView
-            android:id="@+id/rest_detail_cart"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/rest_detail_heart"
-            tools:background="@drawable/ic_cart"/>
-
-          <ImageView
-            android:id="@+id/rest_detail_heart"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginRight="8dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="right"
-            tools:background="@drawable/ic_heart"
-            />
-        </RelativeLayout>
-
-      </android.support.v7.widget.Toolbar>
-
-      <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-          android:id="@+id/layout_tab_rest_main_fake"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          android:visibility="gone"
-          >
 
           <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#a6a5a5"
-            />
+            android:layout_marginTop="4dp"
+            android:background="@color/divider"/>
 
           <android.support.design.widget.TabLayout
-            android:id="@+id/tab_rest_main_fake"
+            android:id="@+id/tab_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
+            app:tabIndicatorHeight="0dp"
             app:tabSelectedTextColor="@color/text_main"
             app:tabTextAppearance="@style/MyCustomTabText"
-            app:tabTextColor="@color/text_sub"
-            />
+            app:tabTextColor="@color/text_sub"/>
+
+          <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"/>
 
         </LinearLayout>
 
-        <com.ogaclejapan.smarttablayout.SmartTabLayout
-          android:id="@+id/tab_rest_menu_fake"
+      </android.support.constraint.ConstraintLayout>
+      <com.example.fooddeuk.util.WrapPager
+        android:id="@+id/vp_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+      <FrameLayout
+        android:id="@+id/detail_conent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+          android:visibility="gone"
+          android:id="@+id/review_fragment"
           android:layout_width="match_parent"
-          android:layout_height="48dp"
-          android:background="#ffefe3"
-          android:visibility="invisible"
-          app:stl_clickable="true"
-          app:stl_customTabTextLayoutId="@+layout/custom_tab"
-          app:stl_customTabTextViewId="@+id/custom_text"
-          app:stl_defaultTabTextAllCaps="true"
-          app:stl_defaultTabTextColor="@color/text_main"
-          app:stl_defaultTabTextHorizontalPadding="4dp"
-          app:stl_defaultTabTextMinWidth="1dp"
-          app:stl_defaultTabTextSize="14sp"
-          app:stl_distributeEvenly="false"
-          app:stl_dividerColor="#4D000000"
-          app:stl_dividerThickness="1dp"
-          app:stl_drawDecorationAfterTab="false"
-          app:stl_indicatorAlwaysInCenter="false"
-          app:stl_indicatorColor="@color/tangerine"
-          app:stl_indicatorCornerRadius="2dp"
-          app:stl_indicatorGravity="bottom"
-          app:stl_indicatorInFront="true"
-          app:stl_indicatorInterpolation="smart"
-          app:stl_indicatorThickness="2dp"
-          app:stl_indicatorWidth="auto"
-          app:stl_indicatorWithoutPadding="false"
-          app:stl_overlineColor="#4D000000"
-          app:stl_overlineThickness="0dp"
-          app:stl_titleOffset="24dp"
-          app:stl_underlineColor="#4D000000"
-          app:stl_underlineThickness="3dp"
-          app:tabMode="scrollable"/>
+          android:layout_height="wrap_content"
+          >
+        </FrameLayout>
+      </FrameLayout>
+
+
+      <FrameLayout
+        android:id="@+id/rest_map_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        >
+        <fragment
+          android:id="@+id/rest_detail_map"
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:name="com.google.android.gms.maps.SupportMapFragment"/>
       </FrameLayout>
     </LinearLayout>
-  </FrameLayout>
-</LinearLayout>
+
+  </com.southernbox.springscrollview.SpringScrollView>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+      android:id="@+id/header"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:padding="8dp"
+      android:background="@color/colorPrimary">
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+          android:id="@+id/rest_detail_back"
+          android:layout_width="18dp"
+          android:layout_height="18dp"
+          android:layout_centerVertical="true"/>
+
+        <TextView
+          android:id="@+id/rest_detail_name"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_centerVertical="true"
+          android:layout_toRightOf="@id/rest_detail_back"
+          android:textColor="@color/black"
+          android:textSize="19sp"
+          android:visibility="gone"
+          tools:text="매장이름"
+          tools:textColor="@color/black"
+          />
+
+        <ImageView
+          android:id="@+id/rest_detail_cart"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginRight="20dp"
+          android:layout_centerVertical="true"
+          android:layout_toLeftOf="@+id/rest_detail_heart"
+          tools:background="@drawable/ic_cart"/>
+
+        <ImageView
+          android:id="@+id/rest_detail_heart"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginRight="8dp"
+          android:layout_alignParentRight="true"
+          android:layout_centerVertical="true"
+          android:layout_gravity="right"
+          tools:background="@drawable/ic_heart"
+          />
+      </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout
+        android:id="@+id/layout_tab_rest_main_fake"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="#a6a5a5"
+          />
+
+        <android.support.design.widget.TabLayout
+          android:id="@+id/tab_rest_main_fake"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/colorPrimary"
+          app:tabIndicatorHeight="0dp"
+          app:tabSelectedTextColor="@color/text_main"
+          app:tabTextAppearance="@style/MyCustomTabText"
+          app:tabTextColor="@color/text_sub"
+          />
+
+      </LinearLayout>
+
+      <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/tab_rest_menu_fake"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#ffefe3"
+        android:visibility="invisible"
+        app:stl_clickable="true"
+        app:stl_customTabTextLayoutId="@+layout/custom_tab"
+        app:stl_customTabTextViewId="@+id/custom_text"
+        app:stl_defaultTabTextAllCaps="true"
+        app:stl_defaultTabTextColor="@color/text_main"
+        app:stl_defaultTabTextHorizontalPadding="4dp"
+        app:stl_defaultTabTextMinWidth="1dp"
+        app:stl_defaultTabTextSize="14sp"
+        app:stl_distributeEvenly="false"
+        app:stl_dividerColor="#4D000000"
+        app:stl_dividerThickness="1dp"
+        app:stl_drawDecorationAfterTab="false"
+        app:stl_indicatorAlwaysInCenter="false"
+        app:stl_indicatorColor="@color/tangerine"
+        app:stl_indicatorCornerRadius="2dp"
+        app:stl_indicatorGravity="bottom"
+        app:stl_indicatorInFront="true"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorThickness="2dp"
+        app:stl_indicatorWidth="auto"
+        app:stl_indicatorWithoutPadding="false"
+        app:stl_overlineColor="#4D000000"
+        app:stl_overlineThickness="0dp"
+        app:stl_titleOffset="24dp"
+        app:stl_underlineColor="#4D000000"
+        app:stl_underlineThickness="3dp"
+        app:tabMode="scrollable"/>
+    </FrameLayout>
+  </LinearLayout>
+</FrameLayout>

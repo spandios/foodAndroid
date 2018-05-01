@@ -9,21 +9,12 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.network.HTTP.singleAsync
 import com.example.fooddeuk.util.setting
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_detail_restaurant_review.*
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [DetailRestaurantReviewFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [DetailRestaurantReviewFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailRestaurantReviewFragment : Fragment() {
 
     private var mRestaurantId: String? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,34 +31,28 @@ class DetailRestaurantReviewFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        httpService.getReviewByRestaurant(mRestaurantId).compose(singleAsync()).bindToLifecycle(this).subscribe({
+        httpService.getReviewByRestaurant(mRestaurantId).compose(singleAsync()).subscribe({
             if(it.success){
                 review_rv.setting(DetailRestaurantReviewAdapter(context!!, it.result))
-                review_rv.isNestedScrollingEnabled=false
-
-
             }
         },{
             it.printStackTrace()
         })
 
+
     }
 
     override fun onResume() {
         super.onResume()
-
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if(isVisibleToUser){
+            Logger.d("Ee")
+        }
+    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
 
     companion object {
 
@@ -83,7 +68,7 @@ class DetailRestaurantReviewFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment DetailRestaurantReviewFragment.
          */
-        // TODO: Rename and change types and number of parameters
+
         fun newInstance(param1: String): DetailRestaurantReviewFragment {
             val fragment = DetailRestaurantReviewFragment()
             val args = Bundle()
