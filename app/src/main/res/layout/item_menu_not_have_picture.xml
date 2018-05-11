@@ -15,7 +15,20 @@
 
 
 
-        <TextView
+        <!--<TextView-->
+          <!--android:id="@+id/txt_menu_name"-->
+          <!--android:layout_width="wrap_content"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:layout_centerVertical="true"-->
+          <!--android:layout_marginStart="16dp"-->
+          <!--android:gravity="left"-->
+          <!--android:lineSpacingExtra="6.5sp"-->
+          <!--android:text="메뉴이름"-->
+          <!--android:textColor="@color/text_main"-->
+          <!--android:textSize="18sp"-->
+          <!--android:textStyle="bold" />-->
+
+        <me.grantland.widget.AutofitTextView
           android:id="@+id/txt_menu_name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -25,7 +38,7 @@
           android:lineSpacingExtra="6.5sp"
           android:text="메뉴이름"
           android:textColor="@color/text_main"
-          android:textSize="18sp"
+          android:textSize="16sp"
           android:textStyle="bold" />
 
 
@@ -40,7 +53,7 @@
           android:lineSpacingExtra="6.5sp"
           android:textColor="@color/price"
           tools:text="1,000원"
-          android:textSize="18sp"
+          android:textSize="16sp"
           android:textStyle="bold" />
 
     </RelativeLayout>
@@ -61,20 +74,20 @@
       android:orientation="vertical"
       android:visibility="gone"
       tools:visibility="visible">
-        <FrameLayout
+        <RelativeLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
-            <android.support.v4.view.ViewPager
+            <com.example.fooddeuk.util.WrapPager
               android:id="@+id/vp_menu_detail"
               android:layout_width="match_parent"
-              android:layout_height="240dp" />
+              android:layout_height="wrap_content" />
             <me.relex.circleindicator.CircleIndicator
               android:id="@+id/menu_viewpager_indicator"
               android:layout_width="match_parent"
               android:layout_height="30dp"
               android:layout_gravity="bottom"
               app:ci_gravity="center" />
-        </FrameLayout>
+        </RelativeLayout>
 
 
         <View

@@ -1,7 +1,6 @@
 package com.example.fooddeuk.util;
 
 import android.widget.TextView;
-
 import java.text.DecimalFormat;
 
 /**
@@ -9,8 +8,6 @@ import java.text.DecimalFormat;
  */
 
 public class PriceUtil {
-
-
 
     public static String TextViewToString(TextView textView) {
         return textView.getText().toString();

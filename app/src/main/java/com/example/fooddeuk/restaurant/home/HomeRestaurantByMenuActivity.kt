@@ -87,7 +87,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                 }
             }
 
-            presenter.setRecyclerView(queryMap(menu_category))
+            presenter.setRecyclerView(queryMap())
         })
     }
 
@@ -140,12 +140,12 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
         home_restaurant_loading.gone()
     }
 
-    fun queryMap(menuCategory: String): HashMap<String, String> {
+    fun queryMap(): HashMap<String, String> {
         return HashMap<String, String>().apply {
             put("curLat", Location.lat.toString())
             put("curLng", Location.lng.toString())
             put("maxDistance", maxDistance.toString())
-            put("foodType", menuCategory)
+            put("foodType", menu_category)
             put("filter", filter.toString())
             put("restaurantName", restaurantName)
         }
@@ -225,7 +225,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
 
 
             R.id.home_restaurant_map -> {
-                this.StatAcitivity(RxBus.MapActivityData, queryMap(menu_category), MapActivity::class.java)
+                this.StatAcitivity(RxBus.MapActivityData, queryMap(), MapActivity::class.java)
             }
 
 
@@ -287,7 +287,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                 home_restaurant_filter.gone()
             }
             home_restaurant_filter_text.visible()
-            presenter.updateRestaurant(queryMap(menu_category))
+            presenter.updateRestaurant(queryMap())
             customFilterDialog.hide()
         }
 
@@ -306,7 +306,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                 2 -> GlobalVariable.distance9km
                 else -> GlobalVariable.distance3km
             }
-            presenter.updateRestaurant(queryMap(menu_category))
+            presenter.updateRestaurant(queryMap())
             customFilterDialog.hide()
         }
 
@@ -359,7 +359,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                 else -> filter = distance
             }
 
-            presenter.updateRestaurant(queryMap(menu_category))
+            presenter.updateRestaurant(queryMap())
             isFilterOptionExpand=false
             YoYo.with(Techniques.FadeOutUp).duration(150).onEnd {
                 header_option_filter.gone()
@@ -379,7 +379,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                 menuOption.let {
                     home_restaurant_menu_category.text = it.text
                     menu_category = it.tag as String
-                    presenter.updateRestaurantByMenuCategory(queryMap(menu_category))
+                    presenter.updateRestaurantByMenuCategory(queryMap())
 
                 }
                 header_option_menu_category.gone()
@@ -399,7 +399,7 @@ class HomeRestaurantByMenuActivity : AppCompatActivity(), View.OnClickListener, 
                         Location.buzy = true
                         Location.getLocation { lat, lng, locationName ->
                             Location.buzy = false
-                            presenter.updateRestaurantByCurrentLocation(queryMap(menu_category), locationName)
+                            presenter.updateRestaurantByCurrentLocation(queryMap(), locationName)
                         }
                     }
                     1 -> {

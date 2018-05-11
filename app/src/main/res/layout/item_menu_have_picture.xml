@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/menu_master_layout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="64dp"
         >
 
         <ImageView
@@ -22,19 +22,21 @@
           android:layout_alignParentStart="true"
           android:layout_centerVertical="true"/>
 
-        <TextView
-            android:id="@+id/txt_menu_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="100dp"
-            android:gravity="left"
-            android:lineSpacingExtra="6.5sp"
-            android:text="메뉴이름"
-            android:textColor="@color/text_main"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        <me.grantland.widget.AutofitTextView
+          android:id="@+id/txt_menu_name"
+          android:layout_width="170dp"
+          android:layout_height="wrap_content"
 
+          android:singleLine="true"
+          android:maxLines="1"
+          android:textSize="16sp"
+          android:layout_centerVertical="true"
+          android:layout_marginStart="100dp"
+          android:textColor="@color/text_main"
+          android:lineSpacingExtra="6.5sp"
+          android:textStyle="bold"
+
+          />
 
         <TextView
             android:id="@+id/menu_master_price"
@@ -47,19 +49,75 @@
             android:lineSpacingExtra="6.5sp"
             android:textColor="@color/price"
             tools:text="1,000원"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
 
-    <com.example.fooddeuk.custom.Divider
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      />
+    <!--<com.example.fooddeuk.custom.Divider-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="1dp"-->
+      <!--/>-->
 
 
     <!--DetMenuCetegoryMenu start-->
+    <LinearLayout
+      android:visibility="gone"
+      android:id="@+id/review_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/margin_4"
+      >
 
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="총"
+          android:layout_marginStart="8dp"
+          android:textSize="16sp"
+          />
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="200"
+          android:textSize="16sp"
+          android:textColor="@color/tangerine"
+          android:layout_marginStart="8dp"
+          />
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="개의 리뷰로부터 "
+          android:textSize="16sp"
+          />
+
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="5.0"
+          android:textColor="@color/tangerine"
+          android:textSize="16sp"
+          />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="의 평점"
+          />
+        <TextView
+          android:id="@+id/review_all"
+          android:layout_marginStart="36dp"
+          android:textSize="12sp"
+          android:textColor="@color/tangerine"
+          android:text="모든 리뷰 보기"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
+
+
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/menu_detail_layout"
@@ -68,26 +126,26 @@
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
-        <FrameLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <android.support.v4.view.ViewPager
+
+        <com.example.fooddeuk.util.WrapPager
             android:id="@+id/vp_menu_detail"
             android:layout_width="match_parent"
-            android:layout_height="240dp" />
+            android:layout_height="wrap_content" />
+
         <me.relex.circleindicator.CircleIndicator
+          android:layout_marginTop="@dimen/margin_16"
             android:id="@+id/menu_viewpager_indicator"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_gravity="bottom"
-            app:ci_gravity="center" />
-        </FrameLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:background="@color/divider" />
+          android:layout_centerHorizontal="true"
+          android:layout_alignParentTop="true"
+          android:layout_marginRight="@dimen/margin_16"
+            app:ci_gravity="right" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/menu_detail_order"
@@ -100,7 +158,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider"
-
             />
 
     </LinearLayout>

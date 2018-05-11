@@ -72,6 +72,7 @@ public class GlobalApplication extends Application {
     locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
     UserPrefUtil.Companion.setUserPref(this, "user");
     RecentPref.Companion.setRecentPref(this, "recent");
+
     JodaTimeAndroid.init(this);
 
   }

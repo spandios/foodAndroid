@@ -1,10 +1,10 @@
 package com.example.fooddeuk.util;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by heo on 2018. 4. 30..
@@ -20,23 +20,24 @@ public class WrapViewPager extends ViewPager {
     super(context, attributeSet);
   }
 
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+  public void onRefresh()
+  {
+    try {
+      int height = 0;
+      if (getChildCount() > getCurrentItem()) {
+        View child = getChildAt(getCurrentItem());
+        child.measure(MeasureSpec.EXACTLY, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        int h = child.getMeasuredHeight();
+        if(h > height) height = h;
+      }
 
-    boolean wrapHeight = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST;
-
-    int width = getMeasuredWidth();
-    if (wrapHeight) {
-      // Keep the current measured width.
-      widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+      int heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+      ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+      layoutParams.height = heightMeasureSpec;
+      this.setLayoutParams(layoutParams);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-
-    int fragmentHeight = measureFragment(
-        ((Fragment) getAdapter().instantiateItem(this, getCurrentItem())).getView());
-    heightMeasureSpec = MeasureSpec.makeMeasureSpec(fragmentHeight, MeasureSpec.AT_MOST);
-
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 
   public int measureFragment(View view) {

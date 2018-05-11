@@ -22,8 +22,7 @@ import com.example.fooddeuk.menu.listview.viewholder.HavePictureMenuHolder
 import com.example.fooddeuk.menu.listview.viewholder.NoPictureViewHolder
 import com.example.fooddeuk.menu.model.Menu
 import com.example.fooddeuk.restaurant.model.Restaurant
-import com.example.fooddeuk.util.LayoutInflator
-import com.example.fooddeuk.util.RealmUtil
+import com.example.fooddeuk.util.*
 import com.orhanobut.logger.Logger
 import io.realm.RealmList
 import kotlinx.android.synthetic.main.item_menu_have_picture.view.*
@@ -44,6 +43,17 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
     lateinit var mRecyclerView: RecyclerView
     private var currentPage = 0
 
+//    fun allCollpaseMenu() {
+//        if (expandedPosition >= 0) {
+//            val prevViewHolder = mRecyclerView.findViewHolderForAdapterPosition(expandedPosition)
+//            if (prevViewHolder.itemView.menu_master_picture != null) {
+//                setAnimation(prevViewHolder.itemView.findViewById(R.id.txt_menu_name), prevViewHolder.itemView.findViewById(R.id.menu_master_picture), false)
+//            }
+//            prevViewHolder.itemView.findViewById<View>(R.id.menu_detail_layout).visibility = View.GONE
+//        }
+//        expandedPosition = -1
+//
+//    }
 
     //Expandable and Animation
     private val menuExpandLayoutListener = View.OnClickListener { v ->
@@ -52,6 +62,8 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
             val mMenuName = holder.itemView.findViewById<TextView>(R.id.txt_menu_name)
             val mMenuImage = holder.itemView.menu_master_picture
             val mDetailLayout = holder.itemView.findViewById<LinearLayout>(R.id.menu_detail_layout)
+            val mReviewTitle = holder.itemView.findViewById<LinearLayout>(R.id.review_title)
+            val mVpMenuDetail = holder.itemView.findViewById<WrapPager>(R.id.vp_menu_detail)
 
 
             //펼침
@@ -59,23 +71,37 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
                 //전에 펼쳐졌던 레이아웃 접기
                 if (expandedPosition >= 0) {
                     val prevViewHolder = mRecyclerView.findViewHolderForAdapterPosition(expandedPosition)
-                    if(prevViewHolder.itemView.menu_master_picture!=null){
+                    if (prevViewHolder.itemView.menu_master_picture != null) {
                         setAnimation(prevViewHolder.itemView.findViewById(R.id.txt_menu_name), prevViewHolder.itemView.findViewById(R.id.menu_master_picture), false)
                     }
                     prevViewHolder.itemView.findViewById<View>(R.id.menu_detail_layout).visibility = View.GONE
+                    if(prevViewHolder.itemView.findViewById<LinearLayout>(R.id.review_title).visibility==View.VISIBLE){
+                        prevViewHolder.itemView.findViewById<LinearLayout>(R.id.review_title).gone()
+                    }
                 }
 
                 //현재 클릭된 레이아웃 펼치기
                 //클릭시 포지션과 메뉴아이템의 높이를 알려줌으로써 스크롤 이동
-                mItemClickListener(holder.adapterPosition, holder.itemView.findViewById<View>(R.id.menu_master_layout).height)
+
                 expandedPosition = holder.adapterPosition
                 setAnimation(mMenuName, mMenuImage, true)
                 mDetailLayout.visibility = View.VISIBLE
+                mVpMenuDetail.post {
+                    if(mVpMenuDetail.getChildAt(mVpMenuDetail.currentItem).tag=="review-${mVpMenuDetail.currentItem}"){
+                        mReviewTitle.visible()
+                    }else{
+                        mReviewTitle.gone()
+                    }
+                }
+
                 mRecyclerView.invalidate()
+                mRecyclerView.post { mItemClickListener(holder.adapterPosition, holder.itemView.findViewById<View>(R.id.menu_master_layout).height) }
+
             } else {
                 //기존에 펼쳐져있던 아이템을 접을 시
                 setAnimation(mMenuName, mMenuImage, false)
                 mDetailLayout.visibility = View.GONE
+                mReviewTitle.gone()
                 expandedPosition = -1
                 mRecyclerView.invalidate()
             }
@@ -87,7 +113,7 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
                 //전에 펼쳐졌던 레이아웃 접기
                 if (expandedPosition >= 0) {
                     val prevViewHolder = mRecyclerView.findViewHolderForAdapterPosition(expandedPosition)
-                    if(prevViewHolder.itemView.menu_master_picture!=null){
+                    if (prevViewHolder.itemView.menu_master_picture != null) {
                         setAnimation(prevViewHolder.itemView.findViewById(R.id.txt_menu_name), prevViewHolder.itemView.findViewById(R.id.menu_master_picture), false)
                     }
                     prevViewHolder.itemView.findViewById<View>(R.id.menu_detail_layout).visibility = View.GONE
@@ -95,47 +121,50 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
 
                 //현재 클릭된 레이아웃 펼치기
                 //클릭시 포지션과 메뉴아이템의 높이를 알려줌으로써 스크롤 이동
-                mItemClickListener(holder.adapterPosition, holder.itemView.findViewById<View>(R.id.menu_master_layout).height)
-                expandedPosition = holder.adapterPosition
                 mDetailLayout.visibility = View.VISIBLE
+                expandedPosition = holder.adapterPosition
                 mRecyclerView.invalidate()
+                mRecyclerView.post { mItemClickListener(holder.adapterPosition, holder.itemView.findViewById<View>(R.id.menu_master_layout).height) }
+
+
             } else {
                 //기존에 펼쳐져있던 아이템을 접을 시
                 mDetailLayout.visibility = View.GONE
-                expandedPosition = -1
                 mRecyclerView.invalidate()
+                expandedPosition = -1
+
             }
 
 
         }
 
-
     }
 
 
     private fun setAnimation(mMenuName: TextView, mMenuImage: ImageView, expand: Boolean) {
+
         if (expand) {
-            val nameAnimation = TranslateAnimation(0f, -200f, 0f, 0f).apply {
+            val nameAnimation = TranslateAnimation(0f, -250f, 0f, 0f).apply {
                 fillAfter = true
                 isFillEnabled = true
-                duration = 300
+                duration = 200
             }
             mMenuName.startAnimation(nameAnimation)
 
             YoYo.with(Techniques.SlideOutDown)
-                    .duration(300)
+                    .duration(200)
                     .onEnd { mMenuImage.visibility = View.GONE }
                     .playOn(mMenuImage)
         } else {
-            val nameAnimation = TranslateAnimation(-200f, 0f, 0f, 0f).apply {
+            val nameAnimation = TranslateAnimation(-250f, 0f, 0f, 0f).apply {
                 fillAfter = true
                 isFillEnabled = true
-                duration = 300
+                duration = 200
             }
             mMenuName.startAnimation(nameAnimation)
 
             YoYo.with(Techniques.SlideInUp)
-                    .duration(300)
+                    .duration(200)
                     .onStart { mMenuImage.visibility = View.VISIBLE }
                     .playOn(mMenuImage)
 

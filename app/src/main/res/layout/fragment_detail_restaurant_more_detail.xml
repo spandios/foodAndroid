@@ -1,96 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:padding="@dimen/margin_8"
-  android:background="@color/silver"
   android:orientation="vertical"
   >
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/margin_8"
+    android:paddingEnd="@dimen/margin_8"
+    android:orientation="vertical"
+    >
+    <TextView
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_8"
+      android:text="사장님 인사말"
+      android:textColor="@color/text_main"
+      android:textSize="16sp"
+      />
 
-  <RelativeLayout
+    <RelativeLayout
+      android:id="@+id/layout_introduce"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_8"
+      android:padding="@dimen/margin_8"
+
+      >
+
+      <ImageView
+        android:id="@+id/rest_admin_picture"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="@drawable/owner_example"
+        />
+
+
+      <TextView
+        android:id="@+id/rest_admin_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_toRightOf="@id/rest_admin_picture"
+        android:textColor="@color/text_main"
+        android:text="안녕하세요 얌타이입니다\n얌타이만의 따라올 수 없는 그 맛과 바른 먹거리 철저한 위생 그리고 친절한 서비스는 다른 태국음식점과 비교를 거부합니다.\n맛으로 마치 태국에 온 듯한 감동을 드리겠습니다."
+        android:textSize="14sp"
+        />
+
+      <TextView
+        android:id="@+id/rest_admin_name"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_below="@id/rest_admin_introduce"
+        android:layout_toRightOf="@id/rest_admin_picture"
+        android:text="타이요리마스터"
+        android:textColor="@color/text_sub"
+        android:textSize="12sp"
+        />
+
+      <TextView
+        android:id="@+id/rest_admin_introduce_date"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_alignBaseline="@id/rest_admin_name"
+        android:layout_toRightOf="@id/rest_admin_name"
+        android:text="1개월 전"
+        android:textColor="@color/text_sub"
+        android:textSize="12sp"
+        />
+
+    </RelativeLayout>
+
+    <LinearLayout
+      android:id="@+id/layout_more_restaurant_picture"
+      android:layout_width="match_parent"
+      android:layout_height="140dp"
+      android:orientation="horizontal"
+      android:visibility="gone"
+      >
+      <ImageView
+        android:id="@+id/first_picture"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/fm"
+        />
+      <ImageView
+        android:id="@+id/second_picture"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/fm"/>
+
+    </LinearLayout>
+  </LinearLayout>
+
+
+  <LinearLayout
+    android:id="@+id/layout_discount_benefit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_16"
+    android:padding="@dimen/margin_8"
+    android:orientation="vertical"
+    >
+
+    <TextView
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="혜택들"
+      android:textColor="@color/text_main"
+      android:textSize="16sp"
+      />
+
+
+    <TextView
+      android:layout_marginTop="@dimen/margin_8"
+      android:id="@+id/discount_benefit_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="1. 전 메뉴 방문포장 시 1000원 할인!!\n2. 요청사항에 리뷰 남겨주신다고 남겨주세요~ 음료수 또는 소정의선물을 드립니다."
+      android:textColor="@color/text_main"
+      />
+
+  </LinearLayout>
+
+
+  <LinearLayout
+    android:id="@+id/layout_about_rest"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_16"
+    android:padding="@dimen/margin_8"
+    android:orientation="vertical"
+    >
+
+    <TextView
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="매장"
+      android:textColor="@color/text_main"
+      android:textSize="16sp"
+      />
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:id="@+id/more_detail_map"
+      android:layout_width="match_parent"
+      android:layout_height="180dp"
+      android:layout_marginTop="@dimen/margin_8"
+      android:name="com.google.android.gms.maps.SupportMapFragment"
+      />
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_8">
+
+      <TextView
+        android:id="@+id/open_time"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="영업시간 "/>
+
+      <TextView
+        android:id="@+id/open_time_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_toRightOf="@id/open_time"
+        android:text="오전 10:00 ~ 오후 10:00"
+        />
+
+      <TextView
+
+        android:id="@+id/holiday"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_below="@id/open_time"
+        android:text="휴무"
+        />
+
+      <TextView
+        android:id="@+id/holiday_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_alignBaseline="@id/holiday"
+        android:layout_toRightOf="@id/holiday"
+        android:text="연중무휴"
+        />
+
+      <TextView
+        android:layout_marginTop="@dimen/margin_8"
+        android:id="@+id/rest_detail_tel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/holiday"
+        android:text="전화번호"
+        android:textStyle="bold"
+        />
+
+      <TextView
+        android:id="@+id/rest_detail_tel_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_alignBaseline="@id/rest_detail_tel"
+        android:layout_toRightOf="@id/rest_detail_tel"
+        android:text="050-0000-0000 (푸드득 제공 번호) "
+        />
+
+    </RelativeLayout>
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/layout_country_origin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_16"
+    android:padding="@dimen/margin_8"
+    android:orientation="vertical"
+    >
+
+    <TextView
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="원산지 표기"
+      android:textColor="@color/text_main"
+      android:textSize="16sp"
+      />
+
+    <TextView
+      android:id="@+id/origin_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_8"
+      android:text="소고기(미국산),돼지고기(미국산), 김치(국내산), 고춧가루(태국산), 버섯(국내산), 소프트크랩(중국산), "
+      android:textColor="@color/text_sub"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/layout_business_license"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_16"
+    android:padding="@dimen/margin_8"
+    android:orientation="vertical"
+    >
+
+    <TextView
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="사업자 정보"
+      android:textColor="@color/text_main"
+      android:textSize="16sp"
+      />
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_8">
+
+      <TextView
+        android:id="@+id/license_name"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="상호명"/>
+
+      <TextView
+        android:id="@+id/license_name_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_toRightOf="@id/license_name"
+        android:text="얌타이"
+        />
+
+      <TextView
+        android:id="@+id/license_num"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_below="@id/license_name"
+        android:text="사업자 등록번호"
+        />
+
+      <TextView
+        android:id="@+id/license_num_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_alignBaseline="@id/license_num"
+        android:layout_toRightOf="@id/license_num"
+        android:text="110-343-005640"
+        />
+
+
+    </RelativeLayout>
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/layout_detail_etc"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/margin_8"
-    android:background="@color/colorPrimary"
-
-    >
-
-    <ImageView
-      android:id="@+id/rest_admin_picture"
-      android:layout_width="46dp"
-      android:layout_height="46dp"
-      android:background="@drawable/fm"
-      />
-
-
-    <TextView
-      android:id="@+id/rest_admin_introduce"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/margin_8"
-      android:layout_toRightOf="@id/rest_admin_picture"
-      android:text="@string/small_text"
-      android:textColor="@color/text_main"
-      />
-
-    <TextView
-      android:id="@+id/rest_admin_name"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/margin_8"
-      android:layout_marginStart="@dimen/margin_8"
-      android:layout_below="@id/rest_admin_introduce"
-      android:layout_toRightOf="@id/rest_admin_picture"
-      android:text="팟타이마스터"
-      android:textColor="@color/text_sub"
-      />
-
-    <TextView
-      android:id="@+id/rest_admin_introduce_date"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/margin_8"
-      android:layout_alignBaseline="@id/rest_admin_name"
-      android:layout_toRightOf="@id/rest_admin_name"
-      android:text="1개월 전"
-      android:textColor="@color/text_sub"
-      />
-
-  </RelativeLayout>
-
-  <LinearLayout
-
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/silver"
+    android:orientation="vertical"
     >
-
-    <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/margin_16"
-      android:text="원산지 표기"
-      android:textColor="@color/text_main"
-      android:textSize="12dp"
-
-      />
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/margin_8"
-      android:text="소고기(미국산),돼지고기(미국산), 김치(국내산), 고춧가루(태국산)"
-      android:textColor="@color/text_sub"
-      android:textSize="11dp"
-
-      />
 
     <TextView
       android:layout_width="wrap_content"
@@ -98,7 +337,7 @@
       android:layout_marginTop="@dimen/margin_8"
       android:text="메뉴이미지는 상품의 종류에 따라 제공되는 이미지로 실제 음식과 다를 수 있습니다."
       android:textColor="@color/text_sub"
-      android:textSize="11dp"
+      android:textSize="12sp"
       />
 
     <TextView
@@ -107,7 +346,7 @@
       android:layout_marginTop="@dimen/margin_8"
       android:text="상단 메뉴 및 가격은 업소에서 제공한 정보를 기준으로 작성되었으며 변동될 수 있습니다."
       android:textColor="@color/text_sub"
-      android:textSize="11dp"
+      android:textSize="12sp"
       />
 
     <TextView
@@ -116,9 +355,7 @@
       android:layout_marginTop="@dimen/margin_8"
       android:text="(주)푸드득은 상품거래에 대한 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 , (주)푸드득은 상품 거래정보 및 거래에 대하여 책임을 지지 않습니다."
       android:textColor="@color/text_sub"
-      android:textSize="11dp"
+      android:textSize="12sp"
       />
-
   </LinearLayout>
-
 </LinearLayout>

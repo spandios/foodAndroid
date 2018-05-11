@@ -9,7 +9,7 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.network.HTTP.singleAsync
 import com.example.fooddeuk.util.setting
-import com.orhanobut.logger.Logger
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import kotlinx.android.synthetic.main.fragment_detail_restaurant_review.*
 
 class DetailRestaurantReviewFragment : Fragment() {
@@ -31,15 +31,13 @@ class DetailRestaurantReviewFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        httpService.getReviewByRestaurant(mRestaurantId).compose(singleAsync()).subscribe({
+        httpService.getReviewByRestaurant(mRestaurantId).compose(singleAsync()).bindToLifecycle(this).subscribe({
             if(it.success){
                 review_rv.setting(DetailRestaurantReviewAdapter(context!!, it.result))
             }
         },{
             it.printStackTrace()
         })
-
-
     }
 
     override fun onResume() {
@@ -49,7 +47,7 @@ class DetailRestaurantReviewFragment : Fragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if(isVisibleToUser){
-            Logger.d("Ee")
+
         }
     }
 

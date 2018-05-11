@@ -9,6 +9,7 @@ class RecentPref {
     companion object {
         lateinit var recentPref : SharedPreferences
 
+
         fun setRecentPref(context: Context, key: String){
             recentPref=context.getSharedPreferences(key,Context.MODE_PRIVATE)
         }
@@ -16,19 +17,19 @@ class RecentPref {
         fun setValue(key: String, value: String) {
             val editor = recentPref.edit()
             editor.putString(key, value)
-            editor.commit()
+            editor.apply()
         }
 
         fun setValue(key: String, value: Int) {
             val editor = recentPref.edit()
             editor.putInt(key, value)
-            editor.commit()
+            editor.apply()
         }
 
         fun setValue(key: String, value: Boolean?) {
             val editor = recentPref.edit()
             editor.putBoolean(key, value!!)
-            editor.commit()
+            editor.apply()
         }
 
 

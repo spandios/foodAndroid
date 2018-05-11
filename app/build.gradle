@@ -143,7 +143,8 @@ dependencies {
         exclude module: 'support-v4'
     }
     compile 'me.grantland:autofittextview:0.2+'
-    compile 'com.github.iffa:wrapping-viewpager:1.0.1'
+    compile 'at.blogc:expandabletextview:1.0.5'
+
 
 
 

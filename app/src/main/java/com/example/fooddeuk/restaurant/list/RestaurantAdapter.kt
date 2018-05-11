@@ -92,7 +92,6 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
                 recentRestaurant = tempRecentRestaurant
                 return
             }
-
             recentRestaurant.add(restaurant)
         }
 //    }

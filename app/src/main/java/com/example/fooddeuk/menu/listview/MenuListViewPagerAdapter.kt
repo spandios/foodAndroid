@@ -37,6 +37,7 @@ class MenuListViewPagerAdapter(var context: Context, private var menuCategories:
             }
         },false,false)
 
+
         container.addView(itemView)
         return itemView
     }

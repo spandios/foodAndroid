@@ -112,7 +112,7 @@ class MapActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, Go
             map_restaurant_menu_category.text = "#" + foodType
         }
 
-        justDong(Location.locationName)
+        getDong(Location.locationName)
 
         header_restaurant_map.setOnClickListener(this)
         map_restaurant_menu_category.setOnClickListener(this)
@@ -286,7 +286,7 @@ class MapActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, Go
             mClusterManager = ClusterManager(this@MapActivity, googleMap)
             setLatLngBoundsForCameraTarget(LatLngBounds(LatLng(35.0, 126.0), LatLng(38.0, 128.0)))
             moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(Location.lat, Location.lng), 14f)) //현재위치
-            setMinZoomPreference(14f)
+            setMinZoomPreference(11f)
             setMaxZoomPreference(18f)
             if (ContextCompat.checkSelfPermission(this@MapActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 isMyLocationEnabled = true
@@ -309,7 +309,7 @@ class MapActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, Go
             lng = latLng.longitude
             getRestaurant()
             Location.getLocationName(latLng.latitude, latLng.longitude) { locationName ->
-                justDong(locationName)
+                getDong(locationName)
             }
         }
     }
@@ -421,7 +421,7 @@ class MapActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback, Go
         }
     }
 
-    private fun justDong(gudong: String) {
+    private fun getDong(gudong: String) {
         var index = gudong.indexOf("구")
         map_restaurant_address.text = "#" + gudong.substring(index + 2)
     }

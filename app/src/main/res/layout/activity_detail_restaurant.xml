@@ -13,19 +13,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
+
     >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
+      android:id="@+id/scroll_content"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:descendantFocusability="blocksDescendants"
       android:focusable="false"
       android:focusableInTouchMode="false"
       android:orientation="vertical"
-      android:id="@+id/scroll_content"
-      tools:context="com.example.fooddeuk.activity.SerachActivity">
+      >
 
 
       <RelativeLayout
@@ -143,7 +144,8 @@
           <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:padding="8dp"
+            >
 
 
             <com.example.fooddeuk.activity.CustomImageTextVertical
@@ -204,7 +206,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginLeft="@dimen/margin_8"
-              android:text="#포장 시 음료 무료제공"
+              android:text="#포장 시 1000원 할인"
               android:textSize="16sp"/>
             <LinearLayout
               android:layout_width="match_parent"
@@ -216,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8"
                 android:gravity="center_vertical"
-                android:text="#1000원 쿠폰도 받아버리기"
+                android:text="#추가 1000원 쿠폰도 받아버리기"
                 android:textSize="16sp"/>
 
               <Button
@@ -256,24 +258,20 @@
         </LinearLayout>
 
       </android.support.constraint.ConstraintLayout>
+
       <com.example.fooddeuk.util.WrapPager
         android:id="@+id/vp_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-      <FrameLayout
-        android:id="@+id/detail_conent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <FrameLayout
-          android:visibility="gone"
-          android:id="@+id/review_fragment"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          >
-        </FrameLayout>
+      <FrameLayout
+        android:id="@+id/review_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
       </FrameLayout>
 
 
@@ -281,14 +279,16 @@
         android:id="@+id/rest_map_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_16"
         >
         <fragment
           android:id="@+id/rest_detail_map"
           android:layout_width="match_parent"
-          android:layout_height="200dp"
+          android:layout_height="250dp"
           android:name="com.google.android.gms.maps.SupportMapFragment"/>
       </FrameLayout>
+
     </LinearLayout>
 
   </com.southernbox.springscrollview.SpringScrollView>

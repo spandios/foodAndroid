@@ -11,6 +11,7 @@ class UserPrefUtil {
      * @param key        키
      * @param value    문자열
      */
+
     companion object {
         const val PROVIDER_ID = "provider_id"
         const val EMAIL = "email"
@@ -21,14 +22,9 @@ class UserPrefUtil {
         const val EXIST = "EXIST"
 
         lateinit var userPref: SharedPreferences
-        lateinit var recentPref : SharedPreferences
 
         fun setUserPref(context: Context, key : String){
             userPref =context.getSharedPreferences(key,Context.MODE_PRIVATE)
-        }
-
-        fun setRecentPref(context: Context, key: String){
-            recentPref=context.getSharedPreferences(key,Context.MODE_PRIVATE)
         }
 
         fun setValue(key: String, value: String) {

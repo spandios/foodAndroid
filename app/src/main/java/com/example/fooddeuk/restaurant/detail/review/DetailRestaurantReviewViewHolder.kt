@@ -2,12 +2,14 @@ package com.example.fooddeuk.restaurant.detail.review
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.example.fooddeuk.R
 import com.example.fooddeuk.custom.ImageVPAdapter
 import com.example.fooddeuk.review.MenuReview
 import com.example.fooddeuk.util.TimeUtil
 import com.example.fooddeuk.util.gone
 import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_detail_restaurant_review.view.*
 
 /**
@@ -18,16 +20,16 @@ class DetailRestaurantReviewViewHolder(itemView: View) : RecyclerView.ViewHolder
 
     fun bind(reviewItem: MenuReview) {
         with(itemView) {
-            Logger.d("-------")
-            Logger.d(reviewItem.content)
-            Logger.d(reviewItem.image)
-            if (reviewItem.user_image.isNotEmpty()) { Picasso.with(context).load(reviewItem.user_image).fit().into(review_profile_picture) }
+
+//            if (reviewItem.user_image.isNotEmpty()) { Picasso.with(context).load(reviewItem.user_image).fit().into(review_profile_picture) }
+            Picasso.with(context).load(R.drawable.example_user).transform(CropCircleTransformation()).fit().into(review_profile_picture)
             review_user_id.text = reviewItem.name
             review_write_date.text = TimeUtil.currentBetweenTime(reviewItem.created_at)
             review_rating.rating = reviewItem.rating.toFloat()
 
             if(reviewItem.image.isNotEmpty()){
                 Logger.d("is not empty")
+                Logger.d(reviewItem.image[0])
                 vp_review_image.adapter =ImageVPAdapter(context, reviewItem.image)
             }else{
                 layout_review_image.gone()

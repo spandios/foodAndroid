@@ -2,6 +2,7 @@ package com.example.fooddeuk.util
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -283,6 +284,38 @@ fun String.getOriginalPrice(): Int {
 }
 
 fun TextView.text(): String = this.text.toString()
+
+
+fun SharedPreferences.setValue(key: String, value: String){
+    val editor = this.edit()
+    editor.putString(key, value)
+    editor.apply()
+}
+
+fun SharedPreferences.setValue(key: String, value: Int){
+    val editor = this.edit()
+    editor.putInt(key, value)
+    editor.apply()
+}
+
+fun SharedPreferences.setValue(key: String, value: Boolean){
+    val editor = this.edit()
+    editor.putBoolean(key, value)
+    editor.apply()
+}
+
+fun SharedPreferences.deleteValue(key: String){
+        val editor = this.edit()
+        editor.remove(key)
+        editor.apply()
+}
+
+fun SharedPreferences.clearData() {
+    val editor = this.edit()
+    editor.clear()
+    editor.apply()
+}
+
 
 
 

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.GlobalVariable.recentRestaurant
+import com.example.fooddeuk.`object`.Location
 import com.example.fooddeuk.cart.CartFragment
 import com.example.fooddeuk.home.HomeFragment
 import com.example.fooddeuk.pick.PickFragment
@@ -15,10 +16,10 @@ import com.example.fooddeuk.restaurant.near.NearRestaurantParentFragment
 import com.example.fooddeuk.user.UserFragment
 import com.example.fooddeuk.util.NetworkUtil
 import com.example.fooddeuk.util.SettingActivityUtil
+import com.example.fooddeuk.util.setValue
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.iwedding.app.helper.RecentPref
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -52,6 +53,7 @@ class MainActivity : BaseActivity() {
 
     override fun onDestroy() {
         setRecentRestaurant()
+        setRecentLocation()
         super.onDestroy()
     }
 
@@ -122,21 +124,24 @@ class MainActivity : BaseActivity() {
     }
 
     private fun getRecentRestaurant() {
-
-        val recentRestaurantString = RecentPref.getValue("recentRestaurant","")
-        Logger.d(recentRestaurantString)
-
-        if(recentRestaurantString!=""){
+        val recentRestaurantString = RecentPref.getValue("recentRestaurant", "")
+        if (recentRestaurantString != "") {
             recentRestaurant = Gson().fromJson(recentRestaurantString, object : TypeToken<ArrayList<Restaurant>>() {}.type)
         }
     }
 
     private fun setRecentRestaurant() {
-
-        if(recentRestaurant.size>0){
+        if (recentRestaurant.size > 0) {
             val recentRestaurantGson = Gson().toJson(recentRestaurant)
             RecentPref.setValue("recentRestaurant", recentRestaurantGson)
         }
+    }
+
+    private fun setRecentLocation(){
+        RecentPref.recentPref.setValue("lat",Location.lat.toString())
+        RecentPref.recentPref.setValue("lng",Location.lng.toString())
+        RecentPref.recentPref.setValue("locationName", Location.locationName)
+
     }
 
 }

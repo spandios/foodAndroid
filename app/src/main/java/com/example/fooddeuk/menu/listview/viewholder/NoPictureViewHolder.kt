@@ -1,10 +1,8 @@
 package com.example.fooddeuk.menu.listview.viewholder
 
 import android.content.Context
-import android.support.v4.view.ViewPager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.Button
 import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.menu.listview.MenuDetailViewPagerAdapter
@@ -19,26 +17,19 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
  */
 
 class NoPictureViewHolder(var context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
-    //Layout
-
-    private var vpMenuDetail: ViewPager = itemView.vp_menu_detail
-    private var menuOrder: Button = itemView.menu_detail_order
-
     fun bind(menu: Menu) {
         val menuPrice = menu.price + "원"
         if (menu.rating.length == 1) { menu.rating += ".0" }
         httpService.getReview(menu.menu_id).compose(singleAsync()).subscribe({
             if(it.success){
                 val menuDetailViewPager = MenuDetailViewPagerAdapter(context, menu, it.result,noPicture = true)
-                vpMenuDetail.adapter=menuDetailViewPager
-                OverScrollDecoratorHelper.setUpOverScroll(vpMenuDetail)
-                itemView.menu_viewpager_indicator.setViewPager(vpMenuDetail)
+                itemView.vp_menu_detail.adapter=menuDetailViewPager
+                OverScrollDecoratorHelper.setUpOverScroll(itemView.vp_menu_detail)
+                itemView.menu_viewpager_indicator.setViewPager(itemView.vp_menu_detail)
             }
         },{it.printStackTrace()})
-
         itemView.txt_menu_name.text = menu.name
         itemView.menu_master_price.text = menuPrice
-        menuOrder.text = Util.stringFormat(context, R.string.menu_order,menuPrice)
-
+        itemView.menu_detail_order.text = Util.stringFormat(context, R.string.menu_order,menuPrice)
     }
 }

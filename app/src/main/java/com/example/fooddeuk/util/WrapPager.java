@@ -3,6 +3,7 @@ package com.example.fooddeuk.util;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import com.orhanobut.logger.Logger;
@@ -13,7 +14,7 @@ import com.orhanobut.logger.Logger;
 
 
 public class WrapPager extends ViewPager {
-
+  private Boolean enabled = true;
   private View mCurrentView;
   private int mCurrentPosition;
   private int width = 0;
@@ -29,13 +30,6 @@ public class WrapPager extends ViewPager {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-//    View child = getChildAt(getCurrentItem());
-//    if (child != null) {
-//      child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-//      int h = child.getMeasuredHeight();
-//      heightMeasureSpec = MeasureSpec.makeMeasureSpec(h, MeasureSpec.EXACTLY);
-//    }
-//    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     int height = 0;
     width = widthMeasureSpec;
     if (getChildCount() > getCurrentItem()) {
@@ -94,5 +88,28 @@ public class WrapPager extends ViewPager {
       e.printStackTrace();
     }
   }
+
+  public void setSwipe(Boolean enabled){
+    this.enabled=enabled;
+  }
+
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    if (this.enabled) {
+      return super.onTouchEvent(event);
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean onInterceptTouchEvent(MotionEvent event) {
+    if (this.enabled) {
+      return super.onInterceptTouchEvent(event);
+    }
+
+    return false;
+  }
+
 }
 
