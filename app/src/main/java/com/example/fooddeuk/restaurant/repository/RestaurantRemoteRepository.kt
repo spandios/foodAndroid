@@ -16,19 +16,15 @@ import io.reactivex.Single
 object RestaurantRemoteRepository : RestaurantDataSource {
     override fun getDangolRestaurant(): Single<ArrayList<Restaurant>>? {
         val user = RealmUtil.findData(User::class.java)
-
         user?.let {
             val userObject = GlobalApplication.getInstance().realm.copyFromRealm(it)
             val dangolRestId = ArrayList<String>().apply {
                 addAll(userObject.rest_id)
             }
-            Logger.d(dangolRestId)
-            return if (dangolRestId.isNotEmpty()) {
-                httpService.getDangolRestaurant(dangolRestId).compose(singleAsync())
-            } else {
 
-                null
-            }
+            if (dangolRestId.isNotEmpty()) {
+                return httpService.getDangolRestaurant(dangolRestId).compose(singleAsync())
+            }else null
 
         } ?: return null
     }

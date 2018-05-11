@@ -8,6 +8,13 @@
   android:layout_height="match_parent"
   android:descendantFocusability="blocksDescendants">
 
+
+  <ProgressBar
+      android:id="@+id/detail_restaurant_loading"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"/>
+
   <com.southernbox.springscrollview.SpringScrollView
     android:id="@+id/scroll_rest_detail"
     android:layout_width="match_parent"

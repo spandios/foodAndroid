@@ -1,393 +1,372 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:layout_below="@id/anchor"
-  >
-
-  <LinearLayout
-    android:id="@+id/home_menu_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="85dp">
-
-      <Button
-        android:id="@+id/home_menu_anything"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="아무거나"
-        />
-
-      <Button
-        android:id="@+id/home_menu_japan"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="일식"
-        />
-
-      <Button
-        android:id="@+id/home_menu_chicken"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="치킨"
-        />
-
-    </LinearLayout>
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="85dp"
-      >
-      <Button
-        android:id="@+id/home_menu_chinese"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="중식"
-        />
-
-      <Button
-        android:id="@+id/home_menu_korean"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="한식"
-        />
-
-      <Button
-        android:id="@+id/home_menu_cafe"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="까페"
-        />
-
-    </LinearLayout>
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="85dp"
-      >
-      <Button
-        android:id="@+id/home_menu_thai"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="타이"
-        />
-
-      <Button
-        android:id="@+id/home_menu_franchise"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="프랜차이즈"
-        />
-
-      <Button
-        android:id="@+id/home_menu_dessert"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="디저트"
-        />
-
-    </LinearLayout>
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/home_location_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:layout_constraintTop_toBottomOf="@id/home_menu_layout">
-
-    <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:layout_marginStart="16dp"
-      android:text="장소로 찾기"
-      android:textColor="@color/text_main"
-      android:textSize="18sp"
-      />
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="90dp">
-      <Button
-        android:id="@+id/home_location_map"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="지도"
-
-        />
-
-      <Button
-        android:id="@+id/home_location_metro"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="지하철"
-        />
-
-      <Button
-        android:id="@+id/home_location_univ"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="대학교"
-        />
-    </LinearLayout>
-
-  </LinearLayout>
-
-  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/home_event2"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:layout_marginTop="@dimen/margin_8"
-    android:layout_marginBottom="@dimen/margin_8"
-    app:layout_constraintTop_toBottomOf="@id/home_location_layout">
-
-    <!--TEMP-->
-    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
-      android:id="@+id/home_event_viewpager2"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      />
-    <me.relex.circleindicator.CircleIndicator
-      android:id="@+id/home_event_viewpager_indicator2"
-      android:layout_width="match_parent"
-      android:layout_height="48dp"
-      android:layout_marginRight="20dp"
-      android:layout_alignParentBottom="true"
-
-      app:ci_gravity="center"/>
-  </RelativeLayout>
-
-  <LinearLayout
-    android:id="@+id/home_event_list"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:visibility="gone"
-    app:layout_constraintTop_toBottomOf="@id/home_location_layout"
-    >
-
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="60dp"
-      android:background="@color/colorPrimary"
-      android:gravity="center"
-      android:text="기획1"
-      android:textSize="24sp"
-      />
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="60dp"
-      android:background="@color/silver"
-      android:gravity="center"
-      android:text="기획2"
-      android:textSize="24sp"
-      />
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="60dp"
-      android:background="@color/tangerine"
-      android:gravity="center"
-      android:text="기획3"
-      android:textSize="24sp"
-      />
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="60dp"
-      android:gravity="center"
-      android:text="기획4"
-      android:textSize="24sp"
-      />
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/layout_dangol"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:orientation="vertical"
-    app:layout_constraintTop_toBottomOf="@id/home_event2"
-    >
-
-    <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-      <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_centerVertical="true"
-        android:text="단골매장"
-        android:textColor="@color/text_main"
-        android:textSize="18sp"
-        />
-
-      <TextView
-        android:id="@+id/dangol_all_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="전체보기"
-        android:visibility="gone"
-        />
-
-    </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/dangol_rest_recycle"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:focusable="false"
-      android:nestedScrollingEnabled="false"
-      />
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/layout_recent_restaurant"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:orientation="vertical"
-    app:layout_constraintTop_toBottomOf="@id/layout_dangol"
-    >
-    <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-      <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_centerVertical="true"
-        android:text="최근 본 매장"
-        android:textColor="@color/text_main"
-        android:textSize="18sp"
-        />
-
-      <TextView
-        android:id="@+id/recent_all_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="전체보기"
-        android:visibility="gone"
-        />
-
-    </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/recent_rest_recycle"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:focusable="false"
-      android:nestedScrollingEnabled="false"
-      />
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_16"
-    android:layout_marginBottom="@dimen/margin_8"
-    android:background="@color/silver"
-    android:orientation="vertical"
-    app:layout_constraintTop_toBottomOf="@id/layout_recent_restaurant"
-    >
-
-    <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/margin_8"
-      android:layout_marginStart="@dimen/margin_16"
-      android:layout_marginEnd="@dimen/margin_16">
-
-      <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="(주)푸드득"
-        android:textColor="@color/text_sub"
-        android:textSize="14dp"
-        />
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/enterprise_detail_button"
-        android:text="사업자 상세"
-        android:textColor="@color/text_sub"
-        android:textSize="10dp"
-        />
-
-      <ImageView
-        android:id="@+id/enterprise_detail_button"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-        />
-
-
-    </RelativeLayout>
+    android:layout_height="match_parent"
+    android:layout_below="@id/anchor">
 
     <LinearLayout
-      android:id="@+id/layout_enterprise_detail"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:visibility="gone"
-      >
+        android:id="@+id/home_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp">
+
+            <Button
+                android:id="@+id/home_menu_anything"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="아무거나" />
+
+            <Button
+                android:id="@+id/home_menu_japan"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="일식" />
+
+            <Button
+                android:id="@+id/home_menu_chicken"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="치킨" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp">
+
+            <Button
+                android:id="@+id/home_menu_chinese"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="중식" />
+
+            <Button
+                android:id="@+id/home_menu_korean"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="한식" />
+
+            <Button
+                android:id="@+id/home_menu_cafe"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="까페" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp">
+
+            <Button
+                android:id="@+id/home_menu_thai"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="타이" />
+
+            <Button
+                android:id="@+id/home_menu_franchise"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="프랜차이즈" />
+
+            <Button
+                android:id="@+id/home_menu_dessert"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="디저트" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/margin_4"
-      android:layout_marginBottom="@dimen/margin_4"
-      android:layout_marginStart="@dimen/margin_16"
-      android:layout_marginEnd="@dimen/margin_16"
-      android:text="푸드득은 통신판매중개자이며 통신판매의 당사자가 아닙니다.
+    <LinearLayout
+        android:id="@+id/home_location_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/home_menu_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="장소로 찾기"
+            android:textColor="@color/text_main"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp">
+
+            <Button
+                android:id="@+id/home_location_map"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="지도"
+
+                />
+
+            <Button
+                android:id="@+id/home_location_metro"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="지하철" />
+
+            <Button
+                android:id="@+id/home_location_univ"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="대학교" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/home_event2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/home_location_layout">
+
+        <!--TEMP-->
+        <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+            android:id="@+id/home_event_viewpager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/home_event_viewpager_indicator2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="20dp"
+
+            app:ci_gravity="center" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/home_event_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/home_location_layout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="기획1"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/silver"
+            android:gravity="center"
+            android:text="기획2"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/tangerine"
+            android:gravity="center"
+            android:text="기획3"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="기획4"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_recent_restaurant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/home_event2"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:text="최근 본 매장"
+                android:textColor="@color/text_main"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/recent_all_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_16"
+                android:text="전체보기"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recent_rest_recycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:focusable="false"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_dangol_restaurant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/layout_recent_restaurant"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:text="단골매장"
+                android:textColor="@color/text_main"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dangol_all_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_16"
+                android:text="전체보기"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dangol_rest_recycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:focusable="false"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_16"
+        android:background="@color/silver"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layout_dangol_restaurant">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(주)푸드득"
+                android:textColor="@color/text_sub"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/enterprise_detail_button"
+                android:text="사업자 상세"
+                android:textColor="@color/text_sub"
+                android:textSize="10dp" />
+
+            <ImageView
+                android:id="@+id/enterprise_detail_button"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_enterprise_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_4"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_4"
+            android:text="푸드득은 통신판매중개자이며 통신판매의 당사자가 아닙니다.
            따라서 푸드득은 상품거래정보 및 거래에 대한 책임을 지지 않습니다."
-      android:textColor="@color/text_sub"
-      android:textSize="11dp"
-      />
+            android:textColor="@color/text_sub"
+            android:textSize="11dp" />
 
 
-  </LinearLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

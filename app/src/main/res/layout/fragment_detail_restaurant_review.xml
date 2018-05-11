@@ -1,102 +1,144 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:orientation="vertical"
-  tools:context="com.example.fooddeuk.restaurant.detail.review.DetailRestaurantReviewFragment"
-  android:padding="@dimen/margin_8"
-  >
-
-  <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/margin_8"
     android:orientation="vertical"
-    >
+    android:padding="@dimen/margin_8"
+    tools:context="com.example.fooddeuk.restaurant.detail.review.DetailRestaurantReviewFragment">
 
-    <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/margin_8"
-
-
-      >
-
-      <ImageView
-        android:id="@+id/rest_admin_picture"
-        android:layout_width="60dp"
-        android:layout_height="56dp"
-        android:background="@drawable/example_owner"
-        />
-
-
-      <TextView
-        android:id="@+id/rest_admin_introduce"
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_8"
-        android:layout_toRightOf="@id/rest_admin_picture"
-        android:text="요청사항에 리뷰 남겨주신다고 남겨주세요~ 음료수 또는 소정의선물을 드립니다."
-        android:textColor="@color/text_main"
-        />
+        android:orientation="vertical"
+        android:padding="@dimen/margin_8">
 
-      <TextView
-        android:id="@+id/rest_admin_name"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_8"
+            >
+
+            <ImageView
+                android:id="@+id/rest_admin_picture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/example_owner" />
+
+
+            <TextView
+                android:id="@+id/rest_admin_introduce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_toRightOf="@id/rest_admin_picture"
+                android:text="요청사항에 리뷰 남겨주신다고 남겨주세요~ 음료수 또는 소정의선물을 드립니다."
+                android:textColor="@color/text_main" />
+
+            <TextView
+                android:id="@+id/rest_admin_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rest_admin_introduce"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_toRightOf="@id/rest_admin_picture"
+                android:text="얌타이"
+                android:textColor="@color/text_sub"
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:id="@+id/rest_admin_introduce_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/rest_admin_name"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_toRightOf="@id/rest_admin_name"
+                android:text="1개월 전"
+                android:textColor="@color/text_sub"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/review_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="총"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="200"
+            android:textColor="@color/tangerine"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개의 리뷰로부터 "
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5.0"
+            android:textColor="@color/tangerine"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="의 평점" />
+
+        <TextView
+            android:id="@+id/review_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:text="모든 리뷰 보기"
+            android:textColor="@color/tangerine"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
+    <Button
         android:layout_marginTop="@dimen/margin_8"
-        android:layout_marginStart="@dimen/margin_8"
-        android:layout_below="@id/rest_admin_introduce"
-        android:layout_toRightOf="@id/rest_admin_picture"
-        android:text="얌타이"
-        android:textColor="@color/text_sub"
-
-        />
-
-      <TextView
-        android:id="@+id/rest_admin_introduce_date"
-        android:textStyle="bold"
+        android:id="@+id/write_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_8"
-        android:layout_alignBaseline="@id/rest_admin_name"
-        android:layout_toRightOf="@id/rest_admin_name"
-        android:text="1개월 전"
-        android:textColor="@color/text_sub"
-        />
+        android:layout_gravity="center_horizontal"
+        android:drawableEnd="@drawable/ic_mode_edit_black_24dp"
+        android:drawablePadding="@dimen/margin_8"
+        android:text="@string/write_review"
+        android:textColor="@color/text_main"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-    </RelativeLayout>
-
-  </LinearLayout>
-
-  <com.example.fooddeuk.custom.Divider
-    android:layout_width="match_parent"
-    android:layout_height="1dp"/>
-
-  <Button
-    android:visibility="gone"
-    android:id="@+id/write_review"
-    android:textStyle="bold"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:drawableEnd="@drawable/ic_mode_edit_black_24dp"
-    android:drawablePadding="@dimen/margin_8"
-    android:text="@string/write_review"
-    android:textColor="@color/text_main"
-    android:textSize="16sp"
-    android:layout_gravity="center_horizontal"
-    />
-
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/review_rv"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:nestedScrollingEnabled="false"
-    />
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/margin_8"
+        android:id="@+id/review_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false" />
 
 </LinearLayout>

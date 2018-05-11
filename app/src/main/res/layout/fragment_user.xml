@@ -17,7 +17,8 @@
     <ImageView
       android:id="@+id/img_not_login"
       android:layout_width="match_parent"
-      android:layout_height="130dp"
+      android:layout_height="200dp"
+      android:background="@drawable/fm"
       />
     <Button
       android:id="@+id/btn_login"

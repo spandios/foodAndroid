@@ -68,16 +68,15 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
     }
 
     private fun addRecentRestaurant(restaurant: Restaurant) {
-//        var isDuplication = true
+        var isDuplication = false
 
-//        recentRestaurant.forEach {
-//            if (it._id == restaurant._id) {
-//                isDuplication = true
-//                Logger.d("중복이 있는 최근 레스토")
-//            }
-//        }
+        recentRestaurant.forEach {
+            if (it._id == restaurant._id) {
+                isDuplication = true
+            }
+        }
 
-//        if (isDuplication) {
+        if (!isDuplication) {
             if (recentRestaurant.size > 4) {
 
                 if(tempRecentRestaurant.size<4){
@@ -94,5 +93,5 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
             }
             recentRestaurant.add(restaurant)
         }
-//    }
+    }
 }

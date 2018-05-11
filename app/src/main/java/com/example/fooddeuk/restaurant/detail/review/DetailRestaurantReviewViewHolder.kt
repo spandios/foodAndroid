@@ -20,16 +20,16 @@ class DetailRestaurantReviewViewHolder(itemView: View) : RecyclerView.ViewHolder
 
     fun bind(reviewItem: MenuReview) {
         with(itemView) {
-
-//            if (reviewItem.user_image.isNotEmpty()) { Picasso.with(context).load(reviewItem.user_image).fit().into(review_profile_picture) }
-            Picasso.with(context).load(R.drawable.example_user).transform(CropCircleTransformation()).fit().into(review_profile_picture)
+            if(reviewItem.user_image.isNotEmpty()){
+                Picasso.with(context).load(reviewItem.user_image).transform(CropCircleTransformation()).fit().into(review_profile_picture)
+            }else{
+                Picasso.with(context).load(R.drawable.fm).transform(CropCircleTransformation()).fit().into(review_profile_picture)
+            }
             review_user_id.text = reviewItem.name
             review_write_date.text = TimeUtil.currentBetweenTime(reviewItem.created_at)
             review_rating.rating = reviewItem.rating.toFloat()
 
             if(reviewItem.image.isNotEmpty()){
-                Logger.d("is not empty")
-                Logger.d(reviewItem.image[0])
                 vp_review_image.adapter =ImageVPAdapter(context, reviewItem.image)
             }else{
                 layout_review_image.gone()

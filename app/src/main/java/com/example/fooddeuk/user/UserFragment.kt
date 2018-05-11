@@ -10,6 +10,7 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.GlobalVariable
 import com.example.fooddeuk.activity.LoginActivity
 import com.example.fooddeuk.order_history.OrderHistoryActivity
+import com.example.fooddeuk.util.RealmUtil
 import com.example.fooddeuk.util.StartActivity
 import com.facebook.login.LoginManager
 import com.iwedding.app.helper.UserPrefUtil
@@ -17,6 +18,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.nhn.android.naverlogin.OAuthLogin
 import com.orhanobut.logger.Logger
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user.*
 
 
@@ -72,6 +74,13 @@ class UserFragment : Fragment() {
         } else {
             layout_user_not_login.visibility = View.GONE
             layout_user_login.visibility = View.VISIBLE
+            RealmUtil.findData(User::class.java)?.let {user->
+                Picasso.with(context).load(user.profile_image).fit().into(img_user_profile)
+                txt_user_name.text=user.user_name
+
+            }
+
+
         }
     }
 

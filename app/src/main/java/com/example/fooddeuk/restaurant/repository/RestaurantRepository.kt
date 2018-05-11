@@ -27,16 +27,9 @@ object RestaurantRepository : RestaurantDataSource {
     var cachedDangolList: Single<ArrayList<Restaurant>>? = null
 
     override fun getDangolRestaurant(): Single<ArrayList<Restaurant>>? {
+        val dangolRestaurant = RestaurantRemoteRepository.getDangolRestaurant()
+        return dangolRestaurant
 
-        if (cachedDangolList != null && !DangolRepository.isDirty) {
-            return cachedDangolList!!
-        } else {
-            val dangolRestaurant = RestaurantRemoteRepository.getDangolRestaurant()
-            DangolRepository.isDirty = false
-            cachedDangolList = dangolRestaurant
-            return dangolRestaurant
-
-        }
     }
 
     override fun getRestaurantImage(_id: String): Single<ArrayList<String>>? {

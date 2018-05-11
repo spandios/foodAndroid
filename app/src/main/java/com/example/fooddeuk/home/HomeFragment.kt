@@ -87,8 +87,6 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         dangol_rest_recycle.adapter = RecentAdapter(context!!, dangolRestaurants)
         OverScrollDecoratorHelper.setUpOverScroll(dangol_rest_recycle, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
 
-//        dangol_rest_recycle.layoutManager = GridLayoutManager(context, 2)
-//        dangol_rest_recycle.adapter = PickAdapter(context!!, dangolRestaurants)
     }
 
     override fun dangolError() {

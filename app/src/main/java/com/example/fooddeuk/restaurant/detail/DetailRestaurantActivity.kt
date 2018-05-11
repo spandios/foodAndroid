@@ -78,6 +78,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_restaurant)
+        detail_restaurant_loading.visible()
         header.background.alpha = 0
         val mapFragment = supportFragmentManager.findFragmentById(R.id.rest_detail_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -94,6 +95,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                 scrollView = scroll_rest_detail
                 viewSetting()
                 setViewPager()
+                detail_restaurant_loading.gone()
             }
         })
     }

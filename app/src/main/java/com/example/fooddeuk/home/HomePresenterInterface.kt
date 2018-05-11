@@ -48,7 +48,6 @@ class HomePresenterInterface : HomeContract.PresenterInterface {
 
     override fun getDangolRestaurants() {
         restaurantRepository.getDangolRestaurant()?.subscribe({
-            Logger.d(it)
             view.setDangolRestaurantRV(it)
         }, {
             view.dangolError()
