@@ -56,6 +56,9 @@ class RestaurantAdapter(private val context: Context, var restaurantItem: ArrayL
                 if (restaurant.discount.isNotEmpty()) {
                     txt_restaurant_sale_list.text = "포장 시 최대 -${restaurant.discount}"
                 } else txt_restaurant_sale_list.visibility = View.GONE
+
+                restaurant_distance.text=restaurant.distance
+                restaurant_avg_time.text=restaurant.avg_cooking_time
             }
 
         }
