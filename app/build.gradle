@@ -62,103 +62,103 @@ android {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Test dependency
     //    androidTestCompile 'com.android.support.HTTP:rules:0.5'
     //    androidTestCompile 'com.android.support.HTTP:runner:0.5'
 
 
-    compile 'com.android.support:support-compat:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.2.21'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-compat:27.0.2'
+    implementation 'com.android.support:support-v4:27.0.2'
+    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation 'com.android.support:design:27.0.2'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
 
-    compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'jp.wasabeef:picasso-transformations:2.1.2'
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'jp.wasabeef:picasso-transformations:2.1.2'
 
-    compile 'com.google.firebase:firebase-messaging:11.4.2'
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.google.android.gms:play-services-basement:11.4.2'
-    compile 'com.google.android.gms:play-services-maps:11.4.2'
-    compile 'com.google.android.gms:play-services-location:11.4.2'
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
+    implementation 'com.google.firebase:firebase-messaging:11.4.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.android.gms:play-services-basement:11.4.2'
+    implementation 'com.google.android.gms:play-services-maps:11.4.2'
+    implementation 'com.google.android.gms:play-services-location:11.4.2'
+    implementation 'com.google.maps.android:android-maps-utils:0.4+'
 
-    compile 'com.google.dagger:dagger:2.14.1'
+    implementation 'com.google.dagger:dagger:2.14.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
-    compile 'com.google.dagger:dagger-android:2.12'
-    compile 'com.google.dagger:dagger-android-support:2.11'
+    implementation 'com.google.dagger:dagger-android:2.12'
+    implementation 'com.google.dagger:dagger-android-support:2.11'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.12'
     kapt "com.google.dagger:dagger-compiler:2.14.1"
 
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
-    compile('io.socket:socket.io-client:1.0.0') {
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation('io.socket:socket.io-client:1.0.0') {
         exclude group: 'org.json', module: 'json'
     }
 
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.8'
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle-kotlin:2.2.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle-kotlin:2.2.1'
 
-    compile 'com.orhanobut:logger:2.1.1'
-    compile 'gun0912.ted:tedpermission:2.1.0'
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
-
-
-
-
-    compile 'com.amazonaws:aws-android-sdk-core:2.2.22'
-    compile 'com.amazonaws:aws-android-sdk-s3:2.2.22'
-    compile 'com.amazonaws:aws-android-sdk-ddb:2.2.22'
-    compile 'com.amazonaws:aws-android-sdk-cognito:2.2.22'
+    implementation 'com.orhanobut:logger:2.1.1'
+    implementation 'gun0912.ted:tedpermission:2.1.0'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
 
 
-    compile 'com.jakewharton:butterknife:8.8.1'
 
-    //    compile 'com.tsengvn:typekit:1.0.1'
-    compile 'net.steamcrafted:materialiconlib:1.1.4'
-    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
-    compile 'me.relex:circleindicator:1.2.2@aar'
-    compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
-    compile 'com.wang.avi:library:2.1.3'
-    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
-    compile 'me.everything:overscroll-decor-android:1.0.4'
-    compile 'com.southernbox:SpringScrollView:1.0.0'
-    compile 'com.android.support:multidex:1.0.3'
-    compile 'com.daimajia.easing:library:2.0@aar'
-    compile 'se.emilsjolander:StickyScrollViewItems:1.1.0'
-    compile 'com.daimajia.androidanimations:library:2.3@aar'
-    compile 'net.danlew:android.joda:2.9.9.2'
-    compile 'com.github.frank-zhu:pullzoomview:1.0.0'
-    compile('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
+    implementation 'com.amazonaws:aws-android-sdk-core:2.2.22'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.2.22'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.22'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.2.22'
+
+
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+
+    //    implementation 'com.tsengvn:typekit:1.0.1'
+    implementation 'net.steamcrafted:materialiconlib:1.1.4'
+    implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
+    implementation 'com.wang.avi:library:2.1.3'
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+    implementation 'me.everything:overscroll-decor-android:1.0.4'
+    implementation 'com.southernbox:SpringScrollView:1.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'se.emilsjolander:StickyScrollViewItems:1.1.0'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+    implementation 'net.danlew:android.joda:2.9.9.2'
+    implementation 'com.github.frank-zhu:pullzoomview:1.0.0'
+    implementation('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
-    compile 'me.grantland:autofittextview:0.2+'
-    compile 'at.blogc:expandabletextview:1.0.5'
+    implementation 'me.grantland:autofittextview:0.2+'
+    implementation 'at.blogc:expandabletextview:1.0.5'
 
 
 
 
 
-    compile 'com.facebook.android:facebook-android-sdk:4.30.0'
-    compile 'com.kakao.sdk:usermgmt:1.7.1'
+    implementation 'com.facebook.android:facebook-android-sdk:4.30.0'
+    implementation 'com.kakao.sdk:usermgmt:1.7.1'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support:support-annotations:27.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
 }

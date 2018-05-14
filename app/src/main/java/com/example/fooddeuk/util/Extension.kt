@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,11 @@ import com.example.fooddeuk.rx.RxBus
 import com.orhanobut.logger.Logger
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import java.text.DecimalFormat
+import android.text.Spannable
+import android.text.style.UnderlineSpan
+import android.text.style.ForegroundColorSpan
+
+
 
 /**
  * Created by heo on 2018. 2. 11..
@@ -47,6 +53,17 @@ fun RecyclerView.setting(adapter: RecyclerView.Adapter<*>, overscroll: Boolean =
     }
 
 }
+
+
+fun String.spannable(targetString : String, color : Int) : SpannableString{
+    val spannableString = SpannableString(this)
+    val targetStartIndex = this.indexOf(targetString)
+    val targetEndIndex = targetStartIndex + targetString.length
+    spannableString.setSpan(ForegroundColorSpan(color), targetStartIndex, targetEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannableString.setSpan(UnderlineSpan(), targetStartIndex, targetEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return spannableString
+}
+
 
 fun String.getTime(): Pair<Int, Int> {
     val endHour = this.substring(0, 2).toInt()

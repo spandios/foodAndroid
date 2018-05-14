@@ -68,7 +68,7 @@ class DetailRestaurantVP(var context: Context, val restaurant: Restaurant,val ma
             container.addView(itemView)
             return itemView
         } else if (position == 1) {
-            val itemView = layoutInflater.inflate(R.layout.fragment_detail_restaurant_more_detail, container, false)
+            val itemView = layoutInflater.inflate(R.layout.detail_restaurant_info, container, false)
             ((context as DetailRestaurantActivity).supportFragmentManager.findFragmentById(R.id.more_detail_map) as SupportMapFragment).getMapAsync(restaurantActivity)
             container.addView(itemView)
             return itemView

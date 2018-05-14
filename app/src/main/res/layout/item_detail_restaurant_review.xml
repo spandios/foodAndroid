@@ -12,8 +12,8 @@
 
   <ImageView
     android:id="@+id/review_profile_picture"
-    android:layout_width="60dp"
-    android:layout_height="56dp"
+    android:layout_width="70dp"
+    android:layout_height="76dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
 
@@ -24,7 +24,7 @@
     android:textStyle="bold"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_8"
+    android:layout_marginStart="@dimen/margin_16"
     android:textColor="@color/text_main"
     android:textSize="14dp"
     app:layout_constraintStart_toEndOf="@id/review_profile_picture"
@@ -60,7 +60,7 @@
     android:layout_marginTop="@dimen/margin_8"
     android:textColor="@color/text_main"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/review_rating"
+    app:layout_constraintTop_toBottomOf="@id/review_profile_picture"
     tools:text="@string/small_text"
     />
 

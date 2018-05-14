@@ -98,7 +98,7 @@ class MenuDetailViewPagerAdapter(var context: Context, val menu: Menu, val menuR
     }
 
     private fun createPicturePage(position: Int, container: ViewGroup): View {
-        val imageViewLayout = layoutInflater.inflate(R.layout.item_vp_menu_detail_have_image, container, false)
+        val imageViewLayout = layoutInflater.inflate(R.layout.item_vp_menu_detail_image, container, false)
         Picasso.with(context).load(menu.picture[position]).fit().into(imageViewLayout.findViewById<ImageView>(R.id.layout_item_menu_detail_imageview))
         imageViewLayout.tag = "image-$position"
         container.addView(imageViewLayout)
@@ -114,8 +114,8 @@ class MenuDetailViewPagerAdapter(var context: Context, val menu: Menu, val menuR
         }
 
         reviewLayout.tag = "review-$position"
-        reviewLayout.findViewById<ImageView>(R.id.review_image).apply { Picasso.with(context).load(reviewItem.image[0]).into(this) }
-        reviewLayout.findViewById<ImageView>(R.id.review_user_image).apply { Picasso.with(context).load(R.drawable.fm).transform(CropCircleTransformation()).into(this) }
+        reviewLayout.findViewById<ImageView>(R.id.review_image).apply { Picasso.with(context).load(reviewItem.image[0]).fit().into(this) }
+        reviewLayout.findViewById<ImageView>(R.id.review_user_image).apply { Picasso.with(context).load(R.drawable.fm).transform(CropCircleTransformation()).fit().into(this) }
         reviewLayout.findViewById<TextView>(R.id.button_toggle).apply {
             setOnClickListener({
                 if (reviewContent.isExpanded) {
