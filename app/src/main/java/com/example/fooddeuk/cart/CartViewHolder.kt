@@ -21,7 +21,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_cart.*
 
 class CartViewHolder(val context: Context, override var containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-    private var cart_menu_quantity_val = 1
+    private var cartMenuQuantity = 1
 
 
     init {
@@ -42,9 +42,7 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
                     }
                 }
             }
-
         }
-
         return price
     }
 
@@ -52,7 +50,7 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
     fun bind(cartItem: CartItem) {
         cart_menu_name.text = cartItem.menu.name
         cart_menu_price.text = cartItem.menu.price + "원"
-        cart_menu_quantity.text = cart_menu_quantity_val.toString()
+        cart_menu_quantity.text = cartMenuQuantity.toString()
 
         if (cartItem.menu.picture != null) {
             Picasso.with(context).load(cartItem.menu.picture).fit().into(cart_menu_picture)
@@ -102,7 +100,8 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
                 .subscribe { value ->
                     cart_menu_quantity.text = value.toString()
                     cart_menu_result_price.text = PriceUtil.minusPrice(cart_menu_result_price, cartItem.menu.price)
-                    RxBus.publish(RxBus.CartResultPrice, true)
+                    (context as CartActivity).updateResultPrice()
+//                    RxBus.publish(RxBus.CartResultPrice, true)
                 }
 
         //수량+
@@ -115,6 +114,7 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
                     cart_menu_result_price.text = PriceUtil.plusPrice(cart_menu_result_price, cartItem.menu.price)
                     RxBus.publish(RxBus.CartResultPrice, true)
                 }
+
     }
 
 
@@ -170,6 +170,5 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
 //
 //    }
 
-    
 
 }

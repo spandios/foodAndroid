@@ -12,6 +12,7 @@ import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.util.WrapPager
 import com.google.android.gms.maps.SupportMapFragment
 import com.ogaclejapan.smarttablayout.SmartTabLayout
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_detail_restaurant.*
 
 
@@ -20,61 +21,52 @@ import kotlinx.android.synthetic.main.activity_detail_restaurant.*
  * ViewPager For MenuList
  */
 
-class DetailRestaurantVP(var context: Context, val restaurant: Restaurant,val mainTabChangeCallback: ()->Unit) : PagerAdapter() {
+class DetailRestaurantVP(var context: Context, val restaurant: Restaurant, val mainTabChangeCallback: () -> Unit) : PagerAdapter() {
     private val restaurantActivity: DetailRestaurantActivity = context as DetailRestaurantActivity
+    private val restaurantScrollView = (context as DetailRestaurantActivity).scroll_rest_detail
     private var layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    lateinit var viewPager : WrapPager
-
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val viewPager: WrapPager
+        when (position) {
+            0 -> {
+                val itemView = layoutInflater.inflate(R.layout.item_detail_restaurant_menu, container, false)
+                viewPager = itemView.findViewById(R.id.vp_menu_list)
+                viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                    override fun onPageScrollStateChanged(state: Int) {
 
-        if (position == 0) {
-            val itemView = layoutInflater.inflate(R.layout.fragment_rest_menu, container, false)
-            viewPager=itemView.findViewById(R.id.vp_menu_list)
-            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-                override fun onPageScrollStateChanged(state: Int) {
+                    }
 
+                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+                    }
+
+                    override fun onPageSelected(position: Int) {
+                        viewPager.onRefresh()
+                        mainTabChangeCallback()
+                    }
+                })
+
+                //MenuListViewPager
+                val menuListVPAdapter = MenuListViewPagerAdapter(context, restaurant.menuCategory, restaurant) { position, menuItemHeight ->
+                    restaurantScrollView.post { restaurantScrollView.scrollTo(0, (context as DetailRestaurantActivity).vpMenuHeight + (position * menuItemHeight)) }
                 }
 
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-                }
-
-                override fun onPageSelected(position: Int) {
-                    mainTabChangeCallback()
-                }
-            })
-            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
-
-                }
-
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                }
-
-                override fun onPageSelected(position: Int) {
-                    viewPager.onRefresh()
-                }
-            })
-
-            val restaurantScrollView = (context as DetailRestaurantActivity).scroll_rest_detail
-            val menuListVPAdapter = MenuListViewPagerAdapter(context, restaurant.menuCategory, restaurant) { position, menuItemHeight ->
-                restaurantScrollView.post { restaurantScrollView.scrollTo(0, (context as DetailRestaurantActivity).vpMainHeight + (position * menuItemHeight)) }
+                viewPager.adapter = menuListVPAdapter
+                itemView.findViewById<SmartTabLayout>(R.id.tab_rest_menu_real).setViewPager(viewPager)
+                //DetailRestaurant Activity 페이크 탭 설정
+                (context as DetailRestaurantActivity).fakeTab.setViewPager(viewPager)
+                container.addView(itemView)
+                return itemView
             }
-            viewPager.adapter = menuListVPAdapter
-            itemView.findViewById<SmartTabLayout>(R.id.tab_rest_menu_real).setViewPager(viewPager)
-            //DetailRestaurant Activity 페이크 탭 설정
-            (context as DetailRestaurantActivity).fakeTab.setViewPager(viewPager)
-            container.addView(itemView)
-            return itemView
-        } else if (position == 1) {
-            val itemView = layoutInflater.inflate(R.layout.detail_restaurant_info, container, false)
-            ((context as DetailRestaurantActivity).supportFragmentManager.findFragmentById(R.id.more_detail_map) as SupportMapFragment).getMapAsync(restaurantActivity)
-            container.addView(itemView)
-            return itemView
+            1 -> {
+                val itemView = layoutInflater.inflate(R.layout.detail_restaurant_info, container, false)
+                ((context as DetailRestaurantActivity).supportFragmentManager.findFragmentById(R.id.more_detail_map) as SupportMapFragment).getMapAsync(restaurantActivity)
+                container.addView(itemView)
+                return itemView
 
-        } else {
-            return View(context)
+            }
+            else -> return View(context)
         }
     }
 
@@ -97,9 +89,5 @@ class DetailRestaurantVP(var context: Context, val restaurant: Restaurant,val ma
         return super.getItemPosition(`object`)
     }
 
-    override fun notifyDataSetChanged() {
-
-        super.notifyDataSetChanged()
-    }
 
 }

@@ -25,18 +25,16 @@ class MenuListViewPagerAdapter(var context: Context, private var menuCategories:
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val itemView = layoutInflater.inflate(R.layout.item_vp_menu_list, container, false)
-        val menuRecyclerView = itemView.findViewById<RecyclerView>(R.id.recycle_menu)
-
-        menuRecyclerView.isFocusable = false
-        menuRecyclerView.isFocusableInTouchMode = false
-        menuRecyclerView.isNestedScrollingEnabled = false
-
-        menuRecyclerView.setting(MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
-            mItemClickListener={
-                position, height ->  clickItemHeight(position, height)
-            }
-        },false,false)
-
+        itemView.findViewById<RecyclerView>(R.id.recycle_menu).apply {
+            isFocusable = false
+            isFocusableInTouchMode = false
+            isNestedScrollingEnabled = false
+            setting(MenuListAdapter(context, menuCategories[position].menu_content, restaurant).apply {
+                mItemClickListener={
+                    position, height ->  clickItemHeight(position, height)
+                }
+            },false,false)
+        }
 
         container.addView(itemView)
         return itemView

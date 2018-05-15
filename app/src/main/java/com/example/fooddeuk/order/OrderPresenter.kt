@@ -57,9 +57,8 @@ class OrderPresenter : OrderContract.Presenter {
             val userSide = UserSide(userRepository.getUser(), arrivedTime, requestText, orderResultPrice)
             val orderPost = OrderPost(RestaurantSide(restaurant), userSide, cartItemRepository.getMenuSide(), "접수 완료")
             val orderPostGson = Gson().toJson(orderPost)
-            socket.emit("fromClient", orderPostGson)
+            socket.emit("orderRequestPost", orderPostGson)
             view.successOrder()
-
         } else {
             //TODO show Login ALERT
             view.notUser()

@@ -3,9 +3,6 @@ package com.example.fooddeuk.restaurant.detail
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.NestedScrollView
@@ -15,13 +12,11 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.`object`.Util
 import com.example.fooddeuk.cart.CartActivity
 import com.example.fooddeuk.custom.ImageVPAdapter
-import com.example.fooddeuk.menu.RestMenuFragment
 import com.example.fooddeuk.menu.listview.DetailRestaurantVP
 import com.example.fooddeuk.network.HTTP.completable
 import com.example.fooddeuk.network.HTTP.completeAsync
 import com.example.fooddeuk.network.HTTP.httpService
 import com.example.fooddeuk.order_history.OrderHistoryMapActivity
-import com.example.fooddeuk.restaurant.detail.detail.DetailRestaurantMoreDetailFragment
 import com.example.fooddeuk.restaurant.detail.review.DetailRestaurantReviewFragment
 import com.example.fooddeuk.restaurant.model.Restaurant
 import com.example.fooddeuk.rx.RxBus
@@ -46,7 +41,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
     private var dangolCnt = 0
     private var isDangol = false
     var topImageHeight = 0
-    var vpMainHeight = 0 //->menu scroll base
+    var vpMenuHeight = 0 //->menu scroll base
     var mainTabHeight = 0
     var nameHeight = 0
     private var menuTabLayout = 0.0
@@ -151,8 +146,8 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         fakeTab = tab_rest_menu_fake
         RxBus.intentPublish(RxBus.RestMenuFragmentData, restaurant)
         RxBus.intentPublish(RxBus.RestaurantMoreDetail, restaurant)
-        DetailRestaurantVP(this, restaurant,{
-            scrollView.smoothScrollTo(0,vpMainHeight)
+        DetailRestaurantVP(this, restaurant, {
+            scrollView.scrollTo(0, vpMenuHeight)
         }).let {
             vp_main.setSwipe(false)
             vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -164,19 +159,19 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                             rest_map_parent.visible()
                             isMenuTab = true
                             review_fragment.gone()
-                            scrollView.scrollTo(0,mainTabHeight)
+                            scrollView.scrollTo(0, mainTabHeight)
                         }
                         1 -> {
                             rest_map_parent.gone()
                             isMenuTab = false
                             review_fragment.gone()
-                            scrollView.scrollTo(0,mainTabHeight)
+                            scrollView.scrollTo(0, mainTabHeight)
                         }
                         2 -> {
                             rest_map_parent.gone()
                             isMenuTab = false
                             review_fragment.visible()
-                            scrollView.scrollTo(0,mainTabHeight)
+                            scrollView.scrollTo(0, mainTabHeight)
                         }
                     }
                     vp_main.onRefresh()
@@ -218,7 +213,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
                 scroll_rest_detail.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 topImageHeight = vp_rest_detail_image.height - header.height
                 nameHeight = rest_detail_name_in_list.measuredHeight + 24.toPx + topImageHeight
-                vpMainHeight = (vp_main.y).toInt() - header.height
+                vpMenuHeight = (vp_main.y).toInt() - header.height
                 mainTabHeight = tab_main.realY() - header.height
             }
         }
@@ -290,7 +285,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
             vp_rest_detail_image.translationY = (scrollY / 2).toFloat()
             toolbarIconAlpha = ((Math.min(1f, scrollY.toFloat() / topImageHeight)) * 255).toInt()
             mainTabLayout = (scrollY.toDouble() / mainTabHeight)
-            menuTabLayout = (scrollY.toDouble() / vpMainHeight)
+            menuTabLayout = (scrollY.toDouble() / vpMenuHeight)
 //            Logger.d(scrollY)
             //매장이름
             if (nameHeight > scrollY) {
@@ -351,31 +346,5 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
     }
 
 
-    inner class MainViewPager(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-
-        override fun getItem(position: Int): Fragment {
-            return when (position) {
-                0 -> RestMenuFragment.newInstance()
-                1 -> DetailRestaurantMoreDetailFragment.newInstance()
-                2 -> {
-                    vp_main.gone()
-                    DetailRestaurantMoreDetailFragment.newInstance()
-                }
-                else -> RestMenuFragment.newInstance()
-            }
-        }
-
-        override fun getCount(): Int = 3
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return when (position) {
-                0 -> "메뉴"
-                1 -> "상세정보"
-                else -> "리뷰"
-            }
-        }
-
-
-    }
 }
 

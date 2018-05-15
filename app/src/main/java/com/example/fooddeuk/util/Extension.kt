@@ -32,6 +32,7 @@ import android.text.style.ForegroundColorSpan
  */
 
 
+
 fun RecyclerView.setting(adapter: RecyclerView.Adapter<*>, overscroll: Boolean = false, verticalPadding: Boolean = false, hasFixed: Boolean = false) {
 
     val nmLayoutManager = LinearLayoutManager(context)

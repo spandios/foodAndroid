@@ -17,24 +17,30 @@ import com.example.fooddeuk.option.OptionAdapter
 import com.example.fooddeuk.order.OrderActivity
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.*
+import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 import io.realm.RealmList
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.item_cart.view.*
+import org.w3c.dom.Text
+import kotlin.math.min
 
 
 class CartActivity : AppCompatActivity() {
     private val cartItemList = ArrayList<CartItem>()
     lateinit var adapter: CartAdapter
     var totalPrice = 0
+    lateinit var cartRecyclerView : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
+        cartRecyclerView = recycle_cart
         setToolBar()
         setView()
         setCartAdapter()
         getFirstResultPrice()
+
         //publish by CartViewHolder
         RxBus.subscribe(RxBus.CartResultPrice, this@CartActivity.javaClass, Consumer {
             updateResultPrice()
@@ -44,7 +50,6 @@ class CartActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
         RxBus.unregister(CartViewHolder::class.java)
         RxBus.unregister(OptionAdapter::class.java)
         RxBus.unregister(this@CartActivity.javaClass)
@@ -66,12 +71,18 @@ class CartActivity : AppCompatActivity() {
         cart_menu_order.text = Util.stringFormat(this, R.string.cart_order, totalPrice.toCommaWon())
     }
 
-    private fun updateResultPrice() {
-        var price = 0
-        for(i in 0 until recycle_cart.childCount){
-            price+=recycle_cart.getChildAt(i).cart_menu_result_price.text.getOriginalPrice()
+    fun updateResultPrice() {
+        recycle_cart.post {
+            var price = 0
+            for (i in 0 until recycle_cart.childCount) {
+                price += recycle_cart.getChildAt(i).cart_menu_result_price.text.getOriginalPrice()
+            }
+            cart_menu_order.text = Util.stringFormat(this, R.string.cart_order, price.toCommaWon())
         }
-        cart_menu_order.text = Util.stringFormat(this, R.string.cart_order, price.toCommaWon())
+    }
+
+    fun minusResultPrice(minPrice : String){
+        cart_menu_order.text=Util.stringFormat(this,R.string.cart_order,PriceUtil.minusPrice(minPrice,getOriginalPriceFromFinalOrderTextView()))
     }
 
     private fun setCartAdapter() {
@@ -79,12 +90,12 @@ class CartActivity : AppCompatActivity() {
         cartItem?.let {
             cartItemList.addAll(GlobalApplication.getInstance().realm.copyFromRealm(it))
         }
+
         if (cartItemList.size > 0) {
             adapter = CartAdapter(this, cartItemList)
-
-            recycle_cart.setting(adapter,overscroll = true, verticalPadding = true)
-
+            recycle_cart.setting(adapter, overscroll = true, verticalPadding = true)
         }
+
     }
 
     private fun getSelectedOption(parentLayout: LinearLayout): RealmList<SelectedOption>? {
@@ -121,7 +132,7 @@ class CartActivity : AppCompatActivity() {
             for (i in 0 until adapter.itemCount) {
 
                 val cartItemViewHolder = recycle_cart.findViewHolderForAdapterPosition(i)
-                if(cartItemViewHolder!=null){
+                if (cartItemViewHolder != null) {
                     cartItemList[i].menu_count = cartItemViewHolder.itemView.cart_menu_quantity.text.toString()
                     cartItemList[i].totalPrice = cartItemViewHolder.itemView.cart_menu_result_price.text.toString()
 
@@ -136,12 +147,12 @@ class CartActivity : AppCompatActivity() {
                         }
                     }
 
-                }else{
-                    cartItemList[i].menu_count=1.toString()
-                    cartItemList[i].totalPrice=cartItemList[i].menu.price
-                    for(optionCategory in cartItemList[i].optionCategoryList){
-                        if(!optionCategory.multiple){
-                            cartItemList[i].selNecessaryOptionList.add(SelectedOption(optionCategory.menu_option_category_name,optionCategory.option_content[0]))
+                } else {
+                    cartItemList[i].menu_count = 1.toString()
+                    cartItemList[i].totalPrice = cartItemList[i].menu.price
+                    for (optionCategory in cartItemList[i].optionCategoryList) {
+                        if (!optionCategory.multiple) {
+                            cartItemList[i].selNecessaryOptionList.add(SelectedOption(optionCategory.menu_option_category_name, optionCategory.option_content[0]))
                         }
                     }
 
@@ -176,5 +187,11 @@ class CartActivity : AppCompatActivity() {
 
     }
 
+    private fun getOriginalPriceFromFinalOrderTextView() : String{
+
+        cart_menu_order.text.toString().let{
+            return it.substring(0,it.indexOf("원"))
+        }
+    }
 
 }

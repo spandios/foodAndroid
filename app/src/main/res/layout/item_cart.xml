@@ -196,7 +196,7 @@
       android:layout_marginStart="10dp"
       android:layout_marginEnd="8dp"
       android:gravity="right"
-      android:text="가격"
+      tools:text="가격"
       android:textColor="@color/tangerine"
       android:textSize="20sp"
       />

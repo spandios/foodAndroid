@@ -55,6 +55,14 @@
             >
         </android.support.v7.widget.RecyclerView>
 
+        <TextView
+            android:id="@+id/alert_no_have_cart_item"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="장바구니가 비었습니다."
+            android:layout_gravity="center"
+            />
     </FrameLayout>
 
     <LinearLayout

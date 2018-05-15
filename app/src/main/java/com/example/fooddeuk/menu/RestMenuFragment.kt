@@ -15,7 +15,7 @@ import com.example.fooddeuk.util.WrapPager
 import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_detail_restaurant.*
-import kotlinx.android.synthetic.main.fragment_rest_menu.*
+import kotlinx.android.synthetic.main.item_detail_restaurant_menu.*
 
 
 /**
@@ -42,7 +42,7 @@ class RestMenuFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_rest_menu, container, false)
+        val root = inflater.inflate(R.layout.item_detail_restaurant_menu, container, false)
         mMeuListViewPager =root.findViewById(R.id.vp_menu_list)
         restaurantScrollView=(this@RestMenuFragment.activity as DetailRestaurantActivity).scroll_rest_detail
         return root
@@ -53,7 +53,7 @@ class RestMenuFragment : Fragment() {
 
         //1.메뉴 컨텐츠 뷰페이저 설정 2.뷰페이저 안에 있는 메뉴 리스트를 클릭했을 시 스크롤 이동하는 스크롤리스너 설정
         val menuListVPAdapter = MenuListViewPagerAdapter(context!!, restaurant.menuCategory, restaurant) { position, menuItemHeight ->
-            restaurantScrollView.scrollTo(0, (this@RestMenuFragment.activity as DetailRestaurantActivity).vpMainHeight + position * menuItemHeight)
+            restaurantScrollView.scrollTo(0, (this@RestMenuFragment.activity as DetailRestaurantActivity).vpMenuHeight + position * menuItemHeight)
         }
 
         vp_menu_list.adapter = menuListVPAdapter

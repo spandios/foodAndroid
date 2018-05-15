@@ -8,15 +8,14 @@ import android.widget.TextView
 import com.example.fooddeuk.R
 import com.example.fooddeuk.cart.model.CartItem
 import com.example.fooddeuk.rx.RxBus
+import com.example.fooddeuk.util.PriceUtil
 import com.example.fooddeuk.util.RealmUtil
+import com.orhanobut.logger.Logger
 import java.util.*
 
 class CartAdapter(private val mContext: Context, private var cartItemList: ArrayList<CartItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-//    fun updateList(cartItemList: ArrayList<CartItem>) {
-//        this.cartItemList = cartItemList
-//        notifyDataSetChanged()
-//    }
+    private var cartActivity : CartActivity = mContext as CartActivity
 
     private val havePicture = 0
     private val noPicture = 1
@@ -29,27 +28,31 @@ class CartAdapter(private val mContext: Context, private var cartItemList: Array
         }
     }
 
-    private fun removeList(position: Int) {
+    private fun removeList(position: Int,minPrice : String) {
         RealmUtil.removeDataById(CartItem::class.java, cartItemList[position].id)
         cartItemList.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, cartItemList.size)
-        if(cartItemList.size==0){
-            RxBus.publish(RxBus.CartFragmentSizeZero,true)
-        }
-
+        cartActivity.minusResultPrice(minPrice)
+//        if(cartItemList.size==0){
+//            Logger.d("장바구니 비었음")
+//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if(viewType==havePicture){
             val itemView = LayoutInflater.from(mContext).inflate(R.layout.item_cart, parent, false)
             val vh = CartViewHolder(mContext, itemView)
-            vh.itemView.findViewById<TextView>(R.id.cart_delete_button).setOnClickListener { removeList(vh.adapterPosition) }
+            vh.itemView.findViewById<TextView>(R.id.cart_delete_button).setOnClickListener {
+                removeList(vh.adapterPosition,vh.itemView.findViewById<TextView>(R.id.cart_menu_result_price).text.toString())
+            }
             return vh
         }else{
             val itemView = LayoutInflater.from(mContext).inflate(R.layout.item_cart_no_picture, parent, false)
             val vh = CartViewHolder(mContext, itemView)
-            vh.itemView.findViewById<TextView>(R.id.cart_delete_button).setOnClickListener { removeList(vh.adapterPosition) }
+            vh.itemView.findViewById<TextView>(R.id.cart_delete_button).setOnClickListener {
+                removeList(vh.adapterPosition,vh.itemView.findViewById<TextView>(R.id.cart_menu_result_price).text.toString())
+            }
             return vh
         }
     }

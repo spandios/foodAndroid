@@ -156,7 +156,6 @@ class OrderActivity : AppCompatActivity(), OrderContract.View {
     private fun setView() {
 
         order_back_button.setOnClickListener {
-            Logger.d("ee")
             finish()
         }
 

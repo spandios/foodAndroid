@@ -272,8 +272,8 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
 
         RealmUtil.insertData(restaurant)
         RealmUtil.insertData(getCartItem(menu))
-        Logger.d(RealmUtil.findData(CartItem::class.java))
         Util.startActivity(context, CartActivity::class.java)
+
     }
 
 
@@ -300,10 +300,6 @@ class MenuListAdapter(private val context: Context, private val items: ArrayList
     companion object {
         private const val HavePicture = 0
         private const val NoPicture = 1
-        private const val noPictureAndNecessary = 4
-        private const val noPictureAndUnNecessary = 5
-        private const val noPictureAndDoubleOption = 6
-        private const val noPictureAndNoOption = 7
     }
 
 
