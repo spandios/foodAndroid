@@ -6,8 +6,6 @@ import android.app.Application;
 import android.content.Context;
 import android.location.LocationManager;
 import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
-
 import com.example.fooddeuk.user.KakaoSDKAdapter;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -24,7 +22,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class GlobalApplication extends MultiDexApplication {
+public class GlobalApplication extends Application {
 
   public static final String AWSURL = "http://13.124.159.166";
   public static final String LOCALHOST = "http://10.0.2.2:3000";
