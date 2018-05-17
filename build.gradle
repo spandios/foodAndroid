@@ -12,8 +12,8 @@ buildscript {
     }
 
     dependencies {
-        classpath "io.realm:realm-gradle-plugin:4.3.3"
         classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "io.realm:realm-gradle-plugin:4.3.3"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41"
         classpath 'com.google.gms:google-services:3.3.1'
 
