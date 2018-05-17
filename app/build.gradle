@@ -74,7 +74,7 @@ dependencies {
     implementation 'com.android.support:design:27.0.2'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.1.0"
 
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     implementation 'com.squareup.picasso:picasso:2.5.2'

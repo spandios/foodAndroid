@@ -26,11 +26,9 @@ import android.text.style.UnderlineSpan
 import android.text.style.ForegroundColorSpan
 
 
-
 /**
  * Created by heo on 2018. 2. 11..
  */
-
 
 
 fun RecyclerView.setting(adapter: RecyclerView.Adapter<*>, overscroll: Boolean = false, verticalPadding: Boolean = false, hasFixed: Boolean = false) {
@@ -107,9 +105,6 @@ fun Fragment.toast(content: String) {
     Toast.makeText(this.activity, content, Toast.LENGTH_LONG).show()
 }
 
-fun TextView.textString(): String {
-    return this.text.toString()
-}
 
 val Int.toPx: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
@@ -147,6 +142,7 @@ fun Fragment.logger(str: String) {
 fun Fragment.logger(any: Any) {
     Logger.d(any)
 }
+
 
 fun View.findId(id: Int): View = this.findViewById(id)
 
@@ -300,6 +296,9 @@ fun String.getOriginalPrice(): Int {
 
     return Integer.parseInt(resultPrice.toString())
 }
+
+
+
 
 fun TextView.text(): String = this.text.toString()
 
