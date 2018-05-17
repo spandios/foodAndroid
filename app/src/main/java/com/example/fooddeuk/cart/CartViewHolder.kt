@@ -51,6 +51,8 @@ class CartViewHolder(val context: Context, override var containerView: View) : R
         cart_menu_name.text = cartItem.menu.name
         cart_menu_price.text = cartItem.menu.price + "원"
         cart_menu_quantity.text = cartMenuQuantity.toString()
+        cart_menu_avg_time.text= String.format(context.getString(R.string.cart_menu_avgtime),cartItem.menu.avgtime)
+
 
         if (cartItem.menu.picture != null) {
             Picasso.with(context).load(cartItem.menu.picture).fit().into(cart_menu_picture)
