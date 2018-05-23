@@ -32,6 +32,7 @@ object RxBus {
     const val DetailMenuActivityData = 9
     const val HomeRestaurantActivityData = 10
     const val RestaurantMoreDetail = 11
+    const val CartMinusPrice = 12
 
 
     private val sSubjectMap = SparseArray<PublishSubject<Any>>()

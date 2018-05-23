@@ -78,9 +78,9 @@ class DetailMenuActivity : AppCompatActivity() {
         menu_detail_price.text = menu.price.toJustWon()
         menu_detail_description.text = menu.description
         img_detail_rating.rating = menu.rating.toFloat()
-        menu_detail_reviewcount.text = Util.stringFormat(this, R.string.rest_reviewcnt, menu.reviewCnt.toString())
+        menu_detail_reviewcount.text = Util.StringFormat(this, R.string.rest_reviewcnt, menu.reviewCnt.toString())
 
-//        menu_detail_rating.text= Util.stringFormat(this,R.string.rest_rating_and_review_cnt,menu.rating.toString(),menu.reviewCnt.toString())
+//        menu_detail_rating.text= Util.StringFormat(this,R.string.rest_rating_and_review_cnt,menu.rating.toString(),menu.reviewCnt.toString())
 
         httpService.getReview(menu.menu_id).compose(singleAsync()).subscribe({
             menu_detail_review.setting(ReviewAdapter(this, it.result, true), false, false, true)

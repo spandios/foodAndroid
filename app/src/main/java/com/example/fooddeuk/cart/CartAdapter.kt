@@ -12,10 +12,11 @@ import com.example.fooddeuk.util.PriceUtil
 import com.example.fooddeuk.util.RealmUtil
 import com.orhanobut.logger.Logger
 import java.util.*
+import kotlin.math.min
 
 class CartAdapter(private val mContext: Context, private var cartItemList: ArrayList<CartItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var cartActivity : CartActivity = mContext as CartActivity
+
 
     private val havePicture = 0
     private val noPicture = 1
@@ -33,7 +34,7 @@ class CartAdapter(private val mContext: Context, private var cartItemList: Array
         cartItemList.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, cartItemList.size)
-        cartActivity.minusResultPrice(minPrice)
+        RxBus.publish(RxBus.CartMinusPrice, minPrice)
 //        if(cartItemList.size==0){
 //            Logger.d("장바구니 비었음")
 //        }

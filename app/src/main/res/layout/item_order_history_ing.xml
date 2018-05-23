@@ -1,227 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:orientation="vertical"
-  >
-  <android.support.constraint.ConstraintLayout
-    android:id="@+id/layout_order_history_restaurant"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_8"
-    android:paddingBottom="@dimen/margin_8"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    android:background="@color/white"
-    >
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
 
-    <TextView
-      android:id="@+id/order_history_rest"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/text_main"
-      android:fontFamily="@font/spoqa_han_sans_reqular"
-      android:maxLength="10"
-      android:text="매장"
-      android:textSize="14sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_order_history_restaurant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_16">
+
+        <ImageView
+            android:id="@+id/img_restaurant"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/fm" />
 
 
-    <TextView
-      android:id="@+id/order_list_rest_name"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/spoqa_han_sans_reqular"
-      android:maxLength="10"
-      android:textSize="15sp"
-      android:textColor="@color/text_main"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/order_history_rest"
-      tools:text="얌타이"/>
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/txt_rest_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:fontFamily="@font/spoqa_han_sans_reqular"
+            android:singleLine="true"
+            android:textColor="@color/text_main"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/img_restaurant"
+            app:layout_constraintTop_toTopOf="parent"
+            autofit:minTextSize="16sp"
+            tools:text="얌타이" />
 
-    <Button
-      android:id="@+id/order_list_rest_tel"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
-      android:layout_marginTop="10dp"
-      android:background="@drawable/ic_call_black_24dp"
-      android:textSize="14sp"
-      app:layout_constraintStart_toStartOf="@+id/order_list_rest_name"
-      app:layout_constraintTop_toBottomOf="@+id/order_list_rest_name"
-      />
+        <Button
+            android:id="@+id/order_list_state"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="@dimen/margin_8"
+            android:text="접수 중"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/txt_rest_name" />
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="24dp"
-      android:text="리뷰달기"
-      android:textSize="12sp"
-      app:layout_constraintBaseline_toBaselineOf="@id/order_list_rest_tel"
-      app:layout_constraintStart_toEndOf="@id/order_list_rest_tel"
-      />
+        <Button
+            android:id="@+id/order_list_rest_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:drawablePadding="@dimen/margin_4"
+            android:drawableStart="@drawable/ic_call_black_24dp"
+            android:text="전화 걸기"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/txt_rest_name"
+            app:layout_constraintTop_toBottomOf="@id/txt_rest_name" />
 
+        <Button
+            android:id="@+id/btn_add_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:drawablePadding="@dimen/margin_4"
+            android:drawableStart="@drawable/ic_write"
+            android:text="리뷰달기"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/order_list_rest_tel"
+            app:layout_constraintStart_toEndOf="@id/order_list_rest_tel" />
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:layout_marginBottom="8dp"
-      android:lineSpacingExtra="3dp"
-      android:maxLines="3"
-      android:textSize="13sp"
-      android:text="예약 방문시 주의사항 및 리뷰 이벤트 단골 이벤트 등등fwefwefwaefew eafeafewfewfwefwefwefwewewfaefwaefweafwefwaefweafewe"
-      app:layout_constraintTop_toBottomOf="@id/order_list_rest_tel"
-      />
+        <me.grantland.widget.AutofitTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:maxLines="3"
+            android:text="리뷰 작성 혜택 및 주의사항?"
+            app:layout_constraintStart_toStartOf="@id/img_restaurant"
+            app:layout_constraintTop_toBottomOf="@id/img_restaurant" />
 
-  </android.support.constraint.ConstraintLayout>
-
-
-  <android.support.constraint.ConstraintLayout
-    android:id="@+id/layout_order_history_reserve"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="1dp"
-    android:paddingTop="@dimen/margin_8"
-    android:paddingBottom="@dimen/margin_8"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    android:background="@color/white"
-    >
-
-    <TextView
-      android:id="@+id/txt_order_history_reserve"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="예약"
-      android:textSize="14sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      android:textColor="@color/text_main"
-      app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-      android:id="@+id/order_list_id"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:textSize="12sp"
-      android:text="주문 번호 : 0000"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/txt_order_history_reserve"
-      />
-
-    <TextView
-      android:id="@+id/order_list_date"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:text="접수시간 : "
-      android:textSize="12sp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/order_list_id"
-
-      />
-
-    <TextView
-      android:id="@+id/order_list_state"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:text="접수 중"
-      android:textSize="12sp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/order_list_date"
-      />
-
-    <TextView
-      android:id="@+id/order_list_arrivedTime"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:text="도착 시간 예정: "
-      android:textSize="12sp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/order_list_state"/>
+    </android.support.constraint.ConstraintLayout>
 
 
-  </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_order_history_reserve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/margin_8"
+        android:paddingEnd="24dp"
+        android:paddingStart="16dp"
+        android:paddingTop="@dimen/margin_8">
 
 
-  <LinearLayout
-    android:id="@+id/layout_order_history_menu"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="1dp"
-    android:paddingBottom="@dimen/margin_8"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    android:background="@color/white"
+        <TextView
+            android:id="@+id/order_list_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="주문 번호 : 0000"
 
-    android:orientation="vertical"
-    >
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:layout_gravity="center"
-      android:text="메뉴"
-      android:textColor="@color/text_main"
-      android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/order_list_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="접수시간 : "
 
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/order_list_menu_recyclerview"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/order_list_id"
 
-    <TextView
-      android:id="@+id/order_list_result_price"
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="right"
-      android:text="총 금액 : "
-      android:textSize="16sp"
-      />
-  </LinearLayout>
+            />
 
-  <LinearLayout
-    android:layout_marginTop="1dp"
-    android:padding="@dimen/margin_8"
-    android:id="@+id/layout_order_history_map"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/white"
-    >
-    <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="위치"
-      android:textColor="@color/text_main"
-      android:textSize="14sp"/>
 
-    <ImageView
-      android:layout_marginTop="@dimen/margin_8"
-      android:id="@+id/order_list_static_map"
-      android:layout_width="match_parent"
-      android:layout_height="250dp"
-      android:layout_marginBottom="@dimen/margin_8"
-      />
-  </LinearLayout>
+        <TextView
+            android:id="@+id/order_list_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="예약자 닉네임 : 허주영"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/order_list_date" />
+
+        <TextView
+            android:id="@+id/order_list_arrivedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="도착 시간 예정: "
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/order_list_user_name" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_order_history_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_8"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:paddingTop="@dimen/margin_8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="주문하신 메뉴"
+            android:textColor="@color/text_main"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/order_list_menu_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/order_list_result_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="총 주문금액 : 13000원"
+            android:textColor="@color/tangerine"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_order_history_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="위치"
+            android:textColor="@color/text_main"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/order_list_static_map"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_16" />
+    </LinearLayout>
 
 </LinearLayout>

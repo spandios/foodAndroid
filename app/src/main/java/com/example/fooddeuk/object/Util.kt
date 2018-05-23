@@ -1,8 +1,11 @@
 package com.example.fooddeuk.`object`
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -10,16 +13,18 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import com.example.fooddeuk.util.LayoutUtil
+import com.example.fooddeuk.util.NetworkUtil
+import com.example.fooddeuk.util.SettingActivityUtil
 import com.orhanobut.logger.Logger
 
 /**
  * Created by heo on 2018. 3. 3..
  */
 object Util {
-    fun stringFormat(context: Context,resource : Int , origin : String) : String =
+    fun StringFormat(context: Context, resource : Int, origin : String) : String =
             String.format(context.getString(resource),origin)
 
-    fun stringFormat(context: Context, resource: Int, origin: String, origin2: String): String =
+    fun StringFormat(context: Context, resource: Int, origin: String, origin2: String): String =
             String.format(context.getString(resource), origin, origin2)
 
     fun logger(tag : String ="", obj : Any){
@@ -73,6 +78,31 @@ object Util {
             }
         }
         view.viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener)
+    }
+
+
+    fun checkNetworkAndGPS(activity: Activity) {
+        //check network
+        if (isNetworkConnected(activity)) {
+            //위치기능 비활성하이면
+            if (!isGpsPossible(activity)) {
+                SettingActivityUtil.settingGPS(activity)
+            }
+        } else {
+            SettingActivityUtil.checkNetwork(activity)
+        }
+    }
+
+    fun isNetworkConnected(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+    }
+
+    fun isGpsPossible(context: Context): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        //GpsUtil, network불가능하다면
+        return !(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
     }
 
 }

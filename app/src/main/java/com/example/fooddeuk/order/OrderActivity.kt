@@ -89,7 +89,9 @@ class OrderActivity : AppCompatActivity(), OrderContract.View {
         Observable.range(0, cartItemList.size).flatMap {
             Observable.just(cartItemList[it])
         }.map {
+            Logger.d(it.menu.avgtime)
             it.menu.avgtime
+
         }.filter { it.isNotEmpty() }
                 .map { it.toInt() }.subscribe({
                     if (maxMenuMakingTime < it) {

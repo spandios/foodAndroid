@@ -36,6 +36,7 @@ import java.util.*
 class LoginActivity : BaseActivity() {
     private lateinit var kakaoCallback : SessionCallback
     private lateinit var callbackManager : CallbackManager
+
     private val loginCallback : (success : Boolean) -> Unit = {it->when(it){
         true->finish()
         false->showToast("로그인에 실패했습니다.")

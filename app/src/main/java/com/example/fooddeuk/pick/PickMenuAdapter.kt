@@ -55,7 +55,7 @@ class PickMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             pick_menu_item_name.text = menu.name
             pick_menu_item_rating_star.rating = menu.rating.toFloat()
-            pick_menu_item_reviewcnt.text = Util.stringFormat(context, R.string.reviewcnt, menu.reviewCnt.toString())
+            pick_menu_item_reviewcnt.text = Util.StringFormat(context, R.string.reviewcnt, menu.reviewCnt.toString())
         }
     }
 }

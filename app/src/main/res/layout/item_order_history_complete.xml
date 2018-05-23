@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/order_list_rest_name"
+        android:id="@+id/txt_rest_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -32,8 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="접수 중"
-        app:layout_constraintBaseline_toBaselineOf="@+id/order_list_rest_name"
-        app:layout_constraintStart_toEndOf="@+id/order_list_rest_name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_rest_name"
+        app:layout_constraintStart_toEndOf="@+id/txt_rest_name"
         />
 
 
@@ -45,8 +45,8 @@
         android:layout_marginTop="12dp"
         android:text="폿팡퐁커리"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@id/order_list_rest_name"
-        app:layout_constraintTop_toBottomOf="@+id/order_list_rest_name" />
+        app:layout_constraintStart_toStartOf="@id/txt_rest_name"
+        app:layout_constraintTop_toBottomOf="@+id/txt_rest_name" />
 
 
     <TextView

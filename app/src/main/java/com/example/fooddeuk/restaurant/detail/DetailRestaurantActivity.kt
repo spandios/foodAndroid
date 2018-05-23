@@ -75,12 +75,12 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         setContentView(R.layout.activity_detail_restaurant)
         detail_restaurant_loading.visible()
         header.background.alpha = 0
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.rest_detail_map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
         user = RealmUtil.findData(User::class.java)
         RxBus.intentSubscribe(RxBus.DetailRestaurantActivityData, this.javaClass, Consumer { it ->
             if (it is Restaurant) {
                 restaurant = it
+                val mapFragment = supportFragmentManager.findFragmentById(R.id.rest_detail_map) as SupportMapFragment
+                mapFragment.getMapAsync(this)
                 reviewFramnet = DetailRestaurantReviewFragment.newInstance(restaurant._id)
                 addFragmentToActivity(R.id.review_fragment, reviewFramnet)
                 dangolCnt = restaurant.dangolCnt
@@ -223,7 +223,7 @@ class DetailRestaurantActivity : AppCompatActivity(), DetailRestaurantContract.V
         setSupportActionBar(header)
         rest_detail_name.text = restaurant.name
         rest_detail_name_in_list.text = restaurant.name
-        rest_detail_rating.text = Util.stringFormat(this, R.string.rest_rating_and_review_cnt, restaurant.rating.toString(), restaurant.reviewCnt.toString())
+        rest_detail_rating.text = Util.StringFormat(this, R.string.rest_rating_and_review_cnt, restaurant.rating.toString(), restaurant.reviewCnt.toString())
 
         //finish
         with(rest_detail_back) {

@@ -16,27 +16,25 @@ import com.orhanobut.logger.Logger
 
 object Login {
     fun checkUser(callback: () -> Unit) {
-        var exist: Boolean? = UserPrefUtil.getValue(UserPrefUtil.EXIST, false)
+        val exist: Boolean? = UserPrefUtil.getValue(UserPrefUtil.EXIST, false)
         val providerId: String? = UserPrefUtil.getValue(UserPrefUtil.PROVIDER_ID, "")
-        var fcm_token: String? = UserPrefUtil.getValue(UserPrefUtil.FCM_TOKEN, "")
+        val fcm_token: String? = UserPrefUtil.getValue(UserPrefUtil.FCM_TOKEN, "")
         var phone: String? = UserPrefUtil.getValue(UserPrefUtil.PHONE, "")
         var name: String? = UserPrefUtil.getValue(UserPrefUtil.NAME, "")
-        var provider : String? = UserPrefUtil.getValue(UserPrefUtil.PROVIDER,"")
-        GlobalVariable.provider= provider.toString()
+        val provider: String? = UserPrefUtil.getValue(UserPrefUtil.PROVIDER, "")
+        GlobalVariable.provider = provider.toString()
 
         if (exist!!) {
-            Logger.d("자동 로그인 start")
+            //예전 로그인 정보가 남아있을 때
             if (!providerId.isNullOrEmpty() && !fcm_token.isNullOrEmpty() && !name.isNullOrEmpty()) {
 
                 getUser(providerId!!, { err, userResponse ->
                     if (err != null) {
                         err.printStackTrace()
-                        Logger.d("서버 불가능")
                         callback()
                     } else {
                         userResponse?.let {
                             if (it.exist) {
-
                                 Logger.d("provider id : $providerId , fcm_token $fcm_token , name $name")
                                 val user = it.user
                                 if (user.fcm_token != GlobalApplication.fcmToken) {
@@ -70,6 +68,7 @@ object Login {
                         }
                     }
                 })
+                //Pref 정보가 하나라도 오류있을 경우
             } else {
                 Logger.d("안드 pref에서 정보가 없음")
                 //TODO 유저 정보가 비었음 go to LoginActivity
@@ -85,7 +84,9 @@ object Login {
     }
 
 
-    fun registerUser(user: User, callback: (success:Boolean) -> Unit) {
+    //유저등록
+    fun registerUser(user: User, callback: (success: Boolean) -> Unit) {
+
         try {
             getUser(user.provider_id, { err, userResponse ->
                 if (err != null) err.printStackTrace()
@@ -112,14 +113,10 @@ object Login {
                         })
 
 
-
                     }
                 }
             })
-
-
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -131,17 +128,17 @@ object Login {
             setValue(FCM_TOKEN, user.fcm_token)
             setValue(NAME, user.user_name)
             setValue(PROVIDER, user.provider)
-            setValue(EXIST,true)
+            setValue(EXIST, true)
         }
     }
 
     fun getUser(provider_id: String, callback: (err: Throwable?, userResponse: UserResponse?) -> Unit) {
-        Logger.d(provider_id)
-        httpService.getUser(provider_id).compose(singleAsync()).subscribe(
-                { userResponse ->
-                    Logger.d(userResponse)
-                    callback(null, userResponse) }, { throwable -> callback(throwable, null) })
 
+        httpService.readUser(provider_id).compose(singleAsync()).subscribe(
+                { userResponse ->
+                    callback(null, userResponse)
+                }, { throwable -> callback(throwable, null) }
+        )
     }
 
 

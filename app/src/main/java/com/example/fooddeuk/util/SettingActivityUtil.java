@@ -13,7 +13,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 public class SettingActivityUtil {
     private static final int GpsSettingActivityRequestCode = 0;
-    public static void settingGPS(Activity activity){
+
+    public static void settingGPS(Activity activity) {
         new MaterialDialog.
                 Builder(activity)
                 .content("위치정보를 활성화하셔야 서비스를 이용하실 수 있습니다. 설정 창으로 가시겠습니까?")
@@ -28,7 +29,7 @@ public class SettingActivityUtil {
                 .build().show();
     }
 
-    public static void notPossibleNetwork(Activity activity){
+    public static void checkNetwork(Activity activity) {
         new MaterialDialog.Builder(activity).content("인터넷이 연결되어있지않습니다 확인 후 실행해주세요").positiveText("확인").dismissListener(dialog -> {
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
@@ -37,9 +38,4 @@ public class SettingActivityUtil {
             System.exit(1);
         }).build().show();
     }
-
-
-
-
-
 }

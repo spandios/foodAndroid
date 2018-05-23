@@ -65,7 +65,7 @@ class HavePictureMenuHolder(var context: Context, itemView: View) : RecyclerView
         Picasso.with(context).load(menu.picture[0]).fit().transform(CropCircleTransformation()).into(itemView.menu_master_picture)
         itemView.txt_menu_name.text = menu.name
         itemView.menu_master_price.text = menuPrice
-        itemView.menu_detail_order.text = Util.stringFormat(context, R.string.menu_order, menuPrice)
+        itemView.menu_detail_order.text = Util.StringFormat(context, R.string.menu_order, menuPrice)
     }
 
 }

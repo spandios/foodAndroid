@@ -59,7 +59,7 @@ fun String.spannable(targetString : String, color : Int) : SpannableString{
     val targetStartIndex = this.indexOf(targetString)
     val targetEndIndex = targetStartIndex + targetString.length
     spannableString.setSpan(ForegroundColorSpan(color), targetStartIndex, targetEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-    spannableString.setSpan(UnderlineSpan(), targetStartIndex, targetEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
     return spannableString
 }
 

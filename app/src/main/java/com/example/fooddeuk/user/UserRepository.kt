@@ -29,7 +29,7 @@ object UserLocalRepository : UserDataSource{
 //
 //    }
 //
-//    override fun getUser(): User {
+//    override fun readUser(): User {
 //
 //    }
 //}

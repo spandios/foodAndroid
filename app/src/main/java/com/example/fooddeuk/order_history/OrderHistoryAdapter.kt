@@ -9,6 +9,7 @@ import com.example.fooddeuk.R
 import com.example.fooddeuk.order.model.OrderResponse
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.StartActivity
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.item_order_history_ing.view.*
 
 
@@ -39,7 +40,6 @@ class OrderHistoryAdapter(private val context : Context, private val responses:A
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val orderItem = responses[position]
-
         if(holder is OrderHistoryViewHolder){
             holder.bind(orderItem)
         }else if(holder is CompleteOrderViewHolder){
@@ -58,7 +58,7 @@ class OrderHistoryAdapter(private val context : Context, private val responses:A
         }
 
         fun bind(orderResponse: OrderResponse){
-            itemView.order_list_rest_name.text= orderResponse.restaurant.rest_name
+            itemView.txt_rest_name.text= orderResponse.restaurant.rest_name
             itemView.order_list_date.text= orderResponse.created_at
             itemView.order_list_state.text= orderResponse.status
 

@@ -42,16 +42,11 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         renderView()
-
     }
 
 
     override fun onResume() {
         super.onResume()
-
-        header.background.alpha = 0
-        home_scroll.scrollTo(0, 0)
-
         homePresenter=HomePresenterInterface().apply {
             view=this@HomeFragment
             setHomeEvent()
@@ -66,6 +61,8 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         super.onPause()
         homePresenter.clear()
     }
+
+
 
     override fun setRecentRestaurantRV(recentRestaurants: ArrayList<Restaurant>) {
         //최근 본 매장 전체보기
@@ -82,6 +79,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
     override fun setDangolRestaurantRV(dangolRestaurants: ArrayList<Restaurant>) {
         if(dangolRestaurants.size>2){
             dangol_all_button.visible()
+            dangol_all_button.setOnClickListener {  }
         }
         dangol_rest_recycle.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         dangol_rest_recycle.adapter = RecentAdapter(context!!, dangolRestaurants)
@@ -195,7 +193,7 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
 
 
     override fun setHomeEventAdapter(eventPictureList: HomeEventPictureResponse) {
-//        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { adapter = ImageVPAdapter(context, eventPictureList.eventPictureList) })
+//        home_event_viewpager_indicator.setViewPager(home_event_viewpager.apply { cartAdapter = ImageVPAdapter(context, eventPictureList.eventPictureList) })
 //        home_event_viewpager.startAutoScroll(4500)
 //        home_event_viewpager.interval = 4500
 
@@ -244,6 +242,10 @@ class HomeFragment : Fragment(), NestedScrollView.OnScrollChangeListener, HomeCo
         toast("이벤트를 불러 올 수 없습니다")
     }
 
+    fun clearView(){
+        header.background.alpha = 0
+        home_scroll.scrollTo(0, 0)
+    }
 
 }
 

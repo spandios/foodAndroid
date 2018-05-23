@@ -18,9 +18,10 @@
     <string name="reviewcnt">(%1$s)</string>
     <string name="cart_order">%1$s 주문하기</string>
     <string name="menu_order">%1$s 바로 주문</string>
-    <string name="cart_menu_avgtime">평균 %1$s 소요</string>
+    <string name="cart_menu_avgtime">평균 %1$s분 소요</string>
     <string name="rest_reviewcnt">리뷰(%1$s)</string>
     <string name="rest_rating_and_review_cnt">%1$s(%2$s)</string>
+    <string name="order_history_menu_name_cnt">%1$s  x%2$s</string>
 
     <!--할인율-->
     <string name="sale5">-5%</string>

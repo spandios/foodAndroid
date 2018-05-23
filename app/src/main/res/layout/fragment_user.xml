@@ -1,99 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  >
-
-  <LinearLayout
-    android:id="@+id/layout_user_not_login"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="gone">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ImageView
-      android:id="@+id/img_not_login"
-      android:layout_width="match_parent"
-      android:layout_height="200dp"
-      android:background="@drawable/fm"
-      />
+    <LinearLayout
+        android:id="@+id/layout_user_not_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/img_not_login"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/fm" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="로그인" />
+
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_user_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_user_profile"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="25dp"
+            android:text="허주영"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/img_user_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_user_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="lv.1"
+            app:layout_constraintStart_toEndOf="@id/img_user_profile"
+            app:layout_constraintTop_toBottomOf="@id/txt_user_name" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
     <Button
-      android:id="@+id/btn_login"
-      android:layout_width="match_parent"
-      android:layout_height="60dp"
-      android:text="로그인"
-      />
+        android:id="@+id/btn_user_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="로그아웃" />
 
-  </LinearLayout>
+    <Button
+        android:id="@+id/btn_current_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="주문내역" />
 
-  <android.support.constraint.ConstraintLayout
-    android:id="@+id/layout_user_login"
-    android:layout_width="match_parent"
-    android:layout_height="130dp">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="리뷰관리" />
 
-    <ImageView
-      android:id="@+id/img_user_profile"
-      android:layout_width="80dp"
-      android:layout_height="80dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginStart="16dp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
-
-    <TextView
-      android:id="@+id/txt_user_name"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="25dp"
-      android:layout_marginStart="16dp"
-      android:text="허주영"
-      android:textSize="16sp"
-      app:layout_constraintStart_toEndOf="@id/img_user_profile"
-      app:layout_constraintTop_toTopOf="parent"
-      />
-
-    <TextView
-      android:id="@+id/txt_user_level"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:text="lv.1"
-      app:layout_constraintStart_toEndOf="@id/img_user_profile"
-      app:layout_constraintTop_toBottomOf="@id/txt_user_name"
-      />
-
-
-  </android.support.constraint.ConstraintLayout>
-
-  <Button
-    android:id="@+id/btn_user_logout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="로그아웃"
-    />
-
-  <Button
-    android:id="@+id/btn_current_order"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="주문현황"
-    />
-
-  <Button
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="리뷰관리"
-    />
-
-  <Button
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="고객센터"
-    />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="고객센터" />
 
 
 </LinearLayout>

@@ -1,105 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
-  android:layout_width="match_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/layout_cart_activity"
-  android:orientation="vertical"
-  >
-
-
-  <android.support.v7.widget.Toolbar
+<com.southernbox.springscrollview.SpringScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_cart_activity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cartToolbar"
-    android:background="@color/white"
     >
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cart"
-      style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-      android:layout_gravity="center"
-      />
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="초기화"
-      android:layout_marginRight="10dp"
-      android:id="@+id/cart_clear"
-      android:textSize="16sp"
-      android:layout_gravity="end"/>
-
-  </android.support.v7.widget.Toolbar>
-
-
-
-  <LinearLayout
-    android:id="@+id/layout_cart"
-    app:layout_constraintTop_toBottomOf="@id/cartToolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
-  <FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/silver"
-    >
-
-    <android.support.v7.widget.RecyclerView
-      android:layout_marginTop="8dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginEnd="8dp"
-      android:background="@color/white"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:nestedScrollingEnabled="false"
-      android:id="@+id/recycle_cart"
-      >
-    </android.support.v7.widget.RecyclerView>
-
-
-  </FrameLayout>
 
     <LinearLayout
-      android:background="@color/white"
-      android:id="@+id/layout_cart_process"
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      >
-
-      <TextView
-        android:textSize="18sp"
-        android:textColor="@color/tangerine"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/order"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/cartToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/cart" />
+
+        <TextView
+            android:id="@+id/cart_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:text="초기화"
+            android:textSize="16sp" />
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/layout_have_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false" />
+
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/alert_empty_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/text_main"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+
+            android:text="장바구니가 비었습니다." />
+    </RelativeLayout>
+
+
+    <Button
+
+        android:id="@+id/cart_menu_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_16"
         android:gravity="center"
-        android:id="@+id/cart_menu_order"/>
-    </LinearLayout>
+        android:text="@string/order"
+        android:textColor="@color/tangerine"
+        android:textSize="18sp" />
 
-  </LinearLayout>
-
-  <LinearLayout
-    android:orientation="vertical"
-    android:id="@+id/layout_cart_no_item"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    >
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="장바구니가 비었습니다."
-      />
-
-  </LinearLayout>
 
 
 
 
 </LinearLayout>
+</com.southernbox.springscrollview.SpringScrollView>

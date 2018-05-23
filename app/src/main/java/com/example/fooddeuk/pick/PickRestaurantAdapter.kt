@@ -50,7 +50,7 @@ class DangolViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
             Picasso.with(context).load(restaurant.picture[0]).fit().into(dangol_item_image)
             dangol_item_name.text=restaurant.name
             dangol_item_rating_start.rating=restaurant.rating
-            dangol_item_review_cnt.text= Util.stringFormat(context,R.string.reviewcnt,restaurant.reviewCnt.toString())
+            dangol_item_review_cnt.text= Util.StringFormat(context,R.string.reviewcnt,restaurant.reviewCnt.toString())
             dangol_item_sale.text = "포장 시 최대 -${restaurant.discount}"
         }
     }

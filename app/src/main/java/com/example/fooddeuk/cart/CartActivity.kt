@@ -17,20 +17,17 @@ import com.example.fooddeuk.option.OptionAdapter
 import com.example.fooddeuk.order.OrderActivity
 import com.example.fooddeuk.rx.RxBus
 import com.example.fooddeuk.util.*
-import com.orhanobut.logger.Logger
 import io.reactivex.functions.Consumer
 import io.realm.RealmList
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.item_cart.view.*
-import org.w3c.dom.Text
-import kotlin.math.min
 
 
 class CartActivity : AppCompatActivity() {
     private val cartItemList = ArrayList<CartItem>()
     lateinit var adapter: CartAdapter
     var totalPrice = 0
-    lateinit var cartRecyclerView : RecyclerView
+    lateinit var cartRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +38,15 @@ class CartActivity : AppCompatActivity() {
         setCartAdapter()
         getFirstResultPrice()
 
-        //publish by CartViewHolder
+        //publish by CartViewHolder  UpdatePrice
         RxBus.subscribe(RxBus.CartResultPrice, this@CartActivity.javaClass, Consumer {
             updateResultPrice()
+        })
+
+        RxBus.subscribe(RxBus.CartMinusPrice, this@CartActivity.javaClass, Consumer {
+            if (it is String) {
+                minusResultPrice(it)
+            }
         })
 
     }
@@ -68,7 +71,7 @@ class CartActivity : AppCompatActivity() {
         cartItemList.forEach {
             totalPrice += it.menu.price.getOriginalPrice()
         }
-        cart_menu_order.text = Util.stringFormat(this, R.string.cart_order, totalPrice.toCommaWon())
+        cart_menu_order.text = Util.StringFormat(this, R.string.cart_order, totalPrice.toCommaWon())
     }
 
     fun updateResultPrice() {
@@ -77,12 +80,12 @@ class CartActivity : AppCompatActivity() {
             for (i in 0 until recycle_cart.childCount) {
                 price += recycle_cart.getChildAt(i).cart_menu_result_price.text.getOriginalPrice()
             }
-            cart_menu_order.text = Util.stringFormat(this, R.string.cart_order, price.toCommaWon())
+            cart_menu_order.text = Util.StringFormat(this, R.string.cart_order, price.toCommaWon())
         }
     }
 
-    fun minusResultPrice(minPrice : String){
-        cart_menu_order.text=Util.stringFormat(this,R.string.cart_order,PriceUtil.minusPrice(minPrice,getOriginalPriceFromFinalOrderTextView()))
+    private fun minusResultPrice(minPrice: String) {
+        cart_menu_order.text = Util.StringFormat(this, R.string.cart_order, PriceUtil.minusPrice(minPrice, getOriginalPriceFromFinalOrderTextView()))
     }
 
     private fun setCartAdapter() {
@@ -155,7 +158,6 @@ class CartActivity : AppCompatActivity() {
                             cartItemList[i].selNecessaryOptionList.add(SelectedOption(optionCategory.menu_option_category_name, optionCategory.option_content[0]))
                         }
                     }
-
                 }
                 RealmUtil.insertData(cartItemList[i])
             }
@@ -172,7 +174,6 @@ class CartActivity : AppCompatActivity() {
             finish()
         })
 
-
         cart_menu_order.setOnClickListener({
             if (cartItemList.size != 0) {
                 /** 장바구니 각각의 아이템  수량,가격 , 옵션 삽입 후 주문 activity 호출*/
@@ -183,14 +184,14 @@ class CartActivity : AppCompatActivity() {
                 Toast.makeText(this, "아이템이 없습니다", Toast.LENGTH_SHORT).show()
             }
         })
+
         cart_more_order.setOnClickListener { finish() }
 
     }
 
-    private fun getOriginalPriceFromFinalOrderTextView() : String{
-
-        cart_menu_order.text.toString().let{
-            return it.substring(0,it.indexOf("원"))
+    private fun getOriginalPriceFromFinalOrderTextView(): String {
+        cart_menu_order.text.toString().let {
+            return it.substring(0, it.indexOf("원"))
         }
     }
 

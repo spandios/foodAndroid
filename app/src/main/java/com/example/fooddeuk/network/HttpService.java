@@ -31,7 +31,7 @@ public interface HttpService {
 
   //User--
   @GET("/api/user/readUser")
-  Single<UserResponse> getUser(@Query("provider_id") String provider_id);
+  Single<UserResponse> readUser(@Query("provider_id") String provider_id);
 
   @POST("/api/user/createUser")
   Completable createUser(@Body User user);
@@ -74,8 +74,7 @@ public interface HttpService {
   Single<List<Restaurant>> getHotRestaurant(@Query("lat") Double lat, @Query("lng") Double lng);
 
   @GET("api/restaurant/searchRestaurant")
-  Single<RestaurantResponse> searchRestaurant(@Query("lat") Double lat, @Query("lng") Double lng,
-      @Query("searchText") String searchText);
+  Single<RestaurantResponse> searchRestaurant(@Query("lat") Double lat, @Query("lng") Double lng, @Query("searchText") String searchText);
 
   @GET("api/restaurant/getPicture")
   Single<ArrayList<String>> getPicture(@Query("_id") String _id);

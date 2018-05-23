@@ -16,14 +16,13 @@ object Location {
     var buzy = false
     var lat: Double = 0.toDouble()
     var lng: Double = 0.toDouble()
-    var locationName : String =""
-    val baseInterval: Long = 100
-    val baseFastestInterval: Long = 100
-    val basePriority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    var locationName: String = ""
+    const val baseInterval: Long = 100
+    const val baseFastestInterval: Long = 100
+    const val basePriority = LocationRequest.PRIORITY_HIGH_ACCURACY
     @SuppressLint("StaticFieldLeak")
-    val mFusedLocationClient: FusedLocationProviderClient =LocationServices.getFusedLocationProviderClient(GlobalApplication.getInstance())
-    val geocoder : Geocoder =Geocoder(GlobalApplication.getInstance(),Locale.KOREA)
-
+    val mFusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(GlobalApplication.getInstance())
+    private val geocoder: Geocoder = Geocoder(GlobalApplication.getInstance(), Locale.KOREA)
 
 
     var locationRequest: LocationRequest = LocationRequest().apply {
@@ -33,15 +32,15 @@ object Location {
     }
 
     @SuppressLint("MissingPermission")
-    fun getLocation(callback : (lat : Double, lng : Double, locationName : String)->Unit) {
+    fun getLocation(callback: (lat: Double, lng: Double, locationName: String) -> Unit) {
         val getLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 lat = locationResult.locations[0].latitude
                 lng = locationResult.locations[0].longitude
-                getLocationName(lat, lng,{
+                getLocationName(lat, lng, {
                     mFusedLocationClient.removeLocationUpdates(this)
-                    locationName=it
+                    locationName = it
                     callback(lat, lng, locationName)
                 })
 
@@ -52,12 +51,12 @@ object Location {
     }
 
 
-    fun getLocationName(lat: Double = Location.lat, lng: Double = Location.lng,callback : (gudong : String)->Unit){
+    fun getLocationName(lat: Double = Location.lat, lng: Double = Location.lng, callback: (gudong: String) -> Unit) {
         try {
             //좌표->주소
             httpService.getLocationNameByNaver("$lng,$lat").compose(singleAsync()).subscribe({
 
-                if(it.gudong == "error"){
+                if (it.gudong == "error") {
 
                     val addresses: Address = geocoder.getFromLocation(lat, lng, 1)[0]
                     //구 없으면 시
@@ -71,18 +70,17 @@ object Location {
                     } else {
                         callback(addresses.getAddressLine(0).substring(12))
                     }
-                }else{
+                } else {
 
                     callback(it.gudong)
                 }
-            },{
+            }, {
                 it.printStackTrace()
                 callback("주소를 불러올 수 없습니다")
             })
 
 
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             callback("주소를 불러올 수 없습니다")
             e.printStackTrace()
         }

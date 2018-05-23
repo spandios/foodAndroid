@@ -41,7 +41,7 @@ class PictureNecessaryViewHolder(var context: Context, itemView: View) : Recycle
         Picasso.with(context).load(menu.picture[0]).fit().transform(CropCircleTransformation()).into(itemView.menu_master_picture)
         itemView.txt_menu_name.text = menu.name
         itemView.menu_master_price.text = menuPrice
-        menuOrder.text = Util.stringFormat(context, R.string.menu_order,menuPrice)
+        menuOrder.text = Util.StringFormat(context, R.string.menu_order,menuPrice)
 
     }
 }
