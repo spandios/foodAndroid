@@ -62,13 +62,13 @@
 
 
     <!--KAKAO-->
-    <string name="kakao_app_key"> f0b0d4cebc2e3fd136521c7af53ed1b7</string>
+    <string name="kakao_app_key"> </string>
     <!--FACEBOOK-->
-    <string name="facebook_app_id">218313098690667</string>
-    <string name="fb_login_protocol_scheme">fb218313098690667</string>
+    <string name="facebook_app_id"></string>
+    <string name="fb_login_protocol_scheme">7</string>
     <!--NAVER-->
-    <string name="naver_client_key">2vk8SF2rhIKXZFvesSw1</string>
-    <string name="naver_secret_key">AmSYVV56Q_</string>
+    <string name="naver_client_key"></string>
+    <string name="naver_secret_key"></string>
 
 
     <string name="large_text">
